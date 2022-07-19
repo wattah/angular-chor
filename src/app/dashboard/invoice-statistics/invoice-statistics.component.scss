@@ -1,0 +1,40 @@
+/*integration table univers*/
+::ng-deep.tabs-lots .ag-header-row {
+    display: block !important;
+}
+::ng-deep.tabs-lots .ag-theme-material {
+    border: none !important;
+}
+::ng-deep.tabs-lots .ag-header-cell-text {
+    text-decoration: none !important;
+}
+::ng-deep.tabs-lots .bordertop {
+    border-top: 1px solid #dadada !important;
+}
+::ng-deep.tabs-lots .original {
+    border-top: 1px solid #dadada !important;
+    border-left: 1px solid #dadada !important;
+}
+::ng-deep.univers .tabs-lots .ag-header-cell-label {
+    justify-content: flex-end;
+}
+::ng-deep.univers .tabs-lots .ag-cell-not-inline-editing {
+    justify-content: flex-end;
+}
+::ng-deep.univers .tabs-lots .d-none .ag-cell-not-inline-editing {
+    justify-content: start;
+}
+::ng-deep.univers .tabs-lots .ag-header .ag-focus-managed {
+    min-height: auto;
+}
+
+.datecenter{
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 9;
+    .margin-top{
+        margin-top:10px
+    }
+}    

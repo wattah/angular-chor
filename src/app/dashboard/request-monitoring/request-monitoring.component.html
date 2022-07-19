@@ -1,0 +1,405 @@
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena"> Demandes </h2>
+        <div class="row">
+            <div class="col-md-24 col-lg-24">
+             <section class="container-fluid">
+                <form class="pt-3" [formGroup]="searchForm">  
+                    <article class="row">
+                        <div class="col-md-8 col-lg-8 mt-3">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-lg-6 col-form-label athena">Responsable d'affaire</label>
+                                <div class="col-md-16">
+                                    <mat-form-field class="large-chip-list" appearance="outline" (click)="clearResponsableAffaireList()">
+                                        <input type="text"
+                                            matInput
+                                            [matAutocomplete]="autoA"
+                                            [formControl]="accountManagerControl">
+                                        <mat-autocomplete #autoA="matAutocomplete" [displayWith]="displayUserName" >
+                                            <mat-option *ngFor="let option of filteredAccountManager | async" [value]="option">
+                                                {{option?.lastName | uppercase}} {{option?.firstName | firstName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-lg-6 col-form-label athena">Membre</label> 
+                                 <div class="col-sm-16">   
+                                    <mat-form-field class="large-chip-list" appearance="outline" (click)="clearMemberList()" >
+                                        <input type="text"  matInput [matAutocomplete]="autoMembre" [formControl]="membreControl">
+                                        <mat-autocomplete #autoMembre="matAutocomplete" [displayWith]="displayClient" > 
+                                            <ng-template ngFor let-item [ngForOf]="filteredMembre$ | async">
+                                                <mat-option [value]="item" >
+                                                    <ul class="mat-summary">
+                                                        <li> {{item?.name}} </li>
+                                                        <li class="grey">{{ afficherNumContrat(item?.nicheIdentifier)}}</li>
+                                                        <li class="grey">{{item?.status}}</li>
+                                                    </ul>
+                                                </mat-option>
+                                                <mat-divider></mat-divider>
+                                            </ng-template>
+                                            
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div> 
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-8 col-lg-8 mt-3">
+                                <label class="grey">Date de création</label>
+                                <mat-form-field class="athena col-md-6 col-lg-6 ml-2" appearance="outline">
+                                    <input matInput [matDatepicker]="pickerStart" placeholder="" 
+                                        readonly formControlName="fromDate" (dateChange)="onSelectStartDate($event)">
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                </mat-form-field>  
+                                <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerStart.open()" ></span>
+                                <label  class="col-form-label marged-label mt-1 ml-2 mr-2"> à </label>
+                                <mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+                                    <input matInput [matDatepicker]="pickerFinish" placeholder="" 
+                                    readonly formControlName="toDate" [min]="rangeOfEndDate">
+                                    <mat-datepicker #pickerFinish></mat-datepicker>
+                                </mat-form-field>  
+                                <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerFinish.open()" ></span><br/>
+                                <div class="form-group parcourLabelPosition  row ">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena ">Parcours</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" (click)="clearParcoursList()">
+                                            <input type="text"
+                                                matInput
+                                                [matAutocomplete]="autoC"
+                                                [formControl]="parcoursControl">
+                                            <mat-autocomplete #autoC="matAutocomplete">
+                                                <mat-option *ngFor="let option of filteredParcours | async" [value]="option.label">
+                                                    {{option?.label}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group requestchekBox row ">
+                                    <div class="form-check  mt-n2 grey">
+                                        <mat-checkbox  id="automatic" (change)="includeAutomatic($event)" [checked]="!manualOnly">J'inclus les demandes automatiques</mat-checkbox>
+                                    </div>
+                                    <span class="col-md-12 col-lg-12 nowrap form-label grey"></span> 
+                                    
+                                </div>
+                        </div>
+                        <div class="col-md-8 col-lg-8 mt-3">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-lg-6 col-form-label athena">Statut de la demande</label> 
+                                <div class="col-sm-16">   
+                                    <mat-form-field class="large-chip-list" appearance="outline" (click)="clearStatutPanierList()">
+                                        <input type="text"
+                                            matInput
+                                            [matAutocomplete]="autoE"
+                                            [formControl]="requestTaskStatusControl">
+                                        <mat-autocomplete #autoE="matAutocomplete"  [displayWith]="displayStatusLabel">
+                                            <mat-option *ngFor="let option of filteredRequestTaskStatus | async" [value]="option">
+                                                {{option?.label}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-lg-6 col-form-label athena">N° de demande</label> 
+                                <div class="col-sm-6 mt-0">   
+                                    <input class="form-control" type="number" formControlName="requestId"
+                                    (keypress)="validate($event)" (paste)="validate($event)" 
+                                    oninput="this.value = this.value.slice(0, 6)"
+                                    />
+                                </div>
+                            </div>       
+                        </div>
+                    </article>
+                        <div class="row">
+                            <br/>
+                        </div>
+                        <br/>
+                        <div class="link row" name="showField" [hidden]="show === false">
+                            <hr class="col-md-5 col-lg-5 mr-2">
+                            <a class="athena col-md-4 col-lg-4 ml-3" (click)="onShow()">Voir la recherche avancée  
+                                <span class="icon icon-min arrow-bottom-blue athena ml-1"></span>
+                            </a>
+                            <hr class="col-md-5 col-lg-5 ml-n1">
+                        </div>
+                        <div class="link row center" *ngIf="!show">
+                            <hr class="col-md-5 col-lg-5 mr-2">
+                            <a class=" athena col-md-4 col-lg-4" (click)="onHide()">Masquer la recherche avancée  
+                                <span class="icon icon-min arrow-top-blue athena ml-1"></span>
+                            </a>
+                            <hr class="col-md-5 col-lg-5 ml-1">
+                        </div><br/>
+                        <div class="row">
+                            <br/>
+                        </div>
+                    <article class="row" *ngIf="!show">
+                            <div class="col-md-8 col-lg-8 mt-3">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena">Rôle du porteur</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" (click)="clearRoleDuPorteurList()">
+                                            <input type="text"
+                                                matInput
+                                                [matAutocomplete]="autoH"
+                                                [formControl]="roleAttachedToControl"
+                                                (change)="onChangeRole()">
+                                            <mat-autocomplete #autoH="matAutocomplete" [displayWith]="displayRoleName" (optionSelected)="onChangeRole()">
+                                                <mat-option *ngFor="let option of filteredRoleAttachedTo | async" [value]="option">
+                                                    {{option?.displayName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena">Porteur</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" (click)="clearPorteurList()">
+                                            <input type="text"
+                                                matInput
+                                                [matAutocomplete]="autoI"
+                                                [formControl]="attachedToControl">
+                                            <mat-autocomplete #autoI="matAutocomplete" [displayWith]="displayUserName">
+                                                <mat-option *ngFor="let option of filteredAttachedTo | async" [value]="option">
+                                                    {{option?.lastName | uppercase}} {{option?.firstName | firstName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="col-md-8 col-lg-8 mt-3">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena">Créée par</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" >
+                                            <mat-chip-list #chipJList (click)="clearCreeeParList()">
+                                                <mat-chip
+                                                errorState="false"
+                                                *ngFor="let option of selectedCreatedByList"
+                                                [selectable]="selectable"
+                                                [removable]="removable"
+                                                (removed)="remove(option)">
+                                                    {{option?.firstName | firstName}} {{option?.lastName}}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                                </mat-chip>
+                                                <input
+                                                placeholder=""
+                                                #JInput
+                                                [formControl]="createdByControl"
+                                                [matAutocomplete]="autoJ"
+                                                [matChipInputFor]="chipJList"
+                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                >
+                                            </mat-chip-list>
+                                            <mat-autocomplete #autoJ="matAutocomplete" (optionSelected)="selected($event)">
+                                                <mat-option *ngFor="let option of filteredCreatedBy | async" [value]="option">
+                                                    {{option?.lastName | uppercase}} {{option?.firstName | firstName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena">Portefeuille</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" (click)="clearPortefeuilleList()">
+                                            <input type="text"
+                                                matInput
+                                                [matAutocomplete]="autoK"
+                                                [formControl]="referentControl">
+                                            <mat-autocomplete #autoK="matAutocomplete" [displayWith]="displayUserName">
+                                                <mat-option *ngFor="let option of filteredReferent | async" [value]="option">
+                                                    {{option?.lastName | uppercase}} {{option?.firstName | firstName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-8 mt-3">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-lg-6 col-form-label athena">Nom de campagne</label> 
+                                    <div class="col-sm-16">   
+                                        <mat-form-field class="large-chip-list" appearance="outline" >
+                                            <input matInput type="text" formControlName="campaignName">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <label class="col-md-3 col-lg-6 col-form-label athena">Date de campagne</label>
+                                    <mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+                                        <input matInput [matDatepicker]="datePicker" placeholder="" 
+                                        name="dateDebut" readonly formControlName="campaignDate">
+                                        <mat-datepicker #datePicker></mat-datepicker>
+                                    </mat-form-field>  
+                                    <span class="icon icon-marged calendar-grey clickable margin-top" (click)="datePicker.open()" ></span>
+                            </div>
+                    </article>
+                        <div class="row offset-md-11 mt-2 control-buttons">
+                            <input class="btn btn-green athena" type="button" value="Rechercher" (click)="search()">
+                        </div>
+                   </form>
+                  
+                <section class="mt-5"   >
+                    <div class="row" *ngIf="!loadingData && totalItems === 0" > 
+                        <p  class="center">Votre recherche ne donne aucun résultat, veuillez la modifier.</p>
+                    </div>
+
+                    <div class="d-none d-sm-none d-lg-block mb-2 ">
+                        <div class="col-sm-12 col-lg-24"  [hidden]="showLines === false || totalItems === 0">
+                            <div class="athena link font-weight-bold" (click)="expandedAll()">
+                                Déplier toutes les lignes du tableau
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-24" *ngIf="!showLines">
+                            <div class="athena link font-weight-bold" (click)="collapseAll()">
+                                Plier toutes les lignes du tableau
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" [hidden]="loadingData || totalItems === 0"  >
+                        <div id="requestTabId" class="col-24 display-id">
+                            <app-athena-ag-grid2
+                                [columnDefs]="columnDefs"
+                                [rowStyle]="rowStyle"
+                                [rowData]="rowData"
+                                [datasource]="datasource"
+                                [paginationPageSize]="paginationPageSize"
+                                [masterDetail]="true"
+                                [expandedAllRows]="expandedAllRows"
+                                [collapseAllRows]="collapseAllRows"
+                                [detailCellRenderer]="detailCellRenderer"
+                                [frameworkComponents]="frameworkComponents"
+                                [detailRowHeight]="240"
+                                [totalItems]="totalItems"
+                                [showTopPagination]="true"
+                                [loadAgGridParams]="params"
+                                [suppressRowClickSelection]="true"
+                                [rowSelection]="'multiple'"
+                                (clickCell)="toClientOrRequest($event)"
+                                (selectedRows)="selectedRows($event)" 
+                                [headerHeight]="60"
+                                (selectedRows)="selectedRows($event)" 
+                            >
+                            </app-athena-ag-grid2>
+                            <button *ngIf="isVisibleBtnBlocking"  type="submit" class="btn btn-green btn-debloque mt-2" (click)="unblock()" >Débloquer la sélection</button> 
+                        </div>
+                    </div>
+                    <app-athena-table-loader *ngIf="loadingData"></app-athena-table-loader>
+                </section>
+            </section>
+            <div  class="mt-4">
+                <h2 class="athena">
+                    Légendes
+                </h2>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 mt-3 ml-3 mr-n3">
+                        <table aria-describedby="" class="table table-not-bordered">
+                            <th id=""></th>     
+                            <p class="col-md-12 col-lg-12 ml-n4 grey"><u>Pictos du tableau</u></p>
+                            <tbody>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon picto-exclamation-rouge"></span></td>
+                                    <td>Une ou plusieurs tâche(s) de cette<br/>demande est en retard</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon picto-exclamation-orange"></span></td>
+                                    <td>Plus de tâches en cours sur cette<br/>demande</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon pen athena"></span></td>
+                                    <td>Modifier la demande</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <table aria-describedby="" class="table table-not-bordered">
+                                <th id=""></th>
+                                <tbody>
+                                    <p class="col-md-12 col-lg-12 grey mt-5"><u>Couleurs des demandes</u></p>
+                                    <tr class="mt-1">
+                                        <td class="grey"><em>Demande : Demande clôturée ou annulée</em></td>
+                                    </tr>
+                                    <tr class="mt-1">
+                                        <td class="black">Demande : Demande ouverte</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-18 col-lg-18 mt-n2">
+                        <table aria-describedby="" class="table table-not-bordered">
+                            <th id=""></th>
+                            <tbody>
+                                <p class="col-label grey"><u>Panier</u></p>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-grey-normal"></span></td>
+                                    <td>Le panier n'utilise pas d'envoi Publidispatch ou l'ordre a été annulée abandonnée ou pas encore créé</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-yellow-normal"></span></td>
+                                    <td>La commande a été créée et elle n'est pas encore prise en compte par Publidispatch</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon panier-yellow-parnasse"></span></td>
+                                    <td>La commande a été créée et elle n'est pas encore prise en compte par WinGSM</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-purple-normal"></span></td>
+                                    <td>La commande a été prise par Publidispatch</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-purple-parnasse"></span></td>
+                                    <td>La commande a été prise par WinGSM</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-orange-normal"></span></td>
+                                    <td>La commande a été rejetée, expédiée ou partiellement expédiée mais des numéros de série n'ont pas été saisis ou ne sont pas gérés par Publidispatch</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-orange-parnasse"></span></td>
+                                    <td>La commande a été rejetée, expédiée partiellement ou expédiée mais des numéros de série n'ont pas été saisis par WinGSM</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-green-normal"></span></td>
+                                    <td>La commande est en cours de livraison ou a été expédiée avec tous les numéros de série saisis</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-green-parnasse"></span></td>
+                                    <td>La commande utilise le stock Parnasse et le matériel a été mis à disposition par la logistique</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-blue-normal"></span></td>
+                                    <td>La commande a été livrée au client</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-blue-parnasse"></span></td>
+                                    <td>La commande utilise le stock Parnasse et elle a été livrée</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-red-normal"></span></td>
+                                    <td>La commande a été retournée par le livreur</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-red-parnasse"></span></td>
+                                    <td>La commande a été retournée par le livreur pour un stock différent de Publidispatch</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cart-grey-error"></span></td>
+                                    <td>La commande est une erreur ou a été envoyée à Publidispatch il y a plus de 24h avec aucun retour de leur part</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-td-icon"><span class="icon cadenas-rouge"></span></td>
+                                    <td>Panier contenant au moins un article bloqué</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

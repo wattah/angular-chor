@@ -1,0 +1,14 @@
+<app-athena-paginated-ag-grid  
+  *ngIf="rowData.length !== 0"
+  [title]="'TOUS LES RESULTATS POUR &#xAB;' + searchPattern + '&#xBB; (' +  rowData.length + ')'"
+  [paginationPageSize]="paginationPageSize"
+  [defaultSortModel]="defaultSortModel"
+  [columnDefs]="columnDefs" 
+  [rowData]="rowData"  
+  (selectRow)="searchAction($event)"
+>
+</app-athena-paginated-ag-grid>
+<app-serp-error 
+  *ngIf="rowData.length === 0" 
+  [searchPattern]="searchPattern" >
+</app-serp-error>

@@ -1,0 +1,18 @@
+<section class="row">
+    <article class="col-10 align-self-center b-message">
+        <div class="container-logo">
+            <span class="logo-athena"></span>
+            <small class="athena logo-subtitle">Service relation client</small>
+        </div>
+        
+        <h2 class="athena subtitle not-bordered ">Vous n’êtes plus connecté à ATHÉNA</h2>
+        <p class="athena text-min" *ngIf="!isClickOnDeconnexion">
+            Lorsque vous n’avez pas navigué sur le site depuis plus de 90 minutes. <br/> 
+            ATHÉNA se deconnecte automatiquement pour préserver la sécurité des données
+        </p>
+        <button class="btn btn-green" (click)="reconnect()">Se reconnecter</button>
+    </article>
+    <aside class="col-14 b-image">
+        <img src="assets/images/fond_page_deconnexion.jpg"  alt="deconnexion" class="image-background"/>
+    </aside>
+</section>

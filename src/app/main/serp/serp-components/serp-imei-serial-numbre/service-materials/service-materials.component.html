@@ -1,0 +1,10 @@
+
+<h2 class="not-bordered athena my-0 mt-3 p-0"> Services et Matériels</h2>
+
+ <app-athena-paginated-ag-grid
+ [columnDefs]="columnDefs"
+ [rowData]="listCustomerParkMaterialsAndServicesBySerial"
+ (clickedCell)="clickCell($event)"
+  [paginationPageSize]="paginationPageSize"
+ [defaultSortModel]="defaultSortModel">
+ </app-athena-paginated-ag-grid>

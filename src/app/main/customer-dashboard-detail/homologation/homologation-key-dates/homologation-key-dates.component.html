@@ -1,0 +1,15 @@
+<div class="block block-shadow">
+    <h2  class="block-title athena">Dates clés</h2>
+    <div   [ngClass]="(isEntreprise) ? 'heauteur-company' : 'heauteur-benifice'" >
+        <p class="athena">
+            <span class="grey athena">Réception du dossier : </span> {{homologation?.createdAt ? getDate(homologation?.createdAt) : "-" }} <span class="grey athena">à</span> {{ homologation?.createdAt ? ((homologation?.createdAt | date:"HH") + "h" + (homologation?.createdAt | date:"mm")) : "-" }}<br />
+            <span class="grey athena">Mise à jour du dossier : </span> {{homologation?.modifiedAt ? getDate(homologation?.modifiedAt) : "-" }} <span class="grey athena">à</span> {{ homologation?.modifiedAt ? ((homologation?.modifiedAt | date:"HH") + "h" + (homologation?.modifiedAt | date:"mm")) : "-" }}<br />
+            <span class="grey athena">Validation de la pré-homologation : </span> {{homologation?.prehomologationDecisionDate ? getDate(homologation?.prehomologationDecisionDate) : "-" }} <span class="grey athena">à </span> {{ homologation?.prehomologationDecisionDate ? ((homologation?.prehomologationDecisionDate | date:"HH") + "h" + (homologation?.prehomologationDecisionDate | date:"mm")) : "-" }} <br />
+            <span class="grey athena">Validation de l'homologation :</span> {{homologation?.homologationDecisionDate ? getDate(homologation?.homologationDecisionDate) : "-" }} <span class="grey athena"> à</span> {{ homologation?.homologationDecisionDate ? ((homologation?.homologationDecisionDate | date:"HH") + "h" + (homologation?.homologationDecisionDate | date:"mm")) : "-" }}<br />
+        </p>
+    </div>
+
+
+</div>
+
+

@@ -1,0 +1,115 @@
+
+<div class="row">
+    <div class="col-lg-10 athena ">
+    <form [formGroup]="formSale">
+        <h4 class="athena mintitle mb-2">Vente</h4>
+        <div class="form-group row">
+            <label class="col-lg-7 col-form-label athena"> Statut de vente</label>
+            <div class="col-lg-16 ml-1 athena input-padding ">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched input-padding"
+                      formControlName="statutVente" >
+                    <option *ngFor="let status of lStatusVente" [ngValue]="status">
+                        {{status?.label}}
+                    </option>
+                </select>
+            </div>          
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-7 col-form-label athena"> Commentaire de vente</label>
+            <div class="col-lg-16 ml-1 athena ">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched input-padding"
+             rows="5" formControlName="commentaireVente"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-7 col-form-label athena ">Vendeur{{asterix}}</label>
+            <div class="col-lg-16 addarrow">
+                <div class="d-flex ml-1 noborder">
+                    <mat-form-field [ngClass]="[isSaleFormValid('referents') ? 'input-padding mat-select-arrow-wrapper large-chip-list error' : 'input-padding mat-select-arrow-wrapper large-chip-list']" appearance="outline">
+                        <input type="text" class="" formControlName="referents" matInput  [matAutocomplete]="auto01" />
+                        <mat-autocomplete #auto01="matAutocomplete" [displayWith]="displayUser">
+                            <mat-option *ngFor="let vendeur of filteredVendeurs | async" [value]="vendeur">
+                                {{vendeur.lastName + ' ' + vendeur.firstName}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <div *ngIf="isSaleFormValid('referents')" class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+                <app-data-parnasse-back-up-info [userId]="selectedVendeur?.id"></app-data-parnasse-back-up-info>
+                <mat-error *ngIf="isSaleFormValid('referents')" >
+                    Ce champs est obligatoire
+                </mat-error>
+            </div>
+        </div>
+        <div class="athena ml-1 ">
+            <app-canal-acquisition [acquisitionsCanaux]="customer?.acquisitionCanals" [numberCanal]="0"  (onChangeFirstCanal)="onChangeFirstCanal($event)" (onUpdateAcquistionCanal)="onUpdateAcquistionCanal($event)"></app-canal-acquisition>
+            <app-canal-acquisition [acquisitionsCanaux]="customer?.acquisitionCanals" [numberCanal]="1"  (onChangeFirstCanal) = "onChangeSecondCanal($event)" [firstCanalChanged]="firstCanalChanged" (onUpdateAcquistionCanal)="onUpdateAcquistionCanal($event)"></app-canal-acquisition>
+        </div>
+        <h4 class="athena mintitle mb-2">Homologation</h4>
+        <div class="form-group row">
+            <label class="col-lg-7 col-form-label athena"> Raison de la non homologation</label>
+            <div class="col-lg-16 ml-1 athena">
+                <mat-form-field class="input-padding example-chip-list " appearance="outline" >
+                    <mat-chip-list #chipList >
+                        <mat-chip *ngFor="let ref of notHomologatedReasons"
+                                 [selectable]="selectable"
+                                 [removable]="removable"
+                                 (removed)="remove(ref)">
+                             {{getAffichageNotHomoloSelectionner(ref)}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input
+                        placeholder=""
+                        #reasonInput
+                        [formControl]="reasonCtrl"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                        <ng-container *ngFor="let type of filteredlistHomologatedReasons | async">
+                            <mat-optgroup *ngIf="type?.children.length !== 0 else leaf" [label]="type?.label">
+                                <mat-option *ngFor="let typeHomo of type?.children" [value]="typeHomo">
+                                {{typeHomo?.label}}
+                                </mat-option>
+                            </mat-optgroup>
+                            <ng-template #leaf>
+                                <mat-option [value]="type">{{type?.label}}</mat-option>
+                            </ng-template>
+                        </ng-container>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label  class="col-7 col-form-label athena"> Décision comité de sélection</label>
+            <div class="col-16 ml-1">
+                <div class="form-check">
+                    <input class="form-check-input" formControlName="selectionCommitteeDecision" name="selectionCommitteeDecision" type="radio"  id="decisionValide" value="true" >
+                    <label class="form-check-label" for="decisionValide"> Validé </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" formControlName="selectionCommitteeDecision" name="selectionCommitteeDecision" type="radio"  id="decisionRefuse" value="false" >
+                    <label class="form-check-label" for="decisionRefuse"> Refusé </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-7 col-form-label athena"> Date du comité de sélection</label>
+            <div class=" col-lg-14 m-0 p-0 ml-1 d-flex">
+                <mat-form-field class="col-lg-8 athena" appearance="outline">
+                    <input matInput [matDatepicker]="pickerSelection" 
+                    placeholder="" readonly formControlName="selectionCommitteeDate"/>
+                    <mat-datepicker #pickerSelection></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerSelection.open()"></span>
+    
+                </div>
+            </div>         
+        </div>
+    </form>
+    </div>
+</div>   

@@ -1,0 +1,11 @@
+@import '~src/styles/charte';
+
+.fileDropZone{
+    height: relative !important;
+    min-height: 100px !important;
+    min-width: 100px !important;
+    max-width: 500px !important;
+    font-family: $font-family;
+    border-style: 5px none;
+	font-size: $font-size;
+}

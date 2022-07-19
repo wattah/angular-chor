@@ -1,0 +1,23 @@
+
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockEntreprise">
+    <app-profil-entreprise-consultation [person]="person" 
+    (updateProfilEntreprise)="onUpdateProfilEntreprise($event)"
+    [photo]= "photo">
+    </app-profil-entreprise-consultation>
+</ng-template>
+
+<ng-template #modificationBlockEntreprise>
+    <app-profil-entreprise-modification [person]="person" *ngxPermissionsOnly="['modification_profil']; else permissionNotFountBlock"
+    (updateProfilEntreprise)="onUpdateProfilEntreprise($event)" 
+    (changeForm)="onChangeProfilEntrepriseForm($event)"
+    (changeDirtyProfilEntrepriseForm)="onChangeDirtyProfilEntrepriseForm($event)"
+    [photo]= "photo"
+    [isSelected] = "isSelected">
+    </app-profil-entreprise-modification>
+    <ng-template #permissionNotFountBlock>
+        <app-profil-entreprise-consultation [person]="person" 
+        (updateProfilEntreprise)="onUpdateProfilEntreprise($event)"
+        [photo]= "photo">
+        </app-profil-entreprise-consultation>
+    </ng-template>
+</ng-template>

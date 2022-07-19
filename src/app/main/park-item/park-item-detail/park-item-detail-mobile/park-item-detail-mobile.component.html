@@ -1,0 +1,74 @@
+
+    <!-- blocks associés aux lignes -->
+  
+        <!-- MOBILE -->
+        <article class="block shadow-block">
+            <h2 class="athena">
+                OFFRE 
+            </h2>
+        <ng-template  [ngIf]="!emptyListoffers" [ngIfElse]="listParkItem">
+            Cette ligne n’a pas d’offre
+        </ng-template>
+        <ng-template #listParkItem >
+            <app-athena-paginated-ag-grid 
+                [defaultSortModel]="defaultSortModel"
+                [columnDefs]="columnDefs" 
+                [rowData]="customerParcItemServiceOption"
+                [paginationPageSize]="paginationPageSize"
+                [paginationPageSize]="4">
+            </app-athena-paginated-ag-grid>	
+        </ng-template>
+        </article>
+        <article class="block shadow-block">
+            <h2 class="athena">
+                TERMINAUX 
+            </h2>
+            <ng-template  [ngIf]="!emptyListterminal" [ngIfElse]="listTerminal">
+                Cette ligne n’a pas de terminaux
+            </ng-template>
+            <ng-template #listTerminal >
+            <app-athena-paginated-ag-grid 
+                [defaultSortModel]="defaultSortModelTerminaux"
+                [columnDefs]="columnDefsTerminaux" 
+                [rowData]="customerParkItemTerminalMobile"
+                [paginationPageSize]="paginationPageSize"
+                >
+            </app-athena-paginated-ag-grid>	
+        </ng-template>
+        </article>
+        <article class="block shadow-block">
+            <h2 class="athena">
+                renouvellement 
+            </h2>
+            <ng-template  [ngIf]="!emptyListRenewal" [ngIfElse]="listRenewal">
+                 Cette ligne n’a pas de renouvellement 
+            </ng-template>
+            <ng-template #listRenewal >
+                <div class="d-none d-sm-none d-lg-block mb-2" >
+                    <div class="col-sm-12 col-lg-24" [hidden]="show === false">
+                        <div class="athena link font-weight-bold" (click)="collapseAll()">
+                            Déplier toutes les lignes du tableau
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-24" *ngIf="!show">
+                        <div class="athena link font-weight-bold" (click)="expandedAll()">
+                            Plier toutes les lignes du tableau
+                        </div>
+                    </div>
+                </div>
+            <app-athena-paginated-ag-grid 
+                [defaultSortModel]="defaultSortModelRenewal"
+                [columnDefs]="columnDefsRenewal" 
+                [rowData]="renewalMobileList"
+                [paginationPageSize]="paginationPageSize"
+                [suppressRowClickSelection]="true"
+                [detailCellRendererParams]="detailCellRendererParams"
+                [expandedAllRows]="expandedAllRows"
+                [collapseAllRows]="collapseAllRows"
+                [masterDetail]="true"
+                [detailRowHeight]="55"
+                >
+            </app-athena-paginated-ag-grid>	
+        </ng-template>
+        </article> 
+          

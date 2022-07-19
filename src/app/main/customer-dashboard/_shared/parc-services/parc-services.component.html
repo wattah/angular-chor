@@ -1,0 +1,79 @@
+<section [ngClass]=" [ seeMore ? 'block block-shadow block-title athena' : 'block-title athena']">
+<ng-template [ngIf]= " isEmptyParcServices && !seeMore "  [ngIfElse]="loading" >
+    <h2 class="block-title athena">
+        PAS DE PARC SERVICE ET MATÉRIEL RÉCURRENT
+        <a class="block-title-item-link athena d-none d-md-block" [routerLink]="['/customer-dashboard', customerId , 'hardware-park-item','add']" queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_service_materiel']">
+            <div class="block-title-item-icon">
+                <span class="icon add-on athena"></span>
+            </div>
+		</a>
+		<a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId , 'see-all','parc-services']"  queryParamsHandling="merge">
+			<span class="text-min normal no-transform athena">Voir tous les services et matériels </span>
+		</a>
+		
+	</h2>
+	
+</ng-template> 
+
+<ng-template #loading>
+<h2 id="e2e_titrePSM" class="block-title athena">
+	Parc service et matériel {{ (!seeMore) ? 'récurrent' : ''}}
+	<a class="block-title-item-link athena d-none d-md-block" [routerLink]="['/customer-dashboard', customerId , 'hardware-park-item','add']" queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_service_materiel']">
+		<div class="block-title-item-icon">
+			<span class="icon add-on athena"></span>
+		</div>
+	</a>
+</h2>
+
+
+<div *ngIf="seeMore" class=" mt-3 mb-3 ">
+	<input class="form-check-input athena" type="checkbox" id="showInactif" (click)="showInactifHardwareParkItem()" />
+	<label class="form-check-label athena" for="showInactif">Afficher les statuts résiliés</label>
+</div>
+
+<app-athena-table-loader *ngIf="inCompleteCall; else tablenotempty"></app-athena-table-loader>
+
+<ng-template #tablenotempty>
+	<app-athena-paginated-ag-grid 
+		[showTopPagination]="seeMore"
+		[defaultSortModel]="defaultSortModel"
+		[columnDefs]="columnDefs" 
+		[rowData]="parcServices"
+		[loadAgGridParams]="params"
+		(clickedCell)="clickedCell($event)" >
+	</app-athena-paginated-ag-grid>	
+</ng-template>
+
+
+<div class="text-right  mt-2" *ngIf="!seeMore">
+	<a class="athena" [routerLink]="['/customer-dashboard', customerId , 'see-all','parc-services']" queryParamsHandling="merge" id='e2e_voirPlusPSM'>Voir tous les services et matériels <span class="icon icon-min arrow-right-blue athena"></span> </a>
+</div>
+
+<div  class="mt-4" *ngIf="seeMore">
+	<h2 class="athena">
+		Légende
+	</h2>
+	<div class="row">
+		<div class="col-md-6 col-sm-12">
+			<table class="table table-not-bordered">
+				<tbody>
+					<tr>
+						<td class="table-td-icon"><span class="icon status-green"></span></td>
+						<td>Statut actif</td>
+					</tr>
+					<tr>
+						<td class="table-td-icon"><span class="icon status-red"></span></td>
+						<td>Statut résilié</td>
+					</tr>
+					<tr>
+						<td class="table-td-icon"><span class="icon arrow-circular"></span></td>
+						<td>Récurrent</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</ng-template>
+</section>
+

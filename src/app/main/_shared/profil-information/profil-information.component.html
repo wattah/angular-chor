@@ -1,0 +1,181 @@
+<app-athena-profil-loader *ngIf="inCompleteCall"></app-athena-profil-loader>
+<div class="block-background-oblique-container" *ngIf="!inCompleteCall">
+	<div class="block-background-oblique"></div>
+</div>
+<div class="row" *ngIf="!inCompleteCall">
+	<div class="col-22">
+		<table class="page-profile-container athena" aria-describedby="profil information">
+			<th id=""></th>
+			<tbody>
+			<tr>
+				<td rowspan="2" class="align-top page-profile-avatar-container">	  
+					<div class="page-profile-avatar" [style.background-image]="'url(' +  infoCustomer?.membrePhoto + ')'"></div>
+				</td>
+				
+				<td class="align-top">
+					<div class="badge page-profile-badge" [ngClass]="(isEntreprise) ? 'badge-blue' : ((isParticular)? 'badge-pink' : 'badge-yellow' )">
+						{{ (isEntreprise) ? 'Entreprise' : ((isParticular) ? 'PARTICULIER' :  'Bénéficiaire') }} 
+					</div>
+					<p *ngIf="isEntreprise" class="text-max athena">
+						<strong class="athena">
+							{{ infoCustomer?.companyName }}
+						</strong>
+					</p>
+					<p *ngIf="!isEntreprise" class="text-max athena">
+						<strong class="athena">
+							<span class="capitalize">  {{ infoCustomer?.title  | civility }}</span>
+							<span class="capitalize">  {{ infoCustomer?.firstName | firstName }}</span>
+							<span class="uppercase">  {{ infoCustomer?.lastName | uppercase }}</span>
+						</strong>
+					</p>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+<!--						<h2 *ngIf="isParticular && !isTitular" class="red">
+			<span class="icon status-exclamation"></span> Recouvrement
+			<a class="block-title-item-link" href="#">
+				<span class="text-min normal no-transform">Voir le dÃ©tail<span class="icon icon-min arrow-right-blue"></span></span>
+			</a>
+		</h2>
+		<p *ngIf="isParticular && !isTitular" class="text-max red">
+			<strong>Recouvrement</strong> depuis le <strong>25 janv. 2019</strong> de <strong>6175,54â‚¬</strong> Ã  ce jour.
+		</p>-->
+
+
+		<table id="selectContractTable"  class="table table-sorted athena mb-0" *ngIf="isProfilReduit"><caption class="p-0"></caption>
+			<thead>
+				<tr>
+					<th colspan="3" class="text-center">Contrats</th>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th class="table-th-sortable main-sort">Numéro</th>
+					<th class="table-th-sortable">Statut</th>
+					<th id="contract-beneficiary" class="table-th-sortable">Bénéficiaire</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let c of listCustomers ">
+					<td class="table-td-link" [ngClass]="{'selected':  c.nichIdentifiant === nicheId }">
+						<a class="table-td-a athena" [routerLink]="[ '/customer-dashboard', 'entreprise', c.id ]" [queryParams]="{'typeCustomer': typeCustomerCompany, nicheId: c.nichIdentifiant , isRowCliked: true , nicheValue: c.nichIdentifiant}">
+							{{c.nichIdentifiant}}
+						</a>
+					</td>
+					<td class="table-td-link " [ngClass]="{'selected':  c.nichIdentifiant === nicheId }">
+						<a class="table-td-a athena" [routerLink]="[ '/customer-dashboard', 'entreprise', c.id ]" [queryParams]="{'typeCustomer': typeCustomerCompany, nicheId: c.nichIdentifiant, isRowCliked: true , nicheValue: c.nichIdentifiant}">
+							{{formatterStatut(c.statut)}}
+						</a>
+					</td>
+					<td class="table-td-link " [ngClass]="{'selected':  c.nichIdentifiant === nicheId }">
+						<span *ngIf="!c.beneficiaryList || c.beneficiaryList.length === 0 " > - </span>
+						<ul class="athena ath-summary pl-0">
+							<li *ngFor="let item of c.beneficiaryList" style="padding-bottom: 5px;">
+								<a [ngStyle]="{color: LOCAL_CONTRAT_STATUTS.INACTIVE.key === item.status ? '#ccc':''}" class="table-td-a-new athena" [routerLink]="[ '/customer-dashboard', 'particular', item.id ]" [queryParams]="{typeCustomer: 'beneficiary'}">{{ nameFormatter(item) }} <span *ngIf="LOCAL_CONTRAT_STATUTS.INACTIVE.key === item.status">- Inactif</span></a>
+							</li>
+						</ul>
+					</td>
+				</tr>
+		</table>
+		<div class="text-center" *ngIf="isProfilReduit && isTableWithResilie">
+			   <a  (click) = "getListContrats(true)" *ngIf="!isTableNotResilie" [routerLink]="null" queryParamsHandling="merge"  >
+				Voir les statuts résiliés <span  class="icon icon-marged icon-min arrow-bottom-blue"></span>
+			   </a>
+			   <a [ngClass]="{disabled: desactiveMask}" *ngIf="isTableNotResilie" (click) = "getListContrats(false)"  [routerLink]="null" queryParamsHandling="merge"  >
+				 Masquer les statuts résiliés <span class="icon icon-marged icon-min arrow-top-blue"></span>
+			   </a>
+		</div>
+		<br/>
+		
+
+		<!-- <p class="text-right" *ngIf="infoCustomer?.isMultiContract && isProfilReduit"><a [routerLink]="null" queryParamsHandling="merge">Pilotage des contrats<span class="icon icon-min arrow-right-blue"></span></a></p> -->
+		<ng-container *ngxPermissionsOnly="['affichage_recouvrement']">
+			<app-recovery-alert 
+				[recoveryDate]="recoveryDate"
+				[detteTotalTTC]="detteTotalTTC"
+				[detteTotal]="detteTotal"
+				[entrepriseRecoveryDate]="entrepriseRecoveryDate"
+				[nicheIdentifier]="infoCustomer?.nicheIdentifier"
+				[statusClient]="infoCustomer?.status"
+				[error]="errorRecovery"
+				[displayTotal]="listCustomers && listCustomers.length > 1"
+			></app-recovery-alert>
+		</ng-container>
+		<div *ngIf="isEntreprise">
+			<span class="grey athena" id='e2e_contrat'>N° Contrat : </span>{{ infoCustomer?.nicheIdentifier }}<br />
+			<span class="grey athena" id='e2e_etatMembre'>Etat du client : </span>{{ infoCustomer?.status }}<br />
+			<span *ngIf="infoCustomer?.siren.length<=14" class="grey athena" id='e2e_siren'>{{ (infoCustomer?.siren.length<=9) ? 'SIREN' : 'SIRET' }} : </span>{{ infoCustomer?.siren }}<br />
+			<span class="grey athena">Entrée dans le cercle : </span>{{ infoCustomer?.dateHomologation ? (infoCustomer?.dateHomologation | dateFormatPipeFrench ) : '-' }}<br />
+			<span class="grey athena">Offre du contrat : </span>{{ infoCustomer?.offerLabel }}<br />
+		</div>
+		<div *ngIf="isEntreprise" class="label-progress"><span class="grey">Score RCE : </span></div>
+		<div *ngIf="isEntreprise && (infoCustomer?.score == null || infoCustomer?.score == 0 ) "> - </div>
+		<div *ngIf="isEntreprise && infoCustomer?.score" class="value-on-progress">{{ infoCustomer?.score }}/20</div>
+		<div *ngIf="isEntreprise && infoCustomer?.score" class="progress">
+		<div *ngIf="isEntreprise && infoCustomer?.score" class="progress-bar bg-success" role="progressbar" [style.width]= "infoCustomer?.score*100/20 + '%'" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+		</div>
+		<p class="athena" *ngIf="!isEntreprise">
+			<span class="grey athena" id='e2e_contrat'>N° Contrat : </span>{{ infoCustomer?.nicheIdentifier }}<br />
+			<span class="grey athena" id='e2e_etatMembre'>Etat du client : </span>{{ infoCustomer?.status }}<br />
+			<span *ngIf="infoCustomer?.status == 'Résilié'" class="grey athena" id='e2e_etatMembre'>Date de résiliation : </span><span *ngIf="infoCustomer?.status == 'Résilié'">{{ infoCustomer?.cancellationDate ? (infoCustomer?.cancellationDate | dateFormatPipeFrench ) : '-' }}<br/></span>
+			<span *ngIf="infoCustomer?.status == 'Résilié'" class="grey athena" id='e2e_etatMembre'>Motif : </span><span *ngIf="infoCustomer?.status == 'Résilié'">{{ infoCustomer?.cancellationReason ? infoCustomer?.cancellationReason : '-' }}<br/></span>
+			<span class="grey athena" id='e2e_nationalityMembry'>Nationalité : </span>{{ nationality }}<br />
+			<span class="grey athena">Entrée dans le cercle : </span>{{ infoCustomer?.dateHomologation ? (infoCustomer?.dateHomologation | dateFormatPipeFrench ) : '-' }}<br />		
+			<span class="grey athena">Offre : </span>{{ infoCustomer?.offerLabel }}<br />			
+			<ng-container *ngIf="infoCustomer?.birthdate"> <span class="grey athena" id='e2e_age'> {{ infoCustomer?.age }} ans, né le  {{infoCustomer?.birthdate | dateFormatPipeFrench}}</span><br/></ng-container>
+			<ng-container *ngIf=" infoCustomer?.providerSupplier"><span id="e2e_providerSupplier" class="athena">{{ infoCustomer?.providerSupplier }} <br /></span></ng-container>
+			<span class="grey athena" id='e2e_secteur'>Secteur : </span>{{ infoCustomer?.businessSectorRef}}<br />
+			<span class="grey athena" id='e2e_metier'>Métier  : </span>{{ infoCustomer?.metier}}<br />
+		</p>
+		<p class="athena" *ngIf="infoCustomer?.companyCustomerId">
+			<span class="badge badge-blue athena">Entreprise</span> 
+			<a class="athena" id="e2e_entreprise" *ngIf="infoCustomer" [routerLink]="['/customer-dashboard/entreprise', infoCustomer?.companyCustomerId]"
+				 [queryParams]="{typeCustomer: typeCustomerCompany}" target="_blank">
+				{{infoCustomer?.companyName}}
+			</a>
+		</p>
+	</div>
+	<div class="col-2 profil-pop-up">
+		<p class="text-center athena">
+			<ng-template #popContent1> 
+				<div class="text-right mr-3 mt-1 mb-4">       
+					<span  class="icon close"> </span>
+				</div>
+				<ul class="ath-summary ">
+					<li class="mt-3 mb-2">
+						<a class="athena" [routerLink]="['/customer-dashboard', customerId, 'detail', 'profile-contract','creation', 0] " queryParamsHandling="merge">
+							Voir/modifier le profil complet
+						</a>
+					</li>
+					<li *ngIf="homologationsIds && homologationsIds?.length !== 0" class="mt-2 mb-4">
+						<ng-template [ngIf]="homologationsIds?.length === 1" [ngIfElse]="multiHomologation">
+							<a 	class="athena" 
+								[routerLink]="['/customer-dashboard', customerId, 'detail', 'homologation', homologationsIds[0]] " 
+								[queryParams]="{typeCustomer: typeCustomer}"
+								queryParamsHandling="merge">
+								Voir l’homologation du client
+							</a>
+						</ng-template>
+						<ng-template #multiHomologation>
+							<span class="link" (click)="openHomologationPopup()">Voir les homologations du client</span>
+						</ng-template>
+					</li>
+					<li *ngIf="!homologationsIds || homologationsIds?.length === 0">
+						<span class="athena" >Pas d'homologation pour ce client</span>
+					</li>
+				</ul> 
+			</ng-template>
+			<span *ngIf="typeCustomer !=='beneficiary'" class="icon menu clickable" placement="left" [ngbPopover]="popContent1" ></span>
+			<span *ngIf="typeCustomer==='beneficiary' " class="icon eyes-bleu clickable"
+			[routerLink]="['/customer-dashboard', customerId, 'detail', 'profile-contract','creation', 0] " queryParamsHandling="merge"
+			
+			
+			></span>
+		</p>
+		<p *ngIf="infoCustomer?.language" class="text-center athena">
+			 <span *ngIf="infoCustomer?.language === 'Anglais'" class="icon en-flag athena"></span>
+			  <span *ngIf="infoCustomer?.language === 'Français'" class="icon fr-flag athena"></span>
+		</p>
+	</div>
+</div>

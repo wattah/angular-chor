@@ -1,0 +1,12 @@
+@import '~src/styles/charte';
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 0!important;
+    padding: 0% 2% !important;
+   }
+   .mobilespace {
+    @media (max-width: $xs-max) {
+        width: 174px;
+        max-width: 115px;
+        white-space: pre-line;
+    }   
+   }

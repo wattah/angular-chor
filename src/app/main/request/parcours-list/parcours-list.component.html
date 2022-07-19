@@ -1,0 +1,12 @@
+<div class="col-24 block block-shadow" >
+  <h2 class="block-title athena">
+      LISTE DES PARCOURS MÉTIERS
+  </h2>
+  <div  class="row">
+      <a class="athena" *ngFor="let parcours of filteredParcours" [ngClass]="['col-6' ]" queryParamsHandling="merge"
+       [routerLink]="['/customer-dashboard', customerId, 'request', 'creation']" [queryParams]="{technicalKey: parcours.key, idParcours: parcours.id}">
+      {{parcours.name}} 
+      </a>
+  </div>
+</div>
+

@@ -1,0 +1,94 @@
+{
+  "Page":{
+    "HomeComponent":{
+      "breadcrumb":"Home",
+      "welcome":"Welcome to "
+    },
+    "PageNotFoundComponent":{
+      "breadcrumb":"Page not found",
+      "info":"The requested page \ndoes not exist (yet)",
+      "button": "Previous Page"
+    },
+    "SearchResultComponent":{
+      "breadcrumb":"Result"
+    },
+    "CustomerCardComponent":{
+      "breadcrumb":"360Â° sheet",
+      "age":"year-old",
+      "born": "born on the",
+      "language": "Favorite language  ",
+      "who":"by ",
+      "when":"on the",
+      "goodToKnow": "Good to know :",
+      "mister":"Mr",
+      "mistress":"Mrs"
+    },
+    "SearchComponent":{
+      "breadcrumb":"Search results",
+      "title":"Advanced search"
+    },
+    "CustomerCardChangeComponent":{
+      "breadcrumb":"Modification",
+      "particulier" : "PARTICULAR",
+      "modifierProfileEntreprise":"Changing the company profile",
+      "modifierProfileDe":"Profile modification",
+      "champObligatoire":"* Required Field",
+      "prenomRequis":"The first name is required",
+      "nomRequis":"The name is required",
+      "dateInvalide":"the date is invalid",
+      "madame":"Madame",
+      "monsieur":"Monsieur",
+      "prenom":"First name ",
+      "nom":"last Name *",
+      "ne":"Birth date",
+      "datePosterieurDateActuelle":"The date of birth can not be later than the current date",
+      "sirenRequis":"The siren is required",
+      "siretmaldefini":"The siret is poorly defined",
+      "raisonsocialerequise":"The company name is required",
+      "raisonSociale":"company name",
+      "languepreferee":"Preferred language",
+      "bonsavoir":"Good to know",
+      "annuler":"Cancel",
+      "enregistrer":"Save",
+      "siret": "SIRET",
+      "siren": "SIREN",
+      "nic": "NIC",
+      "en": "English",
+      "fr": "French",
+      "administratif": "ADMINISTRATIVE",
+      "civilite": "Civility",
+      "limiteAtteinteCaractere" : "Limit reached in 150 characters",
+      "maxCaractereBonSavoir" : "500 characters max",
+      "cechampObligatoire":"This Required Field",
+      "caractereSpeciaux": "field must not contain special characters or numbers",
+      "caractereSpeciauxPrenom": "Name field must not contain special characters or numbers",
+      "champSirenObligatoir":"the SIREN field is required",
+      "champRaisonSocialObligatoir":"the field Raison Sociale is obligatory",
+      "bonSavoirDepasseNombreCararctere": "Good to know exceeds the number of characters allowed",
+      "showNicSirenError":"NIC field and SIREN are wrong"
+    },
+    "CustomerDashboardComponent":{
+    	"breadcrumb":"360° Card"
+    }
+  },
+  "Transverse":{
+    "ToolbarComponent": {
+      "search": "Search",
+      "preferences":"Preferences",
+      "signOut":"Sign out"
+    }
+  },
+  "SERP": {
+    "Title" : "Search results for \"  {{ value }} \" "  ,
+    "TableAllComponent": {
+      "HeaderName": "Answers corresponding to the criteria sought",
+      "SubHeaderName": "Answers",
+      "columnsName": {
+        "Type": "Type",
+        "Reference": "Reference",
+        "Libelle": "Name",
+        "Action": "Action"
+      }
+    }
+  }
+}

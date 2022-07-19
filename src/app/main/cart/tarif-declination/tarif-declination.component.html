@@ -1,0 +1,208 @@
+<div class="d-flex justify-content-between">
+  <h2 class="block-title athena not-bordered mt-2 mb-0 pl-0">Déclinaison tarifaire</h2>
+  <div>
+     <button class="col-form-label btn btn-blue "(click)="addDeclinationWithProductOrNull(null)" ><span class="icon add-blc"></span> Ajouter une Déclinaison</button>
+  </div>
+</div>
+<hr class="my-1">
+<div class="accordion">
+  <div [formGroup]="orderForm">
+     <div class="border mt-3" formArrayName="items"
+        *ngFor="let item of orderForm.get('items')['controls'] let i = index;">
+        <div [formGroupName]="i">
+           <div class="d-flex justify-content-between">
+              <div class="accordion-heading pl-2 pt-3 underline clickable" (click)="openAccordion(item)">
+                 <div>
+                    <span class="icon min-icon ml-1 arrow-right-grey" 
+                       [class.rotate]="showOrHide(item)"> </span>{{categorieValue(i)}}
+                 </div>
+              </div>
+              <div *ngIf="isValidForDelete(i)" class="icon del m-3 clickable" (click)="deleteDeclination(i)"> </div>
+           </div>
+           <div class="accordion-content px-3 pt-0 position-relative" *ngIf="showOrHide(item)">
+              <div class="form-group row select_arrows mt-3 mb-0 categorie">
+                 <label class="col-sm-5 col-form-label athena" 
+                    name="categorie">Catégorie *</label>
+                 <div class="col-sm-20 col-lg-13 d-flex">
+                   <select [ngClass]="isValidateInputWithTouchedOrSubmit('categorie',i) ? 'form-control athena error' : 'form-control athena'"
+                    formControlName="categorie" (change)="changeCategory(i)">
+                     <option value="--">--</option>
+                     <option *ngFor="let c of categories" [ngValue]="c"> 
+                        {{c?.name ?  c?.name:'-' }}
+                     </option>
+                   </select>
+                   <span *ngIf="isValidateInputWithTouchedOrSubmit('categorie',i)" class="icon  status-exclamation my-1 ml-1"></span>
+                 </div>
+              </div>
+              <input type="text" hidden="true" formControlName="family"> 
+              <div class="row" *ngIf="isValidateInputWithTouchedOrSubmit('categorie',i)">
+               <div class="col-sm-6"></div>
+               <div>
+                 <mat-error class="m-1">
+                   Ce champ est obligatoire
+                 </mat-error>
+               </div>
+             </div>
+              <div class="form-group row select_arrows mb-0 mt-3">
+                 <label class="col-sm-5 col-form-label athena">Statut commercialisation</label>
+                 <div class="col-sm-20 col-lg-12">
+                    <select class="form-control athena" formControlName="status">
+                     <option *ngFor="let status of productStatus" [ngValue]="status?.value"> 
+                        {{status?.value ?  status?.value:'-' }}
+                     </option>
+                    </select>
+                 </div>
+              </div>
+              <div class="form-group row select_arrows mb-0 mt-3">
+                 <label class="col-sm-5 col-form-label athena">Bloquer</label>
+                 <div class="col-sm-20 col-lg-12">
+                    <select class="form-control athena" formControlName="blocked">
+                        <option *ngFor="let blocked of productBlocked" [ngValue]="blocked?.value"> 
+                           {{blocked?.value ?  blocked?.value:'-' }}
+                        </option>
+                    </select>
+                 </div>
+              </div>
+              <div class="form-group row mb-0 mt-3">
+                 <label for="mediaSelect" class="col-5 col-form-label athena">Prix</label>
+                 <div class="form-check checkBoxPosition pt-3 pl-1 d-flex col-lg-12 justify-content-between">
+                    <div class="d-flex"> 
+                       <span class="form-check-label athena mr-2">Sur devis</span>
+                       <input class="form-check-input athena" type="checkbox" [checked]="prixUnitaire.isDevis"
+                        formControlName="devis" (change)="onChangePrix(i, 'devis')" [attr.id]="'devis'+ i">
+                       <label class="form-check-label athena"[attr.for]="'devis'+ i"></label>
+                    </div>
+                    <div class="d-flex"> 
+                       <span class="form-check-label athena mr-2">Inclus</span>
+                       <input class="form-check-input athena" type="checkbox"  
+                        formControlName="prixinclus" (change)="onChangePrix(i, 'prixinclus')" [attr.id]="'prixinclus'+ i">
+                       <label class="form-check-label athena" [attr.for]="'prixinclus'+ i"></label>
+                    </div>
+                    <div class="d-flex">
+                       <span class="form-check-label athena mr-2">Offert</span> 
+                       <input class="form-check-input athena"  type="checkbox"  
+                        formControlName="offert" (change)="onChangePrix(i, 'offert')" [attr.id]="'offert'+ i">
+                       <label class="form-check-label athena" [attr.for]="'offert'+ i"></label>
+                    </div>
+                 </div>
+              </div>
+              <div class="form-group row select_arrows mb-0 mt-3">
+                 <label class="col-sm-5 col-form-label athena">Prix unitaire</label>
+                 <div class="col-sm-20 col-lg-3">
+                    <input [readonly]="true" floatOnlyAndTwoDigitAfterDot (blur)="onblurEvent($event, i, 'unitaireht')" type="text" class="athena form-control" formControlName="unitaireht">
+                 </div>
+                 <div class="col-sm-20 col-lg-1 mt-1 pl-0 ">HT</div>
+                 <label class="col-sm-3 col-form-label athena p-0 mt-1">Dont Eco taxe</label>
+                 <div class="col-sm-20 col-lg-3">
+                    <input [readonly]="true" floatOnlyAndTwoDigitAfterDot type="text" (blur)="onblurEvent($event, i, 'unitairetaxe')" class="athena form-control" formControlName="unitairetaxe">
+                 </div>
+                 <div class="col-sm-20 col-lg-1 mt-1 pl-0">HT</div>
+                 <label class="col-sm-1 col-form-label athena p-0 mt-1">TVA</label>
+                 <div class="col-sm-20 col-lg-3">
+                    <select [attr.disabled]="true" class="form-control athena" formControlName="unitaireTva" (change)="onChangeTva(i)">
+                        <option *ngFor="let tva of listTva" [ngValue]="tva?.value"> 
+                           {{tva?.value ?  floatToIntTva(tva.value):'-' }}
+                        </option>
+                    </select>
+                 </div>
+                 <div class="col-sm-20 col-lg-3">
+                    <input disabled  type="text" class="athena form-control lineheight" value="0" formControlName="unitairettc">
+                 </div>
+                 <div class="col-sm-20 col-lg-1 mt-1 pl-0">TTC</div>
+              </div>
+              <div class="form-group row mt-3 mb-0">
+                 <label class="col-sm-5 col-form-label athena">Libellé facture *</label>
+                 <div class="col-sm-20 col-lg-13 d-flex">
+                    <input type="text" [ngClass]="isValidateInputWithTouchedOrSubmit('libellefacture',i) ? 'athena form-control error' : 'athena form-control'" formControlName="libellefacture">
+                    <span class="icon  status-exclamation my-1 ml-1" *ngIf="isValidateInputWithTouchedOrSubmit('libellefacture',i)"></span>
+                  </div>
+              </div>
+              <div class="row" *ngIf="isValidateInputWithTouchedOrSubmit('libellefacture',i)">
+               <div class="col-sm-6"></div>
+                  <div>
+                  <mat-error class="m-1">
+                     Ce champ est obligatoire
+                  </mat-error>
+                  </div>
+               </div>
+              <div class="form-group row mb-0 mt-3">
+                 <label for="mediaSelect" class="col-5 col-form-label athena">Remise</label>
+                 <div class="form-check  pl-1 d-flex">
+                    <span class="form-check-label athena mr-2">Incluse</span>
+                    <input class="form-check-input athena" type="checkbox"
+                    formControlName="remiseinclus" (change)="onChangeIncluseRemise(i)" 
+                    [attr.id]="'remiseinclus'+ i">
+                    <label class="form-check-label athena" [attr.for]="'remiseinclus' + i"></label>
+                 </div>
+              </div>
+              <div class="form-group row select_arrows mb-0 mt-3">
+                 <label class="col-sm-5 col-form-label athena">Montant remise</label>
+                 <div class="col-sm-20 col-lg-3">
+                    <input [readonly]="isDisabledRemise(i) ? true : null"  type="text" class="athena form-control" 
+                      formControlName="remiseht" floatOnlyAndTwoDigitAfterDot 
+                      (blur)="onblurEvent($event, i, 'remiseht')">
+                 </div>
+                 <div class="col-sm-20 col-lg-1 mt-1 pl-0 mr-3">HT</div>
+                 <div class="col-sm-20 col-lg-3">
+                    <input disabled type="text" floatOnlyAndTwoDigitAfterDot class="athena form-control" formControlName="remisettc">
+                 </div>
+                 <div class="col-sm-20 col-lg-1 mt-1 mr-3">TTC</div>
+                 <div class="col-sm-20 col-lg-3">
+                    <input disabled name="netttc" floatOnlyAndTwoDigitAfterDot type="text" class="athena form-control" formControlName="netttc">
+                 </div>
+                 <div class="col-sm-20 col-lg-4 mt-1">Prix net TTC</div>
+              </div>
+              <div class="form-group row mb-0 mt-3">
+                 <label class="col-sm-5 col-form-label athena">Libellé facture remise{{isDisabledRemise(i) ? '' : '*'}}</label>
+                 <div class="col-sm-20 col-lg-13">
+                    <input [readonly]="isDisabledRemise(i) ? true : false" type="text" 
+                     [ngClass]="isValidateInputWithTouchedOrSubmit('factureremise',i) && !isDisabledRemise(i) ? 'athena form-control error' : 'athena form-control'"
+                     formControlName="factureremise">
+                 </div>
+                 <span class="icon  status-exclamation my-1 ml-1" *ngIf="!isDisabledRemise(i) && isValidateInputWithTouchedOrSubmit('factureremise',i)"></span> 
+              </div>
+              <div class="row" *ngIf="!isDisabledRemise(i) && isValidateInputWithTouchedOrSubmit('factureremise',i)">
+               <div class="col-sm-6"></div>
+               <div>
+                  <mat-error class="m-1 position-required">
+                     Ce champ est obligatoire
+                  </mat-error>
+               </div>
+           </div>
+              <div class="form-group row mb-0 mt-3">
+                 <label for="mediaSelect" class="col-5 col-form-label athena">Garantie</label>
+                 <div class="form-check pl-1 d-flex">
+                    <span class="form-check-label athena mr-2">Incluse</span>
+                    <input class="form-check-input athena" type="checkbox"
+                     formControlName="garantieinclus" (change)="onChangeIncluseGarantie(i)" [attr.id]="'garantieinclus'+ i">
+                    <label class="form-check-label athena" [attr.for]="'garantieinclus'+ i"></label>
+                 </div>
+              </div>
+              <div class="form-group row mt-3 mb-0">
+                 <label class="col-sm-5 col-form-label athena">Libellé facture garantie{{isDisabledGarantie(i) ? '' : '*'}}</label>
+                 <div class="col-sm-20 col-lg-13">
+                    <input [readonly]="isDisabledGarantie(i) ? true : null" type="text" formControlName="libellegarantie" [ngClass]="isValidateInputWithTouchedOrSubmit('libellegarantie',i) && !isDisabledGarantie(i) ? 'athena form-control error' : 'athena form-control'">
+                  </div>
+                  <span class="icon  status-exclamation my-1 ml-1" *ngIf="!isDisabledGarantie(i) && isValidateInputWithTouchedOrSubmit('libellegarantie',i)"></span> 
+              </div>
+              <div class="row" *ngIf="!isDisabledGarantie(i) && isValidateInputWithTouchedOrSubmit('libellegarantie',i)">
+                  <div class="col-sm-6"></div>
+                  <div>
+                     <mat-error class="m-1 position-required">
+                        Ce champ est obligatoire
+                     </mat-error>
+                  </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+  <div class="d-flex justify-content-end mt-3">
+     <button class="col-form-label btn btn-blue" (click)="addDeclinationWithProductOrNull(null)">
+     <span class="icon add-blc"></span>Ajouter une Déclinaison</button>
+  </div>
+  <div *ngIf="loading" class="wrapper">
+   <div class="spinner">
+   </div>
+ </div>
+</div>

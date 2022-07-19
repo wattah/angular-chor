@@ -1,0 +1,4 @@
+<div class="red athena" *ngIf="backUp$ | async as backUp; ">
+    Du {{backUp?.beginDate | dateFormatPipeFrench}} au {{backUp?.endDate | dateFormatPipeFrench}}
+    {{ (backUp?.backupId) ?  (backUp?.backupFirstName | firstName ) + ' ' + ( backUp?.backupLastName | uppercase) : 'Tous'}} est en charge de ce dossier
+</div>

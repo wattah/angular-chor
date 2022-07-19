@@ -1,0 +1,290 @@
+<div [formGroup]="technicalInformationForm">
+    <div class="form-group row select_arrows mb-2">
+        <label class="col-sm-4 col-form-label athena"> Modalité de présence<span class="red">*</span></label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched"
+            formControlName="refmodalite"
+              (change)='onChangeModalite($event)' [class.disabled]="!allowedToModifyTechnicalInformationTab">
+                <option *ngFor="let modalite of modaliteRef"   [ngValue]="modalite" [value]="modalite.key"  >
+                    {{modalite?.label}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row mb-0">
+        <label class="col-sm-4 col-form-label athena">Intervention sur 2 jours</label>
+        <div class="col-sm-20 col-lg-9">
+            <section class="example-section mt-2 position-absolute" >
+                <mat-checkbox class="normal" [disableRipple]="true" (change)="OncheckSeconDay($event)"  formControlName="interventionSurDeuxJrs"
+                 [checked]="interventionReport?.isOnTwoDays ? interventionReport.isOnTwoDays : false" [class.disabled]="!allowedToModifyTechnicalInformationTab"></mat-checkbox>
+            </section>
+        </div>
+    </div>
+
+    <div class="underline mt-3 mb-2">1er jour</div>
+    
+    <app-intervention [interventionReport]="interventionReport" 
+    [isFirstDayInput]="true" [tabchangedOrSave]="tabchangedOrSave"
+    [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"> 
+    
+    </app-intervention>
+
+    
+
+    <div class="underline mt-3 mb-2" *ngIf="showSecondDayIntervention">2nd jour</div>
+    <app-intervention *ngIf="showSecondDayIntervention" [interventionReport]="interventionReport" 
+    [tabchangedOrSave]="tabchangedOrSave" [onCheckSecondDay]="onCheckSecondDay"
+    [isFirstDayInput]="false" [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"> 
+    </app-intervention>
+  
+
+    <div class="underline mt-3 mb-2">Intervenants</div>
+
+    <div class="form-group row inputstyle matchipstyle">
+        <label class="col-sm-4 col-form-label athena"> Technicien</label>
+        <div class="col-sm-9 col-lg-9">
+            <mat-form-field class="example-chip-list w-100" appearance="outline"  [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                <mat-chip-list #chipTechnicienList>
+                    <mat-chip
+                    *ngFor="let createur of listCurrentTechnicien"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removeTech(createur)">
+                    {{ createur?.lastName | uppercase}} {{createur?.firstName | firstName}} 
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder=""
+                    #inputTechnicien
+                    #automcompleteTechnicien="matAutocompleteTrigger"
+                    [formControl]="techControl"
+                    [matAutocomplete]="autoTechnicien"
+                    [matChipInputFor]="chipTechnicienList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    
+                    >
+                </mat-chip-list>
+                <mat-autocomplete #autoTechnicien="matAutocomplete" (optionSelected)="selectedTechnicien($event)">
+                    <mat-option *ngFor="let createur of filteredtechnicien | async" [value]="createur">
+                         {{ createur?.lastName | uppercase}} {{createur?.firstName | firstName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+
+     <div class="form-group row inputstyle matchipstyle">
+        <label class="col-sm-4 col-form-label athena"> Autre</label>
+        <div class="col-sm-9 col-lg-9">
+            <mat-form-field class="example-chip-list w-100" appearance="outline" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                <mat-chip-list #chipOtherList >
+                    <mat-chip
+                    errorState="false"
+                    *ngFor="let otherUser of listCurrentOtherUsers"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removeOtherUser(otherUser)">
+                     {{otherUser?.roleNamesAsString }} : {{ otherUser?.lastName | uppercase}} {{otherUser?.firstName | firstName}} 
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                    placeholder=""
+                    #inputOther
+                    [formControl]="otherControl"
+                    #automcompleteOther="matAutocompleteTrigger"
+                    [matAutocomplete]="autoOther"
+                    [matChipInputFor]="chipOtherList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    >
+                </mat-chip-list>
+                <mat-autocomplete #autoOther="matAutocomplete" (optionSelected)="selectedOtherUser($event)">
+                    <mat-option *ngFor="let otherUser of filteredOtherUsers | async" [value]="otherUser">
+                        {{ otherUser?.lastName | uppercase}} {{otherUser?.firstName | firstName}} 
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+              
+        </div>
+    </div> 
+    <div class="form-group row inputstyle matchipstyle">
+        <label class="col-sm-4 col-form-label athena"> Ajouter un ...</label>
+        <div class="col-sm-9 col-lg-9">
+            <mat-form-field class="example-chip-list w-100" appearance="outline" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                <mat-chip-list #chipIntervList >
+                    <mat-chip *ngFor="let inter of listCurrentIntervenant" 
+                    [selectable]="selectable" [removable]="removable" (removed)="removeautre(inter)">
+                        {{inter}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input [matChipInputFor]="chipIntervList" 
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addautre($event)" />
+                </mat-chip-list>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div>
+        <ng-container *ngIf="isVisibleOpticalBlock">
+            <app-optical-fiber 
+                *ngFor="let opticalFiber of fibreOptiques; let i=index" 
+                [index]="i+1"
+                [opticalFiber]="opticalFiber"
+                [isVisibleOpticalBlock]="isVisibleOpticalBlock"
+                [emplacementPtos]="emplacementPtos"
+                [emplacementOnts]="emplacementOnts"
+                [emplacementLiveBoxs]="emplacementLiveBoxs"
+                [ingenieries]="ingenieries"
+                [isManadatoryFields]="isManadatoryFields"
+                [fibreOptiquesLength]="fibreOptiques.length"
+                [tabchangedOrSave]="tabchangedOrSave"
+                (onRemoveOpticalFiberItem)="onRemoveOpticalFiberItemEvent($event)"
+                [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab">
+            </app-optical-fiber>
+        </ng-container>
+    </div>
+    <div>
+        <a class="athena font-weight-bold" href="#" (click)="addOpticalFiber($event)" *ngIf="isVisibleOpticalBlock"
+        [class.disabled]="!allowedToModifyTechnicalInformationTab"> 
+            <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une fibre optique 
+        </a>
+    </div>
+
+    <ng-container *ngIf="isVisibleAdslBlock">
+        <app-adsl-vdsl
+            *ngFor="let interventionAdsl of interventionsAdsl; let i=index"
+            [index]="i+1"
+            [interventionAdsl]="interventionAdsl"
+            [isVisibleAdslBlock]="isVisibleAdslBlock"
+            [locationTypes]="locationTypes"
+            [isManadatoryFields]="isManadatoryFields"
+            [interventionsAdslLength]="interventionsAdsl.length"
+            [tabchangedOrSave]="tabchangedOrSave"
+            (onRemoveIntervetionAdsl)="onRemoveIntervetionAdslEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-adsl-vdsl>
+        <div>
+            <a class="athena font-weight-bold" href="#" (click)="addInterventionAdsl($event)" *ngIf="isVisibleAdslBlock"
+            [class.disabled]="!allowedToModifyTechnicalInformationTab">
+                <span class="icon add d-inline-block mr-2 athena"> </span>
+                Ajouter une ADSL/VDSL
+            </a>
+        </div>
+    </ng-container>
+
+    <app-mobile 
+        *ngIf="isVisibleMobileBlock" 
+        [interventionMobile]="interventionMobile"
+        [isVisibleMobileBlock]="isVisibleMobileBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        [isManadatoryFields]="isManadatoryFields"
+        [impactParkItemLines]="impactParkItemLines"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab">
+    </app-mobile>
+    <ng-container *ngIf="isVisibleDecodorBlock">
+        <app-decoder
+            *ngFor="let interventionTv of interventionTvs; let i=index"
+            [index]="i+1"
+            [interventionTv]="interventionTv"
+            [connectionTypes]="connectionTypes"
+            [isVisibleDecodorBlock]="isVisibleDecodorBlock"
+            [tabchangedOrSave]="tabchangedOrSave"
+            [decodeurModelTypes]="decodeurModelTypes"
+            [locationTypes]="locationTypes"
+            [interventionTvsLength]="interventionTvs.length"
+            [isManadatoryFields]="isManadatoryFields"
+            (onRemoveDecoder)="onRemoveDecoderEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-decoder>
+        <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addDecodor($event)"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter un décodeur</a>
+    </ng-container>
+    <ng-container *ngIf="isVisibleFemtocellBlock">
+        <app-femtocell
+            *ngFor="let interventionFemtocell of interventionFemtocells; let i=index"
+            [index]="i+1"
+            [interventionFemtocell]="interventionFemtocell"
+            [isVisibleFemtocellBlock]="isVisibleFemtocellBlock"
+            [tabchangedOrSave]="tabchangedOrSave"
+            [impactParkItemLines]="impactParkItemLines"
+            [isManadatoryFields]="isManadatoryFields"
+            [interventionFemtocellsLength]="interventionFemtocells.length"
+            (onRemoveFemtocell)="onRemoveFemtocellEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-femtocell>
+        <div>
+            <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addFemtocell($event)"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter un femtocell </a>
+        </div>
+    </ng-container>
+
+    <app-global-sound
+        *ngIf="isVisibleSoundBlock"
+        [interventionSonos]="interventionSonos"
+        [soundTypes]="soundTypes"
+        [isVisibleSoundBlock]="isVisibleSoundBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        [soundConnectionTypes]="soundConnectionTypes"
+        [isManadatoryFields]="isManadatoryFields"
+        [locationTypes]="locationTypes"
+        (onRemoveSound)="onRemoveSoundEvent($event)"
+        (onAddSound)="onAddSoundEvent($event)"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab">
+    </app-global-sound>
+
+	<ng-container *ngIf="isVisibleLandLineBlock">
+        <app-fix-line
+            *ngFor="let interventionLandLine of interventionLandLines; let i=index"
+            [index]="i+1"
+            [interventionLandLine]="interventionLandLine"
+            [isVisibleLandLineBlock]="isVisibleLandLineBlock"
+            [tabchangedOrSave]="tabchangedOrSave"
+            [interventionLandLinesLength]="interventionLandLines.length"
+            [isManadatoryFields]="isManadatoryFields"
+            (onRemoveLandLine)="onRemoveLandLineEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-fix-line>
+        <div>
+            <a class="athena font-weight-bold" href="#" (click)="addLandLine($event)"  [class.disabled]="!allowedToModifyTechnicalInformationTab"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une ligne fixe </a>
+        </div>
+    </ng-container>
+    <app-multi-media
+        *ngIf="isVisibleMultiMediaBlock"
+        [multimediaInfo]="multimediaInfo"
+        [isManadatoryFields]="isManadatoryFields"
+        [interventionDetail]="interventionReport.interventionDetail[0]"
+        [isVisibleMultiMediaBlock]="isVisibleMultiMediaBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+    ></app-multi-media>
+    <app-wifi
+        *ngIf="isVisibleWifiBlock"
+        [interventionWifi]="interventionWifi"
+        [locationWifiTypes]="locationWifiTypes"
+        [wifiConnectionTypes]="wifiConnectionTypes"
+        [isManadatoryFields]="isManadatoryFields"
+        [locationTypes]="locationTypes"
+        [isVisibleWifiBlock]="isVisibleWifiBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        (onAddLocation)="onAddLocationEvent($event)"
+        (onRemoveLocation)="onRemoveLocationEvent($event)"
+        (onAddPointAccess)="onAddPointAccessEvent($event)"
+        (onRemoveAccessPoint)="onRemoveAccessPointEvent($event)"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab">
+    </app-wifi>
+    <ng-container *ngIf="isVisibleNASBlock">
+        <app-nas 
+            [interventionNas]="interventionNas"
+            [isManadatoryFields]="isManadatoryFields"
+            [isVisibleNASBlock]="isVisibleNASBlock"
+            [tabchangedOrSave]="tabchangedOrSave"
+            (onAddAutreStation)="onAddAutreStationEvent($event)"
+            (onRemoveOtherStation)="onRemoveOtherStationEvent($event)"
+            (onRemoveUser)="onRemoveUserEvent($event)"
+            (onAddUser)="onAddUserEvent($event)"
+            (onRemoveBackup)="onRemoveBackupEvent($event)"
+            (onAddBackup)="onAddBackupEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+    ></app-nas>
+    </ng-container>
+
+</div>

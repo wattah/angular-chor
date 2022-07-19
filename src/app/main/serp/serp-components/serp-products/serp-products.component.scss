@@ -1,0 +1,20 @@
+@import '../../../../../styles/charte';
+
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="prixTtc"], &[col-id="stock"]{
+		.ag-cell-label-container {
+			float: right;
+		}
+		.ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-items: right;
+			justify-content: flex-end;
+		}
+	}
+}

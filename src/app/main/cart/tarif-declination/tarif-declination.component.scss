@@ -1,0 +1,29 @@
+.rotate {
+    transition: all 0.2s;
+    transform: rotate(270deg) !important;
+}
+.min-icon{
+    width: 12px;
+    height: 12px;
+    margin: 3px;
+}
+.accordion-content {
+    transition: all .5s ease-in-out;
+    animation-name:slide-down;
+    animation-duration: 0.7s;
+}
+@keyframes slide-down {
+  0% { opacity: 0; -webkit-transform: translateY(-5%); }   
+  100% { opacity: 1; -webkit-transform: translateY(0); }
+  }
+  .lineheight{
+    line-height: 12px;
+  }
+  ::ng-deep.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0em 0 0.8em 0 !important;
+}
+
+.position-required {
+  position: relative;
+  top: -15px;
+}

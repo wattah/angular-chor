@@ -1,0 +1,218 @@
+
+<div class="block pb-0  " [ngClass]="{'block-grey ' : !this.withSolde , 'lik' : copmteSansSolde }"	>
+	<h2 class="block-title athena">
+		Compte de facturation N° {{billingAccount?.identifier}} - {{billingAccount?.status}} 
+		<span class="grey text-min font-italic normal no-transform" > - {{creationOrModificationDate}}
+			</span>
+		
+		<div class="ml-2 block-title-item-link athena">
+				<span class=" link athena text-min normal no-transform d-none d-md-inline"  (click)="openPopup(content)">Historique du solde</span>
+
+			<span > 
+				<span class="text-giant normal light-grey no-transform d-none d-md-inline  " queryParamsHandling="merge" > | </span>
+			</span>
+			<ng-template [ngIf]="!selectedDebt?.mobileSelected">
+				<span (click)="insert(billingAccount?.idCompteFacturation)" class="link athena">
+					<span class="text-min normal no-transform d-none d-md-inline" >Insert</span>		
+				</span>
+				<ng-container *ngxPermissionsOnly="['new_peniche_maj_service']">
+					<span > 
+						<span class="text-giant normal light-grey no-transform d-none d-md-inline  " queryParamsHandling="merge" > | </span>
+					</span>
+		
+					<span  (click)="update(billingAccount?.idCompteFacturation)" class="link athena">
+						<span class="text-min normal no-transform d-none d-md-inline" >Update</span>		
+					</span>
+				</ng-container>
+	
+				<span > 
+					<span class="text-giant normal light-grey no-transform d-none d-md-inline  " queryParamsHandling="merge" > | </span>
+				</span>
+			</ng-template>
+			
+
+			<a class="link athena" [routerLink]="['/customer-dashboard', customerId, 'financial-detail', 'accounting-state']" queryParamsHandling="merge">
+				<span class="text-min normal no-transform d-none d-md-inline">Etat comptable</span>
+				<span class="text-min normal no-transform d-md-none">Etat comptable</span>			
+			</a>
+
+			<ng-container *ngxPermissionsOnly="['new_peniche_maj_mobile']">
+				<span *ngIf="selectedDebt.mobileSelected" > 
+					<span *ngxPermissionsOnly="['modification_infos_finances']" class="text-giant normal light-grey no-transform d-none d-md-inline  " queryParamsHandling="merge"> | </span>	
+				</span>
+				<span class='icon arrow-circular-blue clickable'(click)="refrecheAccount()" *ngIf="selectedDebt.mobileSelected"></span>
+			</ng-container>
+
+		<span  *ngxPermissionsOnly="['modification_infos_finances']" class="text-giant normal light-grey no-transform d-none d-md-inline  "   queryParamsHandling="merge" > | </span>
+		<span *ngxPermissionsOnly="['modification_infos_finances']" class="text-giant normal light-grey no-transform d-none " queryParamsHandling="merge"> | </span>
+		<a *ngxPermissionsOnly="['modification_infos_finances']" 
+		     [routerLink]="['/customer-dashboard',this.customerId,'financial-detail','bill-account', billingAccount?.identifier,'modification']" 
+		     queryParamsHandling="merge"
+		     [queryParams]="{
+				 typeCustomer: typeCustomer, 
+				 nicheIdentifier: selectedDebt.contractSelected.nicheIdentifier, 
+				 univers: univers,
+				 rowSelected: selectedDebt.rowSelected
+				}">	
+			<span class='icon pen athena ' ></span>
+		</a>
+		</div>			
+	</h2>
+	<div class="row">
+		<div *ngIf="selectedDebt.universSelected === 'MOBILE'" class="col-md-6">
+			<h2 class="subtitle athena">Lignes mobiles principales associées, actives ou suspendues</h2>
+			<div *ngFor="let ligne of billingAccount?.billAccountLines ;  let j=index">
+														{{ligne?.lineIdentifier | ligne }}
+												</div>
+		</div>
+		<div class='col-md-7' [ngClass]="{'offset-md-2': this.selectedDebt.mobileSelected }  " >
+			<h2 class="subtitle athena">Facturation
+			</h2>
+			<p class="athena">
+				<span class="text-min">{{getTypeEnvoi(billingAccount?.allTypeEnvoi)}}
+							
+					<span class="grey">{{getTypeEnvoiDestination(billingAccount)}}</span>
+					<br />
+													Jour de facturation : 
+							
+					<span class="grey">{{billingAccount?.billingDay}}</span>
+					<br />
+													Conditions de règlement : 
+							
+					<span class="grey">{{billingAccount?.conditionReglementLibelle}}</span>
+					<br />
+													Contrôle systématique : 
+							
+			        <span class="grey">{{billingAccount?.controlCF ? 'Oui,' + '  ' + ((!billingAccount?.justificationControle) ?  '-' : billingAccount?.justificationControle?.substring(0,200)) : 'Non'}}</span>
+					<br />
+					                                      Exonération TVA : 
+							
+					<span class="grey">{{billingAccount?.tvaExemption ? 'Oui' : 'Non'}}</span>
+					<br />
+					                                       Date d'entrée : 
+							
+					<span class="grey">{{billingAccount?.nicheAdmissionDate}}</span>
+					<br />
+					                                        CR attendu : 
+							
+					<span class="grey">{{billingAccount?.compteRenduAttendu ? 'Oui' : 'Non' }}</span>
+					<br />
+				</span>
+			</p>
+		</div>
+		<div class="col-md-7 offset-md-2">
+			<h2 class="subtitle athena">Informations
+				<span *ngIf="!selectedDebt.mobileSelected">										
+					<a *ngxPermissionsOnly="['affichage_paiement_libre']"  class="block-title-item-link athena" 
+					[routerLink]="['/customer-dashboard',this.customerId,'financial-detail','payment', billingAccount?.identifier]" 
+					queryParamsHandling="merge">
+						<span class="icon paiement icon-marged"></span>
+						<span class="text-min normal no-transform">Paiement libre</span>
+					</a>
+				</span>
+			</h2>
+			<p class="athena text-min">
+				<span >Mode de règlement : </span>
+				<span class="grey">{{getPaymentMethod(billingAccount)}}</span>
+				<br />
+				<span >Titulaire : </span>
+				<span class="grey">{{getNameForMobileAndService(true)}}</span>
+				<br />
+				<ng-template [ngIf]="billingAccount.payerLastName !== billingAccount.titularLastName">
+					<span >Tiers payeur : </span>
+					<span class="grey">{{getNameForMobileAndService(false)}}</span>
+					<br />
+				</ng-template>
+				<ng-template [ngIf]="!selectedDebt.mobileSelected">
+					<span >Récurent : </span>
+					<span >{{billingAccount?.recurrent ? 'Oui' : 'Non' }}</span>
+				</ng-template>
+			</p>
+		</div>
+	</div>
+	<span *ngIf="withSolde && totalItems !== 0" class="text-max uppercase">Détails de la dette</span>
+	<span *ngIf="withSolde && totalItems !== 0" class="grey text-min normal"> (€ en TTC)</span>
+
+	<span  *ngIf="withSolde && showHistrq" class="block-title-item-link athena link" (click)="onShowRow()">
+		Voir les mouvements ayant un solde à 0€
+	</span>
+
+	<span  *ngIf="withSolde && !showHistrq" class="block-title-item-link athena link" (click)="onHideRow()" >
+		Masquer les mouvements ayant un solde à 0€
+	</span>
+
+	<div class="mt-2">
+		<div *ngIf="!copmteSansSolde">
+			<app-athena-ag-grid2 [hidden]="totalItems === 0"
+                [columnDefs]="columnDefs"
+				[defaultSortModel] = "defaultSortModel"
+                [rowStyle]="rowStyle"
+                [datasource]="datasource"
+                [paginationPageSize]="paginationPageSize"
+                [frameworkComponents]="frameworkComponents"
+                [totalItems]="totalItems"
+                [showTopPagination]="true"
+                [loadAgGridParams]="params"
+                [suppressRowClickSelection]="true"
+                [rowSelection]="'multiple'"
+                (clickCell)="clickCell($event)">
+            </app-athena-ag-grid2>
+		</div>
+		<div *ngIf="copmteSansSolde" class="lik">
+			<app-athena-ag-grid2 [hidden]="totalItems === 0"
+                [columnDefs]="columnDefs"
+                [rowStyle]="rowStyle"
+				[defaultSortModel] = "defaultSortModel"
+                [datasource]="datasource"
+                [paginationPageSize]="paginationPageSize"
+                [frameworkComponents]="frameworkComponents"
+                [totalItems]="totalItems"
+                [showTopPagination]="true"
+                [loadAgGridParams]="params"
+                [suppressRowClickSelection]="true"
+                [rowSelection]="'multiple'"
+                (clickCell)="clickCell($event)">
+            </app-athena-ag-grid2>
+		</div>
+	
+		<button *ngIf="withSolde && totalItems !== 0" (click)="massDownload()"
+		    [ngClass]="getAllList()"class="col-form-label btn blueborder ml-4 ">
+			<span class="icon download"></span> Télécharger
+		</button>
+
+
+		<div  class="sold-btn-blue text-center" >
+			<p class="m-0"> Solde</p>{{billingAccount?.balance ? (billingAccount?.balance | number : '1.2-2')  : 0}}€
+		</div>
+
+<ng-template #content let-modal>
+	<div class="modal-header border-0 pb-0">
+		<h2 class="block-title athena w-100 title-sold">historique du solde
+			<span class="grey font-text font-italic normal" > - n° de compte {{ billingAccount?.universe }} {{ billingAccount?.identifier }}</span>
+			<span class="icon close p-0 m-0" (click)="modal.close()"></span>
+		</h2>
+	</div>
+	<div class="historique-solde " *ngIf="rowData.length > 0"> 
+		<app-athena-paginated-ag-grid 
+			[paginationPageSize]="20"
+			[columnDefs]="columnDefshstrqSold"
+			[rowData]="rowData">
+			
+		</app-athena-paginated-ag-grid >
+       
+	</div>
+	<div class="text-center my-5 unselectable " *ngIf="rowData?.length == 0">
+		- Pas de données à afficher -
+	</div>
+</ng-template>
+
+
+<ng-template #textConfirme let-modal>
+	<div class="modal-header border-0 pb-0">
+		<p>Veuillez sélectionner au moins une facture ou avoir avant de procéder au téléchargement</p>
+	</div>
+</ng-template>
+
+
+
+</div>

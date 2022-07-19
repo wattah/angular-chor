@@ -1,0 +1,46 @@
+
+<div class="underline mt-3 mb-2">Sono N ° {{index}} <span class="icon del ml-2" *ngIf="interventionSonosDetailsLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeSound()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena">Types de sonos 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refSonosType" name="refSonosType"
+            [ngClass]="[refSonosTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let soundType of soundTypes" [ngValue]="soundType">{{soundType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena">Raccordement 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refSonosConnectionType" name="refSonosConnectionType"
+            [ngClass]="[refSonosConnectionTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let soundConnectionType of soundConnectionTypes" [ngValue]="soundConnectionType">{{soundConnectionType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Infos complémentaires </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="complementInfo" name="complementInfo" [(ngModel)]="interventionSonosDetail.complementInfo"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> Adresse IP </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="adresseIp" name="adresseIp" [(ngModel)]="interventionSonosDetail.adresseIp"/>
+        </div>
+    </div>
+</form>
+

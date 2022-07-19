@@ -1,0 +1,15 @@
+snack-bar-container.center-snackbar {
+    background-color: #4480c8;
+}
+
+.center-snackbar .mat-simple-snackbar{
+    justify-content: center !important;
+    color: white !important;
+    background-color: #4480c8;
+}
+
+.btn-block {
+    padding: 5% 2%; 
+    /* define values in pixels / Percentage or em*/ 
+    line-height: 5px;
+}

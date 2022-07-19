@@ -1,0 +1,196 @@
+
+        <div formGroupName="devis">
+            <div class="form-group row">
+                            <label class="col-sm-4 col-form-label athena">
+                                <span class="font-weight-bold"> Descriptif * </span> <br />
+                                <small class="font-italic">
+                                    (Sera affiché <br />
+                                    sur le devis en titre)
+                                </small>
+                            </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <textarea class="form-control athena" formControlName="descriptif" rows="5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="col-sm-4 col-form-label athena">A qui souhaitez-vous adresser le devis ? * </label>
+
+                            <div class="col-sm-20 col-lg-9">
+                                <mat-form-field class="large-chip-list" appearance="outline" (click)="onClickDestination(form.get('devis').get('destination'), trigger)">
+                                    <input type="text" matInput formControlName="destination" 
+                                    #trigger="matAutocompleteTrigger" 
+                                    (click)="onClickDestination(form.get('devis').get('destination'), trigger)"
+                                    [matAutocomplete]="auto" >
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                      <mat-option *ngFor="let person of filteredPersons | async" [value]="person.name" (click)="onChosePerson(person)">
+                                        {{person.name}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label athena">Adresse * </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <mat-form-field class="large-chip-list" appearance="outline" >
+                                    <input type="text" formControlName="addressDevis" matInput [matAutocomplete]="autoService" 
+                                    (keyup)="changeAdresseInput($event)">
+                                    <mat-autocomplete #autoService="matAutocomplete" required>
+                                        <mat-option  class="pl-0" *ngFor="let rdv of adresseRdv" [value]="'Adresse '+rdv?.types[0]?.label" (click)="onChoseAddress(rdv)">
+                                            <div class="adress_bordure pr-0">
+                                                <p class="mb-2"> 
+                                                    <strong> Adresse {{ rdv.types ? rdv?.types[0]?.label:'' }}</strong> 
+                                                </p>
+                                                <p class="m-0 grey lowercase" *ngIf="rdv.companyName"> 
+                                                    {{ rdv.companyName ? rdv.companyName:'' }} 
+                                                </p>
+                                                <p class="m-0 grey lowercase"> 
+                                                    {{ rdv.addrLine2 ?  rdv.addrLine2:'' }}
+                                                    {{ rdv.addrLine3 ?  rdv.addrLine3:'' }}
+                                                    {{ rdv.logisticInfo ?  rdv.logisticInfo:'' }}
+                                                    {{ rdv.addrLine4 ?  rdv.addrLine4:'' }}
+                                                    {{ rdv.addrLine5 ?  rdv.addrLine5:'' }}
+                                                </p>
+                                                <p class="m-0 grey lowercase"> 
+                                                    {{ rdv.postalCode ?  rdv.postalCode:'' }} {{ rdv.city ?  rdv.city:'' }} 
+                                                </p>
+                                            </div>
+                                        </mat-option>
+                                        <mat-divider></mat-divider>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-2 row">
+                            <label class="col-sm-4 col-form-label athena"> </label>
+                            <div class="col-sm-10" *ngIf="visibleActionsOnDevis">
+                                <span class="athena clickable link font-weight-bold"  (click)="openPopup()">
+                                    <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une adresse temporaire
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-2 row">
+                            <label class="col-12 col-sm-4 col-form-label athena">
+                                Y a-t'il une <br />
+                                ligne associée ?
+                            </label>
+                            <div class="col-12 col-sm-20 col-lg-10">
+                                <section class="example-section mt-2">
+                                    <mat-checkbox class="" [disableRipple]="true"  [checked]="cart.interventionOnLine"  formControlName="interventionOnLine"
+                                    (change)="getOptions($event)" >Oui</mat-checkbox>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" *ngIf="hasAssossiedLine">
+                            <label class="col-sm-4 col-form-label athena">Numéro de la ligne </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="associetedLine">
+                                    <option [ngValue]="null">En cours de création</option>
+                                    <option *ngFor="let park of parkItems" [ngValue]="park">
+                                     {{park.webServiceIdentifier}} {{park.libelleContract ? '-':''}}  {{park.libelleContract ? park.libelleContract:''}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row mt-5 mb-4 athena justify-content-left">
+                            <div class="col-sm-24" *ngIf="showDownloadButton">
+                                <button class="col-form-label btn btn-blue" (click)="downloadDevis()"><span class="icon download-blanc"></span> Télécharger le devis</button>
+                            </div>
+                        </div>
+
+                   <!-- Block popup ajouter une adress temporaire -->
+                        <ng-template #content let-modal>
+                            <div class="modal-body mt-2 px-3 px-sm-5">
+                                <p class="title text-center">Ajout d'une adresse temporaire</p>
+                        
+                                <div class="form-group mb-2 row">
+                                    <div class="col-12 col-sm-20 col-lg-10">
+                                        <section class="example-section mt-2">
+                                            <mat-checkbox class="normal" [disableRipple]="true">Adresse française</mat-checkbox>
+                                        </section>
+                                    </div>
+                                </div>
+                        
+                                <div class="form-group row select_arrows">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena">Pays *</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <select class="form-control athena ng-pristine ng-invalid ng-touched">
+                                            <option>
+                                                - -
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                        
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Code Postale *</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <input class="athena form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Ville *</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <input class="athena form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Adresse *</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <mat-form-field class="large-chip-list catalogue_p" appearance="outline">
+                                            <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" />
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                    {{option.name}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                        
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Apt / Etage (A)</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <input class="athena form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Bâtiment (B)</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <input class="athena form-control" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-3">
+                                    <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Code porte (C)</label>
+                                    <div class="col-sm-20 col-lg-17">
+                                        <input class="athena form-control" type="text" />
+                                    </div>
+                                </div>
+                        
+                                <div class="">
+                                    <ul class="ath-summary mt-4">
+                                        <div class="row">
+                                            <span class="icon help-grey mx-1 mt-1"></span>
+                                            <span class="title p-0 mt-1 mb-2"> Information de livraison </span>
+                                        </div>
+                                        <li>Limite de 69 caractères sur la somme des champs A,B & C .</li>
+                                        <li>Le premier(A) et second (B) champs peuvent figurer sur le courrier.</li>
+                                        <li>le dernier(C) champs ne figure pas sur le courrier .</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center mb-3 mt-4">
+                                    <button type="button" class="btn btn-green" (click)="modal.close('Close click')">Enregistrer</button> <br />
+                                    <button class="btn btn-link blue mt-2" [routerLink]="null" queryParamsHandling="merge" (click)="annuler()">Annuler</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                        
+                          
+
+                

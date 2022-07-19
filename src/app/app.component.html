@@ -1,0 +1,24 @@
+<div class="page">
+    <div class="header" *ngIf="!isLivePage && !isLogout">
+        <app-toolbar 
+        [user]="user"
+        (userChangeRole)="userChangeRoleEvent($event)"
+        ></app-toolbar>
+    </div>
+    <div class="main" [ngClass]="{'logout': isLogout}">
+        <app-breadcrumb *ngIf="!isLivePage && !isLogout"></app-breadcrumb>
+        <router-outlet></router-outlet>
+    </div>
+    
+    <div class="footer" *ngIf="!isLivePage">
+        <app-footer [version]="version" [jiraUrl]="jiraUrl"></app-footer>
+    </div>
+    <div *ngIf="showLoadingSpinner" class="wrapper">
+            <div class="spinner">
+    
+            </div>
+    </div>
+    <div class="ada-banner" *ngIf="(!isLivePage && !isLogout) ">
+        <app-ada-banner *ngxPermissionsOnly="['affichage_bandeau_ada']"></app-ada-banner>
+    </div>
+</div>

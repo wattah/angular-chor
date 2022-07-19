@@ -1,0 +1,51 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: 	#A9A9A9; /* old IE */
+    background-color: 	#A9A9A9; /* Modern Browsers */
+}
+
+.spinner {
+  border: 16px solid silver;
+  border-top: 16px solid #337AB7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 700ms linear infinite;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  position: fixed;
+  opacity: 1;
+}
+
+.wrapper {
+  position: fixed;
+  padding: 0px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: 0.6;
+  transition: opacity 0.3s linear;
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+  background-color: #CEE63F !important;
+}

@@ -1,0 +1,21 @@
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlock">
+    <app-profil-consultation 
+    (updateProfil)="onUpdateProfil($event)" [person]="person"
+    [photo] = "photo">
+    </app-profil-consultation>
+</ng-template>
+<ng-template #modificationBlock>
+    <app-profil-modification *ngxPermissionsOnly="['modification_profil']; else permissionNotFountBlock"
+        (updateProfil)="onUpdateProfil($event)" 
+        [person]="person" [photo] = "photo"
+        (changeForm)="onChangeProfilForm($event)"
+        (changeDirtyProfilForm)="onChangeDirtyProfilForm($event)"
+        [isSelected] = "isSelected">
+    </app-profil-modification>
+    <ng-template #permissionNotFountBlock>
+        <app-profil-consultation 
+        (updateProfil)="onUpdateProfil($event)" [person]="person"
+        [photo] = "photo">
+        </app-profil-consultation>
+    </ng-template>
+</ng-template>

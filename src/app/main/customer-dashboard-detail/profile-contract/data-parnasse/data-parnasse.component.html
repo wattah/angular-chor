@@ -1,0 +1,12 @@
+
+
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockDataParnasse">
+    <app-data-parnasse-consultation [customerProfile]="customerProfile" [typeCustomer]="typeCustomer"  (updateDataParnasse)="onUpdateDataParnasse($event)"></app-data-parnasse-consultation>
+    </ng-template>
+    
+    <ng-template #modificationBlockDataParnasse>
+    <app-data-parnasse-modification [customerProfile]="customerProfile" [isSelected]="isSelected"
+    [typeCustomer]="typeCustomer"  (changeForm)="onChangeDataParnasseForm($event)"
+    (updateDataParnasse)="onUpdateDataParnasse($event)">
+    </app-data-parnasse-modification>
+    </ng-template>

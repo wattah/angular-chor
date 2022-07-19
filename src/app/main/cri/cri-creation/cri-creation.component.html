@@ -1,0 +1,192 @@
+<div class="container-fuild">
+    <div class="row">
+        <div class="col-24">
+            <div class="block block-transparent">
+                <h6 class="athena">
+                    Compte Rendu d'Intervention
+                </h6>
+            </div>
+        </div>
+    </div>
+    <form [formGroup]="formParentCRI">
+        <div class="row" *ngIf="formInvalid">
+            <div class="col-md-14 col-lg-14">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                <div *ngIf="dateDebutPseInvalid">- Veuillez renseigner une date de début d'appel au PSE </div>
+                                <div  *ngIf="dateFinPseInvalid">- Veuillez renseigner une date de fin d'appel au PSE</div>
+                               <div *ngIf="startDateInvalide">- Veuillez renseigner une date de début d'intervention </div>
+                                 <div  *ngIf="endDateInvalide">- Veuillez renseigner une date de fin d'intervention</div>
+                                 <div  *ngIf="demandeurInvalid">- Veuillez sélectionner un demandeur</div>
+                                 <div *ngIf="contactFNameInvalid">- Veuillez renseigner le nom du contact</div>
+                                 <div  *ngIf="cantactLNameInvalid">- Veuillez renseigner le prénom du contact</div>
+                                 <div  *ngIf="precisionDemandeurInvalid">- Veuillez remplir le champ Précision </div>
+                                 <div  *ngIf="parcTelInvalid">- Le champ mobile de contact ne doit pas excéder 20 caractères </div>
+                                 <div  *ngIf="typeLogInvalid">- Veuillez sélectionner un type de logement</div>
+                                 <div *ngIf="precisionTypeLogInvalid">- Veuillez remplir le champ Précision de logement </div>
+                                 <div  *ngIf="superfecieInvalid">-   Veuillez remplir le champ Superficie</div>
+                                 <div  *ngIf="typeAlarmeInvalid">- Veuillez sélectionner un type d'alarme</div>
+                                 <div  *ngIf="typeInterventionInvalid">- Veuillez sélectionner un type d'intervention</div>
+                                 <div *ngIf="coachInvalid">- Veuillez renseigner coachInvalid </div>
+                                 <div  *ngIf="doaminIntervInvalid">- Veuillez cocher au moins un domaine d'intervention</div>
+                                 <div  *ngIf="garantieInvalid">- Veuillez préciser, si l'intervention est dans le cadre d'une garantie</div>
+                                 <div  *ngIf="aidInvalid">- AID est obligatoire</div>
+                                 <div  *ngIf="ndFictifInvalid">- ND fictif est obligatoire</div>
+                                 <div  *ngIf="ndVoipInvalid">- ND VOIP est obligatoire</div>
+                                 <div  *ngIf="identConnexionInvalid">- Identifiant de connexion est obligatoire</div>
+                                 <div  *ngIf="mdpConnexionInvalid">- Mot de passe de connexion est obligatoire</div>
+                                 <div  *ngIf="emplacementPtoInvalid">- Emplacement PTO est obligatoire </div>
+                                 <div  *ngIf="emplacementOntInvalid">- Emplacement ONT est obligatoire </div>
+                                 <div  *ngIf="emplacementLiveboxInvalid">- Emplacement LIVEBOX est obligatoire </div>
+                                 <div  *ngIf="ndInvalid">- ND est obligatoire </div>
+                                 <div  *ngIf="dtiLocationInvalid">-  Emplacement de la dti est obligatoire. </div>
+                                 <div  *ngIf="suplementInfoInvalid">-  Infos complémentaire est obligatoire. </div>
+                                 <div  *ngIf="modeleInvalid">- Modèle est obligatoire </div>
+                                 <div  *ngIf="marqueInvalid">- Marque est obligatoire </div>
+                                 <div  *ngIf="numImeiInvalid">- Numéro IMEI est obligatoire </div>
+                                 <div  *ngIf="capaciteInvalid">- Capacité est obligatoire </div>
+                                 <div  *ngIf="couleurInvalid">- Couleur est obligatoire </div>
+                                 <div  *ngIf="refConnectionTypeInvalid">- Connexion est obligatoire </div>
+                                 <div  *ngIf="refDecoderModelTypeInvalid">- Modèle décodeur est obligatoire </div>
+                                 <div  *ngIf="emplacementInvalid">- Emplacement est  obligatoire</div>
+                                 <div  *ngIf="otherNumbersTitulaireInvalid">- ND titulaire est obligatoire</div>                                
+                                 <div  *ngIf="ddnsInvalid">- DDNS est obligatoire</div>                                
+                                 <div  *ngIf="quickconnectInvalid">- Quikconnect est obligatoire</div>                                
+                                 <div  *ngIf="nbDiskInvalid">- Nombre de disques est obligatoire</div>                                                               
+                                 <div  *ngIf="capaciteDiskInvalid">- Capacité/disk est obligatoire</div>                                
+                                 <div  *ngIf="nomInvalid">- Name  utilisé est obligatoire</div>                                
+                                 <div  *ngIf="loginInvalid">- Login est obligatoire</div> 
+                                 <div  *ngIf="passwordInvalid">- Password est obligatoire</div> 
+                                 <div  *ngIf="emailInvalid">- Adresse mail est obligatoire</div> 
+                                 <div  *ngIf="isTplinkInvalid">- Routeur intermédiaire est obligatoire</div>
+                                 <div  *ngIf="refSonosTypeInvalid">- Type sonos est obligatoire</div>
+                                 <div  *ngIf="refSonosConnectionTypeInvalid">-  Raccordemnet est obligatoire</div>
+                                 <div  *ngIf="multimediaInfoInvalid">- Multimedia est obligatoire</div>
+                                 <div  *ngIf="ssidLiveboxInvalid">- SSID est obligatoire</div>
+                                 <div  *ngIf="modelBorneInvalid">- Modèle Borne  est obligatoire</div>
+                                 <div  *ngIf="ipAdresseInvalid">- Adresse IP est obligatoire</div>
+                                 <div  *ngIf="adresseInvalid">- Veuillez saisir une adresse</div>
+                                 <div  *ngIf="slidInvalid">- SLID est obligatoire</div>
+                                 <div  *ngIf="ndSupportInvalid">- ND support est obligatoire</div>
+                                 <div  *ngIf="origineInvalid">- Type mobile est obligatoire</div>
+                                 <div  *ngIf="typeUserInvalid">- Type Utilisateur est obligatoire</div>
+                                 <div  *ngIf="decriptionTraveauInvalid">- Description des travaux est obligatoire</div>
+                                 <div  *ngIf="technicianCommentInvalid">- Veuillez saisir le commentaire du technicien</div>
+                                
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+      
+        <div class="col-lg-16 col-md-24">
+            <app-recovery-information *ngIf="interventionReport?.id===null"
+            [interventionReport]="interventionReport"
+            [isCancel]="isCancel"
+             (selectIntervReport)="selectInterventionReport($event)">
+            </app-recovery-information>
+
+            <div class="block_onglet block block-shadow">
+                <div class="gestion_cri">
+                    <mat-tab-group animationDuration="10ms" [disableRipple]="true"  (selectedTabChange)="tabChanged($event)">
+                        <mat-tab [label]="'Informations nécessaires'">
+                            <ng-template mat-tab-label>
+                                <div>Informations nécessaires
+                                   <span *ngIf="hideRequierdInfoBadge" class="icon badge-top picto-exclamation-rouge">
+                                   </span>
+                                </div>
+                              </ng-template>
+                            <app-required-information [interventionReport]="interventionReport"
+                             (onChangeDomains)="onChangeDomainsEvent($event)" 
+                             (onChangeInterventionType)="onChangeInterventionTypeEvent($event)"
+                             (isFromCriAndCriChangeOut)="criChanged($event)" 
+                             [tabchangedOrSave]="tabchangedOrSave"
+                             [contactMobileList]="destinataires"
+                             >
+                             </app-required-information>
+                        </mat-tab>
+                        <mat-tab [label]="'Informations techniques'">  
+                            <ng-template mat-tab-label>
+                                <div>Informations techniques
+                                   <span *ngIf="hideTechnicalInforBadge" class="icon badge-top picto-exclamation-rouge">
+                                   </span>
+                                </div>
+                              </ng-template>
+                            <app-technical-information 
+                                [interventionReport]="interventionReport"
+                                [emplacementPtos]="emplacementPtos"
+                                [emplacementOnts]="emplacementOnts"
+                                [emplacementLiveBoxs]="emplacementLiveBoxs"
+                                [ingenieries]="ingenieries"
+                                [locationTypes]="locationTypes"
+                                [soundTypes]="soundTypes"
+                                [soundConnectionTypes]="soundConnectionTypes"
+                                [locationWifiTypes]="locationWifiTypes"
+                                [wifiConnectionTypes]="wifiConnectionTypes"
+                                [domains]="domains"
+                                [interventionType]="interventionType"
+                                [impactParkItemLines]="impactParkItemLines"
+                                [techniciens]="techniciens"
+                                [othersUsers]="othersUsers"
+                                [modaliteRef]="modaliteRef"
+                                [tabchangedOrSave]="tabchangedOrSave"
+                                [decodeurModelTypes]="decodeurModelTypes"
+                                [connectionTypes]="connectionTypes"
+                                (isFromCriAndCriChangeOut)="criChanged($event)"
+                                [allowedToModifyTechnicalInformationTab] ="allowedToModifyTechnicalInformationTab"> 
+                            </app-technical-information>
+                        </mat-tab>
+                        <mat-tab label="Document"> <app-document 
+                            [interventionReport]="interventionReport" 
+                            [allowedToModifyTechnicalInformationTab] ="allowedToModifyTechnicalInformationTab"
+                            (isFromCriAndCriChangeOut)="criChanged($event)"
+                            [isCancel]="isCancel"
+                            > 
+                            </app-document></mat-tab>
+                        <mat-tab label="Matériel récupéré"> <app-material-recovered 
+                             [interventionReport]="interventionReport" 
+                             (isFromCriAndCriChangeOut)="criChanged($event)"
+                             [allowedToModifyTechnicalInformationTab] ="allowedToModifyTechnicalInformationTab"> </app-material-recovered></mat-tab>
+                        <mat-tab label="Commentaire du technicien"> 
+                            <app-technician-information
+                              [interventionReport]="interventionReport"
+                              [tabchangedOrSave]="tabchangedOrSave"
+                              (isFromCriAndCriChangeOut)="criChanged($event)" 
+                            > </app-technician-information>
+                        </mat-tab>
+                            </mat-tab-group>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-2 justify-content-center">
+                <div class=" ">
+                    <input class="btn btn-green" queryparamshandling="merge" type="button" 
+                    value="Enregistrer" tabindex="0" ng-reflect-query-params-handling="merge" 
+                    ng-reflect-router-link="/customer-dashboard,1200,detai" (click)="onSaveCri()"/>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-4 mt-3">
+                <span class="link athena"  (click)="onCancelCri()"> Réinitialiser le CRI </span>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-24">
+            <app-request-summary [detailRequest]="request" [customerId]="customerId" [requestAnswers]="requestAnswers" [isFromCri]="isFromCriAndCriChange"
+            (saveCri)="popupBackAnswer($event)"></app-request-summary>
+
+            <app-task-summary [task]="task" [idRequest]="request?.idRequest" [customerId]="customerId" [isFromCri]="isFromCriAndCriChange"
+            (saveCri)="popupBackAnswer($event)"></app-task-summary>
+        </div>
+   
+    </div>
+</form>
+</div>

@@ -1,0 +1,30 @@
+<div id="body" class="container-fluid env-yellow">
+    <div class="row">   
+        <div class="col-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')" 
+                [infoCustomer]="infoProfil" 
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer" 
+                [recoveryDate]="recoveryDate"
+                [referents]="referents"
+                [totalDebt]="totalDebt"> 
+            </app-see-all-profil>
+        </div>
+        <p class="col-24 athena">
+            <a *ngIf="!isSowLink360"
+                [routerLink]="(typeCustomer === 'company') 
+                    ? ['/customer-dashboard/entreprise', customerId]
+                    : ['/customer-dashboard/particular', customerId]"
+                [queryParams]="{typeCustomer: typeCustomer}"
+                queryParamsHandling="merge"
+                class="athena"
+                >
+                <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+            </a>
+        </p>
+        <div class="col-24">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

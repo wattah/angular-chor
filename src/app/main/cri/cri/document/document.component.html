@@ -1,0 +1,85 @@
+<div class="row" *ngIf="!isTitleValid || !isFileValid || !isTypeValid">
+    <div class="col-md-12 col-lg-12">
+        <div class="block block-alert" >
+            <table class="table table-not-bordered"><caption class="p-0"></caption>
+                <tbody>
+                    <tr>
+                        <th id="th"></th>
+                        <td class="alert-icon align-middle" >
+                            <span class="icon icon-max status-exclamation-white"></span>
+                        </td>
+                        <td class="alert-text">
+                            <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                            <ul class="simple mr-0 mt-2">
+                                <li *ngIf="!isTypeValid">Type de document </li>
+                                <li *ngIf="!isTitleValid">Titre du document </li>
+                                <li *ngIf="!isFileValid">Fichier</li>
+                            </ul>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<form [formGroup]="addCriDocumentForm">
+            <div class="row mt-2">
+                <div class="col-lg-18 col-md-18">  
+                    <div class="form-group row">
+                        <label for="" class="col-md-5 col-form-label athena">Type de document<span class="red">*</span></label>
+                        <div class="col-md-19">
+                            <select class="form-control col-md-14 mt-1 athena" formControlName="documentType" (change)="onTypeChange()" required>
+                                <option *ngFor="let type of documentsTypeList" [ngValue]="type">{{type.documentTypeName}}</option>
+                            </select>
+                            <mat-error *ngIf="!isTypeValid">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-md-5 col-form-label athena">Titre du document<span class="red">*</span></label>
+                        <div class="col-md-19">
+                            <select class="form-control col-md-14 mt-1 athena" formControlName="documentTitle" required>
+                                <option *ngFor="let title of documentsTitleByType" [ngValue]="title">{{title.documentTitle}}</option>
+                            </select>   
+                        <mat-error *ngIf="!isTitleValid">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="titreSelect" class="col-md-5 col-form-label athena">Fichier (<10Mo)<span class="red">*</span></label>
+                        <div class="col-sm-11">
+                            <ngx-dropzone name="file" [multiple]="false" [expandable]="true" class="fileDropProfile" (change)="onSelectFile($event)" [class.disabled]="!allowedToModifyTechnicalInformationTab">
+                                <ngx-dropzone-label>Déposez des fichiers ici ou
+                                    cliquez pour <u class="blue "> télécharger</u>  .</ngx-dropzone-label>
+                                    <ngx-dropzone-preview class="fileinter" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [removable]="true" (removed)="onRemoveFile(f)">
+                                        <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                                    </ngx-dropzone-preview>
+                            </ngx-dropzone>
+                            <mat-error *ngIf="!isFileValid">Ce champ est obligatoire</mat-error>
+                        </div>   
+                    </div>
+                    <div class="row justify-content-center pt-3">
+                        <span class="link mb-3 pr-2 mt-2" (click)="onCancel()">Annuler</span>
+                        <div class="col-md-12">
+                            <input class="btn btn-green" value="Enregistrer le document" type="submit" (click)="onSave()" [class.disabled]="!allowedToModifyTechnicalInformationTab"/>
+                        </div>
+                    </div><br/>
+                    <div class="underline mt-4 mb-3" *ngIf="showDocuments">Documents ajoutés</div>
+                        <table class="table-not-bordered mt-n4" *ngIf="showDocuments">
+                            <thead>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let f of ListOfAddedCriDocument">
+                                    <td class="table-td-link" style="padding-right: 50px;">
+                                        <span class="athena grey col-md-10">{{f.name}}</span>
+                                    </td>
+                                    <td class="table-td-link" style="padding-right: 20px;">
+                                        <span class="icon eyes-bleu clickable" (click)="download(f)"></span>
+                                    </td>
+                                    <td class="table-td-link">
+                                        <span class="icon del clickable" (click)="delete(f)" [class.disabled]="!allowedToModifyTechnicalInformationTab"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+    </form>

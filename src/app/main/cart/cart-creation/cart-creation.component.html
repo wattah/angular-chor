@@ -1,0 +1,302 @@
+<div class="row">
+    <div class="col-lg-8 col-md-24 order-lg-2">
+        <div class="block block-shadow pb-2">
+            <form [formGroup]="form">
+            <div class="block_resume_panier p-0">
+                <h2 class="athena">Résumé du panier</h2>
+                <div class="row">
+                    <div class="col-md-12 col-lg-24">
+                        <p class="athena">
+                            <strong><span class="athena"> Client : </span></strong>{{!(cart?.request.customerLastNameFirstName) ? '-' : (cart?.request.customerLastNameFirstName) | titlecase}}<br />
+                            <strong><span class="athena">Interlocuteur : </span></strong>{{(!requestInterLabel) ? '-' : requestInterLabel | titlecase}}<br />
+                            <strong><span class="athena">Destinataire : </span></strong>
+                            {{(!cart?.deliveryPostalAddressNewVo?.lastName )? '-' : cart?.deliveryPostalAddressNewVo?.lastName | titlecase }}
+                            {{cart?.deliveryPostalAddressNewVo?.firstName | titlecase}}<br />
+                            <strong><span class="athena">N ° de la demande : </span></strong>
+                            <a class="athena"  [routerLink]="null" (click)="forwardToDetailRequest()"> 
+                            {{cart?.request.id}}</a><br />
+                            <strong><span class="athena">Date de la demande : </span></strong>{{createdAt}}<br/>
+                            <strong><span class="athena">Objet de la demande : </span></strong>{{cart?.request.title}}<br />
+                            <strong><span class="athena">Statut : </span> </strong>{{CartStatusValue[cart?.status]}} {{statusModifiedAt}}<br />
+                            <strong><span class="athena">Modifié le : </span></strong>{{modifiedAt}}<br />
+                            <strong><span class="athena">Marge : </span> </strong>{{!calculateMargePourcent ? '0,00' : calculateMargePourcent}}%<br />
+                            <strong><span class="athena">Marge HT : </span> </strong>{{!calculateMargeEuro  ? '0,00' : calculateMargeEuro}} €<br />
+                        </p>
+                    </div>
+                    
+                    <div class="col-md-12 col-lg-24 mt-0 mt-lg-3">
+                        <div class="form-group row mb-3">
+                                <label class="col-12 col-lg-6 col-form-label athena">Titre du panier</label>
+                            <div class="col-sm-24 col-lg-17">
+                                <input type="text" class="h-respo athena form-control"   (keyup)="changeTitleInput($event)"  
+                                [(ngModel)]="cart.title"  formControlName="title" [attr.disabled]="!visibleActionsOnResumePanier? true : null"/>
+                                
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-2 row">
+                            <label class="col-8 col-sm-7 col-form-label athena">
+                                Priorité du panier
+                            </label>
+                            <div class="col-16 col-sm-17 col-lg-17">
+                                <section class="example-section mt-2">
+                                    <mat-checkbox class=""  formControlName="priority"  [(ngModel)]="cart.isPrioritized" 
+                                    (change)="changePrioritized($event)"
+                                    [checked]="cart?.isPrioritized" [disableRipple]="true" [disabled]="!visibleActionsOnResumePanier"></mat-checkbox>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+
+
+        <div class="block block-shadow d-none d-lg-block">
+            <div class="block_recupilatif_panier ">
+                <h2 class="athena">panier (TTC)</h2>
+                <div class="row">
+                    <div class="col-md-12 col-lg-24 ">
+                        <div class="red mt-2 mb-3 text-semibold" *ngIf="cartHasBlockedItem">
+                            Votre panier contient un produit soumis à priorisation. <br>
+                            La commande sera bloquée en attente de validation.
+                        </div>
+            <div class="d-flex justify-content-between line" *ngFor="let item of cartRecapItemsVo; let i=index">
+                <div> {{item.quantiteCartItem}} x {{item.labelCartItem}}</div>
+                <div class="price_space">{{item.totalePriceCartItem}} € </div>
+            </div>
+ 
+            <div class="border-bas"></div>
+
+            <div class="d-flex justify-content-between line">
+                <div >Remise totale</div>
+                <div class="red">
+                    {{totalDiscount}} € </div>
+            </div>
+
+
+            <div class="d-flex justify-content-between line">
+                <div>Total mensuel  </div>
+                <div>{{monthlyTotal}} €</div>
+            </div>
+
+
+            <div class="d-flex justify-content-between line">
+                <div>Total annuel  </div>
+                <div>{{annualTotal}} €</div>
+            </div>
+
+            <div class="d-flex justify-content-between line">
+                <div>Total ponctuel</div>
+                <div >{{punctualTotal}} €</div>
+            </div>
+
+            <div class="d-flex justify-content-between line font-weight-bold my-3 text-semibold">
+                <div>Total Panier </div>
+                <div >{{cartTotal}} €</div>
+            </div>
+
+            <h2 class="athena mt-4" *ngIf="!isHiddenDelivery">livraison</h2>
+            <div class="athena" *ngIf="!isHiddenDelivery">
+                
+                <span class="grey athena">Stock : </span> {{(!stockChangedValue) ? '-' :stockChangedValue}}<br />
+                <span class="grey athena">Livraison : </span>{{(!modeDeliveryChangedValue) ? '-' :modeDeliveryChangedValue}}<br />
+     <div class="d-flex" *ngIf="!isHiddenDelivery">
+    <span class="grey athena"> Adresse : </span>
+    <div class=""  > 
+        <ul class="ml-1 mat-summary"  #sticker>
+            <li> N ° de commande: {{(!cart?.request?.id) ? '-' :  cart?.request.id}}</li>
+        <li *ngIf="addresseChangedValue?.companyName != null && addresseChangedValue?.companyName != ' ' && addresseChangedValue?.role===typeOfCustomer.BENEFICIARY "> 
+            {{addresseChangedValue?.companyName}}</li>
+        <li>{{(!recepientNameChangedValue)? '-' : recepientNameChangedValue}}
+        </li>
+        <br/>
+        <li  *ngIf="addresseChangedValue?.addrLine2 != null">{{(addresseChangedValue?.addrLine2)}}</li>
+        <li *ngIf="addresseChangedValue?.addrLine3 != null">{{(addresseChangedValue?.addrLine3)}}</li>
+        <li *ngIf="addresseChangedValue?.addrLine4 != null">{{(addresseChangedValue?.addrLine4)}}</li>
+        <li *ngIf="addresseChangedValue?.addrLine5 != null">{{(addresseChangedValue?.addrLine5)}}</li>
+        <li>{{(addresseChangedValue?.postalCode)}}  {{(addresseChangedValue?.city)}} 
+            {{(addresseChangedValue?.cedex)}}
+        </li>
+        <li>Contact : {{(!recepientNumberContactChangedValue) ? '-' :recepientNumberContactChangedValue}}</li>
+        <li>Coach : {{(!coachNameChangedValue) ? '-' :coachNameChangedValue}}</li>
+    </ul>
+    
+       
+    <button class="col-form-label btn btn-blue mt-2" (click)="copyInputMessage()">
+        <span class="icon copier-blanc"></span> Copier le sticker
+    </button>   
+    
+    </div>
+</div>
+
+              
+</div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <div class="col-lg-16 col-md-24 order-lg-1">
+        <form [formGroup]="form">
+        <div class="row" *ngIf="showFormError">
+            <div class="col-md-14 col-lg-14">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    
+                                 <div *ngIf="showStockError">- Le champ Stock prélevé est obligatoire </div>
+                                    <div  *ngIf="showCoachError">- Le champ notification coach doit être renseigné</div>
+                                    <div  *ngIf="showDicountError">- Veuillez mettre une remise inférieure au prix de vente</div>
+                                    <div  *ngIf="showDiscountInvalidForNegativePriceError">- Pas de remise pour les prix de ventes négatifs</div>
+                                    <div  *ngIf="showCommentError">- Veuillez mettre un commentaire à chaque article indiqué</div>
+                                    <div  *ngIf="showmodeDeliveryError">- Le champ mode de livraison doit être renseigné</div>
+                                    <div  *ngIf="showadresseDeliveryError">- Le champ adresse doit être renseigné</div>
+                                    <div  *ngIf="showcontactPourReceptionnerError">- Le champ contact pour réceptionner la livraison doit être renseigné</div>
+                                    <div  *ngIf="showdatedesiredError">- Le champ Date de livraison souhaités doit être renseigné</div>
+                                    <div  *ngIf="showDescriptifError">- Le champ descriptif  doit être renseigné</div>
+                                    <div  *ngIf="showadresseDevisError">- Le champ adresse  doit être renseigné</div>
+                                    <div  *ngIf="showMobileContactError">- Le champ mobile de contact ne doit pas excéder 20 caractères</div>
+                                    <div  *ngIf="showReceptionerComboError">- Le champ  destinataire doit être renseigné</div>
+                                    <div  *ngIf="showDestinationError">- Le champ A qui souhaitez-vous adresser le devis ? ?   doit être renseigné</div>
+                                    <div  *ngIf="showadresseDeliverySaisieError">- Veuillez  selectionner une adresse </div>
+                                    <div  *ngIf="showadresseDevisSaisieError">- Veuillez  selectionner une adresse </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="block_onglet block block-shadow">
+            <div class="gestion_pannier">
+                <mat-tab-group animationDuration="10ms" [disableRipple]="true" #tabGroup (selectedTabChange)="tabChanged($event)"
+                [(selectedIndex)]="ongletSelectedAfterSave">
+                    <mat-tab [label]="'Article'">
+                        <ng-template mat-tab-label>
+                            <span class="c-badge">Article</span>
+                          </ng-template>
+                       <app-tab-article [customerId]="customerId" [requestId]="requestId"
+                        (onInitPrelevementStock)="onInitPrelevementStockEvent($event)"
+                        (onUpdatingItems) = "onUpdatingItems($event)"
+                        (onUpdateRecapCartItem)="onUpdateRecapCartItemEvent($event)"
+                        (onSendStatusToParent)="onSendStatusToParentEvent($event)"
+                        (onCheckArticleModification)="onCheckModificationEvent($event)"
+                        [visibleActionsOnArticle]="visibleActionsOnArticle"
+                        (onCheckArticleSupscriptionPeriodicity)="onCheckArticleSupscriptionPeriodicityEvent($event)"
+                        > </app-tab-article>
+                    </mat-tab>
+                    <mat-tab *ngIf="!isAssurance && !isAssistanceSAVMobile" [label]="'DEVIS'">
+                        <ng-template mat-tab-label>
+                            <span  matBadge="!" matBadgeColor="warn" [matBadgeHidden]="hideDevisBadge" class="c-badge">Devis</span>
+                          </ng-template>
+                        <app-tab-devis [visibleActionsOnDevis]="visibleActionsOnDevis" 
+                        (onCheckDevisFormValidation)="onCheckDevisFormValidationEvent($event)" 
+                        (onCheckDevisModification)="onCheckModificationEvent($event)"
+                         [clickCancelBtn]="clickCancelBtn"
+                   
+                        > </app-tab-devis> 
+                    </mat-tab>
+                    <mat-tab [label]="'Livraison'">
+                        <ng-template mat-tab-label>
+                            <span  matBadge="!" matBadgeColor="warn" class="c-badge" [matBadgeHidden]="hideDeliveryBadge">Livraison</span>
+                          </ng-template>
+                          
+                          <app-tab-delivery  
+                           (onCheckDeliveryFormValidation)="onCheckDeliveryFormValidationEvent($event)" 
+                                                  (sharedDataDeliveryCartVo)="onchangeDeliveryValues($event)"
+                                                  [visibleActionsOnLivraison]="visibleActionsOnLivraison"
+                                                  (onCheckDeliveryModification)="onCheckModificationEvent($event)"
+                                                  [initPrelevementStock]="initPrelevementStock"
+                                                  [stocksDisponibility] = "stocksDisponibility"
+                                                  [clickCancelBtn]="clickCancelBtn"
+                                                  [isRecoverSav]="isRecoverSav"
+                                                  [isAssistanceSAVMobile]="isAssistanceSAVMobile"
+                                                  [isRequestSav]="isRequestSav"
+                                                  [formsSubmitted]="formsSubmitted"
+                                                  [visibleActionsOnSAV]="visibleActionsOnSAV"
+                                                  [visibleActionsForCoachAndDesk]="visibleActionsForCoachAndDesk"
+                                                  
+                            > </app-tab-delivery> 
+                           
+                          
+                    </mat-tab>
+                    <mat-tab [label]="'Logistique'">
+                        <ng-template mat-tab-label >
+                            <span class="c-badge mobilespace">Traitement logistique</span>
+                          </ng-template>
+                          <app-tab-logistics-processing 
+                                 [visibleActionsOnLogistic]="visibleActionsOnLogistic"
+                                 [isCartChanged]="isCartChanged"
+                                 (loadingLogisticData)="onLoadingLogisticData($event)"
+                                 [visibleActionOnUnblocking] = "visibleActionOnUnblocking">
+                        </app-tab-logistics-processing> 
+                    </mat-tab>
+                    <mat-tab label="facturation">
+                        <ng-template mat-tab-label >
+                            <div class="facturationwidth">facturation</div>
+                          </ng-template>
+                        <app-tab-billing [cartId]="cartId" [billAccountId]="billAccountId" [isFacturation]="isFacturation" 
+                        (onCheckBillingModification)="onCheckModificationEvent($event)" 
+                        [cartStatus]="cartStatus"
+                        [clickCancelBtn]="clickCancelBtn"
+                        [hasArticleSupscriptionPeriodicityEqualACTE]="hasArticleSupscriptionPeriodicityEqualACTE"
+                        > </app-tab-billing>
+                    </mat-tab>
+                    <mat-tab label="SAV MOBILE" *ngIf="isRequestSav && isAssistanceSAVMobile">
+                         <app-tab-sav [visibleActionsOnSAV]="visibleActionsOnSAV" 
+                        (onCheckSavModification)="onCheckModificationEvent($event)"
+                        (isRecoverToSendToDelivery)="getIsRecover($event)"
+                        [clickCancelBtn]="clickCancelBtn"
+                        > </app-tab-sav></mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+
+        <div class="row mt-md-5 mb-2 justify-content-center btn_responsive">
+            <div _ngcontent-jtr-c11="" class=" ">
+                <input
+                    _ngcontent-jtr-c11=""
+                    class="btn btn-green"
+                    queryparamshandling="merge"
+                    type="button"
+                    value="Enregistrer"
+                    tabindex="0"
+                    ng-reflect-query-params-handling="merge"
+                    ng-reflect-router-link="/customer-dashboard,1200,detai"
+                    (click)="save()"
+                    [disabled]= "saveDone"
+                />
+            </div>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <a class="btn btn-link athena" 
+            [routerLink]="null" 
+            queryParamsHandling="merge" (click)="cancel()"> Annuler</a>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>

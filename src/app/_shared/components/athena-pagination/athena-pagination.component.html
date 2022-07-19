@@ -1,0 +1,6 @@
+<ngb-pagination *ngIf="totalPages > 1"
+    [collectionSize]="totalPages*10" [(page)]="currentPage" [maxSize]="5" 
+    [boundaryLinks]="false" [size]="'sm'" (pageChange)="goToPageClick($event)"
+>
+</ngb-pagination>
+

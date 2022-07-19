@@ -1,0 +1,47 @@
+@import '~src/styles/charte';
+
+.break-word {
+  white-space: pre-wrap !important;
+}
+
+.beneficiaries{
+	.table {
+		
+		.border-left {
+			border-left: $border;
+		}
+
+		.border-right {
+			border-right: $border;
+			.ag-header-cell-label {
+				justify-content: center;
+			}
+		}
+		.borderRight{
+			border-right: $border;
+		}
+		
+		.ag-cell-focus{
+			border: transparent !important;
+		}
+
+		.centerround {
+			display: flex;
+		    justify-content: center;
+		}
+
+		.ag-header-cell.centerround {
+			.ag-header-cell-label {
+			   justify-content: center;
+			}
+		}
+		.noborder {
+			border: none !important;
+		}	
+		.ag-theme-material textarea[class^='ag-'] {
+			height: auto !important;
+		}
+	}
+
+}
+

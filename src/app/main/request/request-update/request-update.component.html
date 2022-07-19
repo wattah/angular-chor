@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-24">
+        <h6 class="athena" style="margin-bottom: 0;"> {{currentRequest?.requestTypeLabel}} </h6>
+        <h5 class="athena"> Demande N°{{currentRequest?.id}} </h5>
+    </div>
+    <div class="col-md-24 col-lg-24">
+        <div class="block block-shadow">
+            <h2 class="athena">Modification de la demande</h2>
+            <form [formGroup]="requestUpdateForm" #fromUpdateRequest="ngForm" (ngSubmit)="updateRequest()">
+                <div class="row">
+                    <div class="col-lg-10 col-md-12">
+                        <div class="form-group row">
+                            <label for="start" class="col-sm-8 col-form-label mt-1 athena">Date de la demande</label>
+                            
+                            <mat-form-field class="col-sm-6" appearance="outline">
+                                <input class="athena" matInput  formControlName="startDate" [(ngModel)]="startDate" [matDatepicker]="pickerStart" placeholder="">
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                            </mat-form-field>
+                            <span class="col-sm-2 col-form-label margin-top mb-1 ml-n1 icon calendar-grey clickable" (click)="pickerStart.open()" ></span>
+                            <label for="start" class="offset-sm-1 col-sm-1 col-form-label mt-1 mr-1 athena"> à </label>
+                            <div class="col-sm-5 ">
+                                <app-athena-timer (selectTime)="onChangeTimeStart($event)"
+                                [defaultHour] = "hourRequest" [defaultMinute] = "minuteRequest" ></app-athena-timer>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="proteurSelect" class="col-sm-8 col-form-label athena">Porteur</label>
+                            <div class="col-sm-15">
+                                <select class="form-control athena" formControlName="porteur"  [(ngModel)]="currentRequest.attachedUserId">
+                                    <option *ngFor="let porteur of users" [ngValue]="porteur.id"
+                                         [selected]="porteur.id === idPorteur">{{porteur | fullNameFormatter }} </option>
+                                </select> 
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="commercialSelect" class="col-sm-8 col-form-label athena">R. commercial <span class="required" *ngIf="commercialAndBusinessAccountsRequired">*</span></label>
+                            <div class="col-sm-15">
+                                <select  class="form-control athena"  formControlName="commercial" [(ngModel)]="currentRequest.salesReprentatifId" [required]="commercialAndBusinessAccountsRequired">
+                                    <option [value]="null" disabled>--</option>
+                                    <option *ngFor="let commercial of users" [ngValue]="commercial.id"
+                                         [selected]="commercial.id === idRespCom">{{commercial | fullNameFormatter }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                                <label for="affaireSelect" class="col-sm-8 col-form-label athena">R. d'affaires <span class="required" *ngIf="commercialAndBusinessAccountsRequired">*</span></label>
+                                <div class="col-sm-15">
+                                    <select class="form-control athena" id="affaireSelect" formControlName="affaire" [(ngModel)]="currentRequest.accountManagerUserId" [required]="commercialAndBusinessAccountsRequired">
+                                        <option [value]="null" disabled>--</option>
+                                        <option *ngFor="let affaire of users" [ngValue]="affaire.id"
+                                         [selected]="affaire.id === idRespAffaire">{{affaire | fullNameFormatter}} </option>
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="form-group row">
+                            <label for="descriptionTextarea" class="col-sm-8 col-form-label athena" >Description</label>
+                            <div class="col-sm-15">
+                                <textarea name="description" formControlName="description" [(ngModel)]="currentRequest.description" class="form-control athena" id="descriptionTextarea" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="row control-buttons ">
+                            <div class="col-sm-8 text-right">
+                                <a class="btn btn-link mt-1 athena" [routerLink]="routerAfterCanceling()" 
+                                queryParamsHandling="merge" (click)="onCanceledChange(true)">Annuler</a>
+                            </div>
+                            <div class="col-sm-15">
+                                <input class="btn btn-green athena" value="Enregistrer la modification" type="submit" [disabled]="fromUpdateRequest.submitted || !requestUpdateForm?.valid || currentRequest.description?.length > 4000"
+                                [ngClass]="['btn', requestUpdateForm?.valid  ? 'btn-green' : 'btn-grey']" />
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

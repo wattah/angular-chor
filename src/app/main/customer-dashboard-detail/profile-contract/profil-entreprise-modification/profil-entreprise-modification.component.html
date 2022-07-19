@@ -1,0 +1,120 @@
+<div class="row" *ngIf="false">
+    <div class="col-md-12 col-lg-12">
+        <div class="block block-alert" >
+            <table class="table table-not-bordered"><caption class="p-0"></caption>
+                <tbody>
+                    <tr>
+                        <th id="th"></th> 
+                        <td class="alert-icon align-middle" >
+                            <span class="icon icon-max status-exclamation-white"></span>
+                        </td>
+                        <td class="alert-text">
+                            <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                            <ul class="simple mr-0 mt-2">
+                                <li *ngIf="isFormValid('companyName')">Raison sociale </li>
+                                <li *ngIf="isFormValid('crmName')">Nom interne </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <img class="img-fluid maxProfilePicture" [src]="photo" alt="profile" />
+                </div>
+            </div>
+        </div>
+    <form [formGroup]="form">
+        <div class="form-group row mt-3">
+            <label for="titreSelect" class="col-lg-6 col-form-label athena"> Changer de photo Fichier (<10Mo)</label>
+            <div class ="col-md-12">
+                <ngx-dropzone name="photo" [multiple]="false" [expandable]="true" class="fileDropProfile" (change)="onSelectFile($event)">
+                    <ngx-dropzone-label>
+                        Déposez des fichiers ici ou <br />
+                        cliquez pour <u class="blue"> télécharger</u> .
+                    </ngx-dropzone-label>
+                    <ngx-dropzone-preview class="fileinter" *ngFor="let f of files" [removable]="true" (removed)="onRemoveFile(f)">
+                        <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                </ngx-dropzone>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-6 col-form-label athena"> Raison sociale*</label>
+            <div class="col-sm-20 col-lg-12">
+                <div class="d-flex">
+                <input [ngClass]="[isFormValid('companyName') ? 'form-control ng-pristine ng-valid ng-touched athena error' : 'form-control ng-pristine ng-valid ng-touched athena']" formControlName="companyName" name="companyName" type="text" />
+                    <div *ngIf="isFormValid('companyName')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+                <mat-error *ngIf="isFormValid('companyName')">Ce champ est obligatoire</mat-error>
+            </div>
+            
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-6 col-form-label athena"> Nom interne*</label>
+            <div class="col-sm-20 col-lg-12">
+                <div class="d-flex">
+                <input [ngClass]="[isFormValid('crmName') ? 'form-control athena error' : 'form-control athena']" formControlName="crmName" name="crmName" type="text" />
+                    <div *ngIf="isFormValid('crmName')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+                <mat-error *ngIf="isFormValid('crmName')">Ce champ est obligatoire</mat-error>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-6 col-form-label athena"> SIREN</label>
+            <div class="col-sm-20 col-lg-12">
+                <div class="d-flex">
+                <input [ngClass]="[isSirenValid('siret') ? 'form-control athena error' : 'form-control athena']" 
+                  formControlName="siret" name="siret" type="text" minlength="1" maxlength="9" numberOnly />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-6 col-form-label athena"> Secteur d'activité</label>
+            <div class="col-sm-20 col-lg-12">
+                <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( form.get('refSocioEconomicGroup'), trigger)">
+                    <input type="text" class="" matInput [matAutocomplete]="autoSector" formControl="refSocioEconomicGroup"  name="refSocioEconomicGroup" [formControl]="form.get('refSocioEconomicGroup')"
+                    #trigger="matAutocompleteTrigger"  (click)="clearAutoCompleteInputControl( form.get('refSocioEconomicGroup'), trigger)" >
+                    <mat-autocomplete #autoSector="matAutocomplete" [displayWith]="display">
+                        <mat-option *ngFor="let sector of filteredActivitySectors | async" [value]="sector">
+                            {{sector.label}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-group row select_arrows">
+            <label class="col-lg-6 col-form-label athena"> Client OBS</label>
+            <div class="col-sm-20 col-lg-12">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="obsType" name="obsType">
+                    <option *ngFor="let type of obsTypeList" [ngValue]="type">{{type.label}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-6 col-form-label athena">Infos gestionnaire OBS</label>
+            <div class="col-sm-20 col-lg-12">
+                <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="obscomment" name="obscomment"></textarea>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+

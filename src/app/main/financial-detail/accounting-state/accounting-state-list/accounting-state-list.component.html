@@ -1,0 +1,35 @@
+<div class="block block-shadow">
+    <h2 class="block-title athena">Etat comptable - Contrat N°{{nicheIdentifier}} - {{offerLabel}} <span class="text-min grey"> ({{totalItems}} mouvements)</span>
+        <a class="block-title-item-link"  [routerLink]="null" queryParamsHandling="merge" >
+            <div class="block-title-item-icon">
+				<span [ngClass]="getIconeDownload()"  (click)= "exportXLS()"></span>
+            </div>
+        </a>
+    </h2>
+    <app-athena-ag-grid2
+        class="accountlist"
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefs"
+        [rowStyle]="rowStyle"
+        [datasource]="datasource"
+        [paginationPageSize]="paginationPageSize"
+        [loadAgGridParams]="params"
+        [totalItems]="totalItems"
+        [suppressRowClickSelection]="true"
+        [showTopPagination]="true"
+        (gridReady)="onGridReady($event)">
+    </app-athena-ag-grid2>
+    
+    <p class="text-right mt-4" *ngIf="isMultiContrat">
+        <span class="text-max grey">Contrat N {{nicheIdentifier}}, {{offerLabel}}</span>
+        <a class="block-title-item-link" [ngClass]="{'isDisabled': lastNiche === nicheIdentifier }"  [routerLink]="null" (click)="getDataPreviousOrNext('next')">
+            <span class="text-min normal no-transform">Suivant<span class="icon icon-min arrow-right-blue"></span></span>
+        </a>
+        <span class="block-title-item-link" *ngIf="isMultiContrat">
+            <span class="text-giant normal light-grey no-transform">|</span>
+        </span>
+        <a class="block-title-item-link" [ngClass]="{'isDisabled': firstNiche === nicheIdentifier }" [routerLink]="null" (click)="getDataPreviousOrNext('prev')">
+            <span class="text-min normal no-transform"><span class="icon icon-min arrow-left-blue"></span>Précédent</span>
+        </a>
+    </p>
+</div>

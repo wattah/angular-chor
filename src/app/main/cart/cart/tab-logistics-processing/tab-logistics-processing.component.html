@@ -1,0 +1,45 @@
+<div class="onglet_traitement-log">
+    <div class="row d-none d-lg-block">
+        <div class="col-sm-24 p-0 mb-3 athena d-flex justify-content-{{rowData === null || rowData === undefined || rowData.length === 0 ? 'center':'left'}}" *ngIf="!isBlocked && cartItems?.length > 0 && visibleActionsOnLogistic">
+            <button class=" col-form-label btn btn-blue" (click)="triggerOCandBLWingsm()"> Déclencher l'OC et le BL WinGSM</button>
+        </div>
+        <div class="col-sm-24 p-0 mb-3 athena d-flex justify-content-{{rowData === null || rowData === undefined || rowData.length === 0 ? 'center':'left'}}" *ngIf="isBlocked && visibleActionOnUnblocking">
+            <button class=" col-form-label btn btn-blue" (click)="unblockOrder()"> Débloquer la commande</button>
+        </div>
+        <div class="col-sm-24 p-0 mb-3 athena d-flex justify-content-center" *ngIf="!visibleActionsOnLogistic">
+            <span *ngIf="!rowData || rowData.length === 0"> L'ordre de commande n'a pas été declenché</span>
+        </div>
+    <div class="text grey" *ngIf="rowData?.length > 0">Suivi de livraison</div>
+    </div>
+</div>
+<div class="d-none d-sm-none d-lg-block mb-2" *ngIf="rowData?.length > 1">
+    <div class="col-sm-12 col-lg-24" [hidden]="show === false">
+        <div class="athena link font-weight-bold" (click)="expandedAll()">
+            Déplier toutes les lignes du tableau
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-24" *ngIf="!show">
+        <div class="athena link font-weight-bold" (click)="collapseAll()">
+            Plier toutes les lignes du tableau
+        </div>
+    </div>
+</div>
+<app-athena-paginated-ag-grid
+*ngIf="rowData?.length > 0"
+style="width: 100%; height: 100%;"
+    [showTopPagination]="false" 
+    [paginationPageSize]="20"
+    [columnDefs]="columnDefs" 
+    [collapseAllRows]="collapseAllRows"
+    [rowData]="rowData" 
+    [detailCellRendererParams]="detailCellRendererParams"
+    [masterDetail]="true"
+    [loadAgGridParams]="params"
+    [redrawDetailsRows]="redrawDetailsRows"
+    [expandedAllRows]="expandedAllRows"
+    [detailRowHeight]="320"
+    [newRowData]="newRowData" 
+    (clickedCell)="clickCell($event)"
+    [getRowHeight]="getRowHeight"
+>
+</app-athena-paginated-ag-grid>

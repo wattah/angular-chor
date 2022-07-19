@@ -1,0 +1,9 @@
+<div class="modal-body text-center " id="pop-up-envoi-sms">
+    <p class="mt-2 mb-4" [innerHTML]="message"></p>
+    <input class="btn btn-green button-popup" value="{{firstChoseMessage}}" type="button" (click)="onFirstChose()" style="width: 233px;"/><br /><br />
+    <input class="btn btn-blue button-popup" value="{{secondChoseMessage}}" type="button" (click)="onSecondChose()" style="width: 233px;"/><br /><div *ngIf="thirdChoseMessage && thirdChoseMessage.length !== 0"><br/></div>
+    <input class="btn btn-green button-popup" value="{{thirdChoseMessage}}" type="button" (click)="onThirdChose()" style="width: 233px;" *ngIf="thirdChoseMessage && thirdChoseMessage.length !== 0"/><br />
+    <button class="btn btn-link blue center mt-3" (click)="decline()" *ngIf="isCancelBtnVisible">Annuler</button>
+    <br/>
+    <br/>
+</div>

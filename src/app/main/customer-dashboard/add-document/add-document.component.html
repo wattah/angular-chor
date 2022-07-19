@@ -1,0 +1,94 @@
+<div id="body" class="container-fluid" [ngClass]="( this.typeCustomer === 'particular')?'env-pink':'env-yellow'">
+    <div class="row">   
+        <div class="d-none d-md-block col-md-24 col-lg-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')" 
+                [infoCustomer]="infoProfil" 
+                [goodToKnow]="goodToKnow" 
+                [typeCustomer]="typeCustomer" 
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt"> 
+            </app-see-all-profil>
+        </div>
+        <div class="d-none d-md-block  col-24">
+            <p class="athena">
+                <a 
+                    [routerLink]="(typeCustomer === 'company') 
+                        ? ['/customer-dashboard/entreprise', customerId]
+                        : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}"
+                    queryParamsHandling="merge"
+                    class="athena"
+                    >
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+    <div class="col-24" *ngIf="isRequestView">
+        <h6 class="athena" style="margin-bottom: 0;">{{detailRequest?.requestTypeLabel}}</h6>
+        <h5 class="athena" >  Demande N°{{requestId}} </h5>
+    </div>
+<div class="row">
+    <div class="col-md-24 col-lg-8 order-lg-2" *ngIf="isRequestView">
+        <app-request-summary  [detailRequest]="detailRequest" [customerId]="customerId" [requestId]="requestId" ></app-request-summary> 
+    </div>
+    <div [ngClass]="{' col-md-24 col-lg-16 order-lg-1': isRequestView, ' col-md-24 col-lg-24': !isRequestView}">
+            <div class="block block-shadow">
+                <h2 class="athena">
+                    ajout d'un document
+                </h2>
+                <form [formGroup]="addDocumentForm">
+                    <div class="row mt-2">
+                        <div class="col-lg-18 col-md-18">  
+                            <div class="form-group row">
+                                <label for="" class="col-md-5 col-form-label athena">Type de document*</label>
+                                <div [ngClass]="{' col-md-19 ': isRequestView, ' col-md-14': !isRequestView}">
+                                    <select class="form-control col-md-14 mt-1 athena" formControlName="documentType" (change)="onTypeSelect()" required>
+                                        <option *ngFor="let type of documentsTypeList" [ngValue]="type">{{type.documentTypeName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="" class="col-md-5 col-form-label athena">Titre du document*</label>
+                                <div [ngClass]="{' col-md-19': isRequestView, ' col-md-14': !isRequestView}">
+                                    <select class="form-control col-md-14 mt-1 athena" formControlName="documentTitle" (change)="onTitleSelect()" required>
+                                        <option value="--">--</option>
+                                        <option *ngFor="let title of documentsTitleByType" [ngValue]="title">{{title.documentTitle}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="titreSelect" class="col-md-5 col-form-label athena">Fichier (<10Mo)*</label>
+                                <div [ngClass]="{' col-sm-11 ': isRequestView, ' col-md-8': !isRequestView}">
+                                    <ngx-dropzone name="file" [multiple]="false" [expandable]="true" class="fileDropZone" (change)="onSelectFile($event)">
+                                        <ngx-dropzone-label>Déposez des fichiers ici ou
+                                            cliquez pour <u class="blue "> télécharger</u>  .</ngx-dropzone-label>
+                                            <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemoveFile(f)">
+                                                <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                                            </ngx-dropzone-preview>
+                                    </ngx-dropzone>
+                                </div>
+                            </div>
+                            <div class="form-group visibility row">
+                                <label for="visibility" class="col-sm-5 col-form-label athena">Visible sur le portail</label>
+                                <div class="form-check grey">
+                                    <mat-checkbox id="visibility" (change)="isVisibleOnPortal($event)" [checked]="isAccessibleFromPortal">Oui</mat-checkbox>
+                                </div>
+                                <span class="col-md-12 col-lg-12 nowrap form-label grey"></span>
+                            </div>
+                            <div class="row control-buttons">
+                                <div class="offset-md-2 mt-1">
+                                    <a class="btn btn-link athena" [routerLink]="null" (click)="onCancel()" queryParamsHandling="merge">Annuler</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <input class="btn btn-green" value="Ajouter le document" type="submit" (click)="onSave()" [disabled]="fileInvalid || titleDocInvalid || typeDocInvalid"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="profil" >
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="block-1">
+                <div class="row">
+                    <div class="col-lg-18 ">
+                        <div><span class="grey athena">Statut :</span> {{getStatusCustomer()}}</div>
+                        <div><span class="grey athena">Membre validé :</span> {{isMemberValidated}}</div>
+                        <div><span class="grey athena">Compte de test :</span> {{person?.refTestAccount ? person?.refTestAccount.label : '-' }}</div>
+                        <div><span class="grey athena">Date d'entrée en prospection :</span> {{(customer?.prospectingAdmissionDate) ? (customer?.prospectingAdmissionDate | dateFormatPipeFrench) : '-' }}</div>
+                        <div><span class="grey athena">Date de signature :</span> {{(customer?.nicheAdmissionDate) ? (customer?.nicheAdmissionDate | dateFormatPipeFrench) : '-'}}</div>
+                        <div><span class="grey athena">Date de l'étude technique :</span> {{(customer?.dateOfTechnicalStudy) ? (customer?.dateOfTechnicalStudy | dateFormatPipeFrench) : '-'}}</div>
+                        <div><span class="grey athena">Date de l'installation :</span> {{(customer?.installationDate) ? (customer?.installationDate | dateFormatPipeFrench) : '-'}}</div>
+                        <div><span class="grey athena">Statut de réalisation :</span> {{realisationStatut(customer?.realisationStatus)}} </div>
+                        <div><span class="grey athena">Motif d'adhésion :</span> {{customer?.refMembershipReason ? customer?.refMembershipReason?.label : '-'}}</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="offset-2 col-lg-10">
+            <div class="block-2">
+                <div><span class="grey athena">Motif d'adhésion secondaire :</span> {{person?.refMembershipReason2 ? person?.refMembershipReason2?.label : '-'}}</div>
+                <div><span class="grey athena">Comment le membre a-t'il connu Parnasse ? :</span> {{person?.refParnasseKnowledge ? person?.refParnasseKnowledge.label : '-' }} </div>
+                <div><span class="grey athena">Complément d'infos :</span> {{person?.additionalInformations ? person?.additionalInformations : '-'}}</div>
+                <div><span class="grey athena">Date d'homologation :</span> {{(customer?.dateHomologation) ? (customer?.dateHomologation | dateFormatPipeFrench) : '-'}}</div>
+                <div><span class="grey athena">Date d'intronisation :</span> {{(customer?.acceptanceDate) ? (customer?.acceptanceDate | dateFormatPipeFrench) : '-'}}</div>
+                <div><span class="grey athena">Date de paiement :</span> {{(customer?.paymentDate) ? (customer?.paymentDate | dateFormatPipeFrench) : '-'}}</div>
+                <div><span class="grey athena">Date de cession de contrat :</span> {{(customer?.contractCessionDate) ? (customer?.contractCessionDate | dateFormatPipeFrench) : '-'}}</div>
+                <div><span class="grey athena">Date de résiliation :</span> {{(customer?.cancellationDate) ? (customer?.cancellationDate | dateFormatPipeFrench) : '-'}}</div>
+                <div><span class="grey athena">Motif de résiliation :</span> {{customer?.refCancellationReason ? customer?.refCancellationReason.label : '-'}}</div>
+                <div><span class="grey athena">Commentaire du comité de sélection :</span> {{customer?.commiteeOfSelectionComment ? customer?.commiteeOfSelectionComment : '-'}}</div>   
+        </div>
+
+        </div>
+    </div>
+
+        <div class="row mt-5 mb-2 justify-content-center">
+            <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateContractualStatus()" ><span class="icon pen-white d-block btn-modifie"></span>Modifier</button>
+        </div>  
+   
+</div>

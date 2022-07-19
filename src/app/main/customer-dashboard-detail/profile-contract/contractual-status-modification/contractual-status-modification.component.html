@@ -1,0 +1,310 @@
+<div class="row" *ngIf="false" >
+    <div class="col-md-12 col-lg-12">
+        <div class="block block-alert" >
+            <table class="table table-not-bordered"><caption class="p-0"></caption>
+                <tbody>
+                    <tr>
+                        <th id="th"></th> 
+                        <td class="alert-icon align-middle" >
+                            <span class="icon icon-max status-exclamation-white"></span>
+                        </td>
+                        <td class="alert-text">
+                            <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                            <ul class="simple mr-0 mt-2 alert-padding">
+                                <li *ngIf="isValidBy('prospectingAdmissionDate')">Le champ date d'entrée est obligatoire </li>
+                                <li *ngIf="isValidBy('nicheAdmissionDate')">Le champ date de signature est obligatoire </li>
+                                <li *ngIf="isValidBy('dateHomologation')">Le champ date d'homologation est obligatoire </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-lg-12">
+    <form [formGroup]="formStatusContrat">
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Statut</label>
+            <div class="col-lg-12">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="status"
+                (change)='onChangeStatus()'>
+                    <option *ngFor="let st of lStatus"  [ngValue]="st.id">
+                        {{st?.value}}
+                    </option>
+                </select>
+            </div>          
+        </div>
+        <div class="form-group row">
+            <label for="1" class="col-lg-8 col-form-label athena"> Membre validé</label>
+            <div class="col-sm-16">
+              <div class="form-check checkBoxPosition">                  
+                <input class="form-check-input athena"  type="checkbox" id="membreValidId" formControlName="isMemberValidated">
+                <label class="form-check-label athena" for="membreValidId" ></label>                          
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="1" class="col-lg-8 col-form-label athena"> Membre honoraire</label>
+            <div class="col-sm-16">
+              <div class="form-check checkBoxPosition">                  
+                <input class="form-check-input athena"  type="checkbox" id="membreHonorairId" formControlName="isHonoraryMember">
+                <label class="form-check-label athena" for="membreHonorairId" ></label>                          
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="1" class="col-lg-8 col-form-label athena"> Membre fondateur</label>
+            <div class="col-sm-16">
+              <div class="form-check checkBoxPosition">                  
+                <input class="form-check-input athena"  type="checkbox" id="membreFondateurId" formControlName="isFounderMembership">
+                <label class="form-check-label athena" for="membreFondateurId" ></label>                          
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Compte de test</label>
+            <div class="col-lg-12">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched"
+                formControlName="refTestAccount">
+                    <option value="null"> -- </option>
+                    <option *ngFor="let compte of listCompteTest" [ngValue]="compte">
+                        {{compte?.label}}
+                    </option>
+                </select>
+            </div>          
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date d'entrée <br>en prospection{{asterix}}</label>
+            <div class="col-lg-14 m-0 p-0">
+                <div class="d-flex noborder">
+                    <mat-form-field [ngClass]="[isValidBy('prospectingAdmissionDate') ? 'col-lg-8 athena error' : 'col-lg-8 athena']" appearance="outline">
+                        <input matInput [matDatepicker]="pickerEntre" 
+                        placeholder="" readonly formControlName="prospectingAdmissionDate" />
+                        <mat-datepicker #pickerEntre></mat-datepicker>            
+                    </mat-form-field>
+                    <div class="col-2  col-sm-2 margin-top p-0">
+                        <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerEntre.open()"></span>
+        
+                    </div>
+                    <div *ngIf="isValidBy('prospectingAdmissionDate')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+            <mat-error *ngIf="isValidBy('prospectingAdmissionDate')">Ce champ est obligatoire</mat-error> 
+            </div>  
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date de signature{{asterix}}</label>
+            <div class="col-lg-14 m-0 p-0">
+                <div class="d-flex noborder">
+                    <mat-form-field [ngClass]="[isValidBy('nicheAdmissionDate') ? 'col-lg-8 athena error' : 'col-lg-8 athena']" appearance="outline">
+                        <input matInput [matDatepicker]="pickerSignature" 
+                        placeholder="" readonly formControlName="nicheAdmissionDate" />
+                        <mat-datepicker #pickerSignature></mat-datepicker>            
+                    </mat-form-field>
+                    <div class="col-2  col-sm-2 margin-top p-0">
+                        <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerSignature.open()"></span>
+        
+                    </div>
+                    <div *ngIf="isValidBy('nicheAdmissionDate')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>   
+            <mat-error class="ml-1" *ngIf="isValidBy('nicheAdmissionDate')">Ce champ est obligatoire</mat-error> 
+            </div>      
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date de l'étude <br>technique</label>
+            <div class=" col-lg-14 m-0 p-0 d-flex">
+                <mat-form-field class="col-lg-8 athena" appearance="outline">
+                    <input matInput [matDatepicker]="pickerEtude" 
+                    placeholder="" readonly formControlName="dateOfTechnicalStudy"/>
+                    <mat-datepicker #pickerEtude></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerEtude.open()"></span>
+    
+                </div>
+            </div>         
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date de l'installation</label>
+            <div class=" col-lg-14 m-0 p-0 d-flex">
+                <mat-form-field class="col-lg-8 athena " appearance="outline">
+                    <input matInput [matDatepicker]="pickerInstallation" 
+                    placeholder="" readonly formControlName="installationDate" />
+                    <mat-datepicker #pickerInstallation></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerInstallation.open()"></span>
+    
+                </div>
+            </div>         
+        </div>
+        <div class="form-group row">
+            <label for="mediaSelect" class="col-8 col-form-label athena">Statut de réalisation</label>
+            <div class="col-15">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" formControlName="realisationStatus" id="optionRealise" value="realise" >
+                    <label class="form-check-label" for="optionRealise"> Réalisé </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" formControlName="realisationStatus" id="optionPasRealise" value="pasRealise">
+                    <label class="form-check-label" for="optionPasRealise"> Pas réalisé </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" formControlName="realisationStatus" id="optionDecale" value="decale">
+                    <label class="form-check-label" for="optionDecale"> Décalé </label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Motif d'adhésion</label>
+            <div class="col-lg-12">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched"
+                formControlName="refMembershipReason">
+                    <option [ngValue]="null">- -</option>
+                    <option *ngFor="let motif of listMotifAdhesion" [ngValue]="motif">
+                        {{motif?.label}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Motif d'adhésion<br>secondaire</label>
+            <div class="col-lg-12">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched"
+                formControlName="refMembershipReason2">
+                <option [ngValue]="null">- -</option>
+                    <option *ngFor="let motifSec of listMotifAdhesion" [ngValue]="motifSec">
+                        {{motifSec?.label}}
+                    </option>
+                </select>  
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Comment le membre <br>a-t'il connu Parnasse ?</label>
+            <div class="col-lg-12">
+                <app-athena-nested-drop-down [list] = "lCommentMmbreATilConnuParnasse" 
+                (selectionChange)="onSelectCommentConnu($event)" 
+                [selectedValue]="{ label: (this.person?.refParnasseKnowledge) ? this.person?.refParnasseKnowledge?.label : '--'}" 
+                ></app-athena-nested-drop-down>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Complément d'infos</label>
+            <div class="col-lg-12">
+                <input formControlName="additionalInformations" class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date d'homologation{{asterix}}</label>
+            <div class=" col-lg-14 m-0 p-0">   
+                <div class="d-flex noborder">  
+                    <mat-form-field [ngClass]="[isValidBy('dateHomologation') ? 'col-lg-8 athena error' : 'col-lg-8 athena']" appearance="outline">
+                        <input matInput [matDatepicker]="pickerHomologation" 
+                        placeholder="" readonly formControlName="dateHomologation"/>
+                        <mat-datepicker #pickerHomologation></mat-datepicker>            
+                    </mat-form-field>
+                    <div class="col-2  col-sm-2 margin-top p-0">
+                        <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerHomologation.open()"></span>
+                    </div>
+                    <div *ngIf="isValidBy('dateHomologation')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>   
+                </div> 
+                <mat-error class="ml-1" *ngIf="isValidBy('dateHomologation')">Ce champ est obligatoire</mat-error>
+            </div> 
+                   
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date d'intronisation</label>
+            <div class=" col-lg-7 m-0 p-0 d-flex">
+                <mat-form-field class="col-lg-16 athena" appearance="outline">
+                    <input matInput [matDatepicker]="pickerIntronisation" 
+                    placeholder="" readonly formControlName="acceptanceDate" />
+                    <mat-datepicker #pickerIntronisation></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerIntronisation.open()"></span>
+                </div>
+            </div>
+            <label  class=" col-form-label mt-1 "> à </label>
+            <div class="mr-5 ml-1 col-lg-4 ">
+                <app-athena-timer (selectTime)="onChangeTime($event)"
+                [defaultHour] = "hourIntronisation" 
+                [defaultMinute] = "MinuteIntronisation" >
+            </app-athena-timer>
+            </div>         
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date de paiement</label>
+            <div class=" col-lg-14 m-0 p-0 d-flex">
+                <mat-form-field class="col-lg-8 athena" appearance="outline">
+                    <input matInput [matDatepicker]="pickerPaiment" 
+                    placeholder="" readonly formControlName="paymentDate"/>
+                    <mat-datepicker #pickerPaiment></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerPaiment.open()"></span>
+    
+                </div>
+            </div>         
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Date de cession de contrat</label>
+            <div class=" col-lg-14 m-0 p-0 d-flex">
+                <mat-form-field class="col-lg-8 athena" appearance="outline">
+                    <input matInput [matDatepicker]="pickerCessContrat" 
+                    placeholder="" readonly formControlName="contractCessionDate"/>
+                    <mat-datepicker #pickerCessContrat></mat-datepicker>            
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerCessContrat.open()"></span>
+                </div>
+            </div>         
+        </div>
+       
+        <div class="form-group row" *ngIf="isCancledMember">
+            <label class="col-lg-8 col-form-label athena"> Date de résiliation{{asterix}}</label>
+            <div class="col-lg-14 m-0 p-0">
+                <div class="d-flex noborder">
+                    <mat-form-field [ngClass]="[isCancledMember && isValidBy('cancellationDate') ? 'col-lg-8 athena error' : 'col-lg-8 athena']" appearance="outline">
+                        <input matInput [matDatepicker]="pickerEntre" 
+                        placeholder="" readonly formControlName="cancellationDate" />
+                        <mat-datepicker #pickerEntre></mat-datepicker>            
+                    </mat-form-field>
+                    <div class="col-2  col-sm-2 margin-top p-0">
+                        <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerEntre.open()"></span>
+                    </div>
+                    <div *ngIf="isValidBy('cancellationDate')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+            <mat-error *ngIf="isValidBy('cancellationDate')">Ce champ est obligatoire</mat-error> 
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-8 col-form-label athena"> Motif de résiliation <span *ngIf="isCancledMember">{{asterix}}</span></label>
+            <div class="col-lg-12">
+                <app-athena-nested-drop-down [list] = "lMotifRealisation" [hasError]="isCancledMember && isValidMotif()"
+                (selectionChange)="onSelectMotifResiliation($event)" 
+                [selectedValue]="{ label: (this.customer?.refCancellationReason) ? this.customer?.refCancellationReason?.label : '--'}"
+                >
+            </app-athena-nested-drop-down>
+            <mat-error *ngIf="isCancledMember && isValidMotif()">Ce champ est obligatoire</mat-error> 
+            </div>
+            <div *ngIf="isCancledMember && isValidMotif()"  class="col-sm-1 mt-2 athena">
+                <span class="icon  status-exclamation"></span>
+            </div>
+           
+        </div>
+    </form>
+    </div>
+</div>
+
+

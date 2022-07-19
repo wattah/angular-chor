@@ -1,0 +1,9 @@
+<app-athena-paginated-ag-grid  
+  [title]="'PERSONNES &#xAB;' + searchPattern + '&#xBB; (' +  interlocuteurs.length + ')'"
+  [paginationPageSize]="paginationPageSize"
+  [columnDefs]="columnDefs" 
+  [rowData]="interlocuteurs"
+  [defaultSortModel]="defaultSortModel"  
+  (selectRow)="searchAction($event)"
+>
+</app-athena-paginated-ag-grid>

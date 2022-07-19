@@ -1,0 +1,28 @@
+<div class="block block-shadow" *ngIf="contractsOffers && contractsOffers.length >= 2">
+		<div class="row" >
+			<div class="col-xl-10 offset-xl-7 col-md-16 offset-md-4" >
+				<table id="selectContractTable" class="table">
+					<thead >
+						<tr>
+							<th>Contrat</th>
+							<th>Offre</th>
+						</tr>
+					</thead>
+					<tbody *ngFor="let c of contractsOffers"  >
+						<tr (click)="toAccountingState(c)">
+							<td class="table-td-link  " [ngClass]="{'selected':  c?.nicheIdentifier===nicheIdentifiant }">
+								<a class="table-td-a">
+									{{c.nicheIdentifier}}
+								</a>
+							</td>
+							<td class="table-td-link " [ngClass]="{'selected': c?.nicheIdentifier===nicheIdentifiant }" >
+								<a class="table-td-a">
+									{{c.offerLabel}}
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>

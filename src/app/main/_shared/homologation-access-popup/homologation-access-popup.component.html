@@ -1,0 +1,15 @@
+<div class="modal-body margin-pop-up" >
+	<div >
+		<div class="form-check" *ngFor="let homologationId of homologationsIds; let i=index">
+			<input *ngIf="i < 5" class="form-check-input athena" type="radio" [value]="homologationId"
+				 id="homologation{{i}}" (change)="selectHomologation(homologationId, i)" name="homologationRadio">
+			<label *ngIf="i < 5" class="form-check-label athena" for="homologation{{i}}" >
+				Voir l'homologation {{i === 0 ? 'du contrat' : 'de l\'avenant '+i}}
+			</label>
+		</div>
+	</div>
+	<div class="text-center">
+		<button class="btn btn-link blue center mt-3" (click)="accept()" >Valider</button>
+		<button class="btn btn-link blue center mt-3" (click)="decline()" >Annuler</button>
+	</div>
+</div>

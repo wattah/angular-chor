@@ -1,0 +1,92 @@
+
+<div class="underline mt-3 mb-2">Décodeur N°{{index}} <span class="icon del ml-2" *ngIf="interventionTvsLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeDecodor()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Modèle décodeur 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refDecoderModelType" name="refDecoderModelType"
+            [ngClass]="[refDecoderModelTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let decodeurModelType of decodeurModelTypes" [ngValue]="decodeurModelType">{{decodeurModelType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Emplacement 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refLocationType" name="refLocationType"
+            [ngClass]="[refLocationTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let locationType of locationTypes" [ngValue]="locationType">{{locationType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="isVisiblePrecisionField">
+        <label class="col-sm-4 col-form-label athena">Précision </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacement" name="autreEmplacement" [(ngModel)]="this.interventionTv.autreEmplacement"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Carte Viaccess </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="carteViaccess" name="carteViaccess" [(ngModel)]="this.interventionTv.carteViaccess"/>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Connexion 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refConnectionType" name="refConnectionType"
+            [ngClass]="[refConnectionTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let connectionType of connectionTypes" [ngValue]="connectionType">{{connectionType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Infos complémentaires sur la connexion </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="suplementinfo" name="suplementinfo" [(ngModel)]="this.interventionTv.suplementinfo"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-form-label athena col-sm-4"> Canal+activé</label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input class="form-check-input athena" id="{{isCanalRadomName}}" name="isCanalPlus" type="radio" [value]="true" formControlName="isCanalPlus"/>
+                <label class="form-check-label athena" for="{{isCanalRadomName}}"> Oui </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" id="{{isNotCanalRadomName}}" name="isCanalPlus" type="radio" [value]="false" formControlName="isCanalPlus"/>
+                <label class="form-check-label athena" for="{{isNotCanalRadomName}}"> Non</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire général </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" maxlength="255" rows="6" formControlName="comment" name="comment" [(ngModel)]="this.interventionTv.comment"></textarea>
+            <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>    
+</form>

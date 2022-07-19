@@ -1,0 +1,20 @@
+<br>
+<app-athena-block-loader *ngIf="inCompleteCall"></app-athena-block-loader>
+<div *ngIf="!inCompleteCall">
+<h2 id="e2e_titreBonAsavoir" class="block-title athena">
+  Bon à savoir
+  <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard',customerId, 'detail','modification-bonsavoir',personIdNote]"
+   queryParamsHandling="merge" *ngxPermissionsOnly="['modification_bon_a_savoir']">
+        <div *ngIf="!isNotElligible" class="block-title-item-icon">
+      <span class="icon pen athena"></span>
+    </div>
+  </a>
+</h2>
+<p class="text-min grey athena" >
+  <span class="athena" *ngIf="goodToKnow?.firstNameAuthor || goodToKnow?.lastNameAuthor"  id="e2e_author">Par  <span class="athena">{{goodToKnow?.firstNameAuthor | firstName}}</span> <span class="athena"> {{goodToKnow?.lastNameAuthor | uppercase}} </span></span>
+  <span class="athena" *ngIf="goodToKnow?.dateNote" id="e2e_dateNote" >, le {{goodToKnow?.dateNote | dateFormatPipeFrench}} {{goodToKnow?.value ? 'à' : ''}} {{goodToKnow?.dateNote | date:"HH'h'mm"}}{{goodToKnow?.dateNote ? '.' : ''}}</span>
+  {{infoFacturation?.value ? ',' : ''}} {{infoFacturation?.value ? 'le' : ''}}
+  {{infoFacturation?.dateNote | date:'dd MMM yyyy'}}	 {{infoFacturation?.value ? 'à' : ''}}   {{infoFacturation?.dateNote | date:"HH'h'mm"}}{{infoFacturation?.dateNote ? '.' : ''}}
+</p>
+<p class="enableNewLine athena" *ngIf="goodToKnow?.value" id='e2e_noteBody'> {{goodToKnow?.value.substring(0,500)}} </p>
+</div>

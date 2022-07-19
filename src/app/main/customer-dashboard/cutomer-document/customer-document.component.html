@@ -1,0 +1,117 @@
+<ng-template [ngIf]= " isEmptyDocuments && isFirstAcces" [ngIfElse]="loading" >
+    <h2 class="block-title athena">
+		PAS DE DOCUMENTS
+		
+		<a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId ,'add-document']" [queryParams]="{requestId: null, fromHistory: 'no'}" queryParamsHandling="merge">
+            <div class="block-title-item-icon">
+                <span class="icon add-on athena"></span>
+            </div>
+		</a>
+
+		<a
+			class="block-title-item-link athena"
+			[routerLink]="['/customer-dashboard', customerId , 'see-all', 'document-full-list']" [queryParams]="{requestId: null, fromHistory: 'yes'}" queryParamsHandling="merge"
+			[queryParams]="{ nicheIdentifiant: nicheIdentif}" 
+			queryParamsHandling="merge"
+    	>
+      		<span class="text-min normal no-transform athena">Voir tous les documents</span>
+    	</a>
+	</h2>
+	
+</ng-template> 
+<ng-template #loading>
+ <h2 class="block-title athena">
+		Documents
+		<a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId ,'add-document']" [queryParams]="{requestId: null, fromHistory: 'no'}" queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_document']">
+			<div class="block-title-item-link athena">
+				<span class="icon add-on athena"></span>
+			</div>
+		</a>
+		<a class="block-title-item-link athena"
+			[routerLink]="['/customer-dashboard', customerId , 'see-all', 'document-full-list']" [queryParams]="{requestId: null, fromHistory: 'yes'}" queryParamsHandling="merge"
+			queryParamsHandling="merge">
+      		<span class="text-min normal no-transform athena">Voir tous les documents</span>
+    	</a>
+		
+ </h2>
+ <app-athena-table-loader *ngIf="inCompleteCall"></app-athena-table-loader>
+	<div class="row">
+		<div  class="col-lg-16">
+			<form>
+				<div class="row">
+					<div class="col-13">
+						<div class="form-group row">
+							<label for="documents-filtres athena" class="col-sm-6 col-form-label">Filtres : </label>
+							<div class="col-sm-17">
+								<select class="form-control athena" id="documents-filtres" [ngModel]="typeDocumentId" (change)="onChangeSelected($event.target.value)"  name="sel2">
+									<option [value]="i.id"  *ngFor="let i of typeDocuments"  >{{(i?.documentTypeName === '--') ? 'Tout' : i?.documentTypeName}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-10 offset-1">
+						<div class="form-group row">
+							<label for="documents-annees athena" class="col-sm-8 col-form-label">Année : </label>
+							<div class="col-sm-15">
+								<select class="form-control athena" id="documents-annees" [ngModel]="year" (change)="onChangeSelectedYear($event.target.value)"  name="yearSel">
+									<option [value]="0">Tout</option>
+                 					<option [value]="a" *ngFor="let a of years">{{a}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<div class="table-responsive">
+				<table class="table table-not-bordered athena" aria-describedby="">
+					<thead>
+						<th>
+							Titre du document
+						</th>
+						<th></th>
+						<th>
+							Fichier
+						</th>
+						<th style="min-width: 90px;">
+							Modifié le
+						</th>
+						<th>
+							Taille
+						</th>
+					</thead>
+					<tbody>
+						<tr *ngFor="let col of documents" (click)="downloadDocument(col?.fileName)">
+                <td class="table-td-link">
+										<a class="table-td-a clickable-cursor athena" target="_blank" queryParamsHandling="merge">
+                          {{col?.titreDocument}}
+                     </a>
+                   </td>
+                <td class="table-td-link table-td-icon-max">
+                    <a class="table-td-a clickable-cursor athena" target="_blank" queryParamsHandling="merge">
+                        <span  class="icon icon-max athena" [ngClass]="getImageByFormat(col.extension)"></span>
+                    </a>
+                </td>
+                <td class="table-td-link cell-full cell-ellipsis">
+                    <a class="table-td-a clickable-cursor athena" target="_blank" queryParamsHandling="merge">
+                        {{col?.fileName}}
+                    </a>
+                </td>
+                <td class="table-td-link">
+                    <a class="table-td-a clickable-cursor athena" target="_blank" queryParamsHandling="merge">
+                        <span class="text-min grey athena">{{col?.addDate | date: 'dd/MM/yyyy'}}</span>
+                    </a>
+                </td>
+                <td class="table-td-link">
+                    <a class="table-td-a clickable-cursor athena" target="_blank" queryParamsHandling="merge">
+                        <span class="text-min grey athena"> - </span>
+                    </a>
+                </td>
+              </tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+</div>
+
+</ng-template>

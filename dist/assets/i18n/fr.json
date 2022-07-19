@@ -1,0 +1,125 @@
+{
+ "Page":{
+    "HomeComponent":{
+      "breadcrumb":"Accueil",
+      "welcome":"Bienvenue sur",
+      "alertVersionFireFox": "Attention vous n'avez pas la dernière version de Navigateur, veuillez la mettre à jour pour utiliser pleinement les fonctionnalités d'Athena"
+    },
+    "PageNotFoundComponent":{
+      "breadcrumb":"Page non trouvée",
+      "info":"La page demandée \nn'existe pas (encore)",
+      "button": "Page Précédente"
+    },
+    "SearchResultComponent":{
+      "breadcrumb":"Résultat"
+    },
+    "TaskMonitoringComponent":{
+      "breadcrumb":"Pilotage des tâches"
+    },
+    "ProductsCatalogueComponent":{
+      "breadcrumb":"Catalogue des produits"
+    },
+    "ManagementBatchesComponent":{
+      "breadcrumb":" Gestion par lot"
+    },
+    "MasterProductModificationComponent":{
+      "breadcrumb":"Modification d'un article"
+    },
+    "MasterProductCreationComponent":{
+      "breadcrumb":"Création d'un article"
+    },
+    "RequestMonitoringComponent":{
+      "breadcrumb":"Pilotage des demandes"
+    },
+    "CustomerCardComponent":{
+      "breadcrumb":"Fiche 360°",
+      "age":"ans",
+      "born": "né(e) le",
+      "language": "Langue : ",
+      "who":"Par ",
+      "when":"le",
+      "goodToKnow": "BON À SAVOIR ",
+      "mister":"M",
+      "mistress":"Mme",
+      "ncontrat":"N° Contrat : ",
+      "siret":"Siret : ",
+      "siren":"Siren : ",
+      "francais":"Français ",
+      "anglais":"Anglais  ",
+      "coach" : "Coach : ",
+      "desk" : "Desk : ",
+      "responsableadhesion":"Responsable adhésion",
+      "teamParnasse":"TEAM PARNASSE"
+
+    },
+    "SearchComponent":{
+      "breadcrumb":"Résultat de recherche ",
+      "title":"Recherche avancée"
+    },
+    "CustomerCardChangeComponent":{
+      "breadcrumb":"Modification du profil",
+      "particulier" : "PARTICULIER",
+      "modifierProfileEntreprise":"Modification du profil de l'entreprise",
+      "modifierProfileDe":"Modification de profil",
+      "champObligatoire":"* Champ obligatoire",
+      "prenomRequis":"Le prénom est requis",
+      "nomRequis":"Le nom est requis",
+      "dateInvalide":"la date est invalide",
+      "madame":"Madame",
+      "monsieur":"Monsieur",
+      "prenom":"Prénom ",
+      "nom":"Nom *",
+      "ne":"Date de naissance",
+      "datePosterieurDateActuelle":"La date de naissance ne peux pas être postérieure à la date actuelle",
+      "sirenRequis":"Le siren est requis",
+      "siretmaldefini":"Le siret est mal défini",
+      "raisonsocialerequise":"La raison sociale est requise",
+      "raisonSociale":"Raison Sociale",
+      "languepreferee":"Langue préférée",
+      "bonsavoir":"Bon à savoir",
+      "annuler":"Annuler",
+      "enregistrer":"Enregistrer",
+      "siret": "SIRET",
+      "siren": "SIREN",
+      "nic": "NIC",
+      "en": "Anglais",
+      "fr": "Français",
+      "administratif": "ADMINISTRATIF",
+      "civilite": "Civilité",
+      "limiteAtteinteCaractere" : "Limite atteinte dans 150 caractèes",
+      "maxCaractereBonSavoir" : "500 caractères max",
+      "cechampObligatoire":"Ce champ est obligatoire",
+      "caractereSpeciaux": "Ce champ ne doit pas contenir de carctères spéciaux ni de chiffre",
+      "caractereSpeciauxPrenom": "Le champ Prénom  ne doit pas contenir de caractères spéciaux ni de chiffre",
+      "champSirenObligatoir":"Le champ SIREN est obligatoire",
+      "champRaisonSocialObligatoir":"Le champ Raison Sociale est obligatoire",
+      "bonSavoirDepasseNombreCararctere": "Bon à savoir dépasse le nombre de caractères autorisés",
+      "showNicSirenError":"Le champ NIC et SIREN sont erroné"
+    },
+    "CustomerDashboardComponent":{
+    	"breadcrumb":"Fiche 360°"
+    }
+  },
+  "Transverse":{
+    "ToolbarComponent": {
+      "search": "Rechercher",
+      "preferences":"Préférences",
+      "signOut":"Se Déconnecter"
+    }
+    
+  },
+
+  "SERP": {
+    "Title" : "Résultats de recherche pour  \"  {{ value }} \" "  ,
+    "TableAllComponent": {
+      "HeaderName": "Answers corresponding to the criteria sought",
+      "SubHeaderName": "Answers",
+      "columnsName": {
+        "Type": "Type",
+        "Reference": "Reference",
+        "Libelle": "Name",
+        "Action": "Action"
+      }
+    }
+  }
+}

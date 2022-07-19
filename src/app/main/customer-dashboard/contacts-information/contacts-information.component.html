@@ -1,0 +1,87 @@
+<h2 id="e2e_coordonnees"class="block-title">
+  Coordonnées
+  <a class="block-title-item-link" [routerLink]="null" queryParamsHandling="merge" >
+    <div class="block-title-item-icon">
+        <span class="icon pen"></span>
+    </div>
+  </a>
+</h2>
+<table class="table table-not-bordered" id="e2e_listMobileFix" > 
+  <tbody >
+    <div *ngFor="let c of telephones;let i=index">
+    <tr *ngIf="i<3" id="e2e_mobileFix">
+      <td class="table-td-icon" >
+        <span *ngIf="c.fix " class="icon phone-home"></span>
+        <span *ngIf="c.mobile " class="icon phone-mobile"></span> 
+      </td>
+      <td>
+        {{c.fix ?  (c.fix | ligne) : (c.mobile | ligne)}}
+        <span class="text-min grey" ><span *ngIf="c.prenom || c.nom">-</span> <span> {{c.prenom | firstName}} </span> <span> {{c.nom | uppercase}}</span> - {{c.role}}</span>
+      </td>
+    </tr>
+  </div>
+  </tbody>
+</table>
+
+<p class="text-right" *ngIf="telephones?.length > 3" >
+  <a [routerLink]="['/customer-dashboard', customerId ,'see-all', 'coordonnees-details']" queryParamsHandling="merge" id="e2e_voirPlusEntrepriseTele">
+    Historique complet<span class="icon icon-min arrow-right-blue"></span>
+  </a>
+</p>
+
+<hr class="hr" *ngIf="telephones?.length>0" />
+<table class="table table-not-bordered"  id="e2e_listMail">
+  <tbody *ngFor="let c of emails ; let i=index">
+    <tr *ngIf="c.email && i<3 " id="e2e_email">
+      <td class="table-td-icon">
+        <span class="icon mail"></span>
+      </td>
+      <td>
+          {{c.email}} 
+        <span class="text-min grey"
+          ><span *ngIf="c.prenom || c.nom">-</span> <span> {{c.prenom | firstName}} </span> <span>{{c.nom | uppercase}}</span> - {{c.role}}</span>
+      </td>
+    </tr> 
+  </tbody>
+</table>
+
+<p class="text-right" *ngIf="emails?.length > 3 " >
+  <a [routerLink]="['/customer-dashboard', customerId , 'see-all', 'coordonnees-details']" queryParamsHandling="merge" id="e2e_voirPlusEntrepriseEmail">
+    Historique complet<span class="icon icon-min arrow-right-blue"></span>
+  </a>
+</p>
+
+<hr class="hr" *ngIf="emails?.length>0" />
+<table class="table table-not-bordered" id="e2e_listAdresse" >
+    <tbody *ngFor="let c of adresses; let i=index ">
+        <tr *ngIf="c && i<3 " id="e2e_adresse">
+      <td class="table-td-icon-loc">
+        <a class="map-link-max" [routerLink]="null" queryParamsHandling="merge" ></a>
+      </td>
+      <td class="table-td-icon-loc-2">
+        <a [routerLink]="null" queryParamsHandling="merge" ><span class="icon nav"></span></a>
+        <a [routerLink]="null" queryParamsHandling="merge" ><span class="icon point"></span></a>
+      </td>
+      <td>
+        <span class="text-min colored">
+          <strong><span>{{c.prenom | firstName}} </span> <span>{{c.nom | uppercase}} </span> <span *ngIf="c.prenom || c.nom">-</span> {{c.role}}</strong> </span><br />
+          {{c.companyName}}<br *ngIf="c.companyName" /> 
+          {{c.lastName | uppercase}} {{c.firstName | firstName}}<br *ngIf="c.lastName" />
+          {{c.line2}}<br *ngIf="c.line2" /> 
+          {{c.line3}}<br *ngIf="c.line3" /> 
+          {{c.line4}}<br *ngIf="c.line4" />          
+          {{c.line5}}<br *ngIf="c.line5"/>
+          {{c.postalCode}} {{c.city}}<br />
+          {{c.cedex}}
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="text-right" *ngIf="adresses?.length>3 " >
+  <a  [routerLink]="['/customer-dashboard', customerId , 'see-all', 'coordonnees-details']" queryParamsHandling="merge" >
+    Historique complet<span class="icon icon-min arrow-right-blue"></span>
+  </a>
+</p>
+

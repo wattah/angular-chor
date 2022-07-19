@@ -1,0 +1,200 @@
+<div class="block block-shadow env-blue">
+    <h2 class="block-title athena">
+        Parc Lignes
+        <div class="block-title-item-link athena">
+            <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', 
+            customerId, 'detail','creation-line','line-detail']" [queryParams]="{ typeRequest: 'all' ,modificationLine :  'false'  }"
+            queryParamsHandling="merge">
+            <span class="icon add-on athena"></span>
+        </a>
+        </div>
+    </h2>
+    <div>
+    <app-athena-paginated-ag-grid
+        class="display-id"
+        [showTopPagination]="true"
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefs" 
+        [rowData]="parkItems"
+        [detailCellRendererParams]="detailCellRendererParams"
+        [masterDetail]="true"
+        [paginationPageSize]="20"
+        [detailRowHeight]="180"
+        [loadAgGridParams]="params"
+        (clickedCell)="clickCell($event)">
+    </app-athena-paginated-ag-grid>
+    <section class="mt-4">
+        <h2 class="athena">Légendes</h2>
+        <div class="row mt-4 ml-4">
+            <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                <span class="athena underline ">
+                    Type
+                </span>
+                <table aria-describedby="mydesc" class="table table-not-bordered athena">
+                    <th scope="col"></th>
+                    <tbody>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon multisim"></span></td>
+                            <td>Double sim</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon phone-home"></span></td>
+                            <td>Fixe</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon phone-mobile"></span></td>
+                            <td>Mobile</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon internet"></span></td>
+                            <td>Internet</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <span class="athena underline d-block d-sm-none">
+                    Renouvellement
+                </span>
+                <table aria-describedby="mydesca" class="table table-not-bordered d-block d-sm-none">
+                    <th scope="col"></th>
+                    <tbody>
+                        <tr hidden>
+                            <th id=""></th>
+                            <th id=""></th>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-green-teleco"></span></td>
+                            <td>Autorisé</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-renewal-done"></span></td>
+                            <td>En cours</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-stop"></span></td>
+                            <td>Déjà effectué</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-red"></span></td>
+                            <td>Non éligible</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-6">
+                <span class="athena underline ">
+                    Statut Parnasse
+                </span>
+                <table aria-describedby="mydescb" class="table table-not-bordered athena">
+                    <th scope="col"></th>
+                    <tbody>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon play"></span></td>
+                            <td>Active</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon vip"></span></td>
+                            <td>Orange VIP</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon pause"></span></td>
+                            <td>Suspendue</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon pro"></span></td>
+                            <td>Orange Pro</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon orange"></span></td>
+                            <td>Orange</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon orange_by_parnasse"></span></td>
+                            <td>Orange by Parnasse</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon denumerot"></span></td>
+                            <td>Dénumérotée</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon not-in-contract"></span></td>
+                            <td>Hors contrat</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-red"></span></td>
+                            <td>Résilié</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon in-progress-portabilit"></span></td>
+                            <td>En cours de portabilité</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-none d-sm-block col-sm-8 col-md-8 col-lg-6 ">
+                <span class="athena underline">
+                    Renouvellement
+                </span>
+                <table aria-describedby="mydescc" class="table table-not-bordered">
+                    <th scope="col"></th>
+                    <tbody>
+                        <tr hidden>
+                            <th id=""></th>
+                            <th id=""></th>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-green-teleco"></span></td>
+                            <td>Autorisé</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-renewal-done"></span></td>
+                            <td>En cours</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-stop"></span></td>
+                            <td>Déjà effectué</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon status-red"></span></td>
+                            <td>Non éligible</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-none d-lg-block col-lg-6 ">
+                <span class="athena underline">
+                    Picto du tableau
+                </span>
+                <table aria-describedby="mydescd" class="table table-not-bordered athena">
+                    <th scope="col"></th>
+                    <tbody>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon suspend"></span></td>
+                            <td> Suspendre la ligne</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon restore"></span></td>
+                            <td>Rétablir la ligne</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon pen"></span></td>
+                            <td>Modifier</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon refresh"></span></td>
+                            <td>Rafraichir la ligne</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon del"></span></td>
+                            <td>Supprimer la ligne</td>
+                        </tr>
+                        <tr>
+                            <td class="table-td-icon"><span class="icon cadenas"></span></td>
+                            <td>Débloquer Hors-forfait</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    </div>
+</div>

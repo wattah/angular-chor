@@ -1,0 +1,156 @@
+<div class="block block-shadow">
+        <blockquote class="enableNewLine">
+            <h4 class="subtitle athena">Résumé de la demande {{  detailRequest?.idRequest }}
+                <a *ngIf="showIconeCatalog() && !fromChorniche && !toNextTasks" class="block-title-item-link athena" queryParamsHandling="merge" >
+                    <div class="block-title-item-icon" >
+                        <span class="icon cart-grey-normal clickable" (click)="showCatalog($event)"></span>
+                    </div>
+                </a>
+            </h4>
+            <ul class="ath-summary">
+                <li>
+                    <strong><span class="grey athena">Statut : </span></strong>{{ detailRequest?.statuts | statusRequestFr }}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Créé le : </span></strong>{{ (!detailRequest?.createdAt) ? '-' :  detailRequest?.createdAt | dateFormatPipeFrench}}  à
+                        {{ (!detailRequest?.createdAt) ? '-' : detailRequest?.createdAt | date:"HH'h'mm" }}
+                </li>   
+                <li>
+                    <strong><span class="grey athena">Modifiée le : </span></strong>{{ (!detailRequest?.modifier) ? '-' : detailRequest?.modifier | dateFormatPipeFrench }}  à
+                        {{ (!detailRequest?.modifier) ? '-' : detailRequest?.modifier | date:"HH'h'mm" }}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Interlocuteur : </span>
+                    </strong>{{ (!detailRequest?.firstNameInterlocuteur) ? '-' : detailRequest?.firstNameInterlocuteur | firstName}}  
+                        {{ (!detailRequest?.lastNameInterlocuteur) ? '' : detailRequest?.lastNameInterlocuteur |  uppercase }}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Destinataire : </span> </strong>{{ (!detailRequest?.firstNameDestinataire) ? '-' : detailRequest?.firstNameDestinataire | firstName}}  
+                        {{ (!detailRequest?.lastNameDestinataire) ? '' : detailRequest?.lastNameDestinataire |  uppercase }}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Porteur : </span></strong>{{ (!detailRequest?.lastNamePorteur) ? '' : detailRequest?.lastNamePorteur |  uppercase }}
+                        {{ (!detailRequest?.firstNamePorteur) ? '-' : detailRequest?.firstNamePorteur | firstName}}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Responsable Commercial : </span></strong>{{ (!detailRequest?.lastNameRespCommerciale) ? '' : detailRequest?.lastNameRespCommerciale |  uppercase }}
+                        {{ (!detailRequest?.firstNameRespCommerciale) ? '-' : detailRequest?.firstNameRespCommerciale | firstName}}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Responsable d'Affaires : </span></strong>{{ (!detailRequest?.lastNameRespAffaire) ? '' : detailRequest?.lastNameRespAffaire |  uppercase }}
+                        {{ (!detailRequest?.firstNameRespAffaire) ? '-' : detailRequest?.firstNameRespAffaire | firstName}}
+                </li>
+                <li>
+                    <strong><span class="grey athena">Traitement : </span></strong><span style="white-space: normal" *ngFor="let answer of requestAnswers; let i=index">
+                      {{ formatAnwser(answer) }}<br /></span> <span *ngIf="!requestAnswers || requestAnswers.length===0" > - <br/></span>            
+                </li>
+                <li>
+                    <strong><span class="grey athena"> Description : </span></strong>{{ (!detailRequest?.description) ? '-' : detailRequest?.description}}
+                </li>
+                <ng-template [ngIf]="detailRequest?.statuts !== 'PENDING'">
+                    <li>
+                        <span class="grey athena " > Résolution :</span>    
+                        <strong> {{ detailRequest?.conclusionType | isNull | resolutionRequest}}</strong>
+                    </li>
+                    <li>
+                        <span class="grey athena " > Date de fin réelle :</span>    
+                        <strong> {{ detailRequest?.realEndDate | isNull | dateFormatPipeFrench}} {{ (detailRequest?.realEndDate) ? 'à' : ''}} {{ detailRequest?.realEndDate | date:"HH'h'mm" }} </strong>   
+                    </li>
+                    <li>
+                        <span class="grey athena " > Commentaire :</span>    
+                        <strong> {{ detailRequest?.closureComment |isNull}}</strong>
+                    </li>
+                </ng-template>
+            </ul>
+            <a *ngIf="!toNextTasks" class="athena mt-2"  [routerLink]="['/customer-dashboard', customerId, 'detail', 'request', detailRequest.idRequest]"  queryParamsHandling="merge">
+                <span class="text-min normal no-transform athena">
+                    <span class="icon icon-min arrow-left-blue athena" ></span> Demande
+                </span>
+                
+            </a>
+
+            <a *ngIf="toNextTasks" class="disabled"  [routerLink]= "" >
+                <span class="text-min normal no-transform athena">
+                    <span class="icon icon-min arrow-left-blue athena" ></span> Demande
+                </span>
+            </a>
+         
+        </blockquote>
+    </div>    
+ 
+
+
+    <div *ngIf="isPanier" class="block block-shadow pb-2">
+        <div class="block_resume_panier p-0">
+            <h2 class="athena">Panier (TTC)</h2>
+            <div class="row">
+                <div class="col-md-12 col-lg-24">
+                    <div class="red mt-2 mb-3 text-semibold" *ngIf="cartHasBlockedItem">Validation nécessaire</div>
+                    <app-basket-information
+                        [cartStatusValue]="CartStatusValue[cart?.status]"
+                        [cartLabel]="cartlabel"
+                        [numberOfArticle]="numberOfArticle"
+                        [calculateMargePourcent]="cart?.calculateMargePourcent"
+                        [orderId]="cart?.orderId"
+                        [cartTotal]="cartRecapVo?.cartTotal">
+                    </app-basket-information>
+                    <div class="d-flex justify-content-center">
+                        <button class="col-form-label btn btn-blue" (click)="interClick()" [disabled]="fromChorniche">Voir le panier</button>
+                    </div>
+    
+                    <div name="showField" ngDefaultControl [(ngModel)]="showCart" [hidden]="showCart === false" *ngIf="numberOfArticle > 0" class="link row mt-3">
+                        <hr class="col-4 col-md-5 col-lg-5 mr-2" />
+                        <a class="athena col-12 col-md-11 col-lg-11 ml-2 p-0 text-center" (click)="OnshowCart()">Voir le détail du panier <span class="icon icon-min arrow-bottom-blue athena ml-1"></span></a>
+                        <!-- changer arrow-bottom-blue  par arrow-top-blue fleche en haut -->
+                        <hr class="col-4 col-md-5 col-lg-5 ml-1" />
+                    </div>
+    
+                    <div *ngIf="!showCart" class="link row mt-3">
+                        <hr class="col-4 col-md-5 col-lg-5 mr-2" />
+                        <a class="athena col-12 col-md-11 col-lg-11 ml-2 p-0 text-center"(click)="OnHideCart()">Masquer le détail du panier <span class="icon icon-min arrow-top-blue athena ml-1"></span></a>
+                        <!-- changer arrow-bottom-blue  par arrow-top-blue fleche en haut -->
+                        <hr class="col-4 col-md-5 col-lg-5 ml-1" />
+                    </div>
+                   
+                    <div  *ngIf="!showCart" class="block_recupilatif_panier">
+                        <div class="d-flex justify-content-between line" *ngFor="let item of cartRecapItemsVo; let i=index">
+                            <div> {{item.quantiteCartItem}} x {{item.labelCartItem}}</div>
+                            <div class="price_space">{{item.totalePriceCartItem}} € </div>
+                        </div>
+                        <div class="d-flex justify-content-between line">
+                            <div >Remise totale</div>
+                            <div class="red"> 
+                                {{(!cartRecapVo?.totalDiscount || cartRecapVo?.totalDiscount === 0 || cartRecapVo?.totalDiscount === '0' || cartRecapVo?.totalDiscount === '') ? '0' : '-' + cartRecapVo?.totalDiscount }} € 
+                             </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between line">
+                            <div>Total mensuel</div>
+                            <div>{{(!cartRecapVo?.monthlyTotal) ? '0' : cartRecapVo?.monthlyTotal }} €</div>
+                        </div>
+    
+                        <div class="d-flex justify-content-between line">
+                            <div>Total annuel</div>
+                            <div>{{(!cartRecapVo?.annualTotal) ? '0' : cartRecapVo?.annualTotal }} €</div>
+    
+                        </div>
+    
+                        <div class="d-flex justify-content-between line">
+                            <div>Total ponctuel</div>
+                            <div >{{(!cartRecapVo?.punctualTotal) ? '0' : cartRecapVo?.punctualTotal }} €</div>
+    
+                        </div>
+    
+                        <div class="d-flex justify-content-between line font-weight-bold my-3 text-semibold">
+                            <div>Total Panier</div>
+                            <div >{{(!cartRecapVo?.cartTotal) ? '0' : cartRecapVo?.cartTotal }} €</div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    

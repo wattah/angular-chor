@@ -1,0 +1,42 @@
+import { UserVo } from './user-vo';
+import { CommandOrderHistoVO } from './command-order-histo-vo';
+import { CommandOrderCommentVO } from './command-order-comment-vo';
+import { CommandOrderLineVO } from './command-order-line-vo';
+import { CartItemVO } from './cart-item-vo';
+
+export interface CommandOrderVo {
+  id: number;
+  expeditionDate: Date;
+  status: string;
+  createdDate: Date;
+  sendToPublidispatchDate: Date;
+  commandOrderReference: string;
+  memberNicheId: string;
+  memberPhone: string;
+  memberToDeliverName: string;
+  memberToDeliverAddress1: string;
+  memberToDeliverAddress2: string;
+  memberToDeliverAddress3: string;
+  memberToDeliverPostalCode: string;
+  memberToDeliverCity: string;
+  memberToDeliverCountryCode: string;
+  coachNotificationEmail: string;
+  modifiedAt: Date;
+  deliveryAt: Date;
+  createdBy: UserVo;
+  cartId: number;
+  transporterTrackingRef: string;
+  transporterTrackingRefLenth: number;
+  transporterTrackingPosition: number;
+  transporterTrackingDelimiter: string;
+  transporterTrackingUrl: string;
+  transporterTrackingCode: string;
+  transporterTrackingLabel: string;
+  commandOrderHisto: CommandOrderHistoVO[];
+  commandOrderComments: CommandOrderCommentVO[];
+  commandOrderLines: CommandOrderLineVO[];
+  commandOrderCartItems : CartItemVO[];
+  arrow: string;
+  stockToUse:string;
+  flowTrakingUrl : string;
+}

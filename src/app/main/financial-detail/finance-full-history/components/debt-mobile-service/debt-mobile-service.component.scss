@@ -1,0 +1,12 @@
+.table-not-hovered{
+    tbody,
+    tfoot{
+        tr:hover,
+        tr:active,
+        tr:focus{
+            td{
+                cursor: pointer !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,70 @@
+<ng-template [ngIf]="isEmptyRequests" [ngIfElse]="loading">
+  <h2 class="block-title athena">
+    Pas de demandes en cours
+    <a
+      class="block-title-item-link athena"
+      [routerLink]="['/customer-dashboard', customerId, 'request', 'parcours']"
+      queryParamsHandling="merge"
+    >
+      <div class="block-title-item-icon" *ngxPermissionsOnly="['creation_parcours']">
+        <span class="icon add athena"></span>
+      </div>
+    </a>
+
+    <a
+      class="block-title-item-link athena"
+      [routerLink]="[
+        '/customer-dashboard',
+        customerId,
+        'see-all',
+        'requests-minitoring'
+      ]"
+      [queryParams]="{ typeRequest: 'all' }"
+      queryParamsHandling="merge"
+    >
+      <span class="text-min normal no-transform athena"
+        >Voir toutes les demandes</span
+      >
+    </a>
+  </h2>
+</ng-template>
+
+<ng-template #loading>
+  <h2 class="block-title athena">
+    Demandes en cours
+    <a
+      class="block-title-item-link athena"
+      [routerLink]="['/customer-dashboard', customerId, 'request', 'parcours']"
+      queryParamsHandling="merge"
+    >
+      <div class="block-title-item-icon" *ngxPermissionsOnly="['creation_parcours']">
+        <span class="icon add athena"></span>
+      </div>
+    </a>
+  </h2>
+  <app-athena-table-loader *ngIf="inCompleteCall"></app-athena-table-loader>
+  <app-athena-ag-grid
+    *ngIf="requestsCustomer && requestsCustomer.length !== 0 && !inCompleteCall"
+    [defaultSortModel]="defaultSortModel"
+    [columnDefs]="columnDefs"
+    [rowData]="requestsCustomer"
+    (clickCell)="clickCell($event)"
+  ></app-athena-ag-grid>
+
+  <div class="text-right mt-3">
+    <a
+      class="athena"
+      [routerLink]="[
+        '/customer-dashboard',
+        customerId,
+        'see-all',
+        'requests-minitoring'
+      ]"
+      [queryParams]="{ typeRequest: 'all' }"
+      queryParamsHandling="merge"
+      >Voir toutes les demandes<span
+        class="icon icon-min arrow-right-blue athena"
+      ></span
+    ></a>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+
+<div class="form-group row mb-2 datecenter">
+    <div class="d-flex justify-content-center mx-auto">
+        <div> <label for="start mt-1" class="pr-4 col-form-label athena">Mois</label></div>
+        <mat-form-field appearance="outline" class="col-sm-10 athena">
+            <input matInput [matDatepicker]="datepicker"  name="dateDebut" [formControl]="date" readonly  >
+            <mat-datepicker #datepicker startView="multi-year" 
+            (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, datepicker)"
+            (closed)="onCloseDatePicker()">
+            </mat-datepicker>
+          </mat-form-field>
+        <div class="margin-top p-0">
+            <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="datepicker.open()"></span>
+        </div>
+    </div>
+</div>
+<ng-template [ngIf]="!loadingData" [ngIfElse]="loadingBlock">
+    <app-athena-ag-grid 
+        *ngIf="rowData && rowData.length > 0 ; else emptyData"
+        class="tabs-lots" 
+        [columnDefs]="columnDefs" 
+        [rowData]="rowData"
+        [loadAgGridParams]="params"
+    >
+    </app-athena-ag-grid>
+    <ng-template #emptyData>
+        <p class="athena no-result" >
+            Erreur technique de connexion à Péniche
+        </p>
+    </ng-template>
+</ng-template>
+
+<ng-template  #loadingBlock>
+    <app-athena-table-loader></app-athena-table-loader>
+</ng-template>

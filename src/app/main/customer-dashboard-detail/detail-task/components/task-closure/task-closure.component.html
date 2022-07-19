@@ -1,0 +1,92 @@
+<div class="block block-shadow" [hidden]="isQuestionsAsked">
+    <h2>Clôture de la tâche</h2>
+    <form [formGroup]="taskClosureForm" (ngSubmit)="closeTask()">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group row">
+                    <label for="tacheSelect" class="col-sm-8 col-form-label">Demande</label>
+                    <div class="col-sm-16">
+                        <label for="tache" class="col-sm-16 col-form-label">{{requestTitle}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tacheSelect" class="col-sm-8 col-form-label">Tâche </label>
+                    <div class="col-sm-16">
+                        <label for="tache" class="col-sm-16 col-form-label">{{taskTitle}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-24 col-md-24">
+                        <div class="block block-shadow">
+                            <h2 *ngIf="questions.length !== 0" id="e2e_questions" class="block-title">
+                                Questions dynamiques
+                            </h2>
+                            <div>
+                                <template #alertContainer></template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="dateDebut" class="col-sm-8 col-form-label">Date de fin réelle </label>
+                    <div class="col-sm-16">
+                        <mat-form-field>
+                            <input formControlName="endDate" matInput [matDatepicker]="pickerRequest" required name="currentDate" (dateChange)="dateChanged()">
+                            <mat-datepicker-toggle matSuffix [for]="pickerRequest"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerRequest disabled="false"></mat-datepicker>
+                        </mat-form-field>
+                        <input type="number" formControlName="currentHour" min="0" max="23" class="hours-minutes" (change)="dateChanged()" name="currentHour">                        :
+                        <input type="number" formControlName="currentMinutes" min="0" max="59" class="hours-minutes" (change)="dateChanged()" name="currentMinutes">
+                    </div>
+                    <!--<div *ngIf="endDate.invalid &&taskClosureForm.submitted" [ngClass]="'required'">Le champ
+                                "Media" est obligatoire</div> -->
+                </div>
+                <div class="form-group row">
+                    <label for="dateDebut" class="col-sm-8 col-form-label">Durée de résolution </label>
+                    <div class="col-sm-16">
+                        <input type="number" formControlName="dureeHour" min="0" max="23" class="hours-minutes" (change)="dateChanged()" name="dureeHour">                        :
+                        <input type="number" formControlName="dureeMinute" min="0" max="59" class="hours-minutes" (change)="dateChanged()" name="dureeMinute">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="checkbox" class="col-sm-8 col-form-label">
+                        Tâche prioritaire
+                    </label>
+                    <div class="col-sm-16">
+                        <div class="form-check checkBoxPosition">
+                            <input class="form-check-input" formControlName="priority" type="checkbox" id="checkbox1">
+                            <label class="form-check-label" for="checkbox1">
+                                Oui
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="commentaireTextarea" class="col-sm-8 col-form-label">Commentaire</label>
+                    <div class="col-sm-16">
+                        <textarea class="form-control" formControlName="comment" id="commentaireTextarea" rows="3"></textarea>
+                        <small class="form-text text-muted">Limite de 500 caractères</small>
+                    </div>
+                </div>
+                <div class="row control-buttons">
+                    <div class="offset-sm-5 col-sm-6">
+                        <a class="btn btn-link" [routerLink]="" >Annuler</a>
+                    </div>
+                    <div class="col-sm-12">
+                        <input [disabled]="!taskClosureForm.valid" class="btn btn-green" value="Enregistrer la tâche" type="submit" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Tasks Affectation-->
+<app-task-affectation-list *ngIf="isQuestionsAsked" [users]="listUsers" [tasks]="tasksToAffect" [requestId]="idRequest">
+</app-task-affectation-list>
+
+<div *ngIf="loading" class="wrapper">
+            <div class="spinner">
+    
+            </div>
+    </div>

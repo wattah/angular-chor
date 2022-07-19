@@ -1,0 +1,523 @@
+<div class="container-fluid row">
+    <div class="col-lg-24 col-md-24 block block-shadow">
+        <h2 class="block-title athena mb-4">Création compte de facturation - Coordonnées</h2>
+        <div *ngIf="isSubmitted && (form?.invalid || isNotAddressValid('titularAddressFrench', 'isOrasTitularAddress') || 
+                isNotAddressValid('payerAddressFrench', 'isOrasPayerAddress') || 
+                isSirenNotValid('titularSiren', true) || isSirenNotValid('payerSiren', false))" 
+                class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="block block-alert" >
+                    <table aria-describedby="" class="table table-not-bordered">
+                        <tbody>
+                            <tr>
+                                <th id="th"></th> 
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+
+                                    <div *ngIf="isNotValid('mailNotification')">- Le champ Email de facturation est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularFirstName')">- Le champ Prénom (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularLastName')">- Le champ Nom (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularCompany')">- Le champ Raison sociale (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularSiren')">- Le champ Siren (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isSirenNotValid('titularSiren', true)">- Le champ Siren (Titulaire) est invalide </div>
+                                    <div *ngIf="isNotValid('titularAddressFrench')">- Le champ Adresse ORAS (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotAddressValid('titularAddressFrench', 'isOrasTitularAddress')">- Le champ Adresse (Titulaire) est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                                    <div *ngIf="isNotValid('titularAddress4')">- Le champ Adresse hors ORAS (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularCountry')">- Le champ Pays (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('titularCity')">- Le champ Ville (Titulaire) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerFirstName')">- Le champ Prénom (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerLastName')">- Le champ Nom (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerCompany')">- Le champ Raison sociale (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerSiren')">- Le champ Siren (Payeur) est obligatoire </div>
+                                    <div *ngIf="isSirenNotValid('payerSiren', false)">- Le champ Siren (Payeur) est invalide </div>
+                                    <div *ngIf="isNotValid('payerAddressFrench')">- Le champ Adresse ORAS (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotAddressValid('payerAddressFrench', 'isOrasPayerAddress')">- Le champ Adresse (Payeur) est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                                    <div *ngIf="isNotValid('payerAddress4')">- Le champ Adresse hors ORAS (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerCountry')">- Le champ Pays (Payeur) est obligatoire </div>
+                                    <div *ngIf="isNotValid('payerCity')">- Le champ Ville (Payeur) est obligatoire </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <div class="col-lg-16 block_onglet pt-0">
+        <form [formGroup]="form">
+                <div class="form-group row select_arrows mb-2">
+                    <label class="col-sm-4 col-form-label athena">Facture électronique * </label>
+                    <div class="col-sm-20 col-lg-3">
+                        <select class="form-control athena ng-pristine ng-invalid ng-touched" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="isElectronicInvoice" (change)="electronicInvoiceChange()">
+                            <option [ngValue]="false">Non</option>
+                            <option [ngValue]="true">Oui</option>
+                        </select>
+                    </div>
+                </div>
+                <ng-template [ngIf]="!isElectronicInvoice" [ngIfElse]="electronicInvoice">
+                    <div class="form-group row select_arrows">
+                        <label class="col-form-label athena col-sm-4"> Envoi papier </label>
+
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <input class="form-check-input athena" id="auto" formControlName="typeEnvoi" type="radio" 
+                                [value]="PenicheTypeEnvoiLivrable.PAPIER_AUTO" />
+                                <label class="form-check-label athena" for="auto"> Auto </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input athena" id="manuel" formControlName="typeEnvoi" type="radio" 
+                                [value]="PenicheTypeEnvoiLivrable.MANUEL" />
+                                <label class="form-check-label athena" for="manuel"> Manuel</label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #electronicInvoice>
+                    <ng-container *ngIf="cmBillingUsageVO; else billingUsageNotFound">
+                        <div class="form-group row select_arrows">
+                            <label class="col-sm-4 col-form-label athena pr-0"> Nom* </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" [value]="billingPersonName" readonly/>
+                            </div>
+                        </div>
+
+                        <div class="form-group row select_arrows">
+                            <label class="col-sm-4 col-form-label athena pr-0"> Mail* </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <div class="d-flex block-info-cri">
+                                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="mailNotification" 
+                                    [value]="billingEmail" [ngClass]="isNotValid('mailNotification') ? 'error' : ''" readonly/>
+                                    <div *ngIf="isNotValid('mailNotification')"  class="col-sm-1 mt-2 athena">
+                                        <span class="icon status-exclamation"></span>
+                                    </div>
+                                </div>
+                                <mat-error *ngIf="isNotValid('mailNotification')">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #billingUsageNotFound>
+                        <p class="red">Ce client ne possède aucune adresse mail de facturation</p>
+                    </ng-template>
+                </ng-template>
+
+                <div class="underline mt-3 mb-2">Adresse titulaire (adresse légale)</div>
+
+                <div class="form-group row select_arrows">
+                    <label class="col-form-label athena col-sm-4"> Civilité* </label>
+
+                    <div class="col-sm-4">
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="titularMadame" formControlName="titularTitle" type="radio" 
+                                [value]="PenicheCivilite.MME" (change)="onTitularTitleChange()"/>
+                            <label class="form-check-label athena" for="titularMadame"> Madame </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="titularMonsieur" formControlName="titularTitle" type="radio" 
+                                [value]="PenicheCivilite.MR" (change)="onTitularTitleChange()"/>
+                            <label class="form-check-label athena" for="titularMonsieur"> Monsieur</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="titularSociete" formControlName="titularTitle" type="radio"
+                                [value]="PenicheCivilite.PM" (change)="onTitularTitleChange()"/>
+                            <label class="form-check-label athena" for="titularSociete"> Société</label>
+                        </div>
+                    </div>
+                </div>
+                <ng-template [ngIf]="f?.titularTitle?.value === PenicheCivilite.PM" [ngIfElse]="isNotTitularCompany">
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-form-label athena">Raison sociale * </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" 
+                                formControlName="titularCompany" [ngClass]="isNotValid('titularCompany') ? 'error' : ''"
+                                (input)="refreshTitularSirenValidator()"/>
+                                <div *ngIf="isNotValid('titularCompany')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularCompany')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-form-label athena">SIREN 
+                            <span class="required" *ngIf="isTitularSirenRequired()">*</span> 
+                        </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularSiren') ? 'error' : ''"
+                                 type="text" formControlName="titularSiren"/>
+                                <div *ngIf="isNotValid('titularSiren')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularSiren')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #isNotTitularCompany>
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-form-label athena">Nom *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularLastName') ? 'error' : ''"
+                                 type="text" formControlName="titularLastName"/>
+                                <div *ngIf="isNotValid('titularLastName')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularLastName')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-form-label athena">Prénom *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularFirstName') ? 'error' : ''"
+                                 type="text" formControlName="titularFirstName"/>
+                                 <div *ngIf="isNotValid('titularFirstName')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularFirstName')">Ce champ est obligatoire</mat-error>    
+                        </div>
+                    </div>
+                </ng-template>
+
+                <div class="form-group mb-2 row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-12 col-sm-20 col-lg-9">
+                        <section class="example-section mt-2">
+                            <mat-checkbox [disableRipple]="true" class="normal"
+                            formControlName="isOrasTitularAddress" (change)="titularAddressChange($event)">
+                                Adresse française
+                        </mat-checkbox>
+                        </section>
+                    </div>
+                </div>
+
+                <ng-template [ngIf]="f?.isOrasTitularAddress?.value" [ngIfElse]="isNotOrasTitularAddress">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Adresse* </label>
+                        <div class="col-sm-20 col-lg-12">
+                            <div class="d-flex block-info-cri noborder">
+                                <mat-form-field class="p-0 col-sm-18 mat-form-field" [ngClass]="isSubmitted && isNotValid('titularAddressFrench') ? 'error' : ''" appearance="outline"  >
+                                    <input type="text" placeholder="Ex: 12 bis rue campagne première 75014 Paris"  matInput [matAutocomplete]="autoTitularAddress" 
+                                    formControlName="titularAddressFrench" >
+                                    <mat-autocomplete #autoTitularAddress="matAutocomplete" [displayWith]="displayAddress" (optionSelected)="refreshTitularSirenValidator()"
+                                    (optionActivated)="refreshTitularSirenValidator()" (opened)="refreshTitularSirenValidator()"> 
+                                        <ng-template ngFor let-item [ngForOf]="filteredTitularAddress$ | async">
+                                            <mat-option [value]="item" >
+                                                {{item?.line4}} {{ item?.postalCode}} {{ item?.cityName}}
+                                            </mat-option>
+                                        </ng-template>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <div *ngIf="isNotValid('titularAddressFrench')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+    
+                            </div>
+                            <mat-error class="col-sm-18" *ngIf="isSelectionTitularAddress()">
+                                L'adresse n'est pas connue par notre prestataire Oras, veuillez vérifiez votre saisie. 
+                                Si l'adresse souhaitée est introuvable, veuillez décocher Adresse française pour accéder à la saisie d'adresse manuelle
+                            </mat-error>
+                            <mat-error *ngIf="isSubmitted &&  isNotValid('titularAddressFrench')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #isNotOrasTitularAddress>
+
+                    <div class="form-group row select_arrows">
+                        <label class="col-sm-4 col-form-label athena pr-0"> Pays* </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <select class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularCountry') ? 'error' : ''"
+                                 formControlName="titularCountry" >
+                                    <option [ngValue]="null" > -- </option>
+                                    <option *ngFor="let country of countryList" [ngValue]="country.data" > {{country.label}} </option>
+                                </select>
+                                <div *ngIf="isNotValid('titularCountry')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularCountry')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row mb-3">
+                        <label class="col-12 col-sm-4 col-form-label athena"> Code Postal</label>
+                        <div class="col-sm-6 col-lg-9">
+                            <input maxlength="8" class="athena form-control" type="text" formControlName="titularZipCode" 
+                            (input)="refreshTitularSirenValidator()"/>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Ville* </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularCity') ? 'error' : ''" 
+                                type="text" formControlName="titularCity" />
+                                <div *ngIf="isNotValid('titularCity')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularCity')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Adresse* </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('titularAddress4') ? 'error' : ''" 
+                                type="text" formControlName="titularAddress4" maxlength="38"/>
+                                <div *ngIf="isNotValid('titularAddress4')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('titularAddress4')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+    
+                </ng-template>
+    
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Appt / Etage (A) </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="titularAddress2" maxlength="38"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Batiment (B) </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="titularAddress3" maxlength="38"/>
+                    </div>
+                </div>
+    
+                <div class="form-group mb-2 row">
+                    <div class="col-12 col-sm-20 col-lg-9">
+                        <section class="example-section mt-2">
+                            <mat-checkbox [disableRipple]="true"
+                            [(ngModel)]="hasPayerDifferentAddress" [ngModelOptions]="{standalone: true}" (change)="diffAddressChange($event)">
+                            Adresse payeur différente de l'adresse titulaire 
+                            </mat-checkbox>
+                        </section>
+                    </div>
+                </div>
+    
+                <ng-template [ngIf]="hasPayerDifferentAddress">
+                    <div class="underline mt-3 mb-2">Adresse payeur (adresse d’émission de la facture)</div>
+    
+                    <div class="form-group row select_arrows">
+                    <label class="col-form-label athena col-sm-4"> Civilité* </label>
+    
+                    <div class="col-sm-4">
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="payerMadame" type="radio" formControlName="payerTitle" 
+                            [value]="PenicheCivilite.MME" (change)="onPayerTitleChange()" />
+                            <label class="form-check-label athena" for="payerMadame"> Madame </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="payerMonsieur" type="radio" formControlName="payerTitle" 
+                            [value]="PenicheCivilite.MR" (change)="onPayerTitleChange()" />
+                            <label class="form-check-label athena" for="payerMonsieur"> Monsieur</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input athena" id="payerSociete" type="radio" formControlName="payerTitle" 
+                            [value]="PenicheCivilite.PM" (change)="onPayerTitleChange()" />
+                            <label class="form-check-label athena" for="payerSociete"> Société</label>
+                        </div>
+                    </div>
+                </div>
+    
+                <ng-template [ngIf]="f?.payerTitle?.value === PenicheCivilite.PM" [ngIfElse]="isNotPayerCompany">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Raison sociale *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerCompany') ? 'error' : ''"
+                                 type="text" formControlName="payerCompany" (input)="refreshPayerSirenValidator()"/>
+                                 <div *ngIf="isNotValid('payerCompany')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('payerCompany')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">SIREN 
+                            <span class="required" *ngIf="isPayerSirenRequired()">*</span> 
+                        </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerSiren') ? 'error' : ''"
+                                type="text" formControlName="payerSiren" />
+                                <div *ngIf="isNotValid('payerSiren')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('payerSiren')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                </ng-template>
+    
+                <ng-template #isNotPayerCompany>
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-form-label athena">Nom *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerLastName') ? 'error' : ''" 
+                                type="text" formControlName="payerLastName" />
+                                <div *ngIf="isNotValid('payerLastName')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('payerLastName')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Prénom *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri">
+                                <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerFirstName') ? 'error' : ''" 
+                                type="text" formControlName="payerFirstName" />
+                                <div *ngIf="isNotValid('payerFirstName')"  class="col-sm-1 mt-2 athena">
+                                    <span class="icon status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isNotValid('payerFirstName')">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                </ng-template>
+    
+                    <div class="form-group mb-2 row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-12 col-sm-20 col-lg-9">
+                            <section class="example-section mt-2">
+                                <mat-checkbox [disableRipple]="true" class="normal"
+                                formControlName="isOrasPayerAddress" (change)="payerAddressChange($event)">
+                                    Adresse française
+                            </mat-checkbox>
+                            </section>
+                        </div>
+                    </div>
+        
+                    <ng-template [ngIf]="f?.isOrasPayerAddress?.value" [ngIfElse]="isNotOrasPayerAddress">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label athena">Adresse*</label>
+                            <div class="col-sm-20 col-lg-12">
+                                <div class="d-flex block-info-cri noborder">
+                                    <mat-form-field class="p-0 col-sm-18 mat-form-field" [ngClass]="isSubmitted && isNotValid('payerAddressFrench') ? 'error' : ''" appearance="outline"  >
+                                        <input type="text" placeholder="Ex: 12 bis rue campagne première 75014 Paris"  matInput [matAutocomplete]="autoPayerAddress" 
+                                        formControlName="payerAddressFrench" >
+                                        <mat-autocomplete #autoPayerAddress="matAutocomplete" [displayWith]="displayAddress" (optionSelected)="refreshPayerSirenValidator()"
+                                        (optionActivated)="refreshPayerSirenValidator()" (opened)="refreshPayerSirenValidator()">
+                                            <ng-template ngFor let-item [ngForOf]="filteredPayerAddress$ | async">
+                                                <mat-option [value]="item" >
+                                                    {{item?.line4}} {{ item?.postalCode}} {{ item?.cityName}}
+                                                </mat-option>
+                                            </ng-template>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                    <div *ngIf="isSubmitted && isNotValid('payerAddressFrench')"  class="col-sm-1 mt-2 athena">
+                                        <span class="icon status-exclamation"></span>
+                                    </div>
+                                </div>
+                                <mat-error class="col-sm-18" *ngIf="isSelectionPayerAddress()">
+                                    L'adresse n'est pas connue par notre prestataire Oras, veuillez vérifiez votre saisie. 
+                                    Si l'adresse souhaitée est introuvable, veuillez décocher Adresse française pour accéder à la saisie d'adresse manuelle.
+                                </mat-error>
+                                <mat-error *ngIf="isSubmitted && isNotValid('payerAddressFrench')">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div>
+                    </ng-template>
+        
+                    <ng-template #isNotOrasPayerAddress>
+        
+                        <div class="form-group row select_arrows">
+                            <label class="col-sm-4 col-form-label athena pr-0"> Pays* </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <div class="d-flex block-info-cri">
+                                    <select class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerCountry') ? 'error' : ''"
+                                     formControlName="payerCountry" >
+                                        <option [ngValue]="null" > -- </option>
+                                        <option *ngFor="let country of countryList" [ngValue]="country.data" > {{country.label}} </option>
+                                    </select>
+                                    <div *ngIf="isNotValid('payerCountry')"  class="col-sm-1 mt-2 athena">
+                                        <span class="icon status-exclamation"></span>
+                                    </div>
+                                </div>
+                                <mat-error *ngIf="isNotValid('payerCountry')">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div>
+        
+                        <div class="form-group row mb-3">
+                            <label class="col-12 col-sm-4 col-form-label athena"> Code Postal</label>
+                            <div class="col-sm-6 col-lg-9">
+                                <input maxlength="8" class="athena form-control" type="text" formControlName="payerZipCode" 
+                                (input)="refreshPayerSirenValidator()"/>
+                            </div>
+                        </div>
+        
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label athena">Ville* </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <div class="d-flex block-info-cri">
+                                    <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerCity') ? 'error' : ''"
+                                    type="text" formControlName="payerCity"/>
+                                    <div *ngIf="isNotValid('payerCity')"  class="col-sm-1 mt-2 athena">
+                                        <span class="icon status-exclamation"></span>
+                                    </div>
+                                </div>
+                                <mat-error *ngIf="isNotValid('payerCity')">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div>
+    
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label athena">Adresse* </label>
+                            <div class="col-sm-20 col-lg-9">
+                                <div class="d-flex block-info-cri">
+                                    <input class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('payerAddress4') ? 'error' : ''"
+                                    type="text" formControlName="payerAddress4" maxlength="38"/>
+                                    <div *ngIf="isNotValid('payerAddress4')"  class="col-sm-1 mt-2 athena">
+                                        <span class="icon status-exclamation"></span>
+                                    </div>
+                                </div>
+                                <mat-error *ngIf="isNotValid('payerAddress4')">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div>
+        
+                    </ng-template>
+        
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Appt / Etage (A) </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="payerAddress2" maxlength="38"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label athena">Batiment (B) </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="payerAddress3" maxlength="38"/>
+                        </div>
+                    </div>
+    
+                </ng-template>
+        </form>
+        <div class="row mt-4 mb-2 justify-content-left ml-5 align-items-center">
+            <a class="btn btn-link mt-4 athena" [routerLink]="null" (click)="annuler()">Annuler</a>
+            <button class="btn mt-3 btn-green marginleft" type="submit" (click)="save()">
+                Enregistrer
+            </button>
+        </div>
+    </div>
+    </div>
+</div>

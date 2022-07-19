@@ -1,0 +1,23 @@
+<div class="block block-shadow">
+    <h2  class="block-title athena mb-3">Pièces justificatives et documents</h2>
+    <div class="document-approval">
+        <span class="col-sm-12 col-lg-24 p-0 mb-1 mt-2 athena d-flex justify-content-center" *ngIf="rowData.length === 0">Ce membre n'a aucun document</span>
+        <app-athena-ag-grid
+        *ngIf="rowData.length > 0"
+        class="approvaldoc"
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [treeData]="true"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        [frameworkComponents]="frameworkComponents"
+        [suppressRowClickSelection]="true"
+        [rowSelection]="'multiple'"
+        [getDataPath]="getDataPath"
+        [groupDefaultExpanded]="groupDefaultExpanded"
+        [getRowHeight]="getRowHeight"
+        (clickCell)="actionOnFile($event)"
+      >
+    </app-athena-ag-grid>
+    </div> 
+  </div>

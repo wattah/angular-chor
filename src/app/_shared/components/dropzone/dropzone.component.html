@@ -1,0 +1,11 @@
+<ngx-dropzone name="photo" [multiple]="false" [expandable]="true" class="file-drop-profile"
+    (change)="onSelectFile($event)">
+    <ngx-dropzone-label>
+        Déposez des fichiers ici ou <br />
+        cliquez pour <u class="blue"> télécharger</u> .
+    </ngx-dropzone-label>
+    <ngx-dropzone-preview class="fileinter" *ngFor="let file of files" [removable]="true"
+        (removed)="onRemoveFile(file)">
+        <ngx-dropzone-label>{{ file.name }}</ngx-dropzone-label>
+    </ngx-dropzone-preview>
+</ngx-dropzone>

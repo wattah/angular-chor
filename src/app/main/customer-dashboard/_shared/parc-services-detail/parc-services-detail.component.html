@@ -1,0 +1,99 @@
+<div class="col-24" *ngIf="isEntreprise">
+	<p>
+	<a [routerLink]="['/customer-dashboard/entreprise', customerId]" queryParamsHandling="merge" >
+		<span class="icon icon-min arrow-left-blue"></span>Retour à la vue 360
+	</a>
+	</p>
+</div>
+<div [ngClass]="{'block block-shadow': isEntreprise}">
+<h2 class="block-title athena">
+	Détail d'un service et matériel
+</h2>
+		<p>
+			<ng-container *ngIf="parcServicesDetail.productCategoryName">
+				<span class="grey" >Catégorie : </span> {{ parcServicesDetail?.productCategoryName }} 
+				<span class="icon icon-min arrow-right-grey" *ngIf="parcServicesDetail.productFamilyName"></span> 
+				{{parcServicesDetail?.productFamilyName}} <span class="icon icon-min arrow-right-grey" *ngIf="parcServicesDetail.productSubFamille"></span>
+				{{parcServicesDetail?.productSubFamille}}<br />
+			</ng-container>
+            <ng-container *ngIf="parcServicesDetail.productName">
+				<span class="grey">Article : </span>
+				{{ parcServicesDetail?.productName }}<br />
+		    </ng-container>
+            <ng-container  *ngIf="parcServicesDetail.createdAt">
+				<span class="grey">Date de création : </span>
+				{{ parcServicesDetail?.createdAt ? (parcServicesDetail?.createdAt | date:'dd MMM yyyy') : '' }}<br />
+			</ng-container>
+			
+            <ng-container *ngIf="parcServicesDetail.createdByFirstName || parcServicesDetail.createdByLastName ">
+				<span class="grey">Créé par : </span> 
+				{{ parcServicesDetail?.createdByFirstName ? (parcServicesDetail?.createdByFirstName | firstName) : ''}} <span class="uppercase"> {{parcServicesDetail?.createdByLastName ? parcServicesDetail?.createdByLastName : ''}} </span><br />
+		    </ng-container>
+			<ng-container *ngIf="parcServicesDetail.updatedAt">
+				<span class="grey">Date de modification  : </span>
+				{{ parcServicesDetail?.updatedAt | date:'dd MMM yyyy' : '' }} <br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.updatedByFirstName || parcServicesDetail.updatedByLastName">
+				<span class="grey">Modifié par : </span> 
+				{{parcServicesDetail?.updatedByFirstName ? (parcServicesDetail?.updatedByFirstName | firstName): ''}} <span class="uppercase"> {{parcServicesDetail?.updatedByLastName ? parcServicesDetail?.updatedByLastName : '' }} </span><br />
+			</ng-container>
+
+			<ng-container *ngIf="parcServicesDetail.subscriptionDate">
+				<span class="grey">Début de facturation  : </span> 
+				{{ parcServicesDetail?.subscriptionDate | date:'dd MMM yyyy' : '' }} <br />	
+  		</ng-container>
+			
+			<ng-container *ngIf="parcServicesDetail.terminatedAt">
+				<span class="grey">Date de résiliation  : </span>
+				{{ parcServicesDetail?.terminatedAt | date:'dd MMM yyyy' : '' }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.terminatedByFirstName && parcServicesDetail.terminatedByLastName && parcServicesDetail.terminatedAt!==null">
+				<span class="grey">Résilié par : </span>
+				{{parcServicesDetail?.terminatedByFirstName ? (parcServicesDetail?.terminatedByFirstName | firstName): ''}} <span class="uppercase">{{ parcServicesDetail?.terminatedByLastName ? parcServicesDetail?.terminatedByLastName : ''}} </span><br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.associatedLineIdentifier">
+				<span class="grey">Ligne associée : </span>
+				{{  parcServicesDetail?.associatedLineIdentifier }}<br />
+			</ng-container>
+			<ng-container *ngIf="adresseInstallation">
+				<span class="grey">Adresse installation : </span>
+				{{ adresseInstallation }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.comment">
+				<span class="grey">Commentaire : </span>
+				{{ parcServicesDetail?.comment }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.serial">
+				<span class="grey">Numéro de série : </span>
+				{{ parcServicesDetail?.serial }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.toInvoice">
+				<span class="grey">Tarif HT par article : </span>
+				{{ parcServicesDetail?.unitPrice }}€ HT<br />
+            </ng-container>
+            <ng-container *ngIf="parcServicesDetail.toInvoice">
+				<span class="grey">Tarif TTC par article : </span>
+				{{ unitePriceTTC }}€ TTC<br />
+			</ng-container>
+			<ng-container  *ngIf="parcServicesDetail.toInvoice">
+				<span class="grey">Remise : </span>
+				{{ remiseTtc }}€ TTC<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.toInvoice">
+				<span class="grey">Tarif TTC net : </span>
+				{{ priceTTCAllIncluses }}€ HT<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.toInvoice && recurrent">
+				<span class="grey">Récurrent : </span>
+				{{ recurrent }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.toInvoice && parcServicesDetail?.quantity">
+				<span class="grey" >Quantité : </span>
+				{{ parcServicesDetail?.quantity  }}<br />
+			</ng-container>
+			<ng-container *ngIf="parcServicesDetail.toInvoice && parcServicesDetail?.numeroCompteFacturation">
+				<span class="grey">Compte de facturation associé : </span>
+				{{ parcServicesDetail?.numeroCompteFacturation }}<br />
+		    </ng-container>
+		</p>
+	</div>

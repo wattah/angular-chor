@@ -1,0 +1,10 @@
+<div class="block_onglet univers block block-shadow  ">
+    <div class="gestion_cri">
+        <a class="block-title-item-link athena lotslien" [routerLink]="null" (click)="gestionLots()" queryParamsHandling="merge">Gestion par lots</a>
+        <mat-tab-group animationDuration="10ms" [disableRipple]="true">
+            <mat-tab label="Total">
+               <app-invoice-statistics-total></app-invoice-statistics-total>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

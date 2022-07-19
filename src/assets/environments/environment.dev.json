@@ -1,0 +1,14 @@
+{
+  "production": true,
+  "baseUrl": "https://atn-01dev2-athena.sso-dev-off.si.francetelecom.fr/athena",
+  "adaBannerPlateforme": "QUALIF",
+  "adaBannerPlateformeUrl": "https://m10-06dev-ada-ssl.sso-dev-off.si.francetelecom.fr",
+  "aideLignePlateformeUrl": "https://ael-int.si.francetelecom.fr",
+  "plateFormeName":"Dev",
+  "bid": "com.apple.messages.MSMessageExtensionBalloonPlugin:JNVAG2CN37:com.parnasse.Parnasse-iPhone.ParnasseMessagesExtension",
+  "accessNotAuthenticatedRedirectUrl":"https://gassi.si.francetelecom.fr/",
+  "version": "G02R00C00",
+  "sessionExperation": 5400,
+  "urlApollon":"https://adhesion.revlamp102.as44099.com/#/login",
+  "urlJira":"https://portail.agir.orange.com/servicedesk/customer/portal/29"
+}

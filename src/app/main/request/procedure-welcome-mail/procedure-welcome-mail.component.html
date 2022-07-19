@@ -1,0 +1,156 @@
+<div class="row">   
+    <div  class="col-24">
+        <div class="block block-transparent">
+            <h6 class="athena" style="margin-bottom: 0;"> {{ detailRequest?.requestTypeLabel}}  </h6>
+            <h5 class="grey text-center athena"> Demande N° {{ detailRequest?.idRequest }}</h5>
+        </div>
+    </div>
+    <div class="col-md-24 col-lg-8 order-lg-2">
+        <!-- REQUEST SUMMARY  -->
+        <app-task-creation-request-summary  [detailRequest]="detailRequest" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-task-creation-request-summary>        
+    </div>  
+
+    <div class="col-md-24 col-lg-16 order-lg-1">
+        <!-- FORMULAIRE -->
+        <div class="block block-shadow" >
+            <h2 class="athena"> Générer le courrier de bienvenue </h2>
+            <div class="row" *ngIf="f.submitted && form.invalid">
+                <div class="col-md-12 col-lg-12">
+                    <div class="block block-alert" >
+                        <table class="table table-not-bordered athena" aria-describedby="">
+                            <tbody>
+                                <tr hidden>
+                                    <th id=""></th>
+                                    <th id=""></th>
+                                </tr>
+                                <tr>
+                                    <td class="alert-icon align-middle" >
+                                        <span class="icon icon-max status-exclamation-white"></span>
+                                    </td>
+                                    <td class="alert-text">
+                                        <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                                        <ul class="simple mr-0 mt-2">
+                                            <li *ngIf="form.get('recipient').hasError('required')">Le champs Destinataire est obligatoire </li>
+                                            <li *ngIf="form.get('address').hasError('required')" >Le champs Adresse est obligatoire  </li>
+                                            <li *ngIf="form.get('civility').hasError('required')" >Le champs Civilité est obligatoire </li>
+                                            <li *ngIf="form.get('issueDate').hasError('required')" >Le champs Date d'émission est obligatoire </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-24 mt-3">
+                <form  #f="ngForm"  [formGroup]="form" (ngSubmit)="onSubmit(f)" >
+                    <div class="form-group row mb-2" [hidden]="typeCustomer==='particular'">
+                        <label class="col-sm-4 col-lg-4 col-form-label athena">A qui souhaitez-vous envoyer ce courrier ? * </label>
+
+                        <div class="col-sm-20 col-lg-9 ">
+                            <mat-form-field class="large-chip-list" appearance="outline">
+                                <input type="text" matInput formControlName="recipient" [matAutocomplete]="auto" [formControl]="form.get('recipient')" formControlName="recipient" >
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayRecipient">
+                                  <mat-option *ngFor="let person of filteredPersons | async" [value]="person" (click)="onChoseRecipient(person)">
+                                    {{nameFormatter(person) }}  -  {{ (person.roleLabel) ? person.roleLabel : ''}}
+                                  </mat-option> 
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="f.submitted &&  form.get('recipient').hasError('required')" >
+                                Ce champs est obligatoire
+                            </mat-error>
+                        </div>
+                        <span *ngIf="f.submitted && form.get('recipient').hasError('required')"   class="icon col-sm-1 mt-2 status-exclamation"></span>
+                    </div>
+
+                   
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-lg-4 col-form-label athena">Adresse * </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <mat-form-field class="large-chip-list" appearance="outline" >
+                                <input type="text" matInput [matAutocomplete]="autoService" required formControlName="address" [formControl]="form.get('address')" (keyup)="changeAdresseInput($event)">
+                                <mat-autocomplete #autoService="matAutocomplete" [displayWith]="displayAddress">
+                                    <mat-option  class="pl-0" *ngFor="let rdv of adresseRdv" [value]="rdv"  (click)="onChoseAddress(rdv)">
+                                        <div class="adress_bordure pr-0">
+                                            <p class="mb-2"> 
+                                                <strong> Adresse {{ rdv.types ? rdv?.types[0]?.label:'' }}</strong> 
+                                            </p>
+                                            <p class="m-0 grey lowercase" *ngIf="rdv.companyName"> 
+                                                {{ rdv.companyName ? rdv.companyName:'' }} 
+                                            </p>
+                                            <p class="m-0 grey lowercase"> 
+                                                {{ rdv.addrLine2 ?  rdv.addrLine2:'' }}
+                                                {{ rdv.addrLine3 ?  rdv.addrLine3:'' }}
+                                                {{ rdv.logisticInfo ?  rdv.logisticInfo:'' }}
+                                                {{ rdv.addrLine4 ?  rdv.addrLine4:'' }}
+                                                {{ rdv.addrLine5 ?  rdv.addrLine5:'' }}
+                                            </p>
+                                            <p class="m-0 grey lowercase"> 
+                                                {{ rdv.postalCode ?  rdv.postalCode:'' }} {{ rdv.city ?  rdv.city:'' }} 
+                                            </p>
+                                        </div>
+                                    </mat-option>
+                                    <mat-divider></mat-divider>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="f.submitted &&  form.get('address').hasError('required')" >
+                                Ce champs est obligatoire
+                            </mat-error>
+                        </div>
+                        <span *ngIf="f.submitted &&  form.get('address').hasError('required')"   class="icon col-sm-1 mt-2 status-exclamation"></span>
+                    </div>
+
+                    <div class="form-group mb-3 mt-n3 row" >
+                        <label class="col-sm-4 col-lg-4 col-form-label athena"> </label>
+                        <div class="col-sm-10 col-lg-10 mb-2">
+                            <span class="athena clickable link font-weight-bold"  (click)="openPopupNewAdresse()">
+                                <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une adresse temporaire
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-lg-4 col-form-label athena"> Civilité *</label>
+                        <div class="col-sm-20 col-lg-9">
+                            <input class="athena form-control "  type="text" required formControlName="civility"
+                              [ngClass]="{'error':f.submitted && form.get('civility').hasError('required')}"
+                            />
+                            <mat-error *ngIf="f.submitted &&  form.get('civility').hasError('required')" >
+                                Ce champs est obligatoire
+                            </mat-error>
+                        </div>
+                        <span *ngIf="f.submitted &&  form.get('civility').hasError('required')" class="icon col-sm-1 mt-1 status-exclamation"></span>
+                    </div>
+
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-lg-4 col-form-label athena">Date d'émission* </label>
+                        <div class="col-sm-20 col-lg-3 ">
+                            <mat-form-field  appearance="outline" style="width:100% " >
+                                <input class="athena" readonly matInput [matDatepicker]="pickerStart" placeholder="" formControlName="issueDate" required>
+                                <mat-datepicker #pickerStart required></mat-datepicker>
+                            </mat-form-field>
+                            <mat-error *ngIf="f.submitted &&  form.get('issueDate').hasError('required')" >
+                                Ce champs est obligatoire
+                            </mat-error>
+                        </div>
+                        <span class="col-form-label mt-2 col-lg-1  icon calendar-grey clickable athena" (click)="pickerStart.open()" ></span>
+                        <span *ngIf="f.submitted &&  form.get('issueDate').hasError('required')"   class="icon col-sm-1 mt-2 status-exclamation"></span>
+                    </div>
+                    
+                    <div class="row mt-5 mb-2 ">
+                        <button class="col-lg-4 btn btn-link mr-0 pr-2 ml-0 pl-0 athena text-right " [disabled]="f.submitted &&  form.invalid" type="submit" (click)="onResumeLater()" >Reprendre plus tard</button>
+                        <button class="col-lg-5 btn btn-green mr-2 ml-0" [disabled]="f.submitted &&  form.invalid" type="submit" (click)="onValidateMail()" >Valider le courrier</button>
+                        <button class="col-lg-5 btn btn-blue  mr-2 ml-2"   [disabled]="f.submitted && form.invalid" type="submit" (click)="onSeeMail()"> <span class="icon icon-max eyes-white clickable ">  </span>Voir le courrier</button>
+                    </div>
+                </form>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+<div style="height: 100%; margin-left: 40px; padding: 20px; box-sizing: border-box;">
+  <div class="row" > 
+    <div class=" col-12" >
+      <span class="athena uppercase underline grey mb-2 "> DEMANDE </span>
+      <p class="enableNewLine mb-0"> 
+        <strong class="athena" > Description de la demande : </strong> 
+        {{(!data?.description) ? '-' : data?.description }}
+      </p>
+      <ng-template [ngIf]="data?.countTasksAssigned > 0">
+        <strong class="athena">Tâches en cours ({{data?.countTasksAssigned}}) :</strong> 
+        <ul class="simple" *ngIf="data?.canonicalLabel">
+          <li *ngFor="let canonicalLabel of canonicalLabelList()">  {{canonicalLabel}} </li>
+        </ul>
+      </ng-template>
+      <ng-template [ngIf]="data?.countTasksAssigned == 0 && data?.status === 'PENDING'" >
+        <strong class="athena">Aucune tâche en cours</strong> <br/> 
+      </ng-template>
+      <ng-template [ngIf]="data?.status !== 'PENDING'" class="enableNewLine" >
+        <strong class="athena">Résolution : </strong> {{ data?.conclusionType | isNull| resolutionRequest}} <br/>
+      </ng-template>
+    </div>
+    <div class=" col-12" *ngIf="data.cartId">
+      <span class="athena uppercase underline grey mb-2 "> PANIER </span>
+      <p class="enableNewLine" style="margin-bottom:0"> 
+        <strong class="athena " > Prix : </strong>  {{data.cartTotalHt}}€ 
+      </p>
+      <strong class="athena">Composition : </strong> 
+      <ul class="simple">
+        <li *ngFor="let carItem of activeCartItems"> {{carItem.productLabel}} ({{carItem.addingDate | date: 'y-M-d'}})</li>
+      </ul>
+      <div><strong class="athena">Statut de l'ordre de commande  : </strong> {{cartlabel}}</div><br/>
+      <div class="col-sm-24 p-0 mb-3 athena d-flex justify-content-{{ 'left'}}" *ngIf="data.cartItems?.length  > 0 && visibleActionsTriggerOC && !hasBlockedProduct">
+        <button class=" col-form-label btn btn-blue" (click) = "triggerOCandBLWingsm()"> Déclencher l'OC et le BL WinGSM</button>
+    </div>
+    </div>
+</div>
+
+<div *ngIf="loadingOC" class="wrapper">
+  <div class="spinner">
+  </div>

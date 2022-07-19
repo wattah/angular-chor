@@ -1,0 +1,16 @@
+<div class="underline mt-3 mb-2">Autre port N°{{index}} <span class="icon del ml-2" (click)="removeOtherStation()" [class.disabled]="!allowedToModifyTechnicalInformationTab"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Autre service </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreStation" name="autreStation" [(ngModel)]="intervention.autreStation" />
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Port </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autrePort" name="autrePort" [(ngModel)]="intervention.autrePort" />
+        </div>
+    </div>
+</form>

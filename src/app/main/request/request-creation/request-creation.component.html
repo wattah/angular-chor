@@ -1,0 +1,409 @@
+<div class="row">
+    <div class="col-24">
+        <h6 class="athena">
+            {{requestType.label}}
+        </h6>
+        <h5 class="gris athena">
+            Création de la demande
+        </h5>
+		
+		<ng-template [ngIf]="!isClosedImmediately" [ngIfElse]="ImmediateClosing">
+        <div class="stepper">
+            <div [ngClass]="['left-icon', isCreatingRequest ? 'icon-middle-bgc' : 'icon-done']">
+                <div>
+                    <a class="athena" [routerLink]="null" queryParamsHandling="merge" [ngClass]="['left-link', isCreatingRequest ? 'black' : 'grey']">
+                        <span class="athena">Description de la demande</span>
+                    </a>
+                </div>
+            </div>
+            <div [ngClass]="['progress-bar-1', isOnDynamicQuestions ? 's1-to-s2' : isQuestionsAsked ? 's1-to-s2-done' : 'inactive']"></div>
+            <div *ngIf="!hasPrecision" [ngClass]="['middle-icon', isCreatingRequest ? 'inactive' : isQuestionsAsked ? 'icon-middle-bgc' : 'icon-active']">
+                <div>
+                    <a class="athena" [routerLink]="null" queryParamsHandling="merge" [ngClass]="['middle-link', isOnDynamicQuestions ? 'black' : 'grey']">
+                        <span class="athena">Précisions sur la demande</span>
+                    </a>
+                </div>
+            </div>
+            <div [ngClass]="['progress-bar-2', isQuestionsAsked ? 's2-to-s3' : 'inactive']"></div>
+            <div [ngClass]="['right-icon', isQuestionsAsked ? 'icon-active': 'inactive']">
+                <div>
+                    <a class="athena" [routerLink]="null" queryParamsHandling="merge" [ngClass]="['right-link', isQuestionsAsked ? 'black' : 'grey']">
+                        <span class="athena">Affectation des tâches</span>
+                    </a>
+                </div>
+            </div>
+        </div> 
+        </ng-template>
+        
+        <ng-template #ImmediateClosing>
+        <div class="stepper">
+            <div [ngClass]="['step1-icon', isCreatingRequest ? 'creation-left-icon' : 'affectation-left-icon']">
+                <div>
+                    <a class="athena" [routerLink]="null" queryParamsHandling="merge" [ngClass]="['step1-link']">
+                        <span class="athena">Description de la demande</span>
+                    </a>
+                </div>
+            </div>
+            <div [ngClass]="['progress-bar', isCreatingRequest ? 'toTask' : 'toRequest']"></div>
+            <div [ngClass]="['step2-icon', isCreatingRequest ? 'creation-right-icon': 'affectation-right-icon']">
+                <div>
+                    <a class="athena" [routerLink]="null" queryParamsHandling="merge" [ngClass]="['step2-link']">
+                        <span class="athena" *ngIf="!isClosedImmediately">Affectation des tâches</span>
+                        <span class="athena" *ngIf="isClosedImmediately">Clôture de la demande</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        </ng-template> 
+
+    </div>
+</div>
+
+<ng-template [ngIf]="isCreatingRequest && !isClosure && !affectationManualTask" [ngIfElse]="onAffectingTasks">
+    <div class="block block-shadow">
+        <h2 class="block-title athena">
+            1 - DESCRIPTION DE LA DEMANDE
+        </h2>
+
+        <form #requestForm="ngForm">
+            <div class="row">
+                <div class="col-lg-18 col-md-20">
+                    <h2 class="custom-h2 athena">Description</h2>
+
+                    <div class="form-group row">
+                        <label for="exampleSelect1" class="col-sm-6 col-form-label athena">Media <span
+                                class="required">*</span></label>
+                        <div class="col-sm-18">
+                            <select class="form-control width-35 athena" id="exampleSelect1"
+                                [(ngModel)]="customerInteraction.refMediaId" name="refMediaId" required
+                                [disabled]="hasNotInteraction" #refMedia="ngModel">
+                                <option [ngValue]="null" disabled>--</option>
+                                <option *ngFor="let media of mediaData" [ngValue]="media.id">{{media.label}}</option>
+                            </select>
+                            <input class="form-check-input athena" type="checkbox" id="noInteractionCB"
+                                (click)="showHideMedia($event)" [value]="hasNotInteraction">
+                            <label class="form-check-label athena" for="noInteractionCB">
+                                Pas d'interaction
+                            </label>
+                            <div *ngIf="refMedia.invalid && requestForm.submitted" [ngClass]="'required'">Le champ
+                                "Media" est obligatoire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="dateDebut" class="col-sm-6 col-form-label athena">Date demande</label>
+                        <div class="col-sm-18 row">
+                            <mat-form-field appearance="outline">
+                                <input class="athena" matInput [matDatepicker]="pickerRequest" required [(ngModel)]="currentDate"
+                                    name="currentDate" (dateChange)="dateChanged()" disabled>
+                                <mat-datepicker #pickerRequest disabled="false"></mat-datepicker>
+                            </mat-form-field>
+                            <span class=" m-2 icon calendar-grey clickable athena" (click)="pickerRequest.open()" ></span>
+                            <span class="athena m-2"  >à</span>
+                            <app-athena-timer (selectTime)="onSelectTime($event)" [defaultHour]="currentHour" [defaultMinute]="currentMinutes">                                
+                            </app-athena-timer>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="interlocuteurSelect" class="col-sm-6 col-form-label athena">Interlocuteur</label>
+                        <div class="col-sm-18">
+                            <select class="form-control athena" id="interlocuteurSelect" [(ngModel)]="request.interlocuteurId"
+                                name="interlocuteurId">
+                                <option *ngFor="let interlocutor of interlocutors" [ngValue]="interlocutor.idPerson">
+                                    {{interlocutor?.firstName | firstName}} {{ interlocutor?.lastName | uppercase}}
+                                    {{(interlocutor?.roleLabel) ? ' - '+interlocutor.roleLabel : ''}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="typeCustomer === 'company'">
+                        <label for="recipientSelect" class="col-sm-6 col-form-label athena">Destinataire</label>
+                        <div class="col-sm-18">
+                            <select class="form-control athena" id="recipientSelect" [(ngModel)]="request.recepientId"
+                                name="recipientId" #recipientId="ngModel"> 
+                                <option *ngFor="let recipient of recipients" [ngValue]="recipient.idCustomer">
+                                    {{ recipient?.lastName | uppercase}}  {{recipient?.firstName | firstName}}  -  
+                                    <ng-template [ngIf]="recipient?.refKey==='ref_customer_person_role_type_titulaire'" [ngIfElse]="Benificiare">Titulaire</ng-template>
+                                    <ng-template #Benificiare>
+                                        {{(recipient?.offreLabel) ? recipient.offreLabel : 'Aucune offre!'}}
+                                    </ng-template>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="optionsRadios" class="col-sm-6 col-form-label athena">Univers <span class="required">*</span> </label>
+                        <div class="col-sm-18">
+                            <ng-template [ngIf]=" universes?.length === 1 " [ngIfElse]="universesCB">
+                                <input readonly="" class="form-control-plaintext athena" id="universInput" name="universId"
+                                    [value]="universes[0].label" type="text">
+                            </ng-template>
+                            <ng-template #universesCB>
+                                <div class="form-check" *ngFor="let univers of universes; let i=index">
+                                    <input class="form-check-input athena" type="radio" name="universId"
+                                        (change)="initInteractionReasonList()" [(ngModel)]="request.universId"
+                                        [value]="univers.id" id="universCB{{i}}">
+                                    <label class="form-check-label athena" for="universCB{{i}}">
+                                        {{univers.label}}
+                                    </label>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleSelect1" class="col-sm-6 col-form-label athena">Objet <span
+                                class="required">*</span></label>
+                        <div class="col-sm-9">
+                            <ng-template
+                                [ngIf]=" interactionReasonList.length === 1 && interactionReasonList[0].children.length === 1"
+                                [ngIfElse]="interReasonSelect">
+                                <label for="selectIR" class="form-control-plaintext athena">{{interactionReasonList[0].label}}
+                                    &gt; {{interactionReasonList[0].children[0].label}} </label>
+                            </ng-template>
+                            <ng-template #interReasonSelect>
+                                <!-- <select class="form-control athena" id="selectIR" (change)="setCanonicalLabel()"
+                                    #interactionReason="ngModel" [(ngModel)]="interactionReasonSelected"
+                                    name="interactionReasonSelected" required>
+                                    <option [ngValue]="null" disabled>--</option>
+                                    <optgroup *ngFor="let ir of interactionReasonList" [label]="ir.label">
+                                        <option *ngFor="let irc of ir.children" for="selectIR" [ngValue]="irc">
+                                            {{irc.label}}</option>
+                                    </optgroup>
+                                </select>
+                                <div *ngIf="interactionReason.invalid && requestForm.submitted" [ngClass]="'required'">
+                                    Le champ "Objet" est obligatoire</div>
+                            -->
+
+                                <app-athena-nested-drop-down    
+                                    [list]="interactionReasonList"
+                                    [selectedValue]="{ label: (this.request?.title) ? this.request?.title : '--'}"
+                                    (selectionChange)="onSelectInteractionReason($event)">
+                                </app-athena-nested-drop-down>
+                                <div *ngIf="(!interactionReasonSelected || interactionReasonSelected.label === '--' )&& requestForm.submitted" [ngClass]="'required'">
+                                    Le champ "Objet" est obligatoire
+                                </div>
+                                
+                            </ng-template>
+
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleTextarea" class="col-sm-6 col-form-label athena">Description</label>
+                        <div class="col-sm-18">
+                            <textarea class="form-control athena" id="exampleTextarea" rows="3"
+                                [(ngModel)]="request.description" name="description"></textarea>
+                        </div>
+                    </div>
+
+                    <!--Traitement bloc-->
+                    <h2 class="custom-h2 athena">Traitement</h2>
+
+                    <div class="form-group row">
+                        <label for="attachedTo" class="col-sm-6 col-form-label athena">Porteur <span
+                                class="required">*</span></label>
+                        <div class="col-sm-18">
+                            <select class="form-control athena" id="attachedTo" [(ngModel)]="request.attachedUserId"
+                                name="attachedUserId" #attachedUser="ngModel">
+                                <option [ngValue]="null" disabled>--</option>
+                                <option *ngFor="let user of listUsers" [ngValue]="user.id">
+                                    {{user | fullNameFormatter }}</option>
+                            </select>
+                            <div *ngIf="attachedUser.invalid && requestForm.submitted" [ngClass]="'required'">Le champ
+                                "Porteur" est obligatoire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="commercialAccount" class="col-sm-6 col-form-label athena">Responsable commercial <span
+                            class="required" *ngIf="commercialAndBusinessAccountsRequired">*</span></label>
+                        <div class="col-sm-18">
+                            <select class="form-control athena" id="commercialAccount" [(ngModel)]="request.salesReprentatifId"
+                                name="salesReprentatifId" #salesRepresentatif="ngModel" [required]="commercialAndBusinessAccountsRequired">
+                                <option [ngValue]="null" disabled>--</option>
+                                <option *ngFor="let user of listUsers" [ngValue]="user.id">
+                                    {{user | fullNameFormatter }}</option>
+                            </select>
+                            <div *ngIf="commercialAndBusinessAccountsRequired && salesRepresentatif.invalid && requestForm.submitted" [ngClass]="'required'">Le champ
+                                "Responsable commercial" est obligatoire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="businessAccount" class="col-sm-6 col-form-label athena">Responsable d'affaires <span
+                            class="required" *ngIf="commercialAndBusinessAccountsRequired">*</span></label>
+                        <div class="col-sm-18">
+                            <select class="form-control athena" id="businessAccount" [(ngModel)]="request.accountManagerUserId"
+                                name="accountManagerUserId" #accountManagerUser="ngModel" [required]="commercialAndBusinessAccountsRequired">
+                                <option [ngValue]="null" disabled>--</option>
+                                <option *ngFor="let user of listUsers" [ngValue]="user.id">
+                                    {{user | fullNameFormatter}}</option>
+                            </select>
+                            <div *ngIf="commercialAndBusinessAccountsRequired && accountManagerUser.invalid && requestForm.submitted" [ngClass]="'required'">Le champ
+                                "Responsable d'affaires" est obligatoire</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="checkbox" class="col-sm-6 col-form-label athena">Traiter cette demande en mode
+                            manuel</label>
+                        <div class="col-sm-18">
+                            <div class="form-check">
+                                <input class="form-check-input athena" type="checkbox" id="manuelModeCB"
+                                    (click)="showHideAlert($event)">
+                                <label class="form-check-label athena" for="manuelModeCB">
+
+                                </label>
+                                <div [class]="alertVisibility">
+                                    Plus aucune tâche ne vous sera proposée automatiquement, le retour en mode
+                                    automatisé ne sera pas possible.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" *ngxPermissionsOnly="['cloturer_demandes']">
+                        <label for="checkbox" class="col-sm-6 col-form-label athena">Clôture immediate</label>
+                        <div class="col-sm-18">
+                            <div class="form-check">
+                                <input class="form-check-input athena" type="checkbox" id="immedClosCB"
+                                    (click)="onImmediateClose($event)">
+                                <label class="form-check-label athena" for="immedClosCB">
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row control-buttons">
+                        <div class="d-none d-sm-block col-sm-6">
+                            <a class="btn btn-link athena" (click)="onCanceledChange(true)"
+                                [routerLink]="['/customer-dashboard', customerId, 'request', 'parcours']"
+                                queryParamsHandling="merge">Annuler</a>
+                        </div>
+                        <ng-template [ngIf]="!isClosedImmediately" [ngIfElse]="isImmediately">
+                            <div class="col-sm-18">
+                                <input class="athena" [ngClass]="['btn', requestForm?.valid && (interactionReasonSelected !== null && interactionReasonSelected !== undefined) && request.description.length <= 4000 ? 'btn-green' : 'btn-grey']" value="Passer à l'étape suivante" type="submit"
+                                    (click)="showQuestions(requestForm)" [disabled]="!requestForm?.valid || requestForm.submitted || interactionReasonSelected === null || interactionReasonSelected === undefined || request.description.length > 4000"/>
+                                <div *ngIf="requestForm.submitted" [ngClass]="'required'">Veuillez renseinger les champs
+                                    obligatoires</div>
+                            </div>
+                        </ng-template>
+                        <ng-template #isImmediately>
+                            <div class="col-sm-18">
+                                <input class="btn btn-green athena" value="Clôturer la demande" type="submit" (click)="onCloseImmediately(requestForm)"/>
+                            </div>
+                        </ng-template>
+                        <div class="d-sm-none">
+                            <a class="btn btn-link athena"
+                                [routerLink]="['/customer-dashboard', customerId, 'request', 'parcours']" (click)="onCanceledChange(true)"
+                                queryParamsHandling="merge">Annuler</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</ng-template>
+<!-- "isClosure" => is boolean variable for identify if the user want to close the request -->
+<div [hidden]="isQuestionsAsked || (isCreatingRequest || isClosure) || !request.isConnectedOnWf || noTasks"  class="row">
+    <div class="col-lg-24 col-md-24">
+        <div  class="block block-shadow">
+            <h2  id="e2e_questions" class="block-title athena">
+               2 - PRECISIONS SUR LA DEMANDE
+            </h2>
+            <div>
+                <template #alertContainer></template>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 col-form-label">
+                        <a class="btn btn-link to-right athena" 
+                        (click)="onCanceledChange(true)"
+                        [routerLink]="['/customer-dashboard', customerId, 'request', 'parcours']"
+                        queryParamsHandling="merge"
+                            
+                        >Annuler</a>
+                </div>
+                <div class="col-sm-18">
+                    <input class="athena " id="btnReinitialiser" [disabled]="!showReinitialise" [ngClass]="['btn mr-4', showReinitialise ? 'btn-green' : 'btn-grey']" class="btn btn-green" value="Réinitialiser les questions"
+                    (click)="cancelQuestionsOfRequest()"/>
+                
+                    <input class="athena" [ngClass]="['btn', showNextButton ? 'btn-green' : 'btn-grey']" value="Passer à l'étape suivante" type="submit"
+                    (click)="showAffectationTaskFn()" [disabled]="!showNextButton" *ngxPermissionsOnly="['creation_parcours']"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #onAffectingTasks>
+    <section class="block block-shadow">
+        <ul class="ath-summary">
+            <h2 class="block-title athena">
+                1 - DESCRIPTION DE LA DEMANDE
+            </h2>
+            <li *ngIf="!hasNotInteraction">
+                <span class="grey">Media : </span> {{requestDescription.mediaLabel}} 
+            </li>
+            <li>
+                <span class="grey">Date demande : </span> 
+                {{ requestDescription?.createdAt | dateFormatPipeFrench}} à {{ requestDescription?.createdAt | date:"HH'h'mm" }}
+            </li>
+            <li>
+                <span class="grey">Interlocuteur : </span>
+            {{ requestDescription?.firstNameInterlocuteur | firstName}}
+            {{ requestDescription?.lastNameInterlocuteur | uppercase }}
+       
+            </li>
+            <li>
+                <span class="grey">Univers : </span> {{ requestDescription.universLabel}}
+            </li>
+            <li>
+                <span class="grey">Objet : </span> {{ requestDescription.title}}
+            </li>
+            <li class="enableNewLine">
+                <span class="grey">Description : </span>
+                {{request.description}}
+            </li>
+        </ul>
+    </section>
+    <div class="block block-shadow" *ngIf="isQuestionsAsked && request.isConnectedOnWf && !hasPrecision ">
+        <h2 class="block-title athena">
+            2 - PRECISIONS SUR LA DEMANDE
+        </h2>
+        <div class="form-group row custom-div" *ngFor="let requestAnswer of requestAnswers; let i = index">
+            <label class="col-sm-6 col-form-label athena">{{requestAnswer.label}}</label>
+            <div class="col-sm-18">
+                <span class="athena">{{formatAnswerWhenTypeIsBooelan(requestAnswer)}}</span>
+            </div>
+        </div>
+        
+    </div>  
+
+    <!-- Tasks Affectation-->
+    <app-task-affectation-list *ngIf="isQuestionsAsked && request.isConnectedOnWf && !affectationManualTask " (onFormGroupChange)="onFormGroupChange($event)" (onCanceledChange)="onCanceledChange($event)" [users]="listUsers"
+        [request]="request" [hasNotInteraction] = "hasNotInteraction" [customerInteraction]="customerInteraction" [tasks]="tasksToAffect" [requestAnswers]="requestAnswers" [precision]="hasPrecision">
+    </app-task-affectation-list>
+    <app-task-creation
+        *ngIf="!request.isConnectedOnWf || affectationManualTask"
+        (onFormGroupChange)="onFormGroupChange($event)" 
+        (onCanceledChange)="onCanceledChange($event)" 
+        (onSubmittedChange)="onSubmittedChange($event)"
+        [wfusersList]="listUsers" [wfReferenceDataList]="referenceDataList" 
+        [wfRequest]="request" [hasNotInteraction] = "hasNotInteraction" [wfCustomerInteraction]="customerInteraction"
+        [precision]="hasPrecision" [isCreationRequest]="true" >
+    </app-task-creation>
+</ng-template>
+
+<app-request-immediate-closure *ngIf="isClosure" [customerId]="customerId" [requestDescription]="requestDescription" [request]="request" (onFormGroupChange)="onFormGroupChange($event)" (onCanceledChange)="onCanceledChange($event)"></app-request-immediate-closure>
+
+<div *ngIf="loading" class="wrapper">
+        <div class="spinner">
+        </div>
+</div>

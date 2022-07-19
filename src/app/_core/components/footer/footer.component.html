@@ -1,0 +1,54 @@
+<app-language [hidden]="true" class="lang"></app-language>
+<footer id="footer" *ngxPermissionsOnly="['affichage_footer']">
+        <div class="footer-min">
+            <div class="footer-item-container">
+                <a class="footer-item-link athena" [routerLink]="null" queryParamsHandling="merge">
+                    <div class="footer-item-text">
+                        Plan du site
+                    </div>
+                </a>
+            </div>
+            <div class="footer-item-container">
+					<a class="footer-item-link athena" [routerLink]="null" queryParamsHandling="merge">
+						<div class="footer-item-text">
+							Contact
+						</div>
+					</a>
+            </div>
+            <div class="footer-item-container">
+					<a class="footer-item-link athena" [routerLink]="null" queryParamsHandling="merge">
+						<div class="footer-item-text">
+							Mentions légales
+						</div>
+					</a>
+            </div>
+            <div class="footer-item-container">
+					<a class="footer-item-link no-underline athena" href="{{jiraUrl}}" target="_blank" queryParamsHandling="merge" rel="noopener noreferrer">
+						<div class="footer-item-text">
+                            <span class="icon icon-max jiracon athena"></span>
+							<span class="footer-item-text-blue athena">Signaler un incident</span>
+						</div>
+					</a>
+            </div>
+            <div class="footer-item-container">
+                    <a class="footer-item-link athena" [routerLink]="null" queryParamsHandling="merge" >
+                        <div class="footer-item-icon">
+                            <span class="icon icon-max poincon athena"></span>
+                        </div>
+                    </a>
+            </div>
+            <div class="footer-item-container">
+					<a class="footer-item-link no-underline athena" (click)="goToAbc()" [routerLink]="['/customer-dashboard', 'abc', opaqueId]" queryParamsHandling="merge">
+						<div class="footer-item-text">
+							<span class="footer-item-text-blue athena">ABC html page</span>
+						</div>
+                    </a>
+                    
+            </div>
+            <div class="version-text">
+              {{version}}
+            </div>
+            
+
+        </div>
+    </footer>

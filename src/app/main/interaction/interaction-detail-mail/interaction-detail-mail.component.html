@@ -1,0 +1,81 @@
+<div class="container-fluid env-yellow">
+    <div class="row">
+        <div  class="col-24">
+                <h6 class="athena"  style="margin-bottom: 0;">{{interactionDetailMail.motif}}</h6>
+                <div ng>
+                <h5 class="athena" *ngIf="interactionDetailMail.creeLe !== null"> Interaction du {{interactionDetailMail.creeLe | dateFormatPipeFrench}}</h5>
+               </div>      
+		</div>
+        <div class="col-md-24 col-lg-8 order-lg-2">
+			<!-- REQUEST SUMMARY  -->
+            <app-request-summary [detailRequest]="request" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-request-summary>
+		</div>
+		<div class="col-md-24 col-lg-16">
+			<div class="block block-shadow">
+				<h2 class="subtitle athena">
+                    Détail 
+                    <a *ngIf="!interactionDetailMail.isAutomatic"
+                     class="block-title-item-link athena" 
+                     [routerLink]="['/customer-dashboard', customerId, 'interaction', 'modification', interactionDetailMail.interactionId, request.idRequest]"
+                     [queryParams]="{ previousPage: 'detail' }"
+                     queryParamsHandling="merge">
+                        <div class="block-title-item-icon">
+                            <span class="icon pen"></span>
+                        </div>
+                    </a>
+                </h2>
+                <div class="row">
+                    <div class="col-md-8 col-lg-8">
+                        <span class="grey">Traitée par : </span> 
+                        {{(!interactionDetailMail.firstName) ? '-' : interactionDetailMail.firstName | firstName}}  {{ interactionDetailMail.lastName |  uppercase }}<br/>
+                        <span class="grey">Motif : </span>
+                        {{(!interactionDetailMail.motif) ? '-' : interactionDetailMail.motif }}<br/>
+                        <span class="grey">Créée le : </span> 
+                        {{(!interactionDetailMail.creeLe) ? '-' : interactionDetailMail.creeLe | dateFormatPipeFrench}} - {{ (!interactionDetailMail.creeLe) ? '-' : interactionDetailMail.creeLe | date:"HH'h'mm" }}<br/>
+                        <span class="grey">Objet du mail: </span> 
+                        {{(!interactionDetailMail.subject) ? '-' : interactionDetailMail.subject }}<br/>
+                    </div>
+                    <div class="col-md-8 col-lg-8">
+                <span class="grey"> Destinataire: </span>  
+                            {{(!receiverss) ? '-' : receiverss }}<br/>                
+                        <span class="grey">CC : </span>{{(!ccreceivers) ? '-' : ccreceivers }}<br/>
+                        <span class="grey">CCI : </span>{{(!ccireceivers) ? '-' : ccireceivers }}<br/>
+                    </div>
+                    <div class="col-md-8 col-lg-8">
+                        <span class="grey">Emetteur : </span>
+                        {{(!interactionDetailMail.sender) ? '-' : interactionDetailMail.sender }}<br/>
+                        <span class="grey">Style : </span>
+                        {{(!interactionDetailMail.style) ? '-' : interactionDetailMail.style }}<br/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-24 text-justify">
+                        <p class=" enableNewLine "> <span class="Description">Description :</span> {{(!interactionDetailMail.description) ? '-' : interactionDetailMail.description }}</p><br/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-4 col-lg-4">
+                        <span class="grey">Mail envoyé : </span>
+                    </div>
+                    <div class="col-md-16 col-lg-16 block block-bordered break-lines">
+                        <div class="row mt-5 mb-5 justify-content-center"><span class="icon icon-max poincon"></span></div>
+                        <h1 class="not-bordered title-font athena" [innerHTML]="interactionDetailMail.title"></h1>
+                        <h2 class="subtitle-font not-bordered" [innerHTML]="interactionDetailMail.subtitle"></h2>
+                        <div style="font-size: 14pt; font-family: 'Segoe UI';">
+                            <br/><br/><br/><br/>
+                        </div>
+
+                        <section class="text-justify body-font athena">
+                            <div [innerHTML]="interactionDetailMail.body"></div>
+                        </section>
+                        <br/><br/><br/><br/><br/>
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5 justify-content-center">
+                        <div class="col-5">
+                            <input class="btn btn-green" [routerLink]="['/customer-dashboard', customerId, 'detail', 'request', request.idRequest]" queryParamsHandling="merge" value="Revenir à la demande" type="button" />
+                        </div>
+                </div>
+            </div>
+    </div>
+</div>

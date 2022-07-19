@@ -1,0 +1,9 @@
+<div class="d-flex">
+  <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+    <input matInput [matDatepicker]="datepicker" [formControl]="date" readonly />
+    <mat-datepicker #datepicker></mat-datepicker>
+  </mat-form-field>
+  <div class="col-2 col-sm-2 mt-2 p-0">
+    <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="datepicker.open()"></span>
+  </div>
+</div>

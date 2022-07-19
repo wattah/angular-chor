@@ -1,0 +1,182 @@
+<!-- PART II : MODIFICATION -->
+<section class="relationnel-modification">
+    <form class="row" [formGroup]="formRelational" >
+        <article class="col-24 mb-2 ">
+            <h4 class="athena mintitle"> Relation avec Parnasse </h4>
+            
+            <div class="form-group row ">
+                <label class="col-sm-3 col-form-label  athena">Entité gestion Parnasse</label>
+                <div class="col-sm-5">
+                    <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( formRelational.get('refLocation'), triggerLoc, '')" >
+                        <input type="text" class="" matInput [matAutocomplete]="entite" formControlName="refLocation" [formControl]="formRelational.get('refLocation')"
+                        #triggerLoc="matAutocompleteTrigger"  (click)="clearAutoCompleteInputControl( formRelational.get('refLocation'), triggerLoc, '')" >
+                        <mat-autocomplete #entite="matAutocomplete" [displayWith]="displayRefLocation">
+                            <mat-option [value]="null"> -- </mat-option>
+                            <mat-option *ngFor="let location of filterdRefLocationList | async" [value]="location">
+								{{  location.label }}
+							</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>    
+                
+            </div>
+            <div class="form-group row" *ngIf="typeCustomer==='particular'">
+                <label class="col-sm-3 col-form-label  athena">Client OBS</label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" id="obsType" formControlName="obsType">
+                        <option [ngValue]="null" [selected]="person?.obsType===null" > -- </option>
+                        <option *ngFor="let type of obsTypeList" [ngValue]="type" > {{type.label}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="typeCustomer==='particular'">
+                <label class="col-sm-3 col-form-label athena">Information gestionnaire OBS</label>
+                <div class="col-sm-5">
+                    <textarea class="form-control athena" id="obscomment" formControlName="obscomment" rows="5" autosize></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Apporteur d’affaire pour Parnasse</label>
+                <div class="col-sm-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isPartnerProvideurContributorYes" [value]="true" formControlName="isBusinessProvider" name="isBusinessProvider"> 
+                        <label class="form-check-label" for="isPartnerProvideurContributorYes"> Oui </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isPartnerProvideurContributorNo" [value]="false" formControlName="isBusinessProvider" name="isBusinessProvider">
+                        <label class="form-check-label" for="isPartnerProvideurContributorNo"> Non </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Partenaire pour Parnasse</label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" formControlName="isPartnerProvideurContributor">
+                        <option [ngValue]="true">Oui</option>
+                        <option [ngValue]="false">Non</option>
+                    </select>
+                </div>
+            </div>
+        </article>
+        <article class="col-24 mb-2">
+            <h4 class="athena mintitle"> Événements </h4>
+          
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label  athena">Présence aux événements</label>
+                    <div class="col-sm-5">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="isPresentToEvent" [value]="true"  name="isPresentToEvent" formControlName="isPresentToEvent"> 
+                            <label class="form-check-label" for="isPresentToEvent"> Oui </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="isNotPresentToEvent" [value]="false"  name="isPresentToEvent" formControlName="isPresentToEvent">
+                            <label class="form-check-label" for="isNotPresentToEvent"> Non </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label  athena">Raison de non participation aux événements</label>
+                    <div class="col-sm-5">
+                        <select class="form-control athena" id="refEventAbsenceReason"  formControlName="refEventAbsenceReason" >
+                            <option [ngValue]="null" > -- </option>
+                            <option *ngFor="let raison of absenceRaisonList" [ngValue]="raison" > {{ raison.label }} </option>
+                        </select>
+                    </div>
+                </div>
+        </article>
+        <article class="col-24 mb-2">
+            <h4 class="athena mintitle"> Segmentation </h4>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena" >Niveau d’influence</label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" id="refInfluence" formControlName="refInfluence" >
+                        <option *ngFor="let level of levelInfluenceList" [ngValue]="level"> {{ level.formattedLabel }} </option>                     
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Membre sensible</label>
+                <div class="col-sm-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isSensitiveMemberYes" [value]="true" formControlName="isSensitiveMember" name="isSensitiveMember"> 
+                        <label class="form-check-label" for="isSensitiveMemberYes"> Oui </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isSensitiveMemberNo" [value]="false" formControlName="isSensitiveMember" name="isSensitiveMember">
+                        <label class="form-check-label" for="isSensitiveMemberNo"> Non </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="showSensitiveMemberComent">
+                <label class="col-sm-3 col-form-label athena">Pourquoi le client est sensible </label>
+                <div class="col-sm-5">
+                    <textarea class="form-control athena" id="sensibleTextarea" formControlName="sensitiveMemberComent" rows="5" autosize></textarea>
+                  </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Accessibilité</label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" formControlName="refAccessibility" >
+                        <option *ngFor="let ref of refAccessibilityList"  [ngValue]="ref" > {{ ref.formattedLabel }} </option>                     
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Raison d’inaccessibilité </label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" formControlName="refInaccessibilityReason">
+                        <option [ngValue]="null"> -- </option>
+                        <option *ngFor="let ref of refInaccessibilityReasonList" [ngValue]="ref" > {{ ref.label }} </option>                     
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Posture avec Parnasse </label>
+                <div class="col-sm-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isBehaviorWithParnasseYes" [value]="false" formControlName="isBehaviorWithParnasse" name="isBehaviorWithParnasse"> 
+                        <label class="form-check-label" for="isBehaviorWithParnasseYes"> Bonne </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="isBehaviorWithParnasseNo" [value]="true"  formControlName="isBehaviorWithParnasse" name="isBehaviorWithParnasse">
+                        <label class="form-check-label" for="isBehaviorWithParnasseNo"> Mauvaise </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="showBehaviorWithParnasseComent"> 
+                <label class="col-sm-3 col-form-label athena">Comportement avec Parnasse</label>
+                <div class="col-sm-5">
+                    <textarea class="form-control athena" id="behaviorWithParnasseComent" formControlName="behaviorWithParnasseComent" rows="5" autosize></textarea>
+                  </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Segment </label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" id="segment"  formControlName="segment" >
+                        <option [selected]="person?.segment===null" disabled> -- </option>
+                        <option *ngFor="let seg of refSegmentList" [ngValue]="seg" > {{ seg }} </option>                
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Potentiel CA  </label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" formControlName="refPotentialTurnover">
+                        <option *ngFor="let ref of refPotentialList" [ngValue]="ref" > {{ ref.formattedLabel }} </option>                     
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label  athena">Potentiel cooptation </label>
+                <div class="col-sm-5">
+                    <select class="form-control athena" formControlName="refPotentialCooptation" >
+                        <option [ngValue]="null">Inconnu</option>
+                        <option *ngFor="let ref of refPotentialCooptationList" [ngValue]="ref" > 
+                            {{ formattedLabelPotentielCooptation(ref.ordinal) }} 
+                        </option>                     
+                    </select>
+                </div>
+            </div>
+        </article>
+    </form>
+</section>

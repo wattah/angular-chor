@@ -1,0 +1,8 @@
+<mat-form-field class="large-chip-list w-100" appearance="outline">
+  <input type="text" matInput [formControl]="optionControl" [matAutocomplete]="auto">
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

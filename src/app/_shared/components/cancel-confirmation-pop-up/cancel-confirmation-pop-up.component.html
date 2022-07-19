@@ -1,0 +1,7 @@
+<div class="modal-body text-center  margin-pop-up" id="pop-up-confirmation">
+    <p [innerHTML]="message"></p>
+    <input class="btn btn-green mt-1" [value]="btnOkText" type="button" (click)="cancelCreationTask()" />
+    <br/> 
+    <button class="btn btn-link blue mt-2" (click)="closeConfirmationPopUp()" >{{ btnCancelText }}</button> 
+         
+</div>

@@ -1,0 +1,58 @@
+<span class="center logo-athena"></span>
+<div class="block block shadow" style="width: 600px; margin: 0 auto;">
+    <!-- HEADER -->
+    <h2 class="athena">
+        Informations du membre
+    </h2>
+    <section class="row">
+        <article class="col-sm-24 col-md-24 col-lg-24 ">
+            <ul class="ath-summary">
+                <li>
+                    <span class="grey">Numéro de contrat : </span>
+                    {{ abcData?.customerView.nicheIdentifier }}
+                </li>
+                <li *ngIf="abcData?.customerView.customerCategory =='ENTREPRISE' || abcData?.customerView.customerCategory =='BENEFICIAIRE'">
+                    <span class="grey"> Nom de l'entreprise : </span>
+                    {{ abcData?.customerView.companyName }}
+                </li>
+                <li *ngIf="abcData?.customerView.customerCategory !== 'ENTREPRISE'">
+                    <span class="grey">Membre : </span>
+                    {{ civility }}
+                </li>
+                <li>
+                    <span class="grey">Date de la dernière authentification : </span>
+                    {{ lastSavedConnectionDate}}
+                </li>
+                <li>
+                    <span class="grey">Numéro de(s) ligne(s) : </span>
+                    <label class="enableNewLine" *ngFor="let l of abcData?.numeroLignes.listParcLigne">{{l?.ligne | ligne}} ({{l?.forfait}})</label>
+                </li>
+                <li>
+                    <span class="grey">Date du dernier contact avec Parnasse : </span>
+                    {{ lastInteractionDate ? lastInteractionDate : '-' }}
+                </li>
+                <li>
+                    <span class="grey">N° de la dernière demande clôturée : </span>
+                    {{ abcData?.lastClosedRequest? abcData?.lastClosedRequest.idRequest :'-' }}
+                </li>
+                <li>
+                    <span class="grey">N° de la dernière demande en cours : </span>
+                    {{ abcData?.lastPendingRequest? abcData?.lastPendingRequest.idRequest : '-' }}
+                </li>
+                <li>
+                    <span class="grey">Date du dernier RDV coach : </span>
+                    {{ lastCoachMeetingDate ? lastCoachMeetingDate : '-'}}
+                </li>
+            </ul>
+        </article>
+    </section>
+    <!-- FOOTER BOUTTONS -->
+    <section class="row justify-content-center">
+        <button *ngIf="abcData?.customerId !== null" class="btn btn-green" (click)="toView360(abcData?.customerId,abcData?.customerView.customerCategory)">
+            <span >Voir fiche 360°</span>
+        </button>
+        <button class="btn btn-blue" (click)="launchScriptLiveEngage()" style="margin-left: 10px;">
+            <span>Demande d'authentification</span>
+        </button> 
+    </section>
+</div>

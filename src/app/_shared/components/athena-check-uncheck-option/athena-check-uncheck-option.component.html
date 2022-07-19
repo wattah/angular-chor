@@ -1,0 +1,25 @@
+<div class=" block_onglet onglet_tabs">
+<mat-form-field class="heightchamps addarrow custum_stock">
+  <mat-select name="Option" [(ngModel)]="selectedOption" multiple>
+    <mat-select-trigger>
+      <ng-template [ngIf]="selectedOption?.length == valuesOption.length">
+        Tous
+      </ng-template>
+      <ng-template [ngIf]="selectedOption?.length != valuesOption.length">
+        <span> {{updateOption()}} </span>
+      </ng-template>
+    </mat-select-trigger>
+
+    <mat-option disabled="disabled" class="filter-option my-1">
+      <span class="black mr-2">Tous</span>
+      <span class="text-sm link " (click)="selectOption()">Cocher</span>
+      <span class="mx-2">|</span>
+      <span class="text-sm link" (click)="deselectOption()">Décocher
+      </span>
+    </mat-option>
+    <mat-option *ngFor="let Option of valuesOption" [value]="Option">
+      {{Option.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>

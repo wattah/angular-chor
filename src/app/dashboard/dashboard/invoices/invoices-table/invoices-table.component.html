@@ -1,0 +1,33 @@
+<span class="text-max">{{satusLabel()}} </span>
+
+<ng-template [ngIf]="isCallingToGot" [ngIfElse]="callToGotCompleted">
+  <app-athena-table-loader ></app-athena-table-loader>
+</ng-template>
+<ng-template #callToGotCompleted >
+  <ng-container *ngIf="!invoices || invoices && (!invoices[0] || invoices[0] && invoices[0].total === 0);else showInvoiceTable" >
+    <p class="enableNewLine mt-2">
+      Vous n’avez pas de factures {{satusLabel() | lowercase}}.
+    </p>
+  </ng-container>  
+</ng-template>
+<ng-template #showInvoiceTable>
+  <app-athena-paginated-ag-grid
+    [defaultSortModel]="defaultSortModel"
+    [paginationPageSize]="4"
+    [columnDefs]="columnDefs" 
+    [rowData]="rowData"
+    [frameworkComponents]="frameworkComponents"
+  >
+  </app-athena-paginated-ag-grid>
+<div class="row justify-content-end mt-2 mb-2" *ngIf="invoices[0] && invoices[0].total > 4">
+  <div class="col-md-20 col-lg-24 " >
+    
+    <ngb-pagination *ngIf="totalPages > 1"
+      [collectionSize]="totalPages*10" [(page)]="currentPage" [maxSize]="5" 
+      [boundaryLinks]="false" [size]="'sm'" (pageChange)="goToPageClick($event)"
+    >
+    </ngb-pagination>
+    <span class="total athena"> {{invoices[0]?.total}} RÉSULTATS  &nbsp;&nbsp;</span>
+  </div>
+</div>
+</ng-template>

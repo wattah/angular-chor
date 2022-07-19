@@ -1,0 +1,129 @@
+<div id="body" [ngClass]="{
+			'container-fluid env-blue': isEntreprise,
+			'container-fluid env-pink': isParticular,
+			'container-fluid env-yellow': isBeneficiary 
+		  }" >
+	<div class="row">
+		<div class="col-24">
+			<div>
+				<h2 class="block-title">
+					Coordonnées téléphoniques
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon add"></span>
+						</div>
+					</a>
+					<span class="block-title-item-link">
+						<span class="text-giant normal light-grey no-transform">|</span>
+					</span>
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon pen"></span>
+						</div>
+					</a>
+				</h2>
+				<div class="row">
+					<div *ngFor="let mob of temp(math.ceil(coordonnees.telephones.length/4)); let i = index" class="col-lg-6 col-md-8 col-sm-12">
+						<table class="table table-not-bordered">
+                              <tbody >
+								<div *ngFor="let c of coordonnees.telephones.slice(4*i,4*i + 4);">
+								<tr>
+								<td class="table-td-icon" >
+									<span *ngIf="c.fix " class="icon phone-home"></span>
+									<span *ngIf="c.mobile " class="icon phone-mobile"></span> 
+								</td>
+								<td>
+									{{c.fix ?  (c.fix | ligne) : (c.mobile | ligne)}} 
+									<span class="text-min grey" ><span *ngIf="c.prenom || c.nom">-</span> <span> {{c.prenom | firstName }} </span> <span> {{c.nom | uppercase }}</span> - {{c.role}}</span>
+								</td>
+								</tr>
+							</div>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<h2>
+					Coordonnées électroniques
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon add"></span>
+						</div>
+					</a>
+					<span class="block-title-item-link">
+						<span class="text-giant normal light-grey no-transform">|</span>
+					</span>
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon pen"></span>
+						</div>
+					</a>
+				</h2>
+				<div class="row">
+					<div *ngFor="let mail of temp(math.ceil(coordonnees.emails.length/6)); let j = index" class="col-lg-6 col-md-8 col-sm-12">
+						<table class="table table-not-bordered">
+							  <tbody *ngFor="let c of coordonnees.emails.slice(6*j,6*j + 6);">
+								<tr *ngIf="c.email">
+								<td class="table-td-icon">
+									<!-- <a href="mailto:{{c.email}}"> --><span class="icon mail"></span><!-- </a> -->
+								</td>
+								<td>
+									{{c.email}} 
+									<span class="text-min grey"
+									><span *ngIf="c.prenom || c.nom">-</span> <span> {{c.prenom | firstName}} </span> <span>{{c.nom | uppercase }}</span> - {{c.role}}</span>
+								</td>
+								</tr> 
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<h2>
+					Coordonnées postales
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon add"></span>
+						</div>
+					</a>
+					<span class="block-title-item-link">
+						<span class="text-giant normal light-grey no-transform">|</span>
+					</span>
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon pen"></span>
+						</div>
+					</a>
+				</h2>
+				<div class="row">
+					<div *ngFor="let adresse of temp(math.ceil(coordonnees.adresses.length/2)); let k = index" class="col-lg-6 col-md-8 col-sm-12">
+						<table class="table table-not-bordered">
+
+							    <tbody *ngFor="let c of coordonnees.adresses.slice(2*k,2*k + 2);">
+									<tr *ngIf="c">
+								<td class="table-td-icon-loc">
+									<a class="map-link-max" [routerLink]="null"></a>
+								</td>
+								<td class="table-td-icon-loc-2">
+									<a [routerLink]="null"><span class="icon nav"></span></a>
+									<a [routerLink]="null"><span class="icon point"></span></a>
+								</td>
+								<td>
+									<span class="text-min colored">
+									<strong><span>{{c.prenom | firstName}} </span> <span>{{c.nom | uppercase }} </span> <span *ngIf="c.prenom || c.nom">-</span> {{c.role}}</strong> </span><br />
+									{{c.companyName}}<br *ngIf="c.companyName" /> 
+									{{c.lastName | uppercase }} {{c.firstName | firstName}}<br *ngIf="c.lastName" />
+									{{c.line2}}<br *ngIf="c.line2" /> 
+									{{c.line3}}<br *ngIf="c.line3" /> 
+									{{c.line4}}<br *ngIf="c.line4" />          
+									{{c.line5}}<br *ngIf="c.line5"/>
+									{{c.postalCode}} {{c.city}}<br />
+									{{c.cedex}}
+									
+								</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,461 @@
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena" > {{ (creationMode) ? 'Création d’un interlocuteur': 'Modification' }}</h2>
+        <div class="row" *ngIf="checkValide()" >
+            <div class="col-md-11 col-lg-9">
+                <div class="block block-alert">
+                    <table class="table table-not-bordered athena" aria-describedby="">
+                        <tbody>
+                            <tr hidden>
+                                <th id=""></th>
+                                <th id=""></th>
+                            </tr>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong class="athena red " style="padding-left: 9px;">
+                                        Ce formulaire n’est pas correctement renseigné
+                                    </strong>
+                                    <ul class="simple mr-0 mt-1 alert-padding">
+                                        <li *ngIf="!civiliteValide">Le Civilité est obligatoire </li>
+                                        <li *ngIf="!nomValide">Le champ nom est obligatoire </li>
+                                        <li *ngIf="!prenomValid">Le champ prénom est obligatoire </li>
+                                        <li *ngIf="!roleValid">Le champ Rôles est obligatoire </li>
+                                        <li *ngIf="!adressFrancaisValide">Le champ Adresse est obligatoire </li>
+                                        <li *ngIf="!paysHorsFrancaisValide">Le champ Pays est obligatoire </li>
+                                        <li *ngIf="!adresseHorsFrancaisValide">Le champ Adresse est obligatoire </li>
+                                        <li *ngIf="!formatAddressValid"> Le champ Adresse est invalide, merci de sélectionner une adresse proposée par ORAS </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form class="pt-3" [formGroup]="form" (ngSubmit)="save()" >
+            <!-- création usage-->
+            <article class="mb-3" >
+                <div class="form-group row">
+                    <label for="mediaSelect" class="col-sm-2 col-form-label athena">Civilité*</label>
+                    <div class="col-sm-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="optionYes" value="MME" [checked]="true" formControlName="civilite">
+                            <label class="form-check-label" for="optionYes"> Madame </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="optionNo" value="M" formControlName="civilite">
+                            <label class="form-check-label" for="optionNo"> Monsieur </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="precision" class="col-sm-2 col-form-label athena">Nom*</label>
+                    <div class="col-sm-6">
+                        <input [ngClass]="[nomValide ? 'form-control athena' : 'form-control athena error']"  class=" " id="lastName" formControlName="lastName" type="text"/>
+                        <mat-error *ngIf="!nomValide" >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <div class="col-sm-1 mt-1 athena" *ngIf="!nomValide">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                    
+                </div>
+                <div class="form-group row">
+                    <label for="precision" class="col-sm-2 col-form-label athena">Prénom*</label>
+                    <div class="col-sm-6">
+                        <input [ngClass]="[prenomValid ? 'form-control athena' : 'form-control athena error']" id="firstName" formControlName="firstName" type="text"/>
+                        <mat-error *ngIf="!prenomValid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <div *ngIf="!prenomValid" class="col-sm-1 mt-1 athena" >
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="usageSelect" class="col-sm-2 col-form-label athena">Langue préférée*</label>
+                    <div class="col-sm-6">
+                        <select class="form-control athena" id="favoritLanguage" formControlName="favoritLanguage"  >
+                            <option value="EN">Anglais</option>
+                            <option value="AR">Arabe</option>
+                            <option value="FR" [selected]='true'>Français</option>
+                            <option value="IT">Italien</option>
+                            <option value="RU">Russe</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="participantSelect" class="col-sm-2 col-form-label athena">Rôles*</label>
+                    <div class="col-sm-6">
+                        <mat-form-field class="large-chip-list" appearance="outline"  >
+                            <mat-chip-list #chipList >
+                              <mat-chip
+                                errorState="true"
+                                *ngFor="let role of roles"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(role)">
+                                {{role?.value}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                              </mat-chip>
+                              <input
+                                placeholder=""
+                                #roleInput
+                                [formControl]="roleCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                              <mat-option *ngFor="let role of filteredRoles | async" [value]="role">
+                                {{role?.value}}
+                              </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-error *ngIf="!roleValid">Ce champ est obligatoire</mat-error>
+                        <mat-error *ngIf="isAffect" >Le rôle {{ roleDejaAffect }} est déjà affecté à {{ nameAffect }},
+                            en validant ce formulaire vous lui retirez ce rôle
+                        </mat-error>
+                    </div>
+                    <div *ngIf="!roleValid" class="col-sm-1 mt-2 athena">
+                        <span class="icon  status-exclamation"></span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- tel fixe-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Téléphone fixe
+                </h4>
+                    <div  formArrayName="cmFixeArray"  *ngFor="let item of form.get('cmFixeArray')['controls']; let i = index">
+                        <div [formGroupName]="i" class="form-group row">
+                            <label [attr.for]="'type' +i" class="col-sm-1 col-form-label athena">Type</label>
+                            <div  class="col-sm-6">
+                                <select formControlName="typeFixe" class="athena form-control"  [attr.id]="'type' +i">
+                                    <option [ngValue]="null"> -- </option>
+                                    <option *ngFor="let type of getListTypesFixe(i)" [value]="type?.key">
+                                        {{type?.value}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label [attr.for]="'numero' + i" class="offset-sm-1 col-sm-1  col-form-label athena ">Numéro</label>
+                            <div class=" ml-1 col-sm-6">
+                                <international-phone-number 
+                                    formControlName="phoneFixe"
+                                    placeholder="Enter phone number" 
+                                    [maxlength]="getLengthNumber(i, 'fixe')" 
+                                    [defaultCountry]="'fr'"
+                                    [onlyNumber]="true"
+                                    (keypress)="preventSpecialCharacters($event)"
+                                    type="tel"
+                                    name="phone" >
+                                </international-phone-number>
+                            </div>
+                            <div class="offset-sm-1 col-sm-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" formControlName="checkProFixe" 
+                                    (change)="onChangeCheckFixeHandler(i)" type="checkbox" [attr.id]="'check'+ i"
+                                    [attr.disabled]="disbaledCheckProFixe() ? true : null">
+                                    <label class="form-check-label" [attr.for]="'check' + i"> Numéro aussi utilisé de façon professionnelle </label>
+                                </div>
+                            </div>
+                            <div class=" col-sm-1" (click)="deleteCmFixeValue(i)">
+                                <span class="icon del clickable mt-2"></span>
+                            </div>
+                        </div>
+                    </div>
+               
+                <div class="form-group mb-2 row" >
+                    <div class="col-sm-10 mb-2" >
+                        <span class="athena font-weight-bold link" (click)="addCmFixeValue()" >
+                            <span class="icon add-on mr-2 athena"> </span>Ajouter un autre téléphone fixe
+                        </span>
+                    </div>
+                </div>
+                
+            </article>
+
+            <!-- tel mobile-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Téléphone mobile
+                </h4>
+                <div formArrayName="cmMobileArray"  *ngFor="let item of form.get('cmMobileArray')['controls']; let i = index">
+                    <div class="form-group row" [formGroupName]="i">
+                        <label [attr.for]="'typeMobile' +i" class="col-sm-1 col-form-label athena">Type</label>
+                        <div class="col-sm-6">
+                            <select formControlName="typeMobile" class="athena form-control"  [attr.id]="'typeMobile' +i" >
+                                <option [ngValue]="null"> -- </option>
+                                <option *ngFor="let type of getListTypesMobile(i)" [value]="type?.key">
+                                    {{type?.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <label for="interlocuteurSelect" class="offset-sm-1 col-sm-1  col-form-label athena ">Numéro</label>
+                        <div class="ml-1 col-sm-6">
+                            <international-phone-number 
+                                formControlName="phoneMobile"
+                                placeholder="Enter phone number" 
+                                [maxlength]="getLengthNumber(i, 'mobile')" 
+                                [defaultCountry]="'fr'" 
+                                [onlyNumber]="true"
+                                (keypress)="preventSpecialCharacters($event)"
+                                type="tel"
+                                name="phone" >
+                            </international-phone-number>
+                        </div>
+                        <div class="offset-sm-1 col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" formControlName="checkProMobile" (change)="onChangeCheckMobileHandler(i)"
+                                type="checkbox" [attr.id]="'checkMobile'+ i" [attr.disabled]="disbaledCheckProMobile() ? true : null">
+                                <label class="form-check-label" [attr.for]="'checkMobile' + i"> Numéro aussi utilisé de façon professionnelle </label>
+                            </div>
+                        </div>
+                        <div class=" col-sm-1" (click)="deleteCmMobileValue(i)">
+                            <span class="icon del clickable mt-2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-2 row" >
+                    <div class="col-sm-10 mb-2">
+                        <span class="athena font-weight-bold link" (click)="addCmMobileValue()">
+                            <span class="icon add-on mr-2 athena"> </span>Ajouter un autre téléphone mobile
+                        </span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- mail-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Mail
+                </h4>
+                <div  formArrayName="cmMailArray"  *ngFor="let item of form.get('cmMailArray')['controls']; let i = index">
+                    <div class="form-group row" [formGroupName]="i">
+                        <label [attr.for]="'typeMail' +i" class="col-sm-1 col-form-label athena">Type</label>
+                        <div class="col-sm-6">
+                            <select formControlName="typeMail" class="athena form-control" [attr.id]="'typeMail' +i">
+                                <option [ngValue]="null"> -- </option>
+                                <option *ngFor="let type of getListTypesMail(i)" [value]="type?.key">
+                                    {{type?.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <label [attr.for]="'mail' + i" class="offset-sm-1 col-sm-1  col-form-label athena ">Mail</label>
+                        <div class="ml-1 col-sm-6">
+                            <input [ngClass]="[checkEmailIsValidToShowError(i) ? 'form-control athena' : 'form-control athena error']" class=" " formControlName="mail" id="mail" type="text"/>
+                            <mat-error *ngIf="!checkEmailIsValidToShowError(i)" >Entrez l’adresse de messagerie au format xyz@example.com.</mat-error>
+                            
+
+                        </div>
+                        <div class="col-sm-1 mt-1 athena" *ngIf="!checkEmailIsValidToShowError(i)">
+                            <span class="icon  status-exclamation"></span>
+                        </div>
+                        <div class="offset-sm-1 col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" formControlName="checkProMail" (change)="onChangeCheckMailHandler(i)"
+                                type="checkbox" [attr.id]="'checkMail'+ i" [attr.disabled]="disbaledCheckProMail() ? true : null">
+                                <label class="form-check-label" [attr.for]="'checkMail' + i"> Mail aussi utilisé de façon professionnelle </label>
+                            </div>
+                        </div>
+                        <div class=" col-sm-1" (click)="deleteCmMailValue(i)">
+                            <span class="icon del clickable mt-2"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-2 row" >
+                    <div class="col-sm-10 mb-2">
+                        <span class="athena font-weight-bold link" (click)="addCmMailValue()">
+                            <span class="icon add-on mr-2 athena"> </span>Ajouter un autre mail
+                        </span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Adresse -->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Adresse 
+                </h4>
+
+                <div  formArrayName="cmAddressArray"  *ngFor="let item of form.get('cmAddressArray')['controls']; let i = index">
+                    <div [formGroupName]="i" class="form-group row">
+                        <label [attr.for]="'typeAddress' +i" class="col-sm-1 col-form-label athena">Type</label>
+                        <div class="col-sm-6">
+                            <select formControlName="typeAddress" class="athena form-control" [attr.id]="'typeAddress' +i">
+                                <option [ngValue]="null"> -- </option>
+                                <option *ngFor="let type of getListTypesAddress(i)" [value]="type?.key"
+                                [selected]="selectedPrincipalDefault(type?.key)">
+                                    {{type?.value}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="offset-sm-1 col-sm-8 row block-adresse">
+                            <div class="form-group col-sm-24  row">
+                                <div class="col-sm-12 col-lg-9">
+                                    <div class="form-check">
+                                        <input class="form-check-input" formControlName="checkIsFrench" (change)="onChangeCheckIsAddressFrench(i)"
+                                          type="checkbox" [attr.id]="'checkIsFrench'+ i">
+                                        <label class="form-check-label" [attr.for]="'checkIsFrench'+ i"> Adresse française </label>
+                                    </div>
+                                </div>
+                                <span class="mt-2 clickable ml-2">
+                                    <ng-template #popContent1> 
+                                        <div class="row ">       
+                                            <span class="icon  help-grey col-2" ></span>
+                                            <span class="title col-17"> Informations de livraison  </span>
+                                            <span  class="icon close col-4 "> </span>
+                                        </div>
+                                        <p>
+                                            Limite de 69 caractères sur la somme des champs A, B & C . <br/>
+                                            Le premier (A) et second (B) champ peuvent figurer sur le courrier.
+                                            Le dernier (C) champ ne figure pas sur le courrier
+                                        </p> 
+                                    </ng-template>
+                                    <span class="icon help-grey cursour"placement="right" [ngbPopover]="popContent1" ></span>
+                                </span>
+                            </div>
+                            <ng-template class="form-group col-sm-24 row" [ngIf]="isCheckFrench(i)" [ngIfElse]="notFrench" >
+                                <div class="form-group col-sm-24 row">
+                                    <label for="interlocuteurSelect"  class=" col-sm-6  col-form-label athena ">Adresse*</label>
+                                    <div class="col-sm-18">
+                                        <div class="d-flex block-info-cri">
+                                            <mat-form-field [ngClass]="[checkValidAddress(i, adressFrancaisValide,'addressFrench') ? 'p-0  col-sm-24 mat-form-field' : 'p-0  col-sm-24 mat-form-field-invalid']" appearance="outline"  >
+                                                <input type="text" placeholder="Ex: 12 bis rue campagne première 75014 Paris"  
+                                                matInput [matAutocomplete]="autoAddress" formControlName="addressFrench">
+                                                <mat-autocomplete #autoAddress="matAutocomplete" [displayWith]="displayAddress" > 
+                                                    <ng-template ngFor let-item [ngForOf]="filteredAddress$[i] | async">
+                                                        <mat-option [value]="item" >
+                                                            {{item?.line4}}  {{ item?.postalCode}} {{ item?.cityName}}
+                                                        </mat-option>
+                                                    </ng-template>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                            <div *ngIf="!checkValidAddress(i, adressFrancaisValide,'addressFrench')" class="col-sm-1 mt-2 athena">
+                                                <span class="icon  status-exclamation"></span>
+                                            </div>
+                                        </div>
+                                        <mat-error *ngIf="isSelectionAddress(i)">
+                                            L’adresse n’est pas connue par ORAS, veuillez sélectionner une des adresses proposées. 
+                                            Si vous souhaitez conserver votre adresse décocher la case "Adresse Française" pour effectuer votre saisie.
+                                        </mat-error>
+                                        <mat-error *ngIf="!checkValidAddress(i, adressFrancaisValide,'addressFrench')">
+                                            Ce champ est obligatoire
+                                        </mat-error>
+                                        
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template class="form-group col-sm-24 row" #notFrench >
+                                <div class="form-group col-sm-24 row">
+                                    <label for="interlocuteurSelect" class=" col-sm-6  col-form-label athena ">Pays*</label>
+                                    <div class="col-sm-18">
+                                        <div class="d-flex block-info-cri">
+                                            <mat-form-field [ngClass]="[checkValidAddress(i, paysHorsFrancaisValide,'addressCountry') ? 'p-0  col-sm-24 mat-form-field' : 'p-0  col-sm-23 mat-form-field-invalid']" appearance="outline"  >
+                                                <input type="text"  matInput [matAutocomplete]="autoCountry" formControlName="addressCountry" >
+                                                <mat-autocomplete #autoCountry="matAutocomplete" [displayWith]="displayCountry">
+                                                    <mat-option *ngFor="let item of filteredCountry[i] | async" [value]="item">
+                                                    {{item?.label}}
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                            <div *ngIf="!checkValidAddress(i, paysHorsFrancaisValide,'addressCountry')" class="col-sm-1 mt-2 athena">
+                                                <span class="icon  status-exclamation"></span>
+                                            </div>
+                                        </div>
+                                        <mat-error *ngIf="!checkValidAddress(i, paysHorsFrancaisValide,'addressCountry')">
+                                            Ce champ est obligatoire
+                                        </mat-error>
+                                    </div>
+                
+                                    
+                                </div>
+                                <div class="form-group col-sm-24 row">
+                                    <label for="interlocuteurSelect" class=" col-sm-6  col-form-label athena ">Code postal</label>
+                                    <div class="col-sm-18">
+                                        <div class="d-flex">
+                                            <input  class="form-control athena" id="codePostal" formControlName="codePostal"  type="text"/>
+                                        </div>
+                                    </div>
+                                   
+                                    
+                                </div>
+                                <div class="form-group col-sm-24 row">
+                                    <label for="interlocuteurSelect" class=" col-sm-6  col-form-label athena ">Ville</label>
+                                    <div class="col-sm-18">
+                                        <div class="d-flex">
+                                            <input   class="form-control athena" id="ville" formControlName="ville" type="text"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-24 row">
+                                    <label for="interlocuteurSelect" class=" col-sm-6  col-form-label athena ">Adresse*</label>
+                                    <div class="col-sm-18">
+                                        <div class="d-flex">
+                                            <input  [ngClass]="[checkValidAddress(i, adresseHorsFrancaisValide,'adresse') ? 'form-control athena' : 'form-control athena error']" id="adresse" formControlName="adresse" type="text"/>
+                                            <div *ngIf="!checkValidAddress(i, adresseHorsFrancaisValide,'adresse')" class="col-sm-1 mt-2 athena">
+                                                <span class="icon  status-exclamation"></span>
+                                            </div>
+                                        </div>
+                                        <mat-error *ngIf="!checkValidAddress(i, adresseHorsFrancaisValide,'adresse')">
+                                            Ce champ est obligatoire
+                                        </mat-error>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <div class="form-group col-sm-24 row">
+                                <label [attr.for]="'appt' +i" class=" col-sm-6 col-form-label athena ">Appt / Etage (A)</label>
+                                <div class="col-sm-18">
+                                    <input formControlName="appt"  class="form-control athena" [attr.id]="'appt' +i" type="text"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-24 row">
+                                <label [attr.for]="'batiment' +i" class=" col-sm-6 col-form-label athena ">Batiment (B)</label>
+                                <div class="col-sm-18">
+                                    <input formControlName="batiment"  class="form-control athena" [attr.id]="'batiment' +i" type="text"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-24 row">
+                                <label [attr.for]="'codePorte' +i" class=" col-sm-6 col-form-label athena ">Code porte (C)</label>
+                                <div class="col-sm-18">
+                                    <input  formControlName="codePorte"  class="form-control athena" [attr.id]="'codePorte' +i" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-6">
+                            <div class="form-check ml-2">
+                                <input class="form-check-input" formControlName="checkProAddress" (change)="onChangeCheckAddressHandler(i)"
+                                type="checkbox" [attr.id]="'checkProAddress'+ i" [attr.disabled]="disbaledCheckProAddress() ? true : null">
+                                <label class="form-check-label" [attr.for]="'checkProAddress'+ i"> Adresse aussi utilisée de façon professionnelle </label>
+                            </div>
+                        </div>
+                        <div class=" col-sm-1 ml-2" (click)="deleteCmAddressValue(i)">
+                            <span class="icon del clickable mt-2"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-2 row" >
+                    <div class="col-sm-10 mb-2">
+                        <span class="athena font-weight-bold link" (click)="addCmAddressValue()">
+                            <span class="icon add-on mr-2 athena"> </span>Ajouter une autre adresse
+                        </span>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- buttons-->
+            <div class="row control-buttons ">
+                <div class="col-sm-2 text-right">
+                    <a class="btn btn-link mt-1 athena" [routerLink]="null"  (click)="annuler()">Annuler</a>
+                </div>
+                <div class="col-sm-6">
+                    <input  class="btn btn-green athena"  value="Enregistrer"  type="submit"  />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

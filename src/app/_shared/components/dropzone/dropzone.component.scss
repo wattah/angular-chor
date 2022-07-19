@@ -1,0 +1,17 @@
+@import '../../../../styles/charte'; 
+.file-drop-profile { 
+    min-height: auto !important; 
+    border: 1px dashed #dadada; 
+    border-radius: 0px; 
+    font-family: $font-family-regular; 
+    font-size: $font-size-text; 
+    color:$black; 
+        .fileinter { 
+            width: 100%  !important;
+             max-width: 100% !important;
+    } 
+} 
+.max-profile-picture {
+    width: 100px;
+    height: 100px;
+}

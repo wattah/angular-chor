@@ -1,0 +1,58 @@
+<div id="body" class="container-fluid" [ngClass]="getClassEnvByTypeCustomer()">
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="block block-shadow block-with-background-oblique-container">
+				<app-profil-information 
+					[infoCustomer]="infoCustomer"
+					[isEntreprise]="isEntreprise"
+					[isParticular]="isParticular"
+					[recoveryDate]="recoveryDate"
+					[isProfilReduit] = "false"
+					[customerId]="customerId"
+					[entrepriseRecoveryDate]="entrepriseRecoveryDate"
+					[detteTotalTTC]="detteTotalTTC"
+                	[detteTotal]="detteTotal">
+				</app-profil-information>
+				
+			</div>			
+			<p>
+				<a class="athena" [routerLink]="(isEntreprise) ? ['/customer-dashboard/entreprise', customerId] : ['/customer-dashboard/particular', customerId]" [queryParams]="{typeCustomer: typeCustomer}" queryParamsHandling="merge"><span class="icon icon-min arrow-left-blue"></span>Retour à la vue 360</a>
+			</p>
+		</div>
+		<div class="col-lg-16">
+			<div class="block block-shadow">
+				<form>
+					<div class="row">
+						<div class="col-lg-18 offset-lg-3 col-md-20 offset-md-2">
+							<h2 class="block-title athena">Modification de l'info facturation</h2>
+							<div class="form-group row">
+								<label for="infofacturation" class="col-sm-6 col-form-label">Info facturation</label>
+								<div *ngIf="showInfoError" class="Ce-champ-dpasse-le col-sm-18">
+									Info Facturation dépasse le nombre de caractère autorisé (500 caractères)
+								</div>
+								<div class="col-sm-18">
+									<textarea name="infofacturation" autosize [(ngModel)]="value" class="form-control athena" id="infofacturation"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row control-buttons">
+						<div class="col-lg-18 offset-lg-3 col-md-20 offset-md-2">
+							<div class="row">
+								<div class="d-none d-sm-block col-sm-6">
+									<a class="btn btn-link athena mt-1" [routerLink]="null" (click)="annuler()" queryParamsHandling="merge">Annuler</a>
+								</div>
+								<div class="col-sm-18">
+									<input class="btn btn-green athena" value="Enregistrer et remplacer le texte précédent" type="submit" (click)="enregistrer()" />
+								</div>
+								<div class="d-sm-none">
+									<a class="btn btn-link athena" [routerLink]="null" (click)="annuler()" queryParamsHandling="merge">Annuler</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

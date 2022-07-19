@@ -1,0 +1,122 @@
+<div id="body" class="container-fluid">
+    <div class="row">
+        <div class="d-none d-md-block col-md-24 col-lg-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')"
+                [infoCustomer]="infoProfil"
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer"
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt">
+            </app-see-all-profil>
+        </div>
+        <div class="d-none d-md-block col-24">
+            <p class="athena">
+                <a
+                    [routerLink]="(typeCustomer === 'company') 
+                ? ['/customer-dashboard/entreprise', customerId]
+                : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}"
+                    queryParamsHandling="merge"
+                    class="athena"
+                >
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+    <div class="container-fuild">
+        <div class="row">
+            <div class="col-24">
+                <div class="block block-transparent">
+                    <h6 class="athena" *ngIf="!isEditMode">
+                        Création d'un compte de facturation
+                    </h6>
+                    <div *ngIf="isEditMode">
+                        <h6 class="athena no-margin">Modification</h6>
+                        <h5 class="athena mb-5">Compte de facturation N°{{billAccountIdentifier}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="isPenicheBillAccountLoaded() && submitted && (!isRIFormValid || !isBDFormValid || 
+                        isNotAddressValid('titularAddressFrench', 'isOrasTitularAddress') || isNotAddressValid('payerAddressFrench', 'isOrasPayerAddress') || 
+                        isSirenNotValid('titularSiren', true) || isSirenNotValid('payerSiren', false))">
+            <div class="col-md-14 col-lg-14">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered"><caption class="p-0"></caption>
+                        <tbody>
+                            <tr>
+                                <th id="th"></th> 
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                 <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                 <div *ngIf="isNotValid('paymentCondition')">- Le champ Condition de règlement est obligatoire </div>
+                                 <div *ngIf="isNotValid('paymentMode')">- Le champ Mode de règlement est obligatoire </div>
+                                 <div *ngIf="isNotValid('mailNotification')">- Le champ Email de facturation est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularFirstName')">- Le champ Prénom (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularLastName')">- Le champ Nom (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularCompany')">- Le champ Raison sociale (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularSiren')">- Le champ Siren (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isSirenNotValid('titularSiren', true)">- Le champ Siren (Titulaire) est invalide </div>
+                                 <div *ngIf="isNotValid('titularAddressFrench')">- Le champ Adresse ORAS (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotAddressValid('titularAddressFrench', 'isOrasTitularAddress')">- Le champ Adresse (Titulaire) est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                                 <div *ngIf="isNotValid('titularAddress4')">- Le champ Adresse hors ORAS (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularCountry')">- Le champ Pays (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('titularCity')">- Le champ Ville (Titulaire) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerFirstName')">- Le champ Prénom (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerLastName')">- Le champ Nom (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerCompany')">- Le champ Raison sociale (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerSiren')">- Le champ Siren (Payeur) est obligatoire </div>
+                                 <div *ngIf="isSirenNotValid('payerSiren', false)">- Le champ Siren (Payeur) est invalide </div>
+                                 <div *ngIf="isNotValid('payerAddressFrench')">- Le champ Adresse ORAS (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotAddressValid('payerAddressFrench', 'isOrasPayerAddress')">- Le champ Adresse (Payeur) est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                                 <div *ngIf="isNotValid('payerAddress4')">- Le champ Adresse hors ORAS (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerCountry')">- Le champ Pays (Payeur) est obligatoire </div>
+                                 <div *ngIf="isNotValid('payerCity')">- Le champ Ville (Payeur) est obligatoire </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-24 col-md-24">
+                <div class="block_onglet block block-shadow">
+                    <div class="onglet_tabs" *ngIf="isPenicheBillAccountLoaded()">
+                        <mat-tab-group animationDuration="10ms" [disableRipple]="true" [selectedIndex]="0">
+                            <mat-tab >
+                                <ng-template mat-tab-label>
+                                    <div> Informations nécessaires
+                                        <span *ngIf="submitted && !isRIFormValid" class="icon badge-top picto-exclamation-rouge "> </span>
+                                    </div>
+                                </ng-template>
+                                <app-required-information [isEditMode]="isEditMode" [penicheBillAccount]="penicheBillAccount" [submitted]="submitted"
+                                (isControlbill) ="isControlbill($event)"  (changedRequiredInfosForm)="changedRequiredInfosForm($event)" (updateState)="updateState($event)" (changeRecurrentOption)="changeRecurrentOption($event)" > </app-required-information>
+                            </mat-tab>
+                            <mat-tab >
+                                <ng-template mat-tab-label>
+                                    <div> Coordonnées de facturation
+                                        <span *ngIf="submitted && !isBDFormValid" class="icon badge-top picto-exclamation-rouge "> </span>
+                                    </div>
+                                </ng-template>
+                                <app-billing-details [isEditMode]="isEditMode" [penicheBillAccount]="penicheBillAccount" [cmBillingUsageVO]="cmBillingUsageVO" [submitted]="submitted"
+                                (changeBellingDetailsForm)="changedBillngDetailsForm($event)"> </app-billing-details>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 mb-3 text-center">
+        <div><input class="btn btn-green" type="button" value="Enregistrer" (click)="save()" /></div>
+        <div><button class="btn btn-link blue" [routerLink]="null" queryParamsHandling="merge" (click)="onCancel()">Annuler</button></div>
+    </div>
+</div>

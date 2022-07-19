@@ -1,0 +1,46 @@
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="detteMobileTTC"], &[col-id="detteServiceTTC"], &[col-id="detteTotalTTC"],
+	&[col-id="totalCreditTTC"], &[col-id="totalRemaining"]{
+		.ag-cell-label-container {
+			float: right;
+			display: flex;
+			align-items: flex-end;
+		}
+		.ag-right-aligned-header .ag-cell-label-container {
+			flex-direction: row;
+		}
+
+		.ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-content: flex-end;
+		}
+	}
+}
+
+.totalTable {
+	width: 96%;
+	float: right;
+}
+
+.rows-dynamic-style  {
+	
+	background-color: royalblue	 !important;
+	color: white  !important;
+	.link {
+		color: white;
+		  }
+  }
+
+  
+
+ 
+
+  
+
+  

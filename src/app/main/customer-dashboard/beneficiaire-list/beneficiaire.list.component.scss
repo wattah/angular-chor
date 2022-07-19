@@ -1,0 +1,39 @@
+@import '../../../../styles/charte';
+
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="status"], &[col-id="type"]{
+		.ag-header-cell-label {
+			text-align: center !important;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+	&[col-id="dateRenewal"] {
+		.ag-cell-label-container {
+			float: right;
+			display: flex;
+			align-items: flex-end;
+		}
+		.ag-right-aligned-header .ag-cell-label-container {
+			flex-direction: row;
+		}
+
+		.ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-content: flex-end;
+		}
+	}
+}
+
+
+
+.cell-span {
+    background-color: #ffffff;
+    border: 1px solid red;
+}

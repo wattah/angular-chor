@@ -1,0 +1,21 @@
+@import '../../../../../styles/charte';
+
+.icon{
+    &.add{
+        display: block;
+    }
+}
+
+div:empty {
+    display: none !important;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+.block_secondaire {
+    .mobile, .home {
+        flex: 0 0 33.33%;
+        white-space: nowrap;
+    }
+}

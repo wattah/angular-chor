@@ -1,0 +1,76 @@
+<div formGroupName="sav">
+    <div class="form-group row">
+        <label class="col-sm-6 col-form-label athena">Ligne du parc impactée </label>
+        <div class="col-sm-18 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="parcImpacteSelect">   
+                <option [ngValue]="null"> -- </option>
+                <option value="autre">Autre</option>
+                <option *ngFor="let parcLigne of mobileParkItems" [ngValue]="parcLigne"
+                    [selected]="parcLigne.id === selectParkItemId"
+                >
+                    {{ parcLigne?.webServiceIdentifier}}  {{parcLigne?.libelleContract ? '-' : ''}} {{ parcLigne?.libelleContract ? parcLigne?.libelleContract : '' }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-6 col-form-label athena">IMEI / N° de série </label>
+        <div class="col-sm-18 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" (change)="serialChangeHandler($event)" formControlName="serialSelect">
+                <option value="null">--</option>
+                <option value="autre">Autre</option>
+                <option *ngFor="let hardwarParc of mobileHardwareParkItems"  [ngValue]="hardwarParc" 
+                [selected]="hardwarParc.id === selectHardwareParkItem" > 
+                    {{ hardwarParc?.serial}}  {{hardwarParc?.productLabel}} 
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="hideInputs">
+        <label class="col-sm-6 col-form-label athena">
+            IMEI / N° de série
+        </label>
+        <div class="col-sm-18 col-lg-9">
+            <input type="text" class="form-control athena" formControlName="numeroSerieInput" />
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="hideNone">
+        <label class="col-sm-6 col-form-label athena">Constructeur </label>
+        <div class="col-sm-18 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="manufacturerSelect" >
+                <option value="--">--</option>
+                <option *ngFor="let manufacturer of manufacturers" [ngValue]="manufacturer" 
+                [selected]="manufacturer.id === selectmanufacturerId"
+                >
+                    {{manufacturer?.name}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="hideNone">
+        <label class="col-sm-6 col-form-label athena">Description </label>
+        <div class="col-sm-18 col-lg-9">
+            <textarea class="form-control athena" formControlName="descriptionText"  rows="3"></textarea>
+        </div>
+    </div>
+    <div class="form-group row" *ngIf="hideSerials">
+        <label for="participantSelect" class="col-sm-6 col-form-label athena">Constructeur</label>
+        <label for="manufacturer" class="col-sm-18 col-lg-9 col-form-label mobile-padding" >{{manufacturer ? manufacturer : '-' }}</label>
+    </div>
+    <div class="form-group row" *ngIf="hideSerials">
+        <label for="participantSelect" class="col-sm-6 col-form-label athena">Description</label>
+        <label for="description" class="col-sm-18 col-lg-9 col-form-label mobile-padding">{{description ? description : '-'}}</label>
+    </div>
+    <div class="form-group row" *ngIf="hideSerials">
+        <label for="participantSelect" class="col-sm-6 col-form-label athena">Date d’acquisition</label>
+        <label for="dateBuy" class="col-sm-18 col-lg-9 col-form-label mobile-padding">{{dateBuy ? dateBuy : '-'}}</label>
+    </div>
+    <div class="form-group row" *ngIf="hideSerials">
+        <label for="participantSelect" class="col-sm-6 col-form-label athena">Parcours</label>
+        <label for="participantSelect" class="col-sm-18 col-lg-9 col-form-label mobile-padding">{{parcours ? parcours : '-'}}</label>
+    </div>
+</div>

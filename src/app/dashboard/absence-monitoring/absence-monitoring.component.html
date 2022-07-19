@@ -1,0 +1,146 @@
+<div class="block block-shadow">
+    <h2 class="athena"> pilotage des absences </h2>
+    <div class="row">
+        <div class="col-md-24 col-lg-24">
+            <section class="container-fluid">
+                <article class="row">
+                    <div class="col-md-8 col-lg-8 mt-3">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-lg-6 col-form-label athena">Rôle absent</label>
+                            <div class="col-md-16">
+                                <mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( roleAbsentControl, triggerA)">
+                                    <input type="text"
+                                        matInput
+                                        [matAutocomplete]="autoA"
+                                        [formControl]="roleAbsentControl"
+                                        #triggerA="matAutocompleteTrigger" 
+                                        (click)="clearAutoCompleteInputControl( roleAbsentControl, triggerA)">
+                                      <mat-autocomplete #autoA="matAutocomplete">
+                                        <mat-option *ngFor="let option of filteredRoleAbsent | async" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-lg-6 col-form-label athena">Personne absente</label> 
+                            <div class="col-sm-16">   
+                                <mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( personneAbsenteControl, triggerM)">
+                                    <input type="text"
+                                        matInput
+                                        [matAutocomplete]="autoM"
+                                        [formControl]="personneAbsenteControl"
+                                        #triggerM="matAutocompleteTrigger"
+                                        (click)="clearAutoCompleteInputControl( personneAbsenteControl, triggerM)">
+                                      <mat-autocomplete #autoM="matAutocomplete" [displayWith]="displayUser">
+                                        <mat-option *ngFor="let option of filteredPersonneAbsente | async" [value]="option">
+                                            {{option | fullNameFormatter }} 
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>      
+                    </div>
+                    <div class="col-md-8 col-lg-8 mt-3">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-lg-6 col-form-label athena">Remplaçant</label> 
+                            <div class="col-sm-16">   
+                                <mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( remplacantControl, triggerC)">
+                                    <input type="text"
+                                        matInput
+                                        [matAutocomplete]="autoC"
+                                        #triggerC="matAutocompleteTrigger"
+                                        [formControl]="remplacantControl"
+                                        (click)="clearAutoCompleteInputControl( remplacantControl, triggerC)">
+                                      <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayUser">
+                                        <mat-option *ngFor="let option of filteredRemplacant | async" [value]="option">
+                                            {{option | fullNameFormatter}}
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                            <label class="col-md-3 col-lg-6 col-form-label athena">Date</label>
+                            <mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+                                <input matInput [matDatepicker]="pickerStart" placeholder="" 
+                                readonly name="dateDebut" [formControl]="startDate" (dateChange)="onSelectStartDate($event)">
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                            </mat-form-field>  
+                            <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerStart.open()" ></span>
+                            <label  class="col-form-label marged-label mt-1 ml-2 mr-2"> à </label>
+                            <mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+                                <input matInput [matDatepicker]="pickerFinish" placeholder="" 
+                                readonly name="dateFin" [min]="minDate" [formControl]="endDate">
+                                <mat-datepicker #pickerFinish></mat-datepicker>
+                            </mat-form-field>  
+                            <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerFinish.open()" ></span><br/>
+                    </div>
+                    <div class="col-md-8 col-lg-8 mt-3">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-lg-6 col-form-label athena">Statut</label> 
+                            <div class="col-sm-16">   
+                                <mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( statutControl, triggerE)" >
+                                    <input type="text"
+                                        matInput
+                                        [matAutocomplete]="autoE"
+                                        [formControl]="statutControl"
+                                        #triggerE="matAutocompleteTrigger" 
+                                        (click)="clearAutoCompleteInputControl( statutControl, triggerE)"
+                                       >
+                                      <mat-autocomplete #autoE="matAutocomplete">
+                                        <mat-option *ngFor="let option of filteredStatut | async" [value]="option">
+                                            {{option}}
+                                        </mat-option>
+                                      </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>   
+                    </div>
+                </article><br/>
+                <div class="row offset-md-11 mt-2 control-buttons">
+                    <input class="btn btn-green athena" type="submit" value="Rechercher" (click)="onFilter()"/>
+                </div>
+            </section><br/>
+                <app-athena-ag-grid2 id="absenceTabId"
+                          [hidden]="loadingRows" 
+                          [columnDefs]="columnDefs" 
+                          [rowData]="rowData"
+                          [datasource]="datasource"
+                          [paginationPageSize]="paginationPageSize"
+                          [totalItems]="totalItems"
+                          [showTopPagination]="true"
+                          [suppressRowClickSelection]="true"
+                          [defaultSortModel]="defaultSortModel"
+                          (clickCell)="clickCell($event)"
+                          (gridReady)="onGridReady($event)"
+                          [loadAgGridParams]="params"
+                          (sortChanged)="reloadGridAfterSortChanged($event)"
+                          (createServerSideDatasource)="createServerSideDatasource($event)"
+                ></app-athena-ag-grid2>
+                <app-athena-table-loader *ngIf="loadingRows"></app-athena-table-loader>
+        </div>
+        <div  class="col-md-24 col-lg-24 mt-4">
+            <h2 class="athena">
+                Légendes
+            </h2>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 mt-3 ml-3 mr-n3">
+                    <table aria-describedby="" class="table table-not-bordered">
+                        <th id=""></th>     
+                        <p class="col-md-12 col-lg-12 ml-n4 grey"><u>Picto du tableau</u></p>
+                        <tbody> 
+                            <tr>
+                                <td class="table-td-icon"><span class="icon pen"></span></td>
+                                <td>Modifier</td>
+                            </tr>
+                            <tr>
+                                <td class="table-td-icon"><span class="icon del"></span></td>
+                                <td>Supprimer la ligne</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>

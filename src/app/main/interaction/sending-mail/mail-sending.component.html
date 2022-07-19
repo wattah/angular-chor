@@ -1,0 +1,290 @@
+<div class="row">
+    <div  class="col-24">
+        <h6 class="athena" style="margin-bottom: 0;"> {{request?.requestTypeLabel}}  </h6>
+        <h5 class="athena" >  Demande N°{{request?.idRequest}}</h5>
+    </div>
+    <div class="col-sm-24 col-md-24 col-lg-8 order-lg-2">
+        <app-request-summary [detailRequest]="request" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-request-summary>
+    </div>
+    <div class="col-sm-24 col-md-24 col-lg-16">
+        <div class="block block-shadow">
+            <h2 class="athena">Envoi d’un mail </h2>
+            <div class="row" *ngIf="isNotValid">
+                <div class="col-sm-24 col-md-12 col-lg-12">
+                    <div class="block block-alert" >
+                        <table class="table table-not-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="alert-icon align-middle" >
+                                        <span class="icon icon-max status-exclamation-white"></span>
+                                    </td>
+                                    <td class="alert-text" >
+                                        <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>   
+                                        <div *ngIf="mailSenderInvalid">- Le champ mail de l'émetteur est obligatoire</div>
+                                        <div *ngIf="interlocutorInvalid">- Le champ Destinataire est obligatoire</div>
+                                        <div *ngIf="objetInvalid">- Le champ Objet est obligatoire</div>
+                                        <div *ngIf="titreInvalid">- Le champ Titre est obligatoire</div>
+                                        <div *ngIf="corpsInvalid">- Le champ Corps du mail est obligatoire</div>
+                                        <div *ngIf="styleInvalid">- Le champ Style est obligatoire</div>
+                                        <div *ngIf="motifInvalid">- Le champ Motif d'intéraction est obligatoire</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <form class="pt-3 matchipstyle" [formGroup]="mailSendingForm" (ngSubmit)="save()">
+                <div class="form-group row">
+                    <label for="mediaSelect" class="col-sm-5 col-form-label">Langue</label>
+                    <div class="col-sm-9">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" formControlName="langSelected" id="optionsRadios1" value="FRENCH" 
+                            (change)="radioLanguageChangeHandler($event)" [checked]= "true">
+                            <label class="form-check-label" for="optionsRadios1">
+                                <i class="icon icon-marged fr-flag"></i> Français
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" formControlName="langSelected" id="optionsRadios2" value="ENGLISH"
+                            (change)="radioLanguageChangeHandler($event)" >
+                            <label class="form-check-label" for="optionsRadios2">
+                                <i class="icon icon-marged en-flag"></i> Anglais
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="motifSelect" class="col-sm-5 col-form-label">Modèle*</label>
+                    <div class="col-sm-9">
+                        <select formControlName="modele" (change)="onChangeTemplate()" class="form-control" id="motifSelect">
+                            <option [ngValue]="libreTemplate">{{libreTemplate.label}}</option>
+                            <option [ngValue]="templateCR" *ngIf="showCR">{{templateCR.label}}</option>
+                            <option *ngFor="let modele of messageTemplate"  [ngValue]="modele">
+                                {{modele?.label}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="interlocuteurSelect" class="col-sm-5 col-form-label">Mail de l'émetteur*</label>
+                    <div class="col-sm-9">
+                        <mat-form-field class="large-chip-list" appearance="outline">
+                            <input type="text" matInput formControlName="senderList" [matAutocomplete]="autoSenders" id="interlocuteurSelect" [(ngModel)]="selectedSender">
+                            <mat-autocomplete #autoSenders="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let sender of filteredSenders | async"  [value]="sender">
+                                    {{sender?.label}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-error *ngIf="mailSenderInvalid">Ce champ est obligatoire</mat-error>
+                        <mat-error *ngIf="formatMailInvalide">Entrez l’adresse de messagerie au format xyz@example.com.</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"  *ngIf="mailSenderInvalid || formatMailInvalide"></span>                
+                </div>
+    
+                <div class="form-group row">
+                    <label for="participantSelect" class="col-sm-5 col-form-label">Destinataire *</label>
+                    <div class="col-sm-9">
+                        <mat-form-field class="large-chip-list" appearance="outline" id="participantSelect" >
+                            <mat-chip-list #chipList >
+                                <mat-chip
+                                errorState="true"
+                                *ngFor="let interlocutor of destinatairesList"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(interlocutor)">
+                                    {{ interlocutor?.lastName | uppercase}} {{interlocutor?.firstName | firstName}} 
+                                    {{(interlocutor?.roleLabel) ? ' - '+getInterlocutorRole(interlocutor.roleLabel) : ''}} 
+                                    {{(interlocutor?.value) ? ' - '+interlocutor.value : ''}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                placeholder=""
+                                #fruitInput
+                                formControlName="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                >
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" required>
+                                <mat-option *ngFor="let interlocutor of filteredDestinataires | async" [value]="interlocutor">
+                                    {{ interlocutor?.lastName | uppercase}} {{interlocutor?.firstName | firstName}} 
+                                    {{(interlocutor?.roleLabel) ? ' - '+getInterlocutorRole(interlocutor.roleLabel) : ''}}
+                                    {{(interlocutor?.value) ? ' - '+interlocutor?.value : ''}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-error *ngIf="interlocutorInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="interlocutorInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label athena"></label>
+                    <div class="col-sm-9 ng-star-inserted">
+                        <span class="athena clickable link font-weight-bold" (click)="openPopup()">
+                            <span class="icon add d-inline-block mr-2 athena"></span>Ajouter un mail temporaire </span>
+                   </div>
+                </div>
+                <div class="form-group row">
+                    <label for="ccSelect" class="col-sm-5 col-form-label">CC</label>
+                    <div class="col-sm-9">
+                        <mat-form-field class="large-chip-list" appearance="outline" id="ccSelect" >
+                            <mat-chip-list #chipCCList >
+                                <mat-chip
+                                errorState="true"
+                                *ngFor="let cc of destinataireCC"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="removeCC(cc)">
+                                    {{(cc?.roleLabel) ? (cc.roleLabel + ' - ' ) : ''}}
+                                    {{ cc?.lastName | uppercase}} {{cc?.firstName | firstName}} 
+                                    {{(cc?.value) ? ' - '+cc?.value : ''}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                placeholder=""
+                                #CCInput
+                                formControlName="CCCtrl"
+                                [matAutocomplete]="autocc"
+                                [matChipInputFor]="chipCCList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                >
+                            </mat-chip-list>
+                            <mat-autocomplete #autocc="matAutocomplete" (optionSelected)="selectedCC($event)" required>
+                                <mat-option *ngFor="let cc of filteredCC | async" [value]="cc">
+                                    {{(cc?.roleLabel) ? (cc.roleLabel + ' - ' ) : ''}} 
+                                    {{ cc?.lastName | uppercase}} {{cc?.firstName | firstName}} 
+                                    {{(cc?.value) ? ' - '+cc?.value : ''}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cciSelect" class="col-sm-5 col-form-label">CCI</label>
+                    <div class="col-sm-9">
+                        <mat-form-field class="large-chip-list" appearance="outline" id="cciSelect" >
+                            <mat-chip-list #chipCCIList >
+                                <mat-chip
+                                errorState="true"
+                                *ngFor="let cci of destinataireCCI"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="removeCCI(cci)">
+                                    {{(cci?.roleLabel) ? (cci.roleLabel + ' - ') : ''}} 
+                                    {{ cci?.lastName | uppercase}} {{cci?.firstName | firstName}} 
+                                    {{(cci?.value) ? ' - '+cci?.value : ''}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                 </mat-chip>
+                                <input
+                                placeholder=""
+                                #CCIInput
+                                formControlName="CCICtrl"
+                                [matAutocomplete]="autocci"
+                                [matChipInputFor]="chipCCIList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                >
+                            </mat-chip-list>
+                            <mat-autocomplete #autocci="matAutocomplete" (optionSelected)="selectedCCI($event)" required>
+                                <mat-option *ngFor="let cci of filteredCCI | async" [value]="cci">
+                                    {{(cci?.roleLabel) ? ( cci.roleLabel + ' - ') : '' }}
+                                    {{ cci?.lastName | uppercase}} {{cci?.firstName | firstName}} 
+                                    {{(cci?.value) ? ' - '+cci?.value : ''}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="objet" class="col-sm-5 col-form-label">Objet*</label>
+                    <div class="col-sm-9">
+                    <input formControlName="objet"  [ngClass]="classError(objetInvalid)" (change)="onObjetChange($event)" type="text" [(ngModel)]="selectedModelObject">
+                        <mat-error *ngIf="objetInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="objetInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="titre" class="col-sm-5 col-form-label">Titre*</label>
+                    <div class="col-sm-9">
+                        <input formControlName="title"  [ngClass]="classError(titreInvalid)" (change)="onChangeTextTitle($event)" type="text" [(ngModel)]="selectedModelTitle">
+                            <mat-error *ngIf="titreInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="titreInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="sous-titre" class="col-sm-5 col-form-label">Sous-titre</label>
+                    <div class="col-sm-9">
+                        <input formControlName="subtitle" class="form-control" (change)="onChangeTextSubtitle($event)" type="text" [(ngModel)]="selectedModelSubtitle">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="titre" class="col-sm-5 col-form-label">Corps du mail*</label>
+                    <div class="col-sm-18">
+                        <app-athena-editor id="bodyEditor" [editorConfig]="editorBodyConfig" (changeTextHtml)="onChangeTextMessage($event)" [model]="selectedModelBody"></app-athena-editor>
+                        <mat-error *ngIf="corpsInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="corpsInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="docSelect" class="col-sm-5 col-form-label">Document</label>
+                    <div class="col-sm-16">
+                        <app-athena-paginated-ag-grid  *ngIf="listDocumentToSend?.length !== 0"
+                            [columnDefs]="columnDefs" 
+                            [rowData]="listDocumentToSend"
+                            (clickedCell)="clickCell($event)"
+                            [loadAgGridParams]="paramAgGrid">
+                        </app-athena-paginated-ag-grid >
+                        <input type="button" (click)= "openPopDocument()" class="btn btn-blue mt-1" value="Ajouter un document">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="motifSelect" class="col-sm-5 col-form-label">Style*</label>
+                    <div class="col-sm-9">
+                        <select formControlName="styleControl" [(ngModel)]="selectedStyle" [ngClass]="classError(styleInvalid)" id="motifSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                            <option *ngFor="let style of styles" [ngValue]="style">{{style?.label}}</option>
+                        </select>
+                        <mat-error *ngIf="styleInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="styleInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-5 col-form-label">Description</label>
+                    <div class="col-sm-9">
+                        <textarea formControlName="description" class="athena form-control" id="descriptionTextarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="motifSelect" class="col-sm-5 col-form-label">Motif d'intéraction*</label>
+                    <div class="col-sm-9">
+                        <app-athena-nested-drop-down [list]="interactionReasonList" (selectionChange)="onSelectMotif($event)" [hasError]="motifInvalid"></app-athena-nested-drop-down>
+                        <mat-error *ngIf="motifInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="motifInvalid"></span>
+                </div>
+                <div class="offset-sm-5 col-sm-9">
+                    <div class="form-check">
+                        <input class="form-check-input" formControlName="sonde" type="checkbox" id="checkbox1" value="false">
+                        <label class="form-check-label" for="checkbox1">
+                            Envoyer la sonde de satisfaction
+                        </label>
+                    </div>
+                </div>
+                <div class="row control-buttons ">
+                    <div class="col-sm-5 text-right">
+                        <a class="btn btn-link mt-1"  [routerLink]="null" (click)="annuler()">Annuler</a>
+                    </div>
+                    <div class="col-sm-9">
+                        <input class="btn btn-green" [disabled]="!isValidBtn" value="Envoyer le mail" type="submit" />
+                        <a [routerLink]="['/customer-dashboard', customerId, 'interaction','mail-sending', request?.idRequest , request?.requestTypeId , request?.universId , 'preview-mail']" target="_blank" queryParamsHandling="merge">
+                            <input class="btn btn-blue ml-4" value="Prévisualisation" type="button" (click)="onPreview()"/>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

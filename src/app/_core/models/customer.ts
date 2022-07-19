@@ -1,0 +1,38 @@
+export interface Customer {
+  id: string;
+  identifier: string;
+  customer_id: string;
+  niche_identifier: string;
+  crm_name: string;
+  first_name: string;
+  last_name: string;
+  title: string;
+  category_person: string;
+  siret: string;
+  type_role_cust: string;
+  crm_name_titulaire: string;
+  first_name_titulaire: string;
+  last_name_titulaire: string;
+  id_titulaire: string;
+  niche_identifier_titulaire: string;
+  category_titulaire: string;
+  user_id: string;
+  select_number: number;
+  company_name_titulaire: string;
+  offerLabel: string;
+  pictoName: string;
+  isBeneficiary: boolean;
+  displayNameHolder: string;
+  displayName: string;
+  showAll: boolean;
+  contract: string;
+  titulaire: string;
+  interlocuteur: string;
+  contractObject: any[];
+  titulaireObject: any[];
+  interlocuteurObject: any[];
+  contract_count: number;
+  beneficiary_count: number;
+  univers : string;
+  status : string;
+}

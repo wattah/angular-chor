@@ -1,0 +1,31 @@
+<div class="block block-shadow">
+  <h2 class="block-title athena">service</h2>
+  <div class="row">
+    <ng-template [ngIf]="isAmendment" [ngIfElse]="isContract">
+      <div class="col-md-12 col-lg-12">
+          <span class="grey">Offre : </span>{{offre}}
+      </div>    
+    </ng-template>
+    <ng-template #isContract>
+      <div class="col-md-12 col-lg-12">
+        <span class="grey">Offre : </span>{{offre}}<br/>
+        <span class="grey">Mode de paiement droits d'entrée : </span>{{paymentsMethod}}<br/>
+        <div class="form-group mt-2 row" *ngIf="showParcoursTypes">
+          <label class="col-form-label athena col-md-5">Type de parcours  </label>
+          <div class=" col-md-12">
+            <select class="form-control athena" name="typeParcoursList" (change)="onSelectChange($event)">
+              <option *ngFor="let payment of paymentTypes" [ngValue]="payment">{{payment.data}}</option>
+            </select>
+          </div> 
+        </div>
+          <span class="grey">Options : </span>{{options}}<br/>
+      </div>
+      <div class="ml-n2 col-md-12 col-lg-12">
+        <span class="grey">Tiers payeurs : </span>{{hasThirdPayer}}<br/>
+        <span class="grey">Nom / raison sociale tiers payeurs : </span>{{nameThirdPayer}}<br/>
+        <span class="grey">Mode de règlement : </span><span>{{modeReglement ? modeReglement : '-'}} </span><br/>
+        <span *ngIf="showAccount">{{reglementCompte}}</span><br/>
+      </div>
+    </ng-template>
+ </div>
+</div>

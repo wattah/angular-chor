@@ -1,0 +1,57 @@
+[
+    {
+        "beneficiaire": [
+            {
+                "jd": "1",
+                "description": "Formulaire de modification bénéficiaire",
+                "motCleSearch": "at",
+                "customer_id": 196,
+                "noElement": 6,
+                "firstName": "amatSamia",
+                "prenomErrone1":"ama-gs",
+                "prenomErrone2":"ama25",
+                "prenomErrone3":" ",
+                "lastName": "boualil",
+                "bonASavoir": "xxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoq",
+                "dateNaissance": "03/02/1979",
+                "age": "40 ans, né(e) le 3 févr. 1979",
+                "fullName": "Mme. Amatsamia BOUALIL",
+                "bonASavoirDepasse": "xxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoq"
+            }
+        ],
+        "particulier": [
+            {
+                "jd": "1",
+                "description": "Formulaire de modification: particulier",
+                "motCleSearch": "at",
+                "customer_id": 67,
+                "noElement": 2,
+                "firstName": "portant",
+                "prenomErrone1":"ama-gs",
+                "prenomErrone2":"ama25",
+                "prenomErrone3":" ",
+                "lastName": "georgia",
+                "bonASavoir": "xxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoq",
+                "dateNaissance": "03/02/1979",
+                "age": "40 ans, né(e) le 3 févr. 1979",
+                "fullName": "M. Portant GEORGIA",
+                "bonASavoirDepasse": "xxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoq"
+            }
+        ],
+         "entreprise": [
+            {
+                "jd": "1",
+                "description": "Formulaire de modification: entreprise",
+                "motCleSearch": "copin",
+                "customer_id": 8942,
+                "noElement": 0,
+                "SIREN": "777777",
+                "nic":"4444",
+                "raisonSociale":"amak",
+                "urlFiche360Entreprise":"hhhhh",
+              
+                "bonASavoir": "xxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxxxxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoqxxxnxxxxxxxxxxxxxxixxxxxxxxxxxxxxxxxxxxxuuussspoq"
+            }
+        ]
+    }
+]

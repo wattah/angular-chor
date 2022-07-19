@@ -1,0 +1,17 @@
+<div class="block block-shadow">
+<h2 class="block-title athena">
+    Comité de sélection
+</h2>
+<div class="block_onglet p-0">
+    <app-athena-paginated-ag-grid 
+    class="table"
+    [columnDefs]="columnDefs"
+    [frameworkComponents]="frameworkComponents"
+    [rowData]="homologation?.beneficiaires"
+    [paginationPageSize]="5"
+    [resize]="resize"
+    [loadAgGridParams]="params"
+    (clickLink)="changeCell($event)">
+    </app-athena-paginated-ag-grid>	
+</div>
+</div>

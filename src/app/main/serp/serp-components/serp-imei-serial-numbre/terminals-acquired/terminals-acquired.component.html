@@ -1,0 +1,10 @@
+<h2 class="not-bordered athena mt-2"> 
+  Terminaux acquis en renouvellement
+ </h2>
+<app-athena-paginated-ag-grid
+ [columnDefs]="columnDefs"
+ [rowData]="listRenewalMobileBySerial"
+ (clickedCell)="clickCell($event)"
+ [paginationPageSize]="paginationPageSize"
+ [defaultSortModel]="defaultSortModel">
+ </app-athena-paginated-ag-grid>

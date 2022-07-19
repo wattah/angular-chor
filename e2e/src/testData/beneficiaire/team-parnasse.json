@@ -1,0 +1,77 @@
+[
+    {
+        "a": [
+            {
+                "jd": 1,
+                "motCleSearch": "rau",
+                "description": "Cas nominale:tous les membres ont des adresses mail ",
+                "noElement": 6,
+                "customer_id": 1034,
+                "name_coach": "Coach :  Shankar TRIBOULET COACH",
+                "email_coach": "oui",
+                "name_desk": "Attaché :  Mireia GUENEE DESK",
+                "email_desk": "oui",
+                "name_adhesion": "Adhésion :  Orpheus BERTHELON VENTE",
+                "email_adhesion": "oui"
+            }
+        ],
+        "c": [
+            {
+                "motCleSearch": "tri",
+                "description": "Attaché ne se dispose pas d'email",
+                "noElement": 8,
+                "type":"desk",
+                "customer_id": 1465
+            },
+            {
+                "motCleSearch": "toud",
+                "description": "adhesion ne se dispose pas d'email",
+                "noElement": 0,
+                "type":"adhesion",
+                "customer_id": 484
+            },
+            {
+                "motCleSearch": "160322003",
+                "description": "coach ne se dispose pas d'email",
+                "noElement": 0,
+                "type":"coach",
+                "customer_id": 484
+            }
+        ],
+        "b": [
+            {
+                "jd": 1,
+                "description": "Absence du coach",
+                "motCleSearch": "eman",
+                "noElement": 0,
+                "customer_id": 1526,
+                "type": "coach"
+            },
+            {
+                "jd": 2,
+                "description": "Absence du desk",
+                "motCleSearch": "gabet",
+                "noElement": 1,
+                "customer_id": 2362,
+                "type": "desk"
+            },
+            {
+                "jd": 3,
+                "description": "Absence de l'attaché",
+                "motCleSearch": "BOYE",
+                "noElement": 5,
+                "customer_id": 2166,
+                "type": "adhesion"
+            },
+            {
+                "jd": 4,
+                "motCleSearch": "rau",
+                "description": "presence de tout les membres",
+                "noElement": 6,
+                "customer_id": 1034,
+                "type": "tout"
+            }
+            
+        ]
+    }
+]

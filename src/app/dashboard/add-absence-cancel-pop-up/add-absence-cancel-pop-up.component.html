@@ -1,0 +1,13 @@
+<div class="modal-body center sm-center text-center " id="pop-up-add-absence">
+    <p class="mt-2 mb-4">
+        Êtes-vous sûr de vouloir annuler votre déclaration<br/>
+        d'absence?<br/>
+    </p>
+    <input class="d-none d-lg-inline btn btn-green" value="Oui, je l'annule" type="button" (click)="goBack()"/>
+    <input class="d-md-inline d-lg-none btn btn-group-justified btn-green" style="height: 60px;" value="Oui, je l'annule" type="button" (click)="goBack()"/>
+    <br/>
+    <br/>
+    <a class="link mt-3 mb-4" routerLink="null" queryParamsHandling="merge"  (click)="destroy()" >Non, je reviens sur ma déclaration </a>
+    <br/>
+    <br/>
+</div>

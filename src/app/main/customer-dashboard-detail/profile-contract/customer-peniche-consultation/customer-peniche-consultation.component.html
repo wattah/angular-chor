@@ -1,0 +1,82 @@
+<ng-container *ngIf="isPenicheUp && (!isClientExist || !penicheCustomerResponseVO?.identifier)"> 
+    <div class="row mt-5 mb-2 justify-content-center font-weight-bold athena">
+        <p>Il n'existe pas de client péniche pour ce membre, vous pouvez le créer via le bouton ci-dessous.</p>
+   </div>
+   <div class="row mt-5 mb-2 justify-content-center">
+    <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateCustomerPeniche()" >Créer</button>
+   </div>
+</ng-container>
+
+<ng-container *ngIf="isPenicheUp && isClientExist && penicheCustomerResponseVO?.identifier">
+    <div class="profil" >
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="block-1">
+                    <div class="row">
+                        <div class="col-lg-18 ">
+                            <div><span class="grey athena"> Etat :</span> {{(penicheCustomerResponseVO?.status) ? (penicheCustomerResponseVO?.status | firstName) : '-'}}</div>
+                            <div><span class="grey athena">Date d'entrée :</span> {{(penicheCustomerResponseVO?.nicheAdmissionDate) ? (penicheCustomerResponseVO?.nicheAdmissionDate | date: 'dd/MM/yyyy') : '-'}}</div>
+                            <div><span class="grey athena">Type de contrat :</span> {{(penicheCustomerResponseVO?.typology) ? (penicheCustomerResponseVO?.typology | firstName) : '-'}}</div>
+                            <div><span class="grey athena">CR attendu :</span> {{ penicheCustomerResponseVO?.billReport ? 'Oui' : 'Non'}}</div>
+                            <div><span class="grey athena">Délai de facturation :</span> {{(penicheCustomerResponseVO?.billingTime) ? 'J+' + penicheCustomerResponseVO?.billingTime : '-' }}</div>
+                            <div><span class="grey athena">Solde client :</span> {{ formatBalance(penicheCustomerResponseVO?.recoveryData?.globalBalance) }}</div>
+                            <div><span class="grey athena">Service :</span> {{ formatBalance(penicheCustomerResponseVO?.recoveryData?.serviceBalance) }}</div>
+                            <div><span class="grey athena">Mobile :</span> {{ formatBalance(penicheCustomerResponseVO?.recoveryData?.mobileBalance) }}</div>
+                            <div><span class="grey athena">Fixe :</span> {{ formatBalance(penicheCustomerResponseVO?.recoveryData?.fixeBalance) }}</div>
+                            <div><span class="grey athena">Internet :</span> {{ formatBalance(penicheCustomerResponseVO?.recoveryData?.internetBalance) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="offset-2 col-lg-5">
+                <div class="block-2">
+                    <div *ngIf="penicheCustomerResponseVO?.typology === 'ENTREPRISE'"><span class="grey athena">Raison sociale :</span> {{(penicheCustomerResponseVO?.society) ? penicheCustomerResponseVO?.society : '-'}}</div>
+                    <div><span class="grey athena">Civilité :</span> {{getCivilte(penicheCustomerResponseVO?.title)}}</div>
+                    <div><span class="grey athena">Nom :</span> {{(penicheCustomerResponseVO?.lastName) ? (penicheCustomerResponseVO?.lastName | uppercase) : '-'}}</div>
+                    <div><span class="grey athena">Prénom :</span> {{(penicheCustomerResponseVO?.firstName) ? (penicheCustomerResponseVO?.firstName | firstName) : '-'}}</div>
+                    <div class="row">
+                        <div class="col-lg-18 ">
+                            <div class="row">
+                              <div class="col-lg-6 grey athena">Adresse: </div>
+                              <div class="col-lg-18">
+                                  <div>{{(penicheCustomerResponseVO?.address4) ? penicheCustomerResponseVO?.address4 : '' }}</div>
+                                  <div>
+                                      {{(penicheCustomerResponseVO?.address2) ? penicheCustomerResponseVO?.address2 : ''}} 
+                                      {{(penicheCustomerResponseVO?.address3) ? penicheCustomerResponseVO?.address3 : ''}}
+                                      {{(penicheCustomerResponseVO?.address5) ? penicheCustomerResponseVO?.address5 : ''}}
+                                 </div>
+                                 <div>
+                                      {{(penicheCustomerResponseVO?.deliveryInfo) ? penicheCustomerResponseVO?.deliveryInfo : ''}}
+                                 </div>
+                                 <div>
+                                    {{(penicheCustomerResponseVO?.zipCode) ? penicheCustomerResponseVO?.zipCode : ''}}
+                                    {{(penicheCustomerResponseVO?.city) ? penicheCustomerResponseVO?.city : ''}}
+                                 </div>
+                                 <div>
+                                    {{penicheCustomerResponseVO?.country}}
+                                 </div >
+                              </div>
+                            </div>
+                        </div>
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+            <div class="row mt-5 mb-2 justify-content-center">
+                <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateCustomerPeniche()" ><span class="icon pen-white d-block btn-modifie"></span>Modifier</button>
+            </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!isPenicheUp">
+    <p class="text-danger athena">
+        <span class="icon lightning athena"></span> Données manquantes. Connexion à Péniche perdue.
+        <a class="athena" href="{{jiraUrl}}" 
+        target="_blank" style="padding-left: 10px;" rel="noopener noreferrer">
+        Signaler au support <span class="icon icon-min arrow-right-blue athena"></span>
+        </a>
+    </p>
+</ng-container>

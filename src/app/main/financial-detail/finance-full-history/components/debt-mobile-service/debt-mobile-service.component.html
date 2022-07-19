@@ -1,0 +1,49 @@
+<div class="block block-shadow">
+  <div class="row">
+    <div class="col-xl-18 offset-xl-3 col-md-18 offset-md-3">
+      <table id="dettesTable" class="table table-not-hovered"><caption class="p-0"></caption>
+        <thead>
+          <tr>
+            <th id="th"colspan="4" class="text-center">Selection contrat</th>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
+            <th id="th">NUMERO</th>
+            <th id="th">STATUT</th>
+            <th id="th">BÉNÉFICIAIRE</th>
+            <th id="th">OFFRE DU CONTRAT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of totalDebt;let i=index  " (click)="selectDebt(i, true,false,false, t)" >
+            <td [ngClass]="{'selected':  i===selectedDebt.rowSelected }">
+                {{t.nicheIdentifier}}
+            </td>
+            <td [ngClass]="{'selected':  i===selectedDebt.rowSelected }">
+              {{formatterStatut(t.status)}}
+          </td>
+          <td  [ngClass]="{'selected':  i===selectedDebt.rowSelected }">
+            <span *ngIf="!t.beneficiaryList || t.beneficiaryList.length === 0 " > - </span>
+							<ul class="athena ath-summary pl-1">
+								<li *ngFor="let item of t.beneficiaryList" >
+									<a [ngStyle]="{color: LOCAL_CONTRAT_STATUTS.INACTIVE.key === item.status ? '#ccc':''}" 
+                    class="table-td-a-new athena" 
+                    [routerLink]="[ '/customer-dashboard', 'particular', item.id ]" 
+                    [queryParams]="{typeCustomer: 'beneficiary'}">
+                      {{ nameFormatter(item) }} 
+                      <span *ngIf="LOCAL_CONTRAT_STATUTS.ACTIVE.key !== item.status">- {{formatterStatut(item.status)}}</span>
+                </a>
+								</li>
+							</ul>
+          </td>
+            <td [ngClass]="{'selected':  i===selectedDebt.rowSelected }">
+                {{t.offerLabel}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

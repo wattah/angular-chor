@@ -1,0 +1,81 @@
+<blockquote>
+    <form [formGroup]="form">
+        <div class="underline mt-3 mb-2">Ports utilisés</div>
+        <div class="form-group row inputstyle matchipstyle">
+            <label class="col-sm-4 col-form-label athena">Ports utilisés </label>
+            <div class="col-sm-20 col-lg-9">
+
+                <mat-form-field class="example-chip-list w-100" appearance="outline" id="participantSelect" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <mat-chip-list #chipList aria-label="Fruit selection">
+                    <mat-chip
+                        *ngFor="let station of stations"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="remove(station)">
+                        {{station}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                        #stationInput
+                        [formControl]="stationCtrl"
+                        #automcomplete="matAutocompleteTrigger"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let station of filteredStations | async" [value]="station">
+                        {{station}}
+                    </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                
+                
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="interventionNas.isAudioSt">
+            <label class="col-sm-4 col-form-label athena">Port de Audio Station </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="portAudio" name="portAudio" [(ngModel)]="interventionNas.portAudio"/>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="interventionNas.isFileSt">
+            <label class="col-sm-4 col-form-label athena">Port de File Station </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="portFile" name="portFile" [(ngModel)]="interventionNas.portFile"/>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="interventionNas.isSurveillanceSt">
+            <label class="col-sm-4 col-form-label athena">Port de Surveillance Station </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="portSurveillance" name="portSurveillance" [(ngModel)]="interventionNas.portSurveillance"/>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="interventionNas.isVideoSt">
+            <label class="col-sm-4 col-form-label athena">Port de Vidéo Station </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="portVideo" name="portVideo" [(ngModel)]="interventionNas.portVideo"/>
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="interventionNas.isCloudSt">
+            <label class="col-sm-4 col-form-label athena">Port de Cloud Station </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="portCloud" name="portCloud" [(ngModel)]="interventionNas.portCloud"/>
+            </div>
+        </div>
+
+        <app-autre-station
+            *ngFor="let intervention of interventionAutreStNas; let i=index"
+            [index]="i+1"
+            [intervention]="intervention"
+            (onRemoveOtherStation)="onRemoveOtherStationEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-autre-station>
+        <div>
+            <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addAutreStation($event)"> 
+                <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une Station </a>
+        </div>
+    </form>
+</blockquote>

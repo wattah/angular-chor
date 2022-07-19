@@ -1,0 +1,91 @@
+<div class="underline mt-3 mb-2">ADSL / VDSL N ° {{index}} <span class="icon del ml-2" *ngIf="interventionsAdslLength !==1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeInterventionAdsl()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">AID 
+            <span *ngIf="isRequired" class="red">*</span> 
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="aid" name="aid" [(ngModel)]="this.interventionAdsl.aid" 
+            [ngClass]="[aidInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">ND support 
+            <span *ngIf="isRequired" class="red">*</span> 
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="ndVoip" name="ndVoip" [(ngModel)]="this.interventionAdsl.ndVoip"
+            [ngClass]="[ndVoipInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Offre PRO</label>
+        <div class="col-sm-20 col-lg-9">
+            <section class="example-section mt-2">
+                <mat-checkbox class="normal" formControlName="isOffrePro" name="isOffrePro" [(ngModel)]="this.interventionAdsl.isOffrePro" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab"> Oui</mat-checkbox>
+            </section>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena pr-0">Identifiant de connexion 
+            <span *ngIf="isRequired" class="red">*</span> 
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="identifiantConnexion" name="identifiantConnexion" [(ngModel)]="this.interventionAdsl.identifiantConnexion"
+            [ngClass]="[identifiantConnexionInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Mot de passe de connexion 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="passwordConnexion" name="passwordConnexion" [(ngModel)]="this.interventionAdsl.passwordConnexion"
+            [ngClass]="[passwordConnexionInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Emplacement Livebox 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refLocationType" name="refLocationType"
+            [ngClass]="[refLocationTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let locationType of locationTypes" [ngValue]="locationType">{{locationType.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="isVisiblePrecisionRefLocationType">
+        <label class="col-sm-4 col-form-label athena">Précision </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacement" name="autreEmplacement" [(ngModel)]="this.interventionAdsl.autreEmplacement"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Sucloc </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="sucloc" name="sucloc" [(ngModel)]="this.interventionAdsl.sucloc">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire</label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" maxlength="255" formControlName="comment" name="comment" [(ngModel)]="this.interventionAdsl.comment"></textarea>
+            <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+</form>

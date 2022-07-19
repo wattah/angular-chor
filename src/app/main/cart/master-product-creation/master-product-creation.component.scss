@@ -1,0 +1,28 @@
+@import '~src/styles/charte';
+.fileDropProfile { 
+    min-height: auto !important; 
+    border: 1px dashed #dadada; 
+    border-radius: 0px; 
+    font-family: $font-family-regular; 
+    font-size: $font-size-text; 
+    color:$black; 
+    width: 308px;
+    .fileinter { 
+        min-width: 306px !important 
+    } 
+}
+.minheight {
+    min-height: 1535px;
+    overflow-y: auto;
+    height: 1535px;
+} 
+
+.btncenter {
+    text-align: center;
+    margin: 0 auto;
+}
+.input-number:after
+  {
+	z-index: 0 !important;
+}
+

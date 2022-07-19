@@ -1,0 +1,114 @@
+<blockquote>
+    <div class="underline mt-3 mb-2">Points d'accès N ° {{index}}<span class="icon del ml-2" *ngIf="interventionWifiAccessPointsLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeAccessPoint()"></span></div>
+    <form [formGroup]="form">
+        <div class="form-group row select_arrows">
+            <label class="col-form-label athena col-sm-4"> Contrôleur de présence </label>
+
+            <div class="col-sm-4">
+                <div class="form-check">
+                    <input class="form-check-input athena" id="{{isControlerInputRandomName}}" type="radio" [value]="true" formControlName="isControler" />
+                    <label class="form-check-label athena" for="{{isControlerInputRandomName}}"> Oui </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input athena" id="{{isNotControlerInputRandomName}}" type="radio" [value]="false"  formControlName="isControler"/>
+                    <label class="form-check-label athena" for="{{isNotControlerInputRandomName}}"> Non</label>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="showControler">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena"> Emplacement
+                    <span *ngIf="isRequired" class="red">*</span>    
+                </label>
+                <div class="col-sm-20 col-lg-9">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refControlerLocationType" name="refControlerLocationType"
+                    [ngClass]="[showControler && refControlerLocationTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                    >
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let locationType of locationTypes" [ngValue]="locationType">{{locationType.label}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="isVisiblePrecision">
+                <label class="col-sm-4 col-form-label athena">Autre </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="autreEmplacement" [(ngModel)]="interventionWifiAccessPoint.autreEmplacement"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Identifiant 
+                    <span *ngIf="isRequired" class="red">*</span>
+                </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="identifiant" [(ngModel)]="interventionWifiAccessPoint.identifiant"
+                    [ngClass]="[showControler && identifiantInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                    />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Mot de passe 
+                    <span *ngIf="isRequired" class="red">*</span>
+                </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="passwordController" [(ngModel)]="interventionWifiAccessPoint.passwordController"
+                    [ngClass]="[showControler && passwordControllerInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                    />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Adresse IP 
+                    <span *ngIf="isRequired" class="red">*</span>
+                </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="ipAdresse" [(ngModel)]="interventionWifiAccessPoint.ipAdresse"
+                    [ngClass]="[showControler && ipAdresseInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+                </div>
+            </div>
+        </ng-container>
+        
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Modèle de borne 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="modelBorne" [(ngModel)]="interventionWifiAccessPoint.modelBorne"
+                [ngClass]="[modelBorneInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">SSID </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="ssid" [(ngModel)]="interventionWifiAccessPoint.ssid"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Mot de passe </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="password" [(ngModel)]="interventionWifiAccessPoint.password"/>
+            </div>
+        </div>
+    </form>
+
+    <app-location 
+        *ngFor="let interventionWifiLocation of interventionWifiLocations; let i=index"
+        [index]="i+1"
+        [interventionWifiLocation]="interventionWifiLocation"
+        [locationWifiTypes]="locationWifiTypes"
+        [isVisibleWifiBlock]="isVisibleWifiBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        [wifiConnectionTypes]="wifiConnectionTypes"
+        [isManadatoryFields]="isManadatoryFields"
+        [interventionWifiLocationsLength]="interventionWifiLocations.length"
+        (onRemoveLocation)="onRemoveLocationEvent($event)"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+    ></app-location>
+
+
+    <div>
+        <a class="athena font-weight-bold" href="#" (click)="addLocation($event)" [class.disabled]="!allowedToModifyTechnicalInformationTab"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter un emplacement </a>
+    </div>
+</blockquote>

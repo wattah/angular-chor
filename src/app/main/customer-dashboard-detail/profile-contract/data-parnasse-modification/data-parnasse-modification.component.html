@@ -1,0 +1,272 @@
+<form [formGroup]="formDataParnasse" >
+    <div class="col-lg-16">
+    <div class="underline my-3">Contrat</div>
+
+    <div class="form-group row mb-2" *ngIf="typeCustomer ==='beneficiary'">
+        <label class="col-sm-4 col-form-label athena"> Utiliser un titulaire existant</label>
+        <div class="col-sm-20 col-lg-9 addarrow">
+            <mat-form-field class="large-chip-list" appearance="outline"  >
+                <input type="text"  matInput [matAutocomplete]="autoTiTulaire" [formControl]="formDataParnasse.get('titulaire')" formControlName="titulaire" >
+                <mat-autocomplete #autoTiTulaire="matAutocomplete" [displayWith]="displayClient" > 
+                    <ng-template ngFor let-item [ngForOf]="filteredTitulaires$ | async">
+                        <mat-option [value]="item" >
+                            <ul class="mat-summary">
+                                <li> {{item?.name}} </li>
+                                <li class="grey">{{ afficherNumContrat(item?.nicheIdentifier)}}</li>
+                                <li class="grey">{{item?.status}}</li>
+                            </ul>
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                    </ng-template>
+                    
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="" *ngIf="typeCustomer === 'company'">
+        <div class="form-group row inputstyle matchipstyle">
+            <label class="col-sm-4 col-form-label athena"> Bénéficiaires </label>
+            <div class="col-sm-9 col-lg-9">
+                <mat-form-field class="large-chip-list " appearance="outline"  >
+                    <mat-chip-list #chipList >
+                      <mat-chip 
+                          *ngFor="let a of selectedAffiliates"
+                        (removed)="remove(a)">
+                            {{a.name}}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                      </mat-chip>
+                      <input
+                        placeholder=""
+                        #affiliatesInput
+                        [formControl]="formDataParnasse.get('affiliates')"
+                        [matAutocomplete]="autoAffiliates"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                    </mat-chip-list>
+                    <mat-autocomplete #autoAffiliates="matAutocomplete" (optionSelected)="selected($event)"  [displayWith]="displayClient" > 
+                        <ng-template ngFor let-item [ngForOf]="filteredAffiliates$ | async">
+                            <mat-option [value]="item" *ngIf="item.categoryCustomer !== 'ENTREPRISE'" >
+                                <ul class="mat-summary">
+                                    <li> {{item?.name}} </li>
+                                    <li class="grey">{{ afficherNumContrat(item?.nicheIdentifier)}}</li>
+                                    <li class="grey">{{item?.status}}</li>
+                                </ul>
+                            </mat-option>
+                            <mat-divider></mat-divider>
+                        </ng-template>
+                        
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-group row mb-2">
+            <label class="col-sm-4 col-form-label athena">Option administrateur </label>
+            <div class="col-sm-9 col-lg-9">
+                <div class="mt-n2">
+                    <input class="form-check-input"  type="checkbox" id="optionAdmin" disabled formControlName="optionAdmin">
+                    <label class="form-check-label" for="optionAdmin"> </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows mb-1">
+        <label class="col-form-label athena col-sm-4"> Gestion{{asterix}}</label>
+
+        <div class="col-sm-8">
+            <div class="form-check">
+                <input [ngClass]="{'error': hasError('freeManagement')}" 
+                  class="form-check-input athena" id="libre" type="radio" [value]="'true'" formControlName="freeManagement"    />
+                <label class="form-check-label athena" for="libre"> Libre </label>
+                <span *ngIf="hasError('freeManagement')"   class="icon icon-marged  status-exclamation"></span>
+            </div>
+            <div class="form-check">
+                <input [ngClass]="{'error': hasError('freeManagement')}"  
+                  class="form-check-input athena" id="pilote" type="radio"  [value]="'false'" formControlName="freeManagement"   />
+                <label class="form-check-label athena" for="pilote"> Pilotée</label>
+            </div>
+            <mat-error *ngIf="hasError('freeManagement')" >
+                Ce champs est obligatoire
+            </mat-error>
+        </div>
+    </div>
+
+    <div class="underline my-3">Team Parnasse</div>
+
+    <div class="form-group row mb-3">
+        <label class="col-sm-4 col-form-label athena">Coach{{asterix}}</label>
+        <div class="col-sm-20 col-lg-9 addarrow noborder">
+            <mat-form-field [ngClass]="[hasError('coach') ? 'input-padding mat-select-arrow-wrapper large-chip-list error' : 'input-padding mat-select-arrow-wrapper large-chip-list']" appearance="outline">
+                <input type="text" class="" matInput formControlName="coach" [formControl]="formDataParnasse.get('coach')" [matAutocomplete]="auto01" />
+                <mat-autocomplete #auto01="matAutocomplete" [displayWith]="displayUser">
+                    <mat-option *ngFor="let option of filterdCoachList | async" [value]="option">
+                        {{option.lastName + ' ' + option.firstName}} 
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <app-data-parnasse-back-up-info [userId]="selectedCoach?.id"></app-data-parnasse-back-up-info>
+            <mat-error *ngIf="hasError('coach')" >
+                Ce champs est obligatoire
+            </mat-error>
+        </div>
+        <span *ngIf="hasError('coach')" class="icon col-sm-1 mt-2 status-exclamation"></span>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-sm-4 col-form-label athena"> Desk{{asterix}}</label>
+        <div class="col-sm-20 col-lg-9 addarrow noborder">
+            <mat-form-field [ngClass]="[hasError('desk') ? 'input-padding mat-select-arrow-wrapper large-chip-list error' : 'input-padding mat-select-arrow-wrapper large-chip-list']" appearance="outline">
+                <input type="text" class="" matInput formControlName="desk"  [matAutocomplete]="auto02" />
+                <mat-autocomplete #auto02="matAutocomplete" [displayWith]="displayUser">
+                    <mat-option *ngFor="let option of filterdDeskList | async" [value]="option">
+                        {{option.lastName + ' ' + option.firstName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <app-data-parnasse-back-up-info [userId]="selectedDesk?.id"></app-data-parnasse-back-up-info>
+            <mat-error *ngIf="hasError('desk')" >
+                Ce champs est obligatoire
+            </mat-error>
+        </div>
+        <span *ngIf="hasError('desk')" class="icon col-sm-1 mt-2 status-exclamation"></span>
+    </div>
+    <div class="form-group row mb-3">
+        <label class="col-sm-4 col-form-label athena"> Coach référent </label>
+        <div class="col-sm-20 col-lg-9 addarrow">
+            <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline">
+                <input type="text" class="" matInput formControlName="coachReferent" [formControl]="formDataParnasse.get('coachReferent')" [matAutocomplete]="auto03" />
+                <mat-autocomplete #auto03="matAutocomplete" [displayWith]="displayUser">
+                    <mat-option  [value]="null"> -- </mat-option>
+                    <mat-option *ngFor="let option of filterdCoachReferentList | async" [value]="option">
+                        {{option.lastName + ' ' + option.firstName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <app-data-parnasse-back-up-info [userId]="selectedCoachReferent?.id"></app-data-parnasse-back-up-info>
+
+        </div>
+    </div>
+
+    <div class="underline my-3">Infos complémentaires</div>
+
+    <div class="form-group row select_arrows mb-1">
+        <label class="col-form-label athena col-sm-4"> Newsletter</label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input class="form-check-input athena" id="ouinews"  type="radio" [value]="true" formControlName="newsletter"  />
+                <label class="form-check-label athena" for="ouinews"> Oui </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" id="nonnews"  type="radio" [value]="false" formControlName="newsletter"  />
+                <label class="form-check-label athena" for="nonnews"> Non</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="underline my-3">Dossier sensible</div>
+
+    <div class="form-group row select_arrows mb-1">
+        <label class="col-form-label athena col-sm-4"> Dossier sensible</label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input class="form-check-input athena" id="ouisensible" [value]="true" formControlName="isComplaint"  type="radio" />
+                <label class="form-check-label athena" for="ouisensible"> Oui </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" id="nonsensible" [value]="false" formControlName="isComplaint"  type="radio" />
+                <label class="form-check-label athena" for="nonsensible"> Non</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3" *ngIf="showComplaintData">
+        <label for="start mt-1" class="col-sm-4 pr-0 col-form-label athena">Date de début{{asterix}} </label>
+        <div class="col-sm-12 col-lg-12 m-0 p-0 ">
+            <div class="d-flex noborder">  
+                <mat-form-field class="col-lg-6 col-22 col-sm-23 athena" [ngClass]="{'mat-form-field-invalid':hasError('dateDebutComplaint')}"    appearance="outline">
+                    <input matInput [matDatepicker]="pickerDateDebutComplaint" placeholder="" readonly formControlName="dateDebutComplaint"/>
+                    <mat-datepicker #pickerDateDebutComplaint></mat-datepicker>
+                </mat-form-field>
+                <div class="col-2 col-sm-2 margin-top p-0">
+                    <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerDateDebutComplaint.open()"></span>
+                </div>
+                <div class="col-2 col-sm-2 margin-top p-0">
+                    <span *ngIf="hasError('dateDebutComplaint')"   class="icon icon-marged status-exclamation clickable mt-n2 "></span>
+                </div>
+            </div>
+            <mat-error *ngIf="hasError('dateDebutComplaint')" >
+                Ce champs est obligatoire
+            </mat-error>
+        </div>
+    </div>
+    <div class="form-group row" *ngIf="showComplaintData">
+        <label class="col-sm-4 col-form-label athena">Commentaire{{asterix}} </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena " 
+              [ngClass]="{'error':hasError('complaintValue')}"
+              formControlName="complaintValue" rows="5">
+            </textarea>
+            <mat-error *ngIf="hasError('complaintValue')" >
+                Ce champs est obligatoire
+            </mat-error>
+        </div>
+        <span *ngIf="hasError('complaintValue')"   class="icon col-sm-1 mt-2 status-exclamation"></span>
+    </div>
+    
+    <div class="form-group row mb-3" *ngIf="showComplaintData">
+        <label for="start mt-1" class="col-sm-4 pr-0 col-form-label athena">Date de fin </label>
+
+        <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+            <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                <input matInput [matDatepicker]="pickerRes13" placeholder="" readonly formControlName="dateFinComplaint" />
+                <mat-datepicker #pickerRes13></mat-datepicker>
+            </mat-form-field>
+            <div class="col-2 col-sm-2 margin-top p-0">
+                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes13.open()"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="underline my-3">Recouvrement</div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Profil recouvrement</label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena " formControlName="recoveryProfil" >
+                <option [ngValue]="rp" *ngFor="let rp of recoveryProfilList"> {{ rp }} </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena " rows="5" formControlName="recoveryComment"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows mb-1">
+        <label class="col-form-label athena col-sm-4"> Délai accordé </label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input class="form-check-input athena" id="astreinte" [value]="true" formControlName="recoveryExtensionAllowed"  type="radio"  />
+                <label class="form-check-label athena" for="astreinte"> Oui </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" id="autre" [value]="false" formControlName="recoveryExtensionAllowed" type="radio" />
+                <label class="form-check-label athena" for="autre"> Non</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena" rows="5" formControlName="recoveryExtensionComment"></textarea>
+        </div>
+    </div>
+</div>
+</form>

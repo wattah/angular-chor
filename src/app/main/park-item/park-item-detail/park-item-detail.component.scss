@@ -1,0 +1,49 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
+@import '~src/styles/charte';
+
+.no-result {
+	margin: 40px 0 20px 0;
+	padding: 0;
+	text-align: center;
+}
+
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="status"],
+	&[col-id="inclus"] {
+		.ag-header-cell-label {
+			text-align: center !important;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+}
+
+span {
+	&.h6{
+		display: block;
+		margin-bottom: 40px;
+		font-size: 1.5rem;
+		color: $black;
+		text-align: center;
+		white-space: normal;
+		font-family: $font-family-strong;
+		text-transform: uppercase;
+		&.no-margin {
+			margin: 0;
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+    .not-displayed-icon {
+		display: none !important;
+	}
+	.pagination-sm .page-link {
+		padding: 0.5rem 0.8rem;
+		font-size: 1.15rem;
+		line-height: 1.5;
+	}
+}

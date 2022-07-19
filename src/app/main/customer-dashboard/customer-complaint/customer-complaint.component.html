@@ -1,0 +1,23 @@
+<div *ngIf="customerComplaint?.isSensible || (detteTotalTTC <= 0 && nbrTotalRecouvrement !== 0)" class="block block-shadow block-alert">
+<table class="table table-not-bordered">
+  <tbody>
+    <tr>
+      <td class="alert-icon">
+        <span class="icon icon-max status-exclamation-white"></span>
+      </td>
+      <td class="alert-text">
+        <ng-container *ngIf="customerComplaint?.complaintValue">
+         1.  Dossier sensible :
+          {{ customerComplaint.complaintValue }}</ng-container
+        >
+        <ng-container *ngIf="!customerComplaint?.complaintValue">
+         1.  Dossier sensible
+        </ng-container><br />
+        <ng-container *ngIf="detteTotalTTC <= 0 && nbrTotalRecouvrement !== 0">
+        2.  Attention : Une demande(s) de recouvrement est encore ouverte alors que le contrat sélectionné ne présente plus de dette. Contacter l'équipe Recouvrement si besoin
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

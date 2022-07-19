@@ -1,0 +1,31 @@
+<div class="menu rectangle">
+    <div class="FILTRES" >FILTRES</div>
+    <mat-nav-list class="margin">
+        <mat-list-item [class.item]="true" [class.active]="type==='all'" [class.disabled]="totalItems===0"  (click)="totalItems!==0 && clickItem('all')" > TOUS LES RESULTATS ({{ totalItems }}) </mat-list-item>
+        <mat-list-item [class.item]="true" [class.active]="type==='members'" [class.disabled]="totalMemberItems===0"  (click)="totalMemberItems!==0 && clickItem('members')" > MEMBRES ({{ totalMemberItems }}) </mat-list-item>
+        <mat-list-item [class.item]="true" [class.disabled]="totalNonMemberItems===0"  (click)="totalNonMemberItems!==0 && expandSousMenu()" >
+            NON-MEMBRES ({{ totalNonMemberItems }})
+            <app-info-bull 
+            class="ml-2 mb-2 mr-4"
+            [state]="false" 
+            [title]="'Signification des termes'" >
+                <ul>
+                    <li> <strong>CONTACT :</strong> personne non liée à un contrat et pas en cours de démarchage. </li>
+                    <li> <strong>PROSPECT :</strong> contact en cours de démarchage, la date de démarchage a été renseignée. </li>
+                    <li> <strong>INTERLOCUTEUR :</strong> personne rattachée à un contrat, mais ni titulaire, ni bénéficiaire. </li>
+                    <li> <strong>RESILIE :</strong> membre qui a résilié son contrat Parnasse. </li>
+                </ul>
+            </app-info-bull>
+            <!-- <span class="icon icon-min arrow-bottom-blue pl-1"></span> -->
+            <img src="assets/images/4-arrow-bottom.png" class="ml-4">    
+        </mat-list-item>
+        <div style="margin-left:30px;" *ngIf="expanded">
+            <mat-list-item [class.subItem]="true" [class.active]="type==='non-members'" [class.disabled]="totalNonMemberItems===0" (click)="totalNonMemberItems!==0 && clickItem('non-members')" > TOUS ({{ totalNonMemberItems }}) </mat-list-item>
+            <mat-list-item [class.subItem]="true" [class.active]="type==='contacts'" [class.disabled]="totalContacts===0" (click)="totalContacts!==0 && clickItem('contacts')" > CONTACTS ({{ totalContacts }}) </mat-list-item>
+            <mat-list-item [class.subItem]="true" [class.active]="type==='prospects'" [class.disabled]="totalProscpects===0" (click)="totalProscpects!==0 && clickItem('prospects')" > PROSPECT ({{ totalProscpects }}) </mat-list-item>
+            <mat-list-item [class.subItem]="true" [class.active]="type==='resilies'" [class.disabled]="totalResilies===0" (click)="totalResilies!==0 && clickItem('resilies')" > RESILIES ({{ totalResilies }}) </mat-list-item>
+        </div>
+        <mat-list-item [class.subItem]="true" [class.active]="type==='interlocutorsType'" [class.disabled]="totalInterlocutors===0" (click)="totalInterlocutors!==0 && clickItem('interlocutorsType')" > INTERLOCUTEURS ({{ totalInterlocutors }})</mat-list-item>
+        <mat-list-item [class.item]="true" [class.disabled]="totalProducts===0" [class.active]="type==='produits'" (click)="totalProducts!==0 && clickItem('produits')"> PRODUITS ({{ totalProducts }}) </mat-list-item>
+    </mat-nav-list>
+</div>

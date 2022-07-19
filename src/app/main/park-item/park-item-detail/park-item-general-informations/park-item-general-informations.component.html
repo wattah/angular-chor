@@ -1,0 +1,207 @@
+<div class="block shadow-block container-fluid">
+    <!-- HEADER  -->
+    <h2 class="athena">
+        Informations principales
+        <a class="block-title-item-link athena" 
+        [routerLink]="['/customer-dashboard', customerId , 'detail', 'creation-line'
+         , parcItemLigneDetail?.idCustomerParkItem, 'update']"
+         [queryParams]="{ typeRequest: 'all', from: 'dashboard' ,  modificationLine :  'true'}" 
+         queryParamsHandling="merge"  >
+            <div class="block-title-item-icon not-displayed-icon">
+                <span class="icon icon-marged mr-2 ml-2 pen athena" *ngxPermissionsOnly="['modifier_ligne']"></span>
+                <ng-container *ngxPermissionsOnly="['suspendre_ligne']">
+                <span *ngIf="parcItemLigneDetail?.universe !=='INTERNET'
+                 &&  parcItemLigneDetail?.status  === 'ACTIF' && isCodeContratInListUnlockForfait(parcItemLigneDetail?.codeContract)" 
+                 class="icon icon-marged mr-2 ml-2 cadenas athena" (click)="unlockCustomerParkItem(parcItemLigneDetail?.idCustomerParkItem)"></span>
+                </ng-container>
+                <!-- [ATHENA-4128] Masquer la corbeille -->
+                <!-- <span class="icon icon-marged mr-2 ml-2 del athena" (click)="deleteCustomerParkItem(parcItemLigneDetail?.idCustomerParkItem)" *ngxPermissionsOnly="['supprimer_ligne']"></span> -->
+            </div>
+        </a>
+    </h2>
+    <!-- MOBILE INFORMATIONS -->
+    <section class="row" *ngIf="parcItemLigneDetail?.universe==='MOBILE'" >
+        <article class="col-24 col-sm-12 col-md-12 col-lg-24 ">
+            <ul class="ath-summary">
+                <li>
+                    <span class="grey">Offre actuelle : </span>
+                    {{(!parcItemLigneDetail?.libelleContract) ? '-' : parcItemLigneDetail?.libelleContract}}
+                </li>
+                <li>
+                    <span class="grey"> Numéro de la ligne : </span>
+                    {{(!parcItemLigneDetail?.numLine) ? '-' : parcItemLigneDetail?.numLine | ligne}} 
+                    {{(parcItemLigneDetail?.numTelSubCard )? ('   (carte jumelle : ' + (parcItemLigneDetail?.numTelSubCard | ligne) + ')'): ''}}
+                </li>
+                <li>
+                    <span class="grey">Numéro client : </span>
+                    {{(!parcItemLigneDetail?.numClient) ? '-' : parcItemLigneDetail?.numClient  }}  
+                    {{(parcItemLigneDetail?.numAdv )? ('  (ADV : ' + parcItemLigneDetail?.numAdv + ')'): '(ADV : -)'}}
+                    
+                </li>
+                <li>
+                    <span class="grey">Etat du dossier : </span>
+                    {{(!parcItemLigneDetail?.stateDoss) ? '-' : parcItemLigneDetail?.stateDoss  }}  
+                </li>
+                <li>
+                    <span class="grey">Date de création : </span>
+                    {{(!parcItemLigneDetail?.dateCreation) ? '-' : (parcItemLigneDetail?.dateCreation | dateFormatPipeFrench)}}
+                </li>
+                <li>
+                    <span class="grey">Date de début de souscription : </span>
+                    {{(!parcItemLigneDetail?.dateEngageBegin) ? '-' : (parcItemLigneDetail?.dateEngageBegin | dateFormatPipeFrench)}}
+                </li>
+                <li>
+                    <span class="grey">Offre à venir : </span>
+                    {{ (!parcItemLigneDetail?.nextOfferLibelle) ? '-' : parcItemLigneDetail?.nextOfferLibelle}}  
+                </li>
+                <li>
+                    <span class="grey">Date de migration programmée : </span>
+                    {{(!parcItemLigneDetail?.nextOfferDate) ? '-' : (parcItemLigneDetail?.nextOfferDate | dateFormatPipeFrench)}}
+                </li>
+            </ul>
+        </article>
+        <article class="col-24 col-sm-12 col-md-12 col-lg-24">
+            <div class="row">
+                <div class="d-none d-lg-block col-lg-2 text-right">
+                    <span class="text-right">
+                        <span class="athena icon arrow-grey-following"></span>
+                    </span>
+                </div>
+                <div class="col-md-24 col-lg-22">
+                    <h2 class="athena subtitle not-bordered">
+                        <span class="env-pink">
+                            <span class="athena icon multisim"></span>
+                        </span>
+                        Carte SIM principale
+                    </h2>
+                    <ul class="ath-summary">
+                        <li>
+                            <span class="grey">Numéro SIM (NSCE) :  </span>
+                            {{(!parcItemLigneDetail?.numSimCard) ? '-' : parcItemLigneDetail?.numSimCard}}
+                         
+                        </li>
+                        <li>
+                            <span class="grey">Numéro d’appel : </span>
+                            {{(!parcItemLigneDetail?.numLine) ? '-' : parcItemLigneDetail?.numLine | ligne}}
+
+                        </li>
+                        <li>
+                            <span class="grey">IMSI : </span>
+                            {{(!parcItemLigneDetail?.numImsi) ? '-' : parcItemLigneDetail?.numImsi}}
+                        </li>
+                        <li>
+                            <span class="grey">Clé PUK 1 : </span> 
+                            {{(!parcItemLigneDetail?.keyPuk1) ? '-' : parcItemLigneDetail?.keyPuk1}}
+                        </li>
+                        <li>
+                            <span class="grey">Clé PUK 2 : </span> 
+                            
+                            {{(!parcItemLigneDetail?.keyPuk2) ? '-' : parcItemLigneDetail?.keyPuk2}}
+                        </li>
+                        <li>
+                            <span class="grey">Date renouvellement SIM : </span>
+                            {{(!parcItemLigneDetail?.dateChangeSim) ? '-' : (parcItemLigneDetail?.dateChangeSim | dateFormatPipeFrench)}}
+                        </li>
+                        <li>
+                            <span class="grey">Type SIM : </span>
+                            {{(!parcItemLigneDetail?.typeSimCard) ? '-' : parcItemLigneDetail?.typeSimCard}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+       
+        <article class="col-24 col-sm-12 col-md-12 col-lg-24"  
+        *ngIf="parcItemLigneDetail?.numTelSubCard">
+      <div class="row">
+                <div class="d-none d-lg-block col-lg-2 text-right">
+                    <span class="text-right">
+                        <span class="athena icon arrow-grey-following"></span>
+                    </span>
+                </div>
+                <div class="col-md-24 col-lg-22">
+                    <h2 class="athena subtitle not-bordered">
+                        <span class="env-pink">
+                            <span class="athena icon multisim"></span>
+                        </span>
+                        Carte SIM Secondaire
+                    </h2>
+                    <ul class="ath-summary">
+                        <li>
+                            <span class="grey">Numéro SIM (NSCE) :  </span>
+                            {{(!parcItemLigneDetail?.numSubSimCard) ? '-' : parcItemLigneDetail?.numSubSimCard}}
+                        </li>
+                        <li>
+                            <span class="grey">Numéro d’appel : </span>
+                            {{(!parcItemLigneDetail?.numTelSubCard) ? '-' : (parcItemLigneDetail?.numTelSubCard | ligne)}}
+
+                        </li>
+                        <li>
+                            <span class="grey">Clé PUK 1 : </span> 
+                            {{(!parcItemLigneDetail?.keyPukSub1) ? '-' : parcItemLigneDetail?.keyPukSub1}}
+                        </li>
+                        <li>
+                            <span class="grey">Clé PUK 2 : </span> 
+                            
+                            {{(!parcItemLigneDetail?.keyPukSub2) ? '-' : parcItemLigneDetail?.keyPukSub2}}
+                        </li>
+                        <li>
+                            <span class="grey">Type SIM : </span>
+                            {{(!parcItemLigneDetail?.typeSimCard) ? '-' : parcItemLigneDetail?.typeSimCard}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+    </section>
+    <!-- INTERNET INFORMATIONS -->
+    <section class="row" *ngIf="parcItemLigneDetail?.universe==='INTERNET'">
+        <article class="col-lg-24 ">
+            <ul class="ath-summary">
+                <li>
+                    <span class="grey">Titulaire : </span> {{(!parcItemLigneDetail?.name) ? '-' : parcItemLigneDetail?.name}}
+                </li>
+                <li>
+                    <span class="grey">Etat du dossier : </span>{{(!parcItemLigneDetail?.stateDoss) ? '-' : parcItemLigneDetail?.stateDoss}}
+                </li>
+                <li>
+                    <span class="grey">Offre : </span>{{(!parcItemLigneDetail?.libelleContract) ? '-' : parcItemLigneDetail?.libelleContract}}
+                </li>
+                <li>
+                    <span class="grey">Numéro de la ligne : </span>{{parcItemLigneDetail?.numLine | ligne}}  
+                </li>
+                <li>
+                    <span class="grey">Date de création : </span>{{(!parcItemLigneDetail?.dateCreation) ? '-' : (parcItemLigneDetail?.dateCreation | dateFormatPipeFrench)}}
+                </li>
+                <li>
+                    <span class="grey">Mise en service : </span>{{(!parcItemLigneDetail?.dateEngageBegin) ? '-' : (parcItemLigneDetail?.dateEngageBegin | dateFormatPipeFrench)}}
+                </li>
+                <li>
+                    <span class="grey">Numéro IP : </span>{{(!parcItemLigneDetail?.numIpLine) ? '-' : parcItemLigneDetail?.numIpLine}}
+                </li>
+                <li>
+                    <span class="grey">N° de compte BSS : </span>{{(!parcItemLigneDetail?.bss) ? '-' : parcItemLigneDetail?.bss}}
+                </li>
+                <li>
+                    <span class="grey">Adresse d’installation : </span>{{(!parcItemLigneDetail?.addressInstallation) ? '-' : parcItemLigneDetail?.addressInstallation}}
+                </li>
+            </ul>
+        </article>
+    </section>
+    <!-- FOOTER BOUTTONS -->
+    <section class="row justify-content-center" *ngIf="parcItemLigneDetail?.universe ==='MOBILE'">
+        <ng-container *ngxPermissionsOnly="['suspendre_ligne']">
+            <input class="btn btn-green ml-2 d-none d-lg-block" value="Suspendre la ligne" 
+            type="button"  (click)="suspendLigne(parcItemLigneDetail.idCustomerParkItem)"
+            *ngIf="parcItemLigneDetail?.status === 'ACTIF' && parcItemLigneDetail.codeStateDoss === '10' " 
+            
+            />
+        </ng-container>
+        <ng-container *ngxPermissionsOnly="['retablir_ligne']">
+        <input class="btn btn-green ml-2 d-none d-lg-block" value="Rétablir la ligne" 
+        (click)="activateLigne(parcItemLigneDetail.idCustomerParkItem)"
+        type="button"  *ngIf="(parcItemLigneDetail?.status === 'ACTIF' || parcItemLigneDetail?.status === 'SUSPENDU')
+        && parcItemLigneDetail.codeStateDoss === '50'" />
+        </ng-container>
+    </section>
+</div>

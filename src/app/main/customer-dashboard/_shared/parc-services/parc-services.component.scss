@@ -1,0 +1,12 @@
+@import '../../../../../styles/charte';
+
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="status"], &[col-id="reccurent"]{
+		.ag-header-cell-label {
+			text-align: center !important;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+}

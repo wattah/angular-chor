@@ -1,0 +1,32 @@
+<div class="row p-3">
+    <div class="col-12 text-retour">
+        <ng-container *ngIf="isAvoirComplementaire">
+            <div *ngIf="dossiers?.length !== 0">
+                <span style="color: #4c9aff;" >Ligne(s) associée(s) : </span>
+                <span> {{dossiers.join(', ')}} </span>
+            </div>
+        </ng-container>
+        <div>
+            <p>
+                {{messageLivrableStatus}}
+            </p>
+            <span class="underline"> Statut:</span> {{formattedStatus}}
+            <div *ngIf="erreurs?.length !== 0">
+                <p class="red underline">Erreurs: </p> 
+                <div *ngFor="let erreur of erreurs">{{erreur.categorie}} : {{erreur.contenu}}</div>
+            </div>
+            <div *ngIf="warnings?.length !== 0">
+                <p class="red underline">Warnings: </p>
+                <div *ngFor="let warning of warnings">{{warning.categorie}} : {{warning.contenu}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="[LOCAL_STATUT_LIVRABLE.FICHIER_RELOOKE_MANUELLEMENT, LOCAL_STATUT_LIVRABLE.GENERE, LOCAL_STATUT_LIVRABLE.GENERE_ERREUR, LOCAL_STATUT_LIVRABLE.GENERE_WARNING ].indexOf(livrableStatus) > -1">
+        <span class="underline">Historiques: </span>
+        <p *ngFor="let historique of historiques">{{historique.date}}: {{historique.status}}</p>
+        <div *ngIf="controles?.length !== 0">
+            <span class='underline'>Contrôles sur les montants:</span>
+            <div *ngFor="let controle of controles">{{controle}}</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div id="body" class="container-fluid " [ngClass]="(isParticular)?'env-pink':'env-yellow'">
+	<div class="row">
+		<div class="col-lg-8 col-md-8">
+			<div class="block block-shadow">
+				<app-profil-information [infoCustomer]="infoCustomer" [isParticular]="isParticular" [recoveryDate]="dateRecouvrement" 
+				[typeCustomer]="typeCustomer" [customerId]="customerId" [homologationsIds]="homologationsIds"
+				*ngxPermissionsOnly="['affichage_profil']; else permissionNotFountBlock"
+				></app-profil-information>
+				<ng-template #permissionNotFountBlock>
+					<div class="row" style="text-align: center;">permission not found</div>
+				</ng-template>
+				<!-- Bon à savoir -->
+				<app-good-to-know *ngxPermissionsOnly="['affichage_bon_a_savoir']"></app-good-to-know>
+
+			<!-- 	<app-contacts-information [coordonnes]="coordonnes" [isParticular]="isParticular" ></app-contacts-information> -->
+			<app-interlocutor *ngxPermissionsOnly="['affichage_interlocuteurs']"></app-interlocutor>
+				
+			</div>
+		</div>
+		<div class="col-lg-16 col-md-16">
+			<div class="row">
+				<div class="col-lg-24 col-md-24">
+					<app-customer-complaint></app-customer-complaint>
+
+					<div class="block block-shadow" *ngxPermissionsOnly="['affichage_interactions']">
+						<app-interactions-customer [isParticular]="isParticular"></app-interactions-customer>
+					</div>
+					<!-- requests customer-->
+					<div class="block block-shadow" *ngxPermissionsOnly="['affichage_demandes']">
+						<app-requests-customer [isParticular]="isParticular"></app-requests-customer>
+					</div>
+					<!-- PARC - LIGNES EN COURS -->
+					<div class="block block-shadow">
+						<app-parc-lignes [isParticular]="isParticular" [seeMore]="false" *ngxPermissionsOnly="['affichage_parc_lignes']; else permissionNotFountBlock"></app-parc-lignes>
+						<ng-template #permissionNotFountBlock>
+							<h2 class="block-title athena">
+								PAS DE LIGNES EN COURS
+							</h2>
+							<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+						</ng-template>
+					</div>
+					<!-- PARC - SERVICE ET MATERIEL-->
+					<div class="block block-shadow">
+						<app-parc-services [isParticular]="isParticular"  [seeMore]="false" *ngxPermissionsOnly="['affichage_parc_services']; else permissionNotFountBlock"></app-parc-services>
+						<ng-template #permissionNotFountBlock>
+							<h2 class="block-title athena">
+								Parc service et matériel récurrent
+							</h2>
+							<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+						</ng-template>
+					</div>
+					
+					<app-finance  [nicheValue] = "infoCustomer?.nicheIdentifier" [isParticular]="isParticular" [isEntreprise]="false" [dateRecouvrement]="dateRecouvrement" *ngxPermissionsOnly="['affichage_finances']; else permissionNotFountBlock"></app-finance>
+					<ng-template #permissionNotFountBlock>
+						<div class="block block-shadow">
+							<h2 class="block-title athena">
+								Finances
+							</h2>
+							<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+						</div>
+					</ng-template>
+                    
+					<div class="block block-shadow" *ngxPermissionsOnly="['affichage_documents']">
+                    	<app-customer-document [years]="yearsDocumentFilter" [nicheIdentif] = "infoCustomer?.nicheIdentifier" [isParticular]="isParticular"></app-customer-document>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

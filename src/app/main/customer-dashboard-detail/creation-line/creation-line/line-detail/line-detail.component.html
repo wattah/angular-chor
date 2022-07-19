@@ -1,0 +1,179 @@
+<form [formGroup]="form"  > 
+<div class=" container-fluid row">
+    <div class="col-lg-24 col-md-24 block block-shadow ">
+        <h2 class="block-title athena">Détail d'une ligne</h2>
+        <div *ngIf="invalidForm" class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="block block-alert" >
+                    <table aria-describedby="" class="table table-not-bordered" >
+                        <th scope="col"></th>
+                        <tbody>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                    <div *ngIf="numeroInvalid">- Le champ numéro est obligatoire </div>
+                                    <div *ngIf="origineInvaalid" >- Le champ origine de ligne est obligatoire</div>
+                                    <div *ngIf="benefeceryInvalid" >- Le champ bénéficiaire  est obligatoire </div>
+                                    <div *ngIf="linkedligneInvalid" >- Le champ ligne liée  est obligatoire</div>
+                                    <div *ngIf="ligneLegacy" >- Une incohérence a été trouvée entre le statut Athena sélectionné et le statut de la ligne dans le legacy.Veuillez modifier le statut de la ligne pour continuer la saisie </div>
+                                    <div *ngIf="parkExiste" >- Le numéro de ligne que vous avez saisi existe déjà dans le parc des lignes</div>
+                                    <div *ngIf="numberSelectedInvalid && !numeroInvalid" >- Veuillez sélectionner une ligne</div>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-16 block_onglet pt-0">
+            <div class="form-group row mt-3">
+                <label class="col-sm-4 col-form-label athena">Type*</label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="typeController" (change)='onChangeType($event)'>
+                        <option [ngValue]="null" disabled ></option>
+                        <option>Mobile</option>
+                        <option>Internet</option>
+                        <option>Fixe</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <label class="col-sm-4 col-form-label athena">Numéro*</label>
+                <div class="col-sm-20 col-lg-9 mt-1">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" [ngClass]="classError(numeroInvalid)" [formControl]="phoneNumberController" (change)="selectPhoneNumber()" />
+                    <mat-error *ngIf="numeroInvalid" >Ce champ est obligatoire</mat-error>
+                </div>
+                <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="numeroInvalid"></span>
+                <button class="btn btn-blue navbar-btn-search loupbtn" type="submit" (click)="onSearchLine()" >
+                    <span class="icon see-more-white"></span>
+                </button>
+                
+            </div>
+
+            <div class="form-group row mb-2 block-info-cri">
+                <div class="col-sm-4"></div>
+                <div *ngIf="existCutomerParkItem" class="col-sm-20 col-lg-14" >
+                    <app-athena-paginated-ag-grid [columnDefs]="columnDefs" [rowData]="rowData" [getRowHeight]="getRowHeight"> </app-athena-paginated-ag-grid>
+                </div>
+                <p *ngIf="noParkAvailable" class="mb-0 ml-1">Service parc non disponible</p>
+                <p *ngIf="noLigneAvaailable" class="mb-0 ml-1">Aucun résultat, cette ligne n'a pas été trouvée.</p>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Statut ligne*</label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+         
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="statutController" (change)='onChangeStatut($event)'>
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let status of selectedStatusList" [value]="status">{{NicheContractStatusWithFilters[status]}}</option>
+                    </select>
+                   
+                </div>
+            </div>
+            <div *ngIf="statutActif" class="form-group row mb-3">
+                <label for="start mt-1" class="col-sm-4 col-form-label athena">Souscription contrat ligne* </label>
+
+                <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+                    <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                        <input matInput [matDatepicker]="pickerRes12" placeholder="" readonly [value]="startDate" formControlName="date"  (dateChange)="onSelectStartDate($event)" />
+                        <mat-datepicker #pickerRes12></mat-datepicker>
+                    </mat-form-field>
+                    <div class="col-2 col-sm-2 margin-top p-0">
+                        <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes12.open()"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-sm-4 col-form-label athena">Origine de la ligne* </label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="ligneOrigineControoler" [ngClass]="classError(origineInvaalid)"  (change)='onChangeOrigine($event)'>
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let origine of origineLine" [ngValue]="origine"
+                        >{{origine.label}} </option>
+                    </select>
+                    <mat-error *ngIf="origineInvaalid" >Ce champ est obligatoire</mat-error>
+                </div>
+                <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="origineInvaalid"></span>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-sm-4 col-form-label athena">Mon n° Parnasse </label>
+                <div class="col-sm-20 col-lg-9">
+                    <section class="example-section mt-2" >
+                        <mat-checkbox class="normal" [disableRipple]="true" formControlName="isNumParnasse"></mat-checkbox>
+                    </section>
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <label class="col-sm-4 col-form-label athena">Multi SIM </label>
+                <div class="col-sm-20 col-lg-9">
+                    <section class="example-section mt-2" >
+                        <mat-checkbox class="normal" [disableRipple]="true" formControlName="isMultisim"></mat-checkbox>
+                    </section>
+                </div>
+            </div>
+
+            <div *ngIf="isEntreprise" class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Bénéficiaire * </label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="benefController"  [ngClass]="classError(benefeceryInvalid)" (change)='onChangebenef($event)'>
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let name of beneficiariesDataProvider" [ngValue]="name" [value]="name.customerFullName"
+                        >{{name?.customerFullName}} {{concateanation}} {{name?.offerLabel}} </option>
+                    </select>
+                    <mat-error *ngIf="benefeceryInvalid" >Ce champ est obligatoire</mat-error>
+                </div>
+                <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="benefeceryInvalid"></span>
+            </div>
+
+            <div *ngIf="showlinkedLine" class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Ligne liée * </label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="linkedLigneController"  [ngClass]="classError(linkedligneInvalid)" (change)='onChangeLigne($event)' >
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let phone of webServiceIdentifiers" [ngValue]="phone"
+                        >{{phone}} </option>
+                    </select>
+                    <mat-error *ngIf="linkedligneInvalid" >Ce champ est obligatoire</mat-error>
+                </div>
+                <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="linkedligneInvalid"></span>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Utilisateur de la ligne </label>
+                <div class="col-sm-20 col-lg-9 addarrow">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="lineHolderController" (change)='onChangeUser($event)'>
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let category of userCatgory"  [ngValue]="category"
+                         >{{category.label}} </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Nom de l'utilisateur </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched"   name ="lineHolderNamee" formControlName="lineHolderNamee"  type="text" id="lineHolderNamee" (change)="userName()" />
+                </div>
+
+                <span class="mt-2 clickable ml-2 athena grey"> <span class="icon help-grey cursour mx-2"></span> Ce nom est affiché sur le portail parnasse.fr</span>
+            </div>
+
+
+            <div class="row mt-2 mb-2 justify-content-left  align-items-center ml-5">
+                <a class="btn btn-link mt-4 athena" [routerLink]="null" (click)="annuler()">Annuler</a>
+                <button class="btn btn-green marginleft mt-3 " type="submit" [disabled]="noParkAvailable || noLigneAvaailable || noSave" (click)="onSaveParcElement()">
+                    Enregistrer
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</form> 

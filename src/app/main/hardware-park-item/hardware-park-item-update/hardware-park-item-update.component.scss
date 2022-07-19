@@ -1,0 +1,23 @@
+h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+
+//input outline color
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    border-color: #80bdff;
+    color: #dadada;
+    padding: 0;
+    border-radius: 0 !important;
+}
+
+//mat-input focused color
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    border-color: #80bdff;
+    color: #80bdff;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: .75em 0 .75em 0;
+}

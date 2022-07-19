@@ -1,0 +1,19 @@
+.center {
+    display: flex;
+    margin: auto;
+}
+
+.margin-pop-up {
+    margin : 30px 30px 20px 30px;
+}
+
+.relook-popup  {
+    .expandable{
+        border: none !important;
+        min-height: auto !important;
+    }
+    .btn {
+        outline: none !important;
+        line-height: 25px;
+    }
+}

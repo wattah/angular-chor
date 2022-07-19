@@ -1,0 +1,19 @@
+@import '~src/styles/charte';
+
+.ath-drop-zone-error {
+    border-color: $red;
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #CEE63F !important;
+}
+
+.fileDropZone{
+    height: relative !important;
+    min-height: 100px !important;
+    min-width: 80px !important;
+    max-width: 500px !important;
+    font-family: $font-family;
+    border-style: 5px none;
+	font-size: $font-size;
+}

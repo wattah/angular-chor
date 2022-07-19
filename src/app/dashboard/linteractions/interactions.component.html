@@ -1,0 +1,38 @@
+<div class="block block-shadow col-md-24 col-lg-24">
+  <h2 class="block-title athena">
+    10 Dernieres interactions
+  </h2>
+  <div class="container-fluid">
+    <div class="row">
+        <span class="pl-1 pr-2 col-form-label grey">Portefeuille de :</span>
+        <select class="form-control athena col-md-6 col-lg-6" [ngModel]="selectedUserId" (ngModelChange)="changeWalletOfUser($event, 0, 'ACTIVE')">
+          <option [ngValue]="-1"> Tous </option>
+          <option *ngFor="let user of users " [ngValue]="user.id"> {{ user  | fullNameFormatter }}</option>
+        </select>
+     </div>
+     <div class="block_onglet">
+      <div class="onglet_tabs">
+        <ng-template [ngIf]="!loadingTotals" [ngIfElse]="loadingData">
+          <mat-tab-group animationDuration="10ms" [disableRipple]="true" class="custom-tabs" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="changeTab($event)">
+            <mat-tab [label]="TabHeaderConfig[0].label" ></mat-tab>
+            <mat-tab [label]="TabHeaderConfig[1].label"></mat-tab>
+            <mat-tab [label]="TabHeaderConfig[2].label"></mat-tab>
+          </mat-tab-group>
+        </ng-template>
+        <ng-template [ngIf]="!loadingInteractions" [ngIfElse]="loadingData">
+          <list-interaction-ag-grid *ngIf=" interactions?.length > 0; else emptyData" [interactions]="interactions" ></list-interaction-ag-grid>
+        </ng-template>
+      </div>
+    </div>
+   </div>
+</div>
+<ng-template #loadingData>
+  <app-athena-table-loader ></app-athena-table-loader>
+</ng-template>   
+
+<ng-template #emptyData>
+  <p  class="athena no-result" >
+    Aucune donnée à afficher .
+  </p>
+</ng-template>
+

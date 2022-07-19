@@ -1,0 +1,87 @@
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena">
+            ajout d'un document
+        </h2>
+        <div class="row" *ngIf="!isTitleValid || !isFileValid || !isTypeValid">
+            <div class="col-md-12 col-lg-12">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered"><caption class="p-0"></caption>
+                        <tbody>
+                            <tr>
+                                <th id="th"></th> 
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                                    <ul class="simple mr-0 mt-2">
+                                        <li *ngIf="!isTypeValid">Type de document </li>
+                                        <li *ngIf="!isTitleValid">Titre du document </li>
+                                        <li *ngIf="!isFileValid">Fichier</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form [formGroup]="addApprovalDocumentForm">
+            <div class="row mt-2">
+                <div class="col-lg-18 col-md-18">  
+                    <div class="form-group row">
+                        <label for="" class="col-md-5 col-form-label athena">Type de document*</label>
+                        <div class="col-md-8">
+                            <mat-form-field class="large-chip-list" appearance="outline"  >
+                                <input type="text" matInput 
+                                [matAutocomplete]="autoType"
+                                [formControl]="typeDocumentControl">
+                                <mat-autocomplete #autoType="matAutocomplete"  class="form-control col-md-24 mt-1 athena" (optionSelected)="getSelectedType()" required>
+                                    <mat-option *ngFor="let option of filteredType | async" [value]="option.documentTypeName">{{option.documentTypeName}}</mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="!isTypeValid">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label  class="col-md-5 col-form-label athena">Titre du document*</label>
+                        <div class="col-md-8">
+                            <mat-form-field class="large-chip-list" appearance="outline"  >
+                                <input type="text" matInput 
+                                [matAutocomplete]="autoTitle" 
+                                [formControl]="titreDocumentControl">
+                                <mat-autocomplete #autoTitle="matAutocomplete"  class="form-control col-md-24 mt-1 athena" required>
+                                    <mat-option *ngFor="let option of filteredTitle | async" [value]="option.documentTitle">{{option.documentTitle}}</mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="!isTitleValid">Ce champ est obligatoire</mat-error>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label for="titreSelect" class="col-md-5 col-form-label athena">Fichier (<10Mo)*</label>
+                        <div ngClass="col-md-8 ">
+                            <ngx-dropzone name="file" [multiple]="false" [expandable]="true" class="fileDropZone" (change)="onSelectFile($event)">
+                                <ngx-dropzone-label>Déposez des fichiers ici ou
+                                    cliquez pour <u class="blue "> télécharger</u>  .</ngx-dropzone-label>
+                                    <ngx-dropzone-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [removable]="true" (removed)="onRemoveFile(f)">
+                                        <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                                    </ngx-dropzone-preview>
+                            </ngx-dropzone>
+                            <mat-error *ngIf="!isFileValid">Ce champ est obligatoire</mat-error> 
+                        </div>
+                    </div>
+                    <div class="row control-buttons">
+                        <div class="offset-md-2 mt-1">
+                            <a class="btn btn-link mt-1 athena"  
+                            queryParamsHandling="merge" [routerLink]="null" (click)="goToHomologation()">Annuler</a>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-green" (click)="save()">Ajouter le document</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

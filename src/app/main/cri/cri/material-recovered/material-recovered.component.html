@@ -1,0 +1,61 @@
+<div class="bloc-meterial-recovered">
+    <div class="form-group row select_arrows mb-0">
+        <label class="col-sm-4 col-form-label athena"> Type</label>
+        <div class="col-sm-20 col-lg-9">
+            <mat-form-field class="large-chip-list" appearance="outline" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                <input type="text"  matInput [matAutocomplete]="autoA" [formControl]="type" (onchange)="getSelectedType()"  >
+                  <mat-autocomplete #autoA="matAutocomplete" (optionSelected)="getSelectedType()" (closed)="getSelectedType()">
+                    <mat-option *ngFor="let type of filteredType | async" [value]="type.label">
+                        {{type.label}}
+                    </mat-option>
+                  </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+    <br>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Description</label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" [formControl]="description" (ngModelChange)="descriptionChanged()"  [class.disabled]="!allowedToModifyTechnicalInformationTab"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> N° de série</label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" [formControl]="serialNumber" type="text" (ngModelChange)="serialNumberChanged()"  [class.disabled]="!allowedToModifyTechnicalInformationTab"/>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Quantité</label>
+        <div class="col-sm-20 col-lg-3 number-wrapper">
+            <input type="number" class="athena form-control" min="1" max="99" [formControl]="quantity" [readonly]="disabelQuantity"  [class.disabled]="!allowedToModifyTechnicalInformationTab"> 
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"></label>
+        <div class="col-md-12">
+            <button class="btn btn-green" [disabled]="disabelAdd" (click)="addMaterial()" [class.disabled]="!allowedToModifyTechnicalInformationTab">Ajouter</button>
+        </div>
+    </div>
+
+    <div *ngIf="showArrayOfRecoveredMaterial">
+        <div class="col-sm-5 mb-3 underline">Liste des matériels récupérés</div>
+        <div class="materials_array" >
+            <app-athena-ag-grid
+                    
+                    style="width: 100%; height: 100%;"
+                    [columnDefs]="columnDefs"                
+                    [suppressRowClickSelection]="true"
+                    [rowData]="rowData"
+                    [loadAgGridParams]="params"
+                    (clickCell)="clickCell($event)"
+                    [getRowHeight]="getRowHeight"
+                >
+            </app-athena-ag-grid>
+        </div>
+    </div>
+
+</div>

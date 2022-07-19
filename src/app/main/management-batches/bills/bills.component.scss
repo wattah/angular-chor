@@ -1,0 +1,72 @@
+::ng-deep.primary-imenu-item.mat-select-value {
+    overflow: hidden !important;
+}
+::ng-deep.primary-imenu-item.mat-select-trigger {
+    top: 0 !important;
+}
+::ng-deep.primary-imenu-item.mat-select-arrow-wrapper {
+    opacity: 0;
+}
+::ng-deep.mat-pseudo-checkbox-checked::after {
+    top: 3.4px !important;
+}
+
+::ng-deep.mat-pseudo-checkbox-checked {
+    background-color: #cee63f !important;
+}
+::ng-deep.mat-pseudo-checkbox {
+    border: 1px solid #dadada !important;
+}
+::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: #202021;
+}
+::ng-deep.ag-group-contracted {
+    height: 28px !important;
+}
+::ng-deep.bills .ag-header-cell-sortable .ag-header-cell-label .ag-header-cell-text {
+    text-decoration: none !important;
+}
+::ng-deep.bills .col-md-8 .pagination  {
+    margin-top: 10px;
+}
+::ng-deep.bills .col-12 p{
+    margin: 3px 0px;
+}
+::ng-deep.bills .ag-group-expanded {
+    height: 30px  !important;
+}
+.groupbtns {
+    position: relative;
+    .btn {
+        height: 31px;
+    }
+    .blueborder {
+        border: 1px solid #4480c8;
+        color:#4480c8 !important ;
+    }
+}
+.block-progress {
+    height: 176px;
+    overflow: auto;
+    margin-bottom: 32px;
+    p{
+        margin: 3px;
+    }
+}
+::ng-deep.ag-row-level-1{
+    overflow-y: auto;
+}
+
+.upload-bills  {
+    .expandable{
+        border: none !important;
+        min-height: auto !important;
+    }
+    .btn {
+        outline: none !important;
+        line-height: 25px;
+    }
+}
+::ng-deep.no-cursor {
+    cursor: default !important;
+}

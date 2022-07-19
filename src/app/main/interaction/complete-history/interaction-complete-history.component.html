@@ -1,0 +1,102 @@
+<section class="block block-shadow">
+    <h2 class="block-title athena">
+        INTERACTIONS
+        <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'interaction','creation-360']" queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_interaction']">
+			<div class="block-title-item-icon">
+				<span class="icon add athena"></span>
+			</div>
+		</a>
+    </h2>
+    <article class="row">
+        <label class="col-form-label athena col-md-2">FILTRES :</label>
+        <label class="col-form-label athena col-md-4">
+            Inclure les interactions automatiques 
+        </label>
+        <div class="col-md-2">
+            <div class="form-check">
+                <input class="form-check-input athena" type="radio" name="optionsRadios" id="optionsRadios1" [value]="true" [checked]="selectedAutomatic" (change)="changeAutomaticOption($event.target.value)">
+                <label class="form-check-label athena" for="optionsRadios1"> Oui</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" type="radio" name="optionsRadios" id="optionsRadios2" [value]="false" [checked]="!selectedAutomatic" (change)="changeAutomaticOption($event.target.value)">
+                <label class="form-check-label athena" for="optionsRadios2"> Non</label>
+            </div>
+        </div>
+        <label  class="col-md-1 col-form-label athena" >Medias</label>
+        <div class="col-md-3">
+            <mat-form-field class="large-chip-list" appearance="outline">
+                <mat-select multiple (selectionChange)="onSelectMedia($event.value)" [value]="selectedMediaList">
+                    <mat-select-trigger>    
+                        <ng-template  [ngIf]="selectedMediaList?.length === 1" >
+                           {{ selectedMediaList[0].label}} 
+                        </ng-template>
+                        <span *ngIf="selectedMediaList?.length === mediaData.length" >
+                            Tous
+                        </span>
+                        <ng-template  [ngIf]="selectedMediaList?.length != mediaData.length && selectedMediaList?.length > 1" >
+                           <span *ngFor="let med of selectedMediaList"> {{ med.label}} , </span> 
+                        </ng-template>
+                    </mat-select-trigger>
+                    <mat-option disabled="disabled" class="filter-option">
+                        <span class="black">Tout</span> &nbsp;
+                        <span class=" text-sm link" (click)="selectAllMedia()">Cocher</span> 
+                        &nbsp; | &nbsp;
+                        <span  class="text-sm link" (click)="deselectAllMedia()">Décocher</span>
+                    </mat-option>
+                    <mat-option *ngFor="let media of mediaData" [value]="media">{{media.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <label class="col-md-2 pl-3 col-form-label athena" >Créée par </label>
+        <div class="col-md-4">
+            <mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl(myControl, trigger)" >
+                <input type="text"
+                    matInput
+                    #userInput
+                    [formControl]="myControl"
+                    [matAutocomplete]="auto"  
+                    #trigger="matAutocompleteTrigger" 
+                    (click)="clearAutoCompleteInputControl(myControl, trigger)" 
+                >
+                <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="onSelectUser($event.option.value)" (closed)="onCloseTab()">
+                  <mat-option *ngFor="let user of filteredUsers | async"  [value]="user" >
+                    {{ user.lastName | uppercase }} {{user.firstName | firstName}}  
+                  </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <label class="col-form-label pl-2 athena col-md-1">Date</label>  
+        <mat-form-field class="col-md-2" appearance="outline">
+            <input matInput [matDatepicker]="pickerStart" placeholder="" [(ngModel)]="selectedStartDate" (dateChange)="onSelectStartDate($event.value)" (focus)="pickerStart.open()">
+            <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+        <label class="col-md-1"  class="col-form-label ml-1 mr-1 ">  - </label>
+        <mat-form-field class="col-md-2" appearance="outline">
+            <input matInput [matDatepicker]="pickerEnd" placeholder="" [(ngModel)]="selectedEndDate" (dateChange)="onSelectEndDate($event.value)" (focus)="pickerEnd.open()">
+            <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+    </article>
+    <div class="row mt-5" *ngIf="totalItems <= 0">
+        <p class="center">Aucun résultat</p>
+    </div>
+    <div [hidden]="totalItems <= 0"  >
+        <app-athena-ag-grid2
+            class="display-id"
+            [defaultSortModel]="defaultSortModel"
+            [columnDefs]="columnDefs"
+            [rowStyle]="rowStyle"
+            [datasource]="datasource"
+            [paginationPageSize]="paginationPageSize"
+            [getRowHeight]="getRowHeight"
+            [masterDetail]="true"
+            [loadAgGridParams]="params"
+            [detailCellRendererParams]="detailCellRendererParams"
+            [totalItems]="totalItems"
+            [suppressRowClickSelection]="true"
+            [showTopPagination]="true"
+            (sortChanged)="reloadGridAfterSortChanged($event)"
+            (clickCell)="clickedCell($event)"
+            (gridReady)="onGridReady($event)">
+        </app-athena-ag-grid2>
+    </div>
+</section>

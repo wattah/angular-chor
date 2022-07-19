@@ -1,0 +1,103 @@
+
+    
+    <div class="underline mt-3 mb-2">Mobile</div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Marque 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="marque" name="marque" [(ngModel)]="interventionMobile.marque"
+            [ngClass]="[marqueInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Modèle 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="modele" name="modele" [(ngModel)]="interventionMobile.modele"
+            [ngClass]="[modeleInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Capacité
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="capacite" name="capacite" [(ngModel)]="interventionMobile.capacite"
+            [ngClass]="[capaciteInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Couleur 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="couleur" name="couleur" [(ngModel)]="interventionMobile.couleur"
+            [ngClass]="[couleurInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">IMEI
+            <span *ngIf="isRequired" class="red">*</span>    
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="numImei" name="numImei" [(ngModel)]="interventionMobile.numImei"
+            [ngClass]="[numImeiInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire</label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="comment" name="comment" [(ngModel)]="interventionMobile.comment" maxlength="255"></textarea>
+            <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena pr-0"> Ligne du parc impactée </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="impactedLineId" name="impactedLineId">
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let impactParkItemLine of impactParkItemLines" [ngValue]="impactParkItemLine">{{impactParkItemLine.webServiceIdentifier}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Autre </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="otherLine" name="otherLine" [(ngModel)]="interventionMobile.otherLine"/>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-form-label athena col-sm-4"> Origine
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input  [ngClass]="[origineInvalid ? ' form-check-input athena error':'form-check-input athena']"
+                 id="assurance" name="isAssurance" type="radio" formControlName="isAssurance" [value]="'isAssurance'"/>
+                <label class="form-check-label athena" for="assurance"> Assurance </label>
+            </div>
+            <div class="form-check">
+                <input [ngClass]="[origineInvalid ? ' form-check-input athena error':'form-check-input athena']"
+                id="isRenouvellement" name="isAssurance" type="radio" formControlName="isAssurance" [value]="'isRenouvellement'"/>
+                <label class="form-check-label athena" for="isRenouvellement"> Renouvellement</label>
+            </div>
+            <div class="form-check">
+                <input [ngClass]="[origineInvalid ? ' form-check-input athena error':'form-check-input athena']"
+                id="isSav" name="isAssurance" type="radio"  formControlName="isAssurance" [value]="'isSav'"/>
+                <label class="form-check-label athena" for="isSav"> SAV</label>
+            </div>
+        </div>
+    </div>
+</form>

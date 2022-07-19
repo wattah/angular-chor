@@ -1,0 +1,30 @@
+<div id="body" class="container-fluid " [ngClass]="getClassEnvByTypeCustomer()">
+	<div class="row">
+		<div class="col-lg-8">
+        <div class="block block-shadow block-with-background-oblique-container">
+            <app-profil-information 
+                [infoCustomer]="infoCustomer"
+                [isEntreprise]="isEntreprise"
+                [isParticular]="isParticular"
+                [recoveryDate]="recoveryDate"
+                [isProfilReduit] = "false"
+                [customerId]="customerId"
+                [entrepriseRecoveryDate]="entrepriseRecoveryDate"
+				[detteTotalTTC]="detteTotalTTC"
+                [detteTotal]="detteTotal">
+            </app-profil-information>
+          </div>
+          <p>
+              <a class="athena" [routerLink]="(isEntreprise) ? ['/customer-dashboard/entreprise', customerId] : ['/customer-dashboard/particular', customerId]" [queryParams]="{typeCustomer: typeCustomer}" queryParamsHandling="merge"><span class="icon icon-min arrow-left-blue"></span>Retour à la vue 360</a>
+          </p>
+		</div>
+		<div class="col-lg-16">
+            <app-contract-list [contractsOffers]="contractsOffers"  
+             (contractOfferSelected)="getContractOfferSelected($event)" (nicheIdentifiant)="nicheIdentifiant = $event" (offerLabelChange)="offerLabelChange = $event"
+            [(nicheIdentifiant)]="nicheIdentifiant" [(offerLabelChange)] = "offerLabelChange"></app-contract-list>
+            <app-accounting-state-list [(nicheIdentifier)]="nicheIdentifiant" (offerLabelChange) = "offerLabelChange = $event" (nicheIdentifiant)="nicheIdentifiant = $event" [(offerLabel)]= "offerLabelChange" [contractsOffers]="contractsOffers" ></app-accounting-state-list>
+		</div>
+	</div>
+</div>
+
+

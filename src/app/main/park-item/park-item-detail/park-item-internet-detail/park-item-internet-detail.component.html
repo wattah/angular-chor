@@ -1,0 +1,24 @@
+     <article class="block shadow-block" *ngIf="isExistOffers">
+            <h2 class="athena">
+                Détail 
+            </h2>
+            <app-athena-paginated-ag-grid 
+                [defaultSortModel]="defaultSortModelDetailInternet"
+                [columnDefs]="columnDefsDetailInternet" 
+                [rowData]="rowDataDetailInternet"
+                [treeData]="true"
+                [length]="lengthOffersDetail"
+                [autoGroupColumnDef]="autoGroupColumnDef"
+                [getDataPath]="getDataPathDetail"
+                [paginationPageSize]="20">
+           </app-athena-paginated-ag-grid>	
+        </article>  
+        <article class="block shadow-block" *ngIf="!isExistOffers">
+            <h2 class="athena">
+                Détail    
+            </h2>
+            <p class="no-result">
+                Cette ligne n’a pas de détail 
+            </p>
+        </article>
+  

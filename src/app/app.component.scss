@@ -1,0 +1,63 @@
+@import '../styles/charte';
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100vh;
+}
+
+.main {
+  flex-grow: 1;
+  margin-top: 58px;
+  @media (max-width: $md-max){
+    margin-top: 0px;
+  }
+  margin-bottom: 20px;
+}
+
+.header, .main, .footer {
+  flex-shrink: 0;
+}
+
+.ada-banner {
+  top: 58px;
+  position: absolute;
+}
+
+.logout {
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  position: fixed;
+  padding: 0px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: 0.6;
+  transition: opacity 0.3s linear;
+}
+
+.spinner {
+  border: 16px solid silver;
+  border-top: 16px solid #337AB7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 700ms linear infinite;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  position: fixed;
+  opacity: 1;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(-360deg) }
+}

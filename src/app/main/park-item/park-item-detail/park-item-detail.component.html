@@ -1,0 +1,29 @@
+<div class="row" *ngIf="parcItemLigneDetail?.universe !== FIXE">
+    <header class="col-24 d-none d-sm-block">
+        <div class="block block-transparent">
+            <span class="h6">
+                Ligne {{parcItemLigneDetail?.universe}} : <span (click)="selectWebServiceIdentifier()" [ngClass]="{ 'link' : parcItemLigneDetail?.webserviceIdentifier && canShowAdaBanner}">{{parcItemLigneDetail?.webserviceIdentifier | ligne}}</span>
+            </span>
+        </div>
+    </header>
+    <header class="col-24 d-block d-sm-none">
+        <div class="block block-transparent">
+            <h6 class="athena">
+                Ligne {{parcItemLigneDetail?.universe}} 
+            </h6>
+            <h6 class="athena mt-n5" (click)="selectWebServiceIdentifier()" [ngClass]="{ 'link' : parcItemLigneDetail?.webserviceIdentifier && canShowAdaBanner}">
+                {{parcItemLigneDetail?.webserviceIdentifier | ligne}}
+            </h6>
+        </div>
+    </header>
+    <!-- Informations générales -->
+    <article class="col-md-24 col-lg-8 order-lg-2">
+        <app-park-item-general-informations [parcItemLigneDetail]="parcItemLigneDetail"></app-park-item-general-informations>
+    </article>
+    <!-- blocks associés aux lignes -->
+    <section class="col-md-24 col-lg-16 order-lg-1">
+            <app-park-item-detail-mobile *ngIf="parcItemLigneDetail?.universe==='MOBILE'" ></app-park-item-detail-mobile>
+        <!-- INTERNET -->
+        <app-park-item-internet-detail *ngIf="parcItemLigneDetail?.universe==='INTERNET'" [offers]="offers"></app-park-item-internet-detail>
+    </section>       
+</div>

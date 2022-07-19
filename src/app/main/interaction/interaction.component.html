@@ -1,0 +1,30 @@
+<div id="body" class="container-fluid">
+    <div class="row">   
+        <div class="col-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')" 
+                [infoCustomer]="infoProfil" 
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer" 
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt"
+                > 
+            </app-see-all-profil>
+        </div>
+        <div class="col-24">
+            <p>
+                <a 
+                    class="athena"
+                    [routerLink]="(typeCustomer === 'company') 
+                        ? ['/customer-dashboard/entreprise', customerId]
+                        : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}"
+                    queryParamsHandling="merge"
+                    >
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+            <router-outlet></router-outlet>
+    </div>
+</div>
+

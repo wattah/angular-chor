@@ -1,0 +1,89 @@
+.orange {
+    color: #f88612
+}
+
+.isDisabled {
+    color: #595959 !important;
+	cursor: not-allowed !important;
+	text-decoration: none !important;
+  }
+
+  .spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: fixed;
+    opacity: 1;
+  }
+  
+  .wrapper {
+    position: fixed;
+    padding: 0px;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    opacity: 0.6;
+    transition: opacity 0.3s linear;
+  }
+  
+  .position-cross {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    }
+    ::ng-deep.ag-checkbox-input {
+      position: static !important;
+  }
+  ::ng-deep.ag-selection-checkbox {
+     z-index: auto;
+  }
+  ::ng-deep.ag-header-cell-sortable{
+  padding: 0px;
+  }
+  ::ng-deep.checkbox-custom .ag-header-select-all {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    justify-content: center;
+    margin-right: 0px !important;
+  }
+ 
+  ::ng-deep.ag-theme-material .ag-row-selected {
+    background-color: transparent !important;
+  }
+  ::ng-deep.ag-cell-focus {
+    border: none !important;
+  }
+  
+  ::ng-deep.ag-theme-material .ag-checkbox-input-wrapper:focus-within {
+    box-shadow: none !important;
+  }
+  ::ng-deep.ag-theme-material .ag-checkbox-input-wrapper.ag-indeterminate::after {
+    color: #777777 !important;
+  }
+  .btn-debloque {
+    position: absolute;
+    right: 19%;
+    top: 0;
+  }  
+  ::ng-deep.margin-custum .ag-selection-checkbox {
+    margin-right: 0px !important;
+  }
+
+  ::ng-deep.no-margin {
+    position: relative;
+    top: -10px;
+  }

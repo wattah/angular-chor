@@ -1,0 +1,24 @@
+<div class="row">
+    <div *ngIf="notOnWfCreation" class="col-24">
+        <div class="block block-transparent">
+            <h6 style="margin-bottom: 0;" class="athena"> {{detailRequest?.requestTypeLabel}} </h6>
+            <h5 class="grey text-center">  Demande N°{{detailRequest?.idRequest}} </h5>
+        </div>
+    </div>
+    <div class="col-md-24 col-lg-8 order-lg-2">
+        <!-- REQUEST SUMMARY  -->
+        <app-task-creation-request-summary *ngIf="notOnWfCreation" [detailRequest]="detailRequest" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-task-creation-request-summary>    
+   
+    </div>
+    <div class="col-md-24 order-lg-1" [ngClass]="isCreationRequest ? 'col-lg-24' : 'col-lg-16'">
+        <!-- FORMULAIRE -->
+        <app-task-creation-form 
+        (onFormGroupChange)="onFormGroupChangeEvent($event)" (onSubmittedChange)="onSubmittedChangeEvent($event)"
+        (onCanceledChange)="onCanceledChangeEvent($event)" [users]="users" 
+        [referenceDataList]="referenceDataList" [customerId]="customerId"
+        [idRequest]="detailRequest?.idRequest" [wfRequest]="wfRequest" [attachedUserId]="detailRequest?.idPorteur"
+        [wfCustomerInteraction]="wfCustomerInteraction" [hasNotInteraction] = "hasNotInteraction"
+        [precision]="precision" [isCreationRequest]="isCreationRequest">
+        </app-task-creation-form>
+    </div>       
+</div>

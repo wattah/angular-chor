@@ -1,0 +1,24 @@
+<div class="block block-shadow">
+    <h2 class="athena">Tâches en cours
+        <ng-container *ngxPermissionsOnly="['ajouter_tache_manuelle']" >
+            <a *ngIf="isDetailRequestReady" [class.disabled]="fromChorniche" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'request', idRequest, 'task-creation']"
+                queryParamsHandling="merge">
+                <span *ngIf="requestStatus === 'PENDING' || (!isRequestClosed && isClosed)" class="text-min normal no-transform">Nouvelle tâche manuelle</span>
+            </a>
+        </ng-container>
+    </h2>
+    
+    <app-athena-ag-grid 
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefsProvisoir" 
+        [rowData]="tasks"
+        [suppressRowClickSelection]="true"
+        [loadAgGridParams]="params"
+        (clickCell)="clickCell($event)"
+       >
+    </app-athena-ag-grid>
+</div>
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>

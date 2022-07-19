@@ -1,0 +1,85 @@
+<div class="block block-shadow">
+    <h2 class="block-title athena"> Chargement 50D    </h2>
+    <section class="container-fluid">
+        <header class="mt-5 mb-2">
+            <div class="row upload-50D text-center my-3 ">
+                <ngx-dropzone  name="fileExcel50D" [multiple]="false" 
+                   [expandable]="true" class="fileDropProfile" 
+                   (change)="onSelectFile($event)" [accept]="'.xls'">
+                    <ngx-dropzone-label>
+                        Déposez un fichier ici ou <br />
+                        cliquez sur <u class="blue"> Upload</u> .
+                    </ngx-dropzone-label>
+                    <ngx-dropzone-preview class="fileinter" *ngFor="let file of files" [removable]="true" (removed)="onRemoveFile(file)">
+                        <ngx-dropzone-label>{{ file.name }}</ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                </ngx-dropzone>
+            </div>
+        </header>
+            <div *ngIf="isError" class="col-md-10">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered"><caption class="p-0"></caption>
+                        <tbody>
+                            <tr>
+                                <th id="th"></th> 
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                <div>- {{error}} </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <app-athena-paginated-ag-grid
+                class="bills env-blue" 
+                [showTopPagination]="true"
+                [paginationPageSize]="20"
+                [columnDefs]="columnDefs" 
+                [suppressRowClickSelection]="true" 
+                [rowData]="rowData"
+                [frameworkComponents]="frameworkComponents" 
+                [detailCellRenderer]="detailCellRenderer"
+                [masterDetail]="true" 
+                [getRowHeight]="getRowHeight"
+                [detailRowHeight]="120"
+                [isRowMaster]="isRowMaster"
+                (clickedCell)="clickCell($event)"
+            >
+        </app-athena-paginated-ag-grid>
+
+        <div class="legends mt-4">
+            <h2 class="athena">Légendes</h2>
+            <div class="row">
+                <div class="col-1 p-0"></div>
+                <div class="col-6 p-0">
+                    <div class="athena underline my-3">
+                        Etat du fichier
+                    </div>
+                    <div class="mb-2">
+                        <span class="icon status-green-teleco mr-2"></span>Fichier OK
+                    </div>
+                    <div class="mb-2">
+                        <span class="icon status-red-teleco mr-2"></span>Fichier KO
+                    </div>
+                </div>
+            
+                <div class="col-6">
+                    <div class="athena underline my-3">
+                        Picto du tableau
+                    </div>
+                    <div class="mb-2">
+                        <span class="icon download mr-2"></span>Télécharger la facture
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- spinner -->
+    <div *ngIf="loading" class="wrapper">
+        <div class="spinner">
+        </div>
+    </div>
+</div>

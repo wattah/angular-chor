@@ -1,0 +1,61 @@
+@import '../../../../styles/charte';
+
+.bull {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+}
+
+.bull-body {
+    position : absolute;
+    left : 0px;
+    top: -5px;
+    font-size: 10px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.2;
+    letter-spacing: normal;
+    color: $black;
+    padding: 12px 0px 0px 17px;
+    margin: 0px;
+    z-index: 120;
+    width: 252px;
+    height: auto !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    // min-height: 231px;
+    box-shadow: $box-shadow;
+    background-color: $white;
+    text-align: left;
+    .title {
+         text-align: left;
+         font-size: $font-size;
+    }
+    .info-grey ,.help-grey{
+        top: 8px;
+        padding: 10px;
+    }
+    .close {
+        top: 5px;
+        right: 14px
+    }
+}
+
+.close {
+    background-image: url(../../../../assets/images/20-sortie-2.png);
+}
+
+.title {
+    text-align: center;
+    font-family: $font-family-strong;
+}
+
+.description {
+    text-align: left;
+    padding-top: 2%;
+}
+
+
+
+   

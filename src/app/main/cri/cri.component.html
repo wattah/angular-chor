@@ -1,0 +1,26 @@
+
+<div id="body" class="container-fluid">
+    <div class="row">   
+        <div class="col-24 d-none d-lg-block">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')" 
+                [infoCustomer]="infoProfil" 
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer" 
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt"> 
+            </app-see-all-profil>
+        </div>
+        <div class="col-24">
+            <p class="athena  mt-3 mt-lg-0">
+                <a 
+                [routerLink]="null" queryParamsHandling="merge"  (click)="navigate360()"
+                    class="athena"
+                    >
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+            <router-outlet></router-outlet>
+    </div>
+</div>
+

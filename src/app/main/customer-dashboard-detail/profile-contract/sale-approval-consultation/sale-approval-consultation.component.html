@@ -1,0 +1,55 @@
+<div >
+    <div class="row">
+        <div class="col-lg-9">
+            <div>
+                <h4 class="athena mintitle mb-2">Vente</h4>
+                <div><span class="grey athena">Statut de vente :</span> {{ customer?.statutVente?.label | isNull }}</div>
+                <div><span class="grey athena">Commentaire de vente :</span> <span class="enableNewLine"> {{ customer?.commentaireVente | isNull}} </span></div>
+                <div><span class="grey athena">Vendeur :</span> {{nameVendeur | isNull}} </div>
+                <div><span class="grey athena">Canal :</span> {{getChoisedAcquisitionsCanals(0)?.canalName | isNull}}</div>
+                <div *ngIf="canalAgence"><span class="grey athena">Type d'agence :</span> {{typeAgence | isNull}}</div>
+                <div *ngIf="canalAgenceEntreprise"><span class="grey athena">Type d'agence entreprise :</span> {{typeAgenceEntrprise | isNull}} </div>
+                <div *ngIf="canalAgence"><span class="grey athena">Vendeur agence :</span> {{vendeurAgence | isNull}} </div>
+                <div *ngIf="canalAgence"><span class="grey athena">Responsable agence :</span> {{respAgence | isNull}}</div>
+                <div *ngIf="canalApparteur"><span class="grey athena">Type d'apporteur :</span> {{typeApporteur | isNull}} </div>
+                <div *ngIf="canalApparteur"><span class="grey athena">Nom de l'apporteur :</span> {{getChoisedAcquisitionsCanals(0)?.details1 | isNull}} </div>
+                <div *ngIf="canalApparteur"><span class="grey athena">Prénom de l'apporteur :</span> {{getChoisedAcquisitionsCanals(0)?.details2 | isNull}}</div>
+                <div *ngIf="canalCooptation"><span class="grey athena">Nom du cooptant :</span>{{getChoisedAcquisitionsCanals(0)?.customerOtherFullName | isNull}}</div>
+                <div *ngIf="canalCooptation"><span class="grey athena">Utilisateur cooptant :</span>{{userCooptant | isNull}} </div>
+                <div *ngIf="canalEvent"><span class="grey athena">Type de marketing :</span> {{ typePrecision | isNull}}</div>
+                <div *ngIf="canalEvent"><span class="grey athena">Précision :</span> {{getChoisedAcquisitionsCanals(0)?.details1 | isNull}} </div>
+                <div *ngIf="canalParainage"><span class="grey athena">Type de parrainage :</span> {{typeParrain | isNull}}</div>
+                <div *ngIf="canalParainage"><span class="grey athena">Nom du parrain :</span> {{getChoisedAcquisitionsCanals(0)?.details1 | isNull}}</div>
+                <div><span class="grey athena">Second canal :</span> {{getChoisedAcquisitionsCanals(1)?.canalName | isNull}} </div>
+                <div *ngIf="canalAgenceSec"><span class="grey athena">Type d'agence :</span> {{typeAgenceSec | isNull}}</div>
+                <div *ngIf="canalAgenceEntrepriseSec"><span class="grey athena">Type d'agence entreprise :</span> {{typeAgenceEntrpriseSec | isNull}} </div>
+                <div *ngIf="canalAgenceSec"><span class="grey athena">Vendeur agence :</span> {{vendeurAgenceSec | isNull}} </div>
+                <div *ngIf="canalAgenceSec"><span class="grey athena">Responsable agence :</span> {{respAgenceSec | isNull}}</div>
+                <div *ngIf="canalApparteurSec"><span class="grey athena">Type d'apporteur :</span> {{typeApporteurSec | isNull}} </div>
+                <div *ngIf="canalApparteurSec"><span class="grey athena">Nom de l'apporteur :</span> {{getChoisedAcquisitionsCanals(1)?.details1 | isNull}} </div>
+                <div *ngIf="canalApparteurSec"><span class="grey athena">Prénom de l'apporteur :</span> {{getChoisedAcquisitionsCanals(1)?.details2 | isNull}}</div>
+                <div *ngIf="canalCooptationSec"><span class="grey athena">Nom du cooptant :</span>{{getChoisedAcquisitionsCanals(1)?.customerOtherFullName | isNull}}</div>
+                <div *ngIf="canalCooptationSec"><span class="grey athena">Utilisateur cooptant :</span>{{userCooptantSec | isNull}} </div>
+                <div *ngIf="canalEventSec"><span class="grey athena">Type de marketing :</span> {{ typePrecisionSec | isNull}}</div>
+                <div *ngIf="canalEventSec"><span class="grey athena">Précision :</span> {{getChoisedAcquisitionsCanals(1)?.details1 | isNull}} </div>
+                <div *ngIf="canalParainageSec"><span class="grey athena">Type de parrainage :</span> {{typeParrainSec | isNull}}</div>
+                <div *ngIf="canalParainageSec"><span class="grey athena">Nom du parrain :</span> {{getChoisedAcquisitionsCanals(1)?.details1 | isNull}}</div>
+            </div>
+
+        </div>
+
+        <div class="offset-4 col-lg-8">
+            <div >
+                <h4 class="athena mintitle mb-2">Homologation</h4>
+                <div><span class="grey athena">Raison de la non homologation :</span> {{getNotHomologationReason()}} </div>
+                <div><span class="grey athena">Décision comité de sélection :</span> {{decision | isNull}}</div>
+                <div><span class="grey athena">Date du comité de sélection :</span> {{ (customer?.selectionCommitteeDate) ? (customer?.selectionCommitteeDate | dateFormatPipeFrench) : '-' }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-2 justify-content-center">
+        <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateSaleApproval()"><span class="icon pen-white d-block btn-modifie"></span>Modifier</button>
+    </div>
+</div>
+

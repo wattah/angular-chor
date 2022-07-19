@@ -1,0 +1,70 @@
+<div id="body" class="container-fluid">
+    <div class="row">
+        <div class="d-none d-md-block col-md-24 col-lg-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')"
+                [infoCustomer]="infoProfil"
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer"
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt">
+            </app-see-all-profil>
+        </div>
+        <div class="d-none d-md-block col-24">
+            <p class="athena">
+                <a [routerLink]="(typeCustomer === 'company') ? ['/customer-dashboard/entreprise', customerId] : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}"
+                    queryParamsHandling="merge"
+                    class="athena">
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="container-fuild">
+        <div class="row">
+            <div class="col-24">
+                <div class="block block-transparent">
+                    <h6 class="athena">
+                        Gérer le client péniche
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col-md-14 col-lg-14">
+            <div class="block block-alert" >
+                <table class="table table-not-bordered"><caption class="p-0"></caption>
+                    <tbody>
+                        <tr>
+                            <th id="th"></th> 
+                            <td class="alert-icon align-middle" >
+                                 <span class="icon icon-max status-exclamation-white"></span>
+                            </td>
+                            <td class="alert-text">
+                                <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                <div>- Le champ Nom est obligatoire </div>
+                                <div>- Le champ Prénom est obligatoire </div>
+                                <div>- Le champ Adresse est obligatoire </div>
+                                <div>- Le champ Raison sociale est obligatoire </div>
+                                <div>- Le champ Adresse française est obligatoire </div>
+                                <div>- Le champ Pays est obligatoire </div>
+                                <div>- Le champ Adresse est invalide, merci de sélectionner une adresse proposée par ORAS </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-24 block block-shadow">
+        <ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockClientPeniche">
+            <app-consult-customer-peniche (updateCustomerPeniche)="onUpdateCustomerPeniche($event)"></app-consult-customer-peniche>
+        </ng-template>
+        <ng-template #modificationBlockClientPeniche>
+            <app-create-update-customer-peniche (updateCustomerPeniche)="onUpdateCustomerPeniche($event)"></app-create-update-customer-peniche>
+        </ng-template>
+    </div>
+</div>

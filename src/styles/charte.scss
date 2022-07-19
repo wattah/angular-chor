@@ -1,0 +1,160 @@
+/*fonts*/
+
+$basic: 'Arial', sans;
+$font-family: 'Sofia Pro Light', Arial, sans;
+$font-family-strong: 'Sofia Pro Medium', Arial, sans;
+$font-family-regular: 'Sofia Pro Regular', Arial, sans;
+$font-family-bold: 'Sofia Pro Bold', Arial, sans;
+$font-family-dashboard: 'Austin Hairline Roman';
+$font-size: 14px;
+$font-size-title: 27px;
+$font-size-giant: 20px;
+$font-size-max: 18px;
+$font-size-text: 12px;
+$font-size-min: 11px;
+$font-size-badge: 10px;
+
+// FIXME 360 v1
+$font-weight: normal;
+$font-style: normal;
+$font-stretch: normal;
+$letter-spacing: normal;
+
+@mixin font{
+	font-family: $font-family;
+	font-weight: $font-weight;
+	font-style: $font-style;
+	font-stretch: $font-stretch;
+	letter-spacing: $letter-spacing;
+}
+  
+
+/*text colors*/
+
+$white: #ffffff; /*athena white*/
+$black: #202021; /*athena black*/
+$grey: #777777; /*new athena grey*/
+$light-grey: #dadada; /*athena light-grey*/
+$dark-grey: #979797 ;/* athena*/
+$blue: #4480c8; /*athena blue*/ 
+$blue-enterprise: #0D8FB6; /*athena blue alt*/
+$pink: #E82967; /*athena pink*/
+$yellow: #F8A812; /*athena yellow*/
+$green: #5FA82A; /*athena green*/
+$light-green: #CEE63F;
+$purple: #AB4796; /*athena purple*/
+$red: #ed5565; /*athena red*/
+$orange: #f88612; /*athena orange */
+
+// FIXME footer v1
+$white2: #fafafa; /* footer white */
+
+/*backgrounds*/
+
+$body-background-color: #F6F4F4; /*page background*/
+$block-background-color: $white; /*all blocks background*/
+$table-line-hover-background-color: #ebf0f8; /*table line hover background*/
+$navbar-item-link-active: #ebf0f8; /*navbar item link active background*/
+$block-yellow-background-color: $yellow; /*athena label yellow background*/
+$block-blue-background-color: $blue; /*athena label-blue background */
+$block-pink-background-color: $pink; /*athena label-red background */
+$block-red-background-color: $red; /*athena label-red background */
+$block-purple-background-color: #a680dc; /*athena label-purple background */
+$block-green-background-color: #6bb535; /*athena label-green background */
+$block-blue-background-gradient: linear-gradient(135deg, #186CA9, #4AD6F1 80%, #4AD6F1);
+$block-yellow-background-gradient: linear-gradient(135deg, #EC6F21, #F4D770 80%, #F4D770);
+$block-pink-background-gradient: linear-gradient(135deg, #D21451, #F9A2BE 80%, #F9A2BE);
+$block-green-background-gradient: linear-gradient(135deg, #66881D, #BBE766 80%, #BBE766);
+$block-violet-background-gradient: linear-gradient(135deg, #89278D, #FA8AD6 80%, #FA8AD6);
+$block-oblique-side-blue-background-gradient: #4AD6F1;
+$block-oblique-side-yellow-background-gradient: #F4D770;
+$block-oblique-side-pink-background-gradient: #F9A2BE;
+$block-oblique-side-green-background-gradient: #BBE766;
+$block-oblique-side-violet-background-gradient: #FA8AD6;
+$block-lighter-yellow-background-color: rgba(248, 167, 15, 0.2); /*athena block lighter-yellow background */
+$block-lighter-red-background-color: rgba(230, 28, 93, 0.1); /*athena block lighter-red background */
+$block-lighter-blue-background-color: rgba(68, 128, 200, 0.1); /*athena block lighter-blue background */
+$button-blue-background-color: $blue; /*athena button-blue background */
+$button-red-background-color: $red; /*athena button-red background */
+$button-green-background-color: #CEE63F; /*athena button-green background */
+$button-disabled: #DADADA;
+$progress-bar-background: rgba(218,218,218, 0.62);
+// FIXME 360 v1
+$block-header-pink-background-color: rgba(230, 28, 93, 0.1); /*athena block header-pink background */
+$block-header-yellow-background-color: rgba(248, 167, 15, 0.2); /*athena block header-yellow background */
+$block-header-blue-background-color: rgba(68, 128, 200, 0.1); /*athena block header-blue background */
+
+/*borders*/
+
+$border: 1px solid #dadada; /*athena border*/
+$border-red: 1px solid $red;
+$border-black: 1px solid $black;
+
+/*
+mixins for elements bordered
+how to call it :
+.class{
+	@include bordered();
+}
+*/
+@mixin bordered{
+	border: $border;
+}
+@mixin bordered-right{
+	border-right: $border;
+}
+@mixin bordered-left{
+	border-left: $border;
+}
+@mixin bordered-top{
+	border-top: $border;
+}
+@mixin bordered-bottom{
+	border-bottom: $border;
+}
+@mixin not-bordered{
+	border: 0;
+}
+
+@mixin rotate270{
+	transform: rotate(270deg);
+}
+
+@mixin text{
+	font-size: $font-size-text;
+}
+
+/*shadows*/
+
+$box-shadow: 1px 1px 10px rgba(119, 119, 119, 0.17); /*athena box-shadow */
+$box-shadow-blue : 0px 2px 4px 0px rgba(68, 128, 200, .15); /*athena box-shadow-blue */
+$box-shadow-red : 0px 2px 4px 0px rgba(230, 28, 93, .15); /*athena box-shadow-red */
+$box-shadow-green : 0px 2px 4px 0px rgba(193, 216, 47, .15); /*athena box-shadow-green */
+
+
+/*inputs*/
+
+$input-padding: 5px 10px 5px 10px;
+
+/*pics*/
+
+$logo-athena: url("/assets/images/logo/logo-athena.png");
+$logo-athena2: url("/assets/images/logo-athena-2.svg");
+$logo-athena3: url("/assets/images/logo/logo-athena3.png");
+$avatar-profil: url("/assets/images/avatar.png");
+
+
+$img-particulier: url("/assets/svg/particulier.svg");
+$img-beneficiaire: url("/assets/svg/beneficiaire.svg");
+$img-entreprise: url("/assets/svg/entreprise.svg");
+
+/*breakpoints*/
+
+$xs-max: 575px;
+$sm-min: 576px;
+$sm-max: 767px;
+$md-min: 768px;
+$md-max: 991px;
+$lg-min: 992px;
+$lg-max: 1199px;
+$xl-min: 1200px;

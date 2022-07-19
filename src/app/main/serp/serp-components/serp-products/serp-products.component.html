@@ -1,0 +1,11 @@
+<app-athena-paginated-ag-grid  
+  [title]="'PRODUITS &#xAB;' + searchPattern + '&#xBB; (' +  products.length + ')'"
+  [defaultSortModel]="defaultSortModel"
+  [paginationPageSize]="paginationPageSize"
+  [columnDefs]="columnDefs" 
+  [rowData]="products"  
+  (selectRow)="rowAction($event)"
+>
+
+
+

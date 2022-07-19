@@ -1,0 +1,29 @@
+<!--Mise en forme menu déroulant texte et image-->
+<!--<div ngbDropdown  class="m-1 py-3 ">
+        <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" id="dropdownLang" ngbDropdownToggle>
+            <img id="flag" src="assets/images/flags/blank.gif" class="d-inline m-1 flag flag-fr" alt="Language flag" />
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownLang">
+            <a class="dropdown-item" (click)="setLanguage('en')" >
+                <img src="assets/images/flags/blank.gif" class="flag flag-gb" alt="United Kingdom flag" />
+                English
+            </a>
+            <a class="dropdown-item" (click)="setLanguage('fr')" >
+                <img src="assets/images/flags/blank.gif" class="flag flag-fr" alt="France flag" />
+                Français
+            </a>
+        </div>
+</div>-->
+
+<div class="d-inline">
+    <div *ngIf="isFrench" class="d-inline">
+        <app-flag country='fr'></app-flag>
+    </div>
+    <div *ngIf="!isFrench" class="d-inline">
+        <app-flag country='gb'></app-flag>
+    </div>
+    <select class="d-inline athena" (change)="setLanguage($event.target.value)">
+        <option value="fr" >Français</option>
+        <option value="en" >English</option>
+    </select>
+</div>

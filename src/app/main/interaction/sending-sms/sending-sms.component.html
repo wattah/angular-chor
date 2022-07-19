@@ -1,0 +1,368 @@
+<div class="container-fluid env-yellow">
+  <div class="row">
+    <div class="col-24">
+      <h6 class="athena" style="margin-bottom: 0;">
+        {{ detailRequest?.requestTypeLabel }}
+      </h6>
+      <h5 class="athena">Demande N°{{ detailRequest?.idRequest }}</h5>
+    </div>
+    <div class="col-md-24 col-lg-8 order-lg-2">
+      <app-request-summary [detailRequest]="detailRequest" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-request-summary> 
+    </div>
+    <div class="col-md-24 col-lg-16">
+      <div class="block block-shadow">
+        <h2 class="athena">ENVOI D'UN SMS</h2>
+        <div class="row">
+          <div class="col-md-12 col-lg-12">
+            <div
+              class="block block-alert"
+              *ngIf="SMSRequestError"
+            >
+              <table class="table table-not-bordered" aria-describedby="">
+                <th id=""></th>
+                <tbody>
+                  <tr>
+                    <td class="alert-icon align-middle">
+                      <span
+                        class="icon icon-max status-exclamation-white"
+                      ></span>
+                    </td>
+                    <td class="alert-text">
+                      <strong
+                        >Ce formulaire n’est pas correctement renseigné</strong
+                      >
+                      <br />
+                      <span
+                        >- Le champ nom ne doit pas contenir de chiffre</span
+                      >
+                      <br />
+                      <span>- Le champ code postal est obligatoire</span> <br />
+                      <span
+                        >- Le champ nom ne doit pas contenir de chiffre</span
+                      >
+                      <br />
+                      <span>- Le champ code postal est obligatoire</span> <br />
+                      <span
+                        >- Le champ nom ne doit pas contenir de chiffre</span
+                      >
+                      <br />
+                      <span>- Le champ code postal est obligatoire</span> <br />
+                      <span
+                        >- Le champ nom ne doit pas contenir de chiffre</span
+                      >
+                      <br />
+                      <span>- Le champ code postal est obligatoire</span> <br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <form
+          [formGroup]="SMSRequest"
+          #interactionRequest="ngForm"
+          (ngSubmit)="sendInteractionRequest()"
+        >
+          <div class="row">
+            <div class="col-lg-13 col-md-13">
+              <div class="form-group row">
+                <label for="modeleSelect" class="col-sm-8 col-form-label athena"
+                  >Modèle</label
+                >
+                <div class="col-sm-15">
+                  <select
+                    formControlName="model"
+                    name="modele"
+                    [ngClass]="
+                      interactionRequest.submitted &&
+                      SMSRequest.controls.model.value === null
+                        ? 'error'
+                        : ''
+                    "
+                    class="form-control athena"
+                    id="modeleSelect"
+                    (change)="onChangeTemplate()"
+                  >
+                    <option [ngValue]="null" disabled>--</option>
+                    <option [ngValue]="libreTemplate" *ngIf="isLibre">{{libreTemplate.label}}</option>
+                    <option
+                      *ngFor="let template of messageTemplates"
+                      [ngValue]="template"
+                      >{{ template.label }}</option
+                    >
+                  </select>
+                  <mat-error
+                    *ngIf="
+                      interactionRequest.submitted &&
+                      SMSRequest.controls.model.value === null
+                    "
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    SMSRequest.controls.model.value === null
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="emetteurSelect"
+                  class="col-sm-8 col-form-label athena"
+                  >Emetteur</label
+                >
+                <div class="col-sm-15">
+                  <input
+                    formControlName="emetteur"
+                    name="emetteur"
+                    [ngClass]="
+                      interactionRequest.submitted &&
+                      (SMSRequest.controls.emetteur.value === null ||
+                        SMSRequest.controls.emetteur.value === '')
+                        ? 'error'
+                        : ''
+                    "
+                    class="form-control athena"
+                    id="emetteurSelect"
+                  />
+                  <mat-error
+                    *ngIf="
+                      interactionRequest.submitted &&
+                      SMSRequest.controls.emetteur.value === ''
+                    "
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    SMSRequest.controls.emetteur.value === ''
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="emetteurSelect"
+                  class="col-sm-8 col-form-label athena"
+                  >Destinataire(s)*</label
+                >
+                <div class="col-sm-15">
+                  <mat-form-field
+                    class="example-chip-list "
+                    appearance="outline"
+                  >
+                    <mat-chip-list #chipList>
+                      <mat-chip
+                        errorState="true"
+                        *ngFor="let result of destinatairesAsString"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="remove(result)"
+                      >
+                        {{ result }}
+                        <mat-icon matChipRemove *ngIf="removable"
+                          >cancel</mat-icon
+                        >
+                      </mat-chip>
+                      <input
+                        class="athena"
+                        placeholder="Nouveau destinataire..."
+                        #fruitInput
+                        formControlName="destinataire"
+                        [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="add($event)"
+                      />
+                    </mat-chip-list>
+                    <mat-autocomplete
+                      #auto="matAutocomplete"
+                      (optionSelected)="selected($event)"
+                      required
+                    >
+                      <mat-option
+                        *ngFor="
+                          let destinataire of filteredDestinataires | async
+                        "
+                        [value]="destinataire"
+                      >
+                        {{ toString(destinataire) }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <mat-error
+                    *ngIf="
+                      interactionRequest.submitted &&
+                      destinatairesAsString.length === 0
+                    "
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    destinatairesAsString.length === 0
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="corpsTextarea"
+                  class="col-sm-8 col-form-label athena"
+                  >Corps*</label
+                >
+                <div class="col-sm-15">
+                  <textarea
+                    formControlName="corps"
+                    [(ngModel)]="templateMessage"
+                    name="description"
+                    class="form-control athena"
+                    [ngClass]="
+                      interactionRequest.submitted &&
+                      (SMSRequest.controls.corps.value === '' ||
+                        SMSRequest.controls.corps.value === undefined ||
+                        SMSRequest.controls.corps.value === null)
+                        ? 'error'
+                        : ''
+                    "
+                    id="corpsTextarea"
+                    rows="3"
+                    value="corpsValue"
+                    autosize
+                  ></textarea>
+                  <mat-error
+                    *ngIf="
+                      interactionRequest.submitted &&
+                      (SMSRequest.controls.corps.value === '' ||
+                        SMSRequest.controls.corps.value === undefined ||
+                        SMSRequest.controls.corps.value === null)
+                    "
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    (SMSRequest.controls.corps.value === '' ||
+                      SMSRequest.controls.corps.value === undefined ||
+                      SMSRequest.controls.corps.value === null)
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="motifSelect" class="col-sm-8 col-form-label athena">
+                  Motif d'interaction*
+                </label>
+                <div class="col-sm-15">
+                  <app-athena-nested-drop-down
+                    [list]="interactionMotifs"
+                    (selectionChange)="onSelectMotif($event)"
+                    [hasError]="motifInvalid"
+                  ></app-athena-nested-drop-down>
+                  <mat-error *ngIf="motifInvalid"
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    SMSRequest.controls.motifInteraction.value === null
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+                <!--
+                <div class="col-sm-15">
+                  <select
+                    formControlName="motifInteraction"
+                    name="motif"
+                    class="form-control athena"
+                    [ngClass]="
+                      interactionRequest.submitted &&
+                      SMSRequest.controls.corps.value === ''
+                        ? 'error'
+                        : ''
+                    "
+                    id="motifSelect"
+                  >
+                    <option [ngValue]="null" disabled>--</option>
+                    <optgroup
+                      *ngFor="let motif of interactionMotifs"
+                      [label]="motif.label"
+                    >
+                      <option  *ngFor="let child of motif.children" [ngValue]="child" >{{
+                        child.label
+                      }}</option>
+                    </optgroup>
+                  </select>
+                  <mat-error
+                    *ngIf="
+                      interactionRequest.submitted &&
+                      SMSRequest.controls.motifInteraction.value === null
+                    "
+                    >Ce champ est obligatoire</mat-error
+                  >
+                </div>
+                <div
+                  class="col-sm-1"
+                  *ngIf="
+                    interactionRequest.submitted &&
+                    SMSRequest.controls.motifInteraction.value === null
+                  "
+                >
+                  <span class="icon mt-1 status-exclamation"></span>
+                </div>
+              --></div>
+              <div class="form-group row">
+                <label for="descriptionTextarea" class="col-sm-8 col-form-label athena"
+                  >Description</label
+                >
+                <div class="col-sm-15">
+                  <textarea
+                    formControlName="description"
+                    name="description"
+                    class="form-control athena"
+                    id="descriptionTextarea"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="row control-buttons ">
+                <div class="col-sm-8 text-right">
+                  <a class="btn btn-link mt-1 athena" [routerLink]="null" (click)="onCancelSMSSending()">Annuler</a>
+                </div>
+                <div class="col-sm-15">
+                  <input
+                    class="btn btn-green athena"
+                    value="Envoyer le SMS"
+                    type="submit"
+                    [disabled]="
+                      !SMSRequest.valid ||
+                      destinatairesAsString.length === 0 ||
+                      interactionRequest.submitted
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

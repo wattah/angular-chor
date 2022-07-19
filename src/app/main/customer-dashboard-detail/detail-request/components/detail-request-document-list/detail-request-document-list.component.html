@@ -1,0 +1,25 @@
+<div class="block block-shadow " >
+    <h2 class="athena">Documents
+        <a 
+         class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'add-document']" [queryParams]="{requestId: idRequest}"queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_document']">
+            <span class="icon add-on"></span>
+        </a>
+        <a class="block-title-item-link athena"
+			[routerLink]="['/customer-dashboard', customerId , 'see-all', 'document-full-list']" queryParamsHandling="merge"
+			queryParamsHandling="merge">
+      		<span class="text-min normal no-transform athena">Voir tous les documents du membre</span>
+    	</a>
+    </h2>
+    <div class="block_onglet nopadding" *ngIf="documents.length > 0">
+        <app-athena-ag-grid 
+            [defaultSortModel]="defaultSortModel"
+            [columnDefs]="columnDefs" 
+            [rowData]="documents"
+            (clickLink)="changeProtailVisibility($event)"
+            (clickCell)="clickedCell($event)">
+        </app-athena-ag-grid>
+    </div>
+    <p class="athena no-result" *ngIf="documents.length === 0">
+        Cette demande n’a pas de documents
+    </p>
+</div>

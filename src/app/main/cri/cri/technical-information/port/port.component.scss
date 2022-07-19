@@ -1,0 +1,11 @@
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+     background-color: #e9ecef;
+}
+
+::ng-deep .disabled-bg.mat-form-field-appearance-outline .mat-form-field-wrapper{
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: #e9ecef !important;
+}

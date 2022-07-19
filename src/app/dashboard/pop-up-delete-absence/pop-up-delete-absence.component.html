@@ -1,0 +1,13 @@
+<div class="modal-body text-center " id="pop-up-envoi-sms">
+    <p class="mt-2 mb-4">
+        Êtes-vous sûr de vouloir supprimer l'absence de<br/>
+         {{fullName}} du {{startDate}} au {{endDate}} ? <br/>
+    </p><br/>
+    
+    <input class="btn btn-green" value="Oui, je supprime" type="button" (click)="deleteAbsence()"/>
+    <br/>
+    <br/>
+    <a class="link mt-3 mb-4" routerLink="null" queryParamsHandling="merge"  (click)="destroy()" >Non, je la conserve </a>
+    <br/>
+    <br/>
+</div>

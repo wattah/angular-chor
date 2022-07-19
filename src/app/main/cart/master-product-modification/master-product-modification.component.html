@@ -1,0 +1,498 @@
+<h6 class="athena">
+  Modification 
+</h6>
+<div class="row" *ngIf="errors.length > 0">
+  <div class="col-md-12 col-lg-12">
+      <div class="block block-alert" >
+          <table class="table table-not-bordered"><caption class="p-0"></caption>
+              <tbody>
+                  <tr>
+                      <th id="th"></th> 
+                      <td class="alert-icon align-middle" >
+                          <span class="icon icon-max status-exclamation-white"></span>
+                      </td>
+                      <td class="alert-text">
+                          <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                          <ul class="simple mr-0 mt-2 alert-padding">
+                              <div *ngFor="let item of errors">
+                                <li>{{item}}</li> 
+                              </div>
+                          </ul>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+<div class="row">
+    <div class="d-none d-sm-none d-md-block col-md-12 col-lg-12">
+    <form [formGroup]="form">
+      <div class="block block-shadow minheight">
+        <div class="d-flex border-bottom">
+          <h2 class="col-8 block-title athena not-bordered m-0 pl-0">Produit maître</h2>
+          <div class="col-8 text-right grey font-weight-bold">
+            Code nomenclature: {{masterProductVO?.nomenclature?.value}}
+          </div>
+          <div class="col-8 text-right grey font-weight-bold">
+            Id produit: {{masterProductVO?.id}}
+          </div>
+        </div>
+        <div class="form-group row mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena">Libellé interne *</label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <input formControlName="libelleInterne" type="text"  
+               [ngClass]="hasError('libelleInterne') ? 'athena form-control error' : 'athena form-control'">
+            <span *ngIf="hasError('libelleInterne')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('libelleInterne')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena">Libellé client *</label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <input formControlName="libelleClient" type="text"  
+              [ngClass]="hasError('libelleClient') ? 'athena form-control error' : 'athena form-control'" >
+            <span *ngIf="hasError('libelleClient')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('libelleClient')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Nomenclature 1* </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('nomenClature1') ? 'form-control athena error' : 'form-control athena'" formControlName="nomenClature1" (change)="onSelectNomenClature(1)">
+                <option *ngFor="let c1 of nomenClatures1List" [ngValue]="c1"> 
+                  {{c1?.label ?  c1?.label:'-' }}
+              </option>
+            </select>
+            <span *ngIf="hasError('nomenClature1')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('nomenClature1')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Nomenclature 2* </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('nomenClature2') ? 'form-control athena error' : 'form-control athena'" formControlName="nomenClature2" (change)="onSelectNomenClature(2)">
+              <option value="--" disabled>--</option>
+              <option *ngFor="let c2 of nomenClatures2List" [ngValue]="c2"> 
+                {{c2?.label ?  c2?.label:'-' }}
+            </option>
+            </select>
+            <span *ngIf="hasError('nomenClature2')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('nomenClature2')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Nomenclature 3* </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('nomenClature3') ? 'form-control athena error' : 'form-control athena'" formControlName="nomenClature3" (change)="onSelectNomenClature(3)">
+              <option value="--">--</option>
+              <option *ngFor="let c3 of nomenClatures3List" [ngValue]="c3"> 
+                {{c3?.label ?  c3?.label:'-' }}
+            </option>
+            </select>
+            <span *ngIf="hasError('nomenClature3')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('nomenClature3')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Nomenclature 4* </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('nomenClature4') ? 'form-control athena error' : 'form-control athena'" formControlName="nomenClature4" (change)="onSelectNomenClature(4)">
+              <option value="--">--</option>
+              <option *ngFor="let c4 of nomenClatures4List" [ngValue]="c4"> 
+                {{c4?.label ?  c4?.label:'-' }}
+            </option>
+            </select>
+            <span *ngIf="hasError('nomenClature4')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('nomenClature4')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Nomenclature 5* </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('nomenClature5') ? 'form-control athena error' : 'form-control athena'" formControlName="nomenClature5" (change)="onSelectNomenClature(5)">
+              <option value="--">--</option>
+              <option *ngFor="let c5 of nomenClatures5List" [ngValue]="c5"> 
+                {{c5?.label ?  c5?.label:'-' }}
+            </option>
+            </select>
+            <span *ngIf="hasError('nomenClature5')" class="icon  status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('nomenClature5')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mb-0 mt-3">
+          <label class="col-sm-6 col-form-label athena"> Catégorie TPS </label>
+          <div class="col-sm-20 col-lg-12">
+            <select class="form-control athena" formControlName="categrieTps">
+              <option *ngFor="let tps of categriesTps" [ngValue]="tps"> 
+                {{tps?.label ?  tps?.label:'-' }}
+            </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row mt-3 mb-3" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena">Code EAN</label>
+          <div class="col-sm-20 col-lg-12">
+            <input  formControlName="codeEan" type="text"  class="athena form-control" >
+          </div>
+        </div>
+        <div class="form-group row mt-3 mb-3" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena">Référence Orange</label>
+          <div class="col-sm-20 col-lg-12">
+            <input  formControlName="refOrange" type="text"  class="athena form-control" >
+          </div>
+        </div>
+        <div class="form-group row mt-3" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena">Référence Constructeur</label>
+          <div class="col-sm-20 col-lg-12">
+            <input  formControlName="refConstructeur" type="text"  class="athena form-control" >
+          </div>
+        </div>
+        <div class="form-group row select_arrows mb-3 mt-0" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena"> Constructeur </label>
+          <div class="col-sm-20 col-lg-12">
+            <select class="form-control athena" formControlName="constructeur">
+              <option value="--">--</option>
+              <option *ngFor="let manu of listManufacturers" [ngValue]="manu"> 
+                {{manu?.name ?  manu?.name:'-' }}
+            </option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> Partenaire*  </label>
+          <div class="col-sm-20 col-lg-13 d-flex">
+            <select [ngClass]="hasError('partenaire') ? 'form-control athena error' : 'form-control athena'" formControlName="partenaire">
+              <option *ngFor="let p of listPartners" [ngValue]="p"> 
+                {{p?.name ?  p?.name:'-' }}
+            </option>
+            </select>
+            <span *ngIf="hasError('partenaire')" class="icon status-exclamation my-1 ml-1"></span>
+          </div>
+        </div>
+        <div class="row" *ngIf="hasError('partenaire')">
+          <div class="col-sm-6"></div>
+          <div>
+            <mat-error  class="m-1">
+              Ce champ est obligatoire
+            </mat-error>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena"> Famille de terminaux  </label>
+          <div class="col-sm-20 col-lg-12">
+            <select class="form-control athena">
+              <option>--</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mt-3 mb-0">
+          <label class="col-sm-6 col-form-label athena"> La vie du produit  </label>
+          <div class="col-sm-20 col-lg-12">
+            <select class="form-control athena" formControlName="productLife">
+              <option *ngFor="let productLife of productsLife" [ngValue]="productLife"> 
+                {{productLife?.label ?  productLife?.label:'-' }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row mb-2" *ngIf="isHardware">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Gérer par WINGSM </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="wingsm" formControlName="wingsm" >
+            <label class="form-check-label athena" for="wingsm"></label>
+          </div>
+        </div>
+        <div class="form-group row " *ngIf="isHardware">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Gérer par Publidispatch </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="publidispatch" formControlName="publidispatch" >
+            <label class="form-check-label athena" for="publidispatch"></label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="isHardware">
+          <label class="col-sm-6 col-form-label athena">Durée de garantie</label>
+          <div class="col-sm-20 col-lg-4 number-wrapper input-number">
+            <input type="number" class="athena form-control" formControlName="dureeGarantie" min="0">
+          </div>
+          <div class="col-sm-20 col-lg-4 mt-1 ">
+            mois
+          </div>
+        </div>
+        <div class="form-group  mb-0 mt-3">
+          <div class="row">
+            <label for="mediaSelect" class="col-6 col-form-label athena">N° de série obligatoire </label>
+            <div class="form-check checkBoxPosition pl-1">
+              <input class="form-check-input athena"  type="checkbox" id="serie" formControlName="serie" (change)="onchangeCheckPrefixe()" >
+              <label class="form-check-label athena" for="serie"></label>
+            </div>
+            <label class="col-sm-2 col-form-label athena pr-0">Préfixe{{isNoPrefixe ? '*' : ''}} </label>
+            <div class="col-sm-20 col-lg-9 px-3 d-flex">
+              <select  [ngClass]="isNoPrefixe && hasError('prefixe') ? 'form-control athena error' : 'form-control athena'" formControlName="prefixe">
+                <option value="--">--</option>
+                <option *ngFor="let prefixe of listPrefixe" [ngValue]="prefixe"> 
+                  {{prefixe?.label ?  prefixe?.label:'-' }}
+              </option>
+              </select>
+              <span *ngIf="isNoPrefixe && hasError('prefixe')" class="icon status-exclamation my-1 ml-1"></span>
+            </div>
+          </div>
+          <div class="col-sm-8"></div>
+          <div class="row" *ngIf="isNoPrefixe && hasError('prefixe')">
+            <div class="col-sm-9 ml-4"></div>
+            <div>
+              <mat-error  class="m-1">
+                Ce champ est obligatoire
+              </mat-error>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row ">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Commentaire obligatoire </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="commentaire" formControlName="commentaire" >
+            <label class="form-check-label athena" for="commentaire"></label>
+          </div>
+        </div>
+        <div class="form-group row " *ngIf="isService">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Prestation sur mesure </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="prestationMesure" formControlName="prestationMesure" >
+            <label class="form-check-label athena" for="prestationMesure"></label>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="isService">
+          <label class="col-sm-6 col-form-label athena">Durée d'intervention</label>
+          <div class="col-sm-20 col-lg-4 number-wrapper input-number">
+            <input type="number" class="athena form-control" formControlName="dureeInterevention" min="0">
+          </div>
+          <div class="col-sm-20 col-lg-4 mt-1 ">
+            minutes
+          </div>
+        </div>
+        <div class="form-group row mb-2" *ngIf="isService">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Déplacement inclus  </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="deplacement" formControlName="deplacement" >
+            <label class="form-check-label athena" for="deplacement"></label>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mb-3" *ngIf="isService">
+          <label class="col-sm-6 col-form-label athena">Unité d’œuvre  </label>
+          <div class="col-sm-20 col-lg-12">
+            <select class="form-control athena" formControlName="uniteOeuvre">
+              <option *ngFor="let unite of listUnitesOeuvre" [ngValue]="unite"> 
+                {{unite?.label ?  unite?.label:'-' }}
+            </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mb-3" *ngIf="isService">
+          <label class="col-sm-6 col-form-label athena"> Fréquence de facturation  </label>
+          <div class="col-sm-20 col-lg-7">
+            <select class="form-control athena" formControlName="frequenceFacturation" (change)="onSelectFrequence()">
+              <option *ngFor="let fr of listFrequenceFacturation" [ngValue]="fr?.cle"> 
+                {{fr?.valeur ?  fr?.valeur:'-' }}
+            </option>
+            </select>
+          </div>
+          <label for="mediaSelect" class="col-2 col-form-label athena">Limitée </label>
+          <div class="form-check checkBoxPosition pl-1">
+            <input class="form-check-input athena"  type="checkbox" id="limitee" 
+              formControlName="limitee" (change)="checkIsLimit()">
+            <label class="form-check-label athena" for="limitee"></label>
+          </div>
+          <label class="col-sm-3 col-form-label athena">Occurrences</label>
+          <div class="col-sm-20 col-lg-4 number-wrapper input-number">
+            <input type="number" class="athena form-control" min="1" max="12" formControlName="occurrence">
+          </div>
+        </div>
+        <div class="form-group row mt-3">
+          <label for="titreSelect" class="col-md-6 col-form-label athena">
+            Documentation <br>Fichier(<10Mo)</label>
+          <div class="col-md-13">
+            <ngx-dropzone name="fileDoc" [maxFileSize]= "10238976" [multiple]="false" [expandable]="true" 
+            class="fileDropProfile" (change)="onSelectFileDoc($event)" accept="application/pdf">
+              <ngx-dropzone-label>
+                Déposez des fichiers ici ou 
+                <br />
+                cliquez pour 
+                <u class="blue">
+                  télécharger
+                </u>
+                .
+              </ngx-dropzone-label>
+              <ngx-dropzone-preview class="fileinter" *ngFor="let fDoc of filesDoc" [removable]="true" (removed)="onRemoveFileDoc(fDoc)">
+                <ngx-dropzone-label>
+                  {{ fDoc.name }}
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+          </div>
+        </div>
+        <div class="form-group row mt-3">
+          <label for="titreSelect" class="col-md-6 col-form-label athena">Visuel<br> Fichier(<10Mo)</label>
+          <div class="col-md-13">
+            <ngx-dropzone name="fileImage" [maxFileSize]= "10238976" [multiple]="false" [expandable]="true" 
+            class="fileDropProfile" (change)="onSelectFileVis($event)" accept="image/jpeg,image/jpg,image/png,image/gif">
+              <ngx-dropzone-label>
+                Déposez des fichiers ici ou 
+                <br />
+                cliquez pour 
+                <u class="blue">
+                  télécharger
+                </u>
+                .
+              </ngx-dropzone-label>
+              <ngx-dropzone-preview class="fileinter" *ngFor="let fVis of filesVis" [removable]="true" (removed)="onRemoveFileVis(fVis)">
+                <ngx-dropzone-label>
+                  {{ fVis.name }}
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+          </div>
+        </div>
+        <div class="form-group row mb-0 mt-3">
+          <label for="mediaSelect" class="col-5 col-form-label athena">Prix</label>
+          <div class="form-check checkBoxPosition pt-3 pl-1 d-flex col-lg-12 justify-content-between">
+             <div class="d-flex"> 
+                <span class="form-check-label athena mr-2">Sur devis</span>
+                <input class="form-check-input athena" type="checkbox" id="devis"
+                 formControlName="devis" (change)="onchangeDevise()">
+                <label class="form-check-label athena" for="devis"></label>
+             </div>
+          </div>
+        </div>
+        <div class="form-group row select_arrows mb-0 mt-3">
+          <label class="col-sm-5 col-form-label athena">Prix unitaire</label>
+          <div class="col-sm-20 col-lg-3">
+             <input [readonly]="prixUnitaire.isDevis" floatOnlyAndTwoDigitAfterDot (change)="onblurEvent($event, 'unitaireht')"
+              type="text" class="athena form-control" formControlName="unitaireht">
+          </div>
+          <div class="col-sm-20 col-lg-1 mt-1 pl-0 ">HT</div>
+          <label class="col-sm-3 col-form-label athena p-0 mt-1">Dont Eco taxe</label>
+          <div class="col-sm-20 col-lg-3">
+             <input [readonly]="prixUnitaire.isDevis" floatOnlyAndTwoDigitAfterDot type="text" (change)="onblurEvent($event, 'unitairetaxe')"
+              class="athena form-control" formControlName="unitairetaxe">
+          </div>
+          <div class="col-sm-20 col-lg-1 mt-1 pl-0">HT</div>
+          <label class="col-sm-1 col-form-label athena p-0 mt-1">TVA</label>
+          <div class="col-sm-20 col-lg-3">
+             <select class="form-control athena" formControlName="unitaireTva"  (change)="onChangeTva()">
+                 <option *ngFor="let tva of listTva" [ngValue]="tva?.value"> 
+                    {{tva?.value ?  floatToIntTva(tva.value):'-' }}
+                 </option>
+             </select>
+          </div>
+          <div class="col-sm-20 col-lg-3">
+             <input disabled  type="text" class="athena form-control lineheight" value="0" 
+              formControlName="unitairettc">
+          </div>
+          <div class="col-sm-20 col-lg-1 mt-1 pl-0">TTC</div>
+       </div>
+        <div class="form-group row mb-0 mt-3">
+          <label for="mediaSelect" class="col-6 col-form-label athena">Marge *</label>
+          <div class="col-15">
+            <div class="form-check d-flex">
+              <input [ngClass]="hasErrorForInputsMarge() ? 'form-check-input error' : 'form-check-input'"  type="radio" id="optionYes" value="ACQUISITION_PRICE" formControlName="checkMarge">
+              <label class="form-check-label col-md-9" for="optionYes"> Prix d'acquisition HT </label>
+              <div class="col-sm-20 col-lg-10 ">
+                <input  formControlName="prixAcquisition" type="text"  [ngClass]="hasErrorForInputsMarge() ? 'athena form-control error' : 'athena form-control'" floatOnlyAndTwoDigitAfterDot (blur)="onblurEvent($event,'prixAcquisition')" >
+              </div>
+            </div>
+            <div class="form-check d-flex">
+              <input [ngClass]="hasErrorForInputsMarge() ? 'form-check-input error' : 'form-check-input'"   type="radio" id="optionNo" value="MARGIN_VALUE" formControlName="checkMarge">
+              <label class="form-check-label col-md-9" for="optionNo"> Marge à valeur fixe </label>
+              <div class="col-sm-20 col-lg-10  ">
+                <input  formControlName="margeValeur" type="text" [ngClass]="hasErrorForInputsMarge() ? 'athena form-control error' : 'athena form-control'" floatOnlyAndTwoDigitAfterDot (blur)="onblurEvent($event,'margeValeur')">
+              </div>
+              <span class="icon  status-exclamation my-1 ml-1" *ngIf="hasErrorForInputsMarge()"></span>
+            </div>
+            <div class="form-check d-flex">
+              <input [ngClass]="hasErrorForInputsMarge() ? 'form-check-input error' : 'form-check-input'"  type="radio" id="optionNoN" value="MARGIN_RATE" formControlName="checkMarge">
+              <label class="form-check-label col-md-9" for="optionNoN">Marge à taux fixe </label>
+              <div class="col-sm-20 col-lg-10 ">
+                <input  formControlName="margeTaux" type="text"  [ngClass]="hasErrorForInputsMarge() ? 'athena form-control error' : 'athena form-control'" floatOnlyAndTwoDigitAfterDot (blur)="onblurEvent($event,'margeTaux')">
+              </div>
+            </div>
+          </div>
+          <mat-error  class="mx-auto" *ngIf="hasErrorForInputsMarge()">
+                        Ce champs est obligatoire
+          </mat-error> 
+        </div>
+      </div>
+    </form>
+    </div>
+    <div class="d-none d-sm-none d-md-block col-md-12 col-lg-12">
+      <div class="block block-shadow minheight ">
+        <p>
+          <app-tarif-declination [productsVO]="productsVO"
+          (changeForm)="onChangeForm($event)" [isSubmit] = "isSubmit" [categories]="categories">
+        </app-tarif-declination>
+        </p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center  btncenter">
+      <div>
+        <input class="btn btn-green athena"  type="button" value="Enregistrer" (click)="save()"/>
+      </div>
+      <div>
+        <input class="btn athena" value="annuler" type="button" (click)="annuler()" />
+      </div>
+    </div>
+    <div *ngIf="loading" class="wrapper">
+      <div class="spinner">
+      </div>
+    </div>
+  </div>
+

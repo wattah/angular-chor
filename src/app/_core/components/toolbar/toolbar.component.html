@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm">
+	<!-- logo athena example -->
+	<a class="navbar-brand" [routerLink]="['/']" *ngxPermissionsOnly="['consultation_dashboard']"> </a> 
+	<div class="plateform-name"> {{nameOfEnvironment}} </div>
+
+	<!-- searchbar example -->
+	<app-search-bar *ngxPermissionsOnly="['affichage_recherche']; else permissionNotFountBlock"></app-search-bar>
+	<ng-template #permissionNotFountBlock>
+		<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+	</ng-template>
+	<div class="navbar fixed-right navbar-profile-container" *ngxPermissionsOnly="['affichage_authentification']">
+		<!-- navbar list of items -->
+		<ul class="navbar-nav" style="width: 100%;">
+			<!-- navbar item with dropdown function -->
+			<li class="nav-item dropdown" style="width: 100%;">
+				<a
+					class="navbar-profile-link show-menu-switch-role nav-link-dropdown-toggle"
+					style="cursor: pointer;"
+				>
+					<!-- profile avatar -->
+					<div class="navbar-profile-avatar" style="width: 0px;"></div>
+					<!-- profile identity -->
+					<div class="navbar-profile-name-container d-none d-lg-inline-block" style="cursor: pointer;">
+						<div class="navbar-profile-text show-menu-switch-role"><strong class="user-name show-menu-switch-role">{{user?.firstName | firstName}}  {{user?.lastName |  uppercase }}</strong></div>
+						<div class="navbar-profile-text show-menu-switch-role">{{role}}</div>
+					</div>
+					<!-- profile arrow for options -->
+					<div class="navbar-profile-arrow"><span class="icon icon-min arrow-bottom-black show-menu-switch-role arrow-black-toggle"></span></div>
+				</a>
+				<!-- dropdown role management block example (not coded yet) -->
+				<div class="dropdown-menu navbar-profile-options nav-bar-left block-shadow" style="width:230px; display: block;" *ngIf="showRoles">
+					<div class="dropdown-profile-switcher-container">
+						<a class="dropdown-item" [routerLink]="null" (click)="addClick()" style="padding: 8%;margin-top: -5%;" *ngxPermissionsOnly="['ajout_absence']">
+							<span class="icon calendar-ajout abdence-date"></span>
+							<span class="title-style">  Je déclare une absence</span><br>
+						</a>
+						<a class="dropdown-item" [routerLink]="['/absence-monitoring']" style="padding: 8%;margin-top: -7%;margin-bottom: -5%;" *ngxPermissionsOnly="['afficher_absences']">
+							<span class="icon calendar-blue abdence-date"></span>
+							<span class="title-style">  Pilotage des absences</span>
+						</a>
+					</div>
+					<div class="dropdown-item-container" *ngIf="roles.length > 1">
+						<div class="col center-block roles-title">Je change de compte</div>
+							<div class="dropdown-item item-style" *ngFor="let role of roles" (click)="choseRole(role)">
+								<div class="navbar-profile-avatar"></div>
+								<div class="navbar-profile-name-container">
+									<div class="navbar-profile-text"><strong>{{user?.firstName | firstName}}  {{user?.lastName |  uppercase }}</strong></div>
+									<div class="role-name">{{role.displayName}}</div>
+								</div>
+								<span class="icon status-check icon-position"  *ngIf="role.roleName===chosenRole"></span>
+							</div>
+						</div>
+					<div class="dropdown-item-container">
+						<a class="dropdown-item d-md-none" ><span class="icon dropdown-item-icon parameters"></span> Préférences</a>
+						<a class="dropdown-item dropdown-item-logout clickable" (click)="openPopUpLogout()" ><span class="icon dropdown-item-icon exit"></span> Déconnexion</a>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</nav>
+<div id="voile" class="voile">
+</div>

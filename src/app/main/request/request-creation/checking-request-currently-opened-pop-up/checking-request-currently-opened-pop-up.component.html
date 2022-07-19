@@ -1,0 +1,21 @@
+<div class="modal-body margin-pop-up" >
+    <p class="athena text-center">
+        Des demandes « {{ parcours }} » existent déjà sur ce client. <br/>
+        Veuillez vérifier qu’il ne s’agit pas de la reprise d’une demande existante avant de continuer.<br/>
+        La sélection d’une demande annulera la création en cours.
+    </p>
+    <app-athena-paginated-ag-grid 
+                [defaultSortModel]="defaultSortModel"
+                [columnDefs]="columnDefs" 
+                [rowData]="openRequests"
+                [paginationPageSize]="4"
+                (selectRow)="selectRequest($event)">
+    </app-athena-paginated-ag-grid>	
+    
+    <div class="text-center">
+        <input class="btn btn-green mt-4" [value]="'Je continue sur une nouvelle demande'" type="button" (click)="accept()" />
+        <br/>
+        
+        <button class="btn btn-link blue center mt-2" (click)="decline()">J’annule et reviens à la liste des parcours</button>    
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="block-info-cri">
+    <!-- icon-min
+    athena ml-1 float-right clickable -->
+    <div class="block shadow">
+        <h2 class="block-title athena mb-3">
+            Récupération des informations
+        </h2>
+            <app-athena-paginated-ag-grid 
+                [columnDefs]="columnDefs" 
+                [rowData]="rowData" 
+                [getRowHeight]="getRowHeight" 
+                [defaultSortModel]="defaultSortModel"
+                (clickedCell)="clickCell($event)"
+                *ngIf="showResult && dataExists"
+                [suppressRowClickSelection]="isCellClicked" 
+                > 
+            </app-athena-paginated-ag-grid>
+            <div class="text-center my-2" *ngIf="showResult && !dataExists">
+                Pas d'ancien CRI à récupérer.
+            </div>
+    </div>
+</div>

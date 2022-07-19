@@ -1,0 +1,105 @@
+<div class="block block-shadow">
+<h2 class="block-title athena">
+  Demandes et tâches ({{totalItems}})
+  <a class="block-title-item-link athena" [routerLink]="null" queryParamsHandling="merge">
+    <span class="icon add athena"></span>
+  </a>
+  <!-- <span class="block-title-item-link">
+    <span class="text-giant normal light-grey no-transform">|</span>
+  </span> -->
+  <a class="block-title-item-link athena" [routerLink]="null" queryParamsHandling="merge">
+    <span class="text-min normal no-transform athena">Export</span>
+  </a>
+</h2>
+<div class="row">
+  <div class="col-24 col-lg-2">
+    <label class="col-form-label athena">FILTRES :</label>
+  </div>
+  <div class="col-11">
+    <div class="form-group row">
+      <mat-form-field>
+        <mat-label for="statut-demande-filtre" class="col-sm-6 col-form-label" >Statut de la demande : </mat-label>
+        <mat-select  multiple (selectionChange)="onCheckboxChagen($event)" [value]="selectedStatusList">
+          <mat-option value="PENDING">En cours</mat-option>
+          <mat-option value="CLOSED">Terminé</mat-option>
+          <mat-option value="REFUSED">Annulé</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="col-10 offset-1">
+      <div class="form-group row">
+          <!--<label for="parcours-filtre" class="col-sm-6 col-form-label">Parcours : </label>-->
+          <div class="col-sm-18">
+            <mat-form-field>
+              <mat-label id="parcours-filtre" class="col-sm-6 col-form-label" >Parcours : </mat-label>
+              <mat-select multiple (selectionChange)="onSelectRequestType($event)" [value]="selectedTypesList">
+                <mat-select-trigger>    
+                    <ng-template  [ngIf]="selectedTypesList?.length === 1" >
+                        {{ selectedTypesLabelList[0] }}
+                    </ng-template>
+                    <span *ngIf="selectedTypesList?.length === typesRequest.length" >
+                        Tous
+                    </span>
+                    <ng-template  [ngIf]="selectedTypesList?.length != typesRequest.length && selectedTypesList?.length > 1" >
+                       <span *ngFor="let rt of selectedTypesLabelList"> {{ rt }} , </span> 
+                    </ng-template>
+                </mat-select-trigger>
+                <mat-option disabled="disabled" class="filter-option">
+                    <span class="black">Tout</span> &nbsp;
+                    <span class=" text-sm link" (click)="selectAllRequestType()">Cocher</span> 
+                    &nbsp; | &nbsp;
+                    <span  class="text-sm link" (click)="deselectAllRequestType()">Décocher</span>
+                </mat-option>
+                <mat-option *ngFor="let rt of typesRequest" [value]="rt.id">{{rt.label}}</mat-option>
+            </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+    </div>
+</div>
+<div [hidden]="noRequestExisting"  >
+    <section class="athena" >
+      <app-athena-ag-grid2 id="requestListId"
+      [columnDefs]="columnDefs"
+      [rowStyle]="rowStyle"
+      [rowData]="rowData"
+      [datasource]="datasource"
+      [paginationPageSize]="paginationPageSize"
+      [detailRowHeight]="240"
+      [totalItems]="totalItems"
+      [showTopPagination]="true"
+      [loadAgGridParams]="params"
+      [suppressRowClickSelection]="true"
+      (sortChanged)="reloadGridAfterSortChanged($event)"
+      (clickCell)="clickedCell($event)"
+      (gridReady)="onGridReady($event)"
+      [defaultSortModel]="defaultSortModel">
+    </app-athena-ag-grid2>
+    <div class="row">
+      <div>
+        <h2 class="athena">
+          Légende
+        </h2>
+        <table class="table table-not-bordered-2 athena" aria-describedby="">
+          <th id=""></th>
+          <tbody>
+            <tr>
+              <td class="table-td-icon"><span class="icon calendar-grey"></span></td>
+              <td>Jours restant</td>
+            </tr>
+            <tr>
+              <td class="table-td-icon"><span class="icon help-grey"></span></td>
+              <td>Infos bulle</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="row" *ngIf="noRequestExisting">
+    Aucun résultat pour votre sélection
+</div>
+</div>
+ 

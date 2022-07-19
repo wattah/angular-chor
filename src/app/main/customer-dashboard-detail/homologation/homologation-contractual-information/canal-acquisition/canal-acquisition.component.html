@@ -1,0 +1,129 @@
+<div *ngIf="firstCanalChanged">
+    <div class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{labelCanal}}</label>
+        <div class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="firstCanalControl" 
+                (change)="updateCanalForm(true, false)">
+                <option *ngFor="let canal of canaux" [ngValue]="canal"> 
+                    {{canal?.label ? canal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div *ngIf="showTypeCanal" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{labelTypeCanal}} </label>
+        <div *ngIf="typeCBMarketing" class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="typeCBMarketingControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let typeCanal of typesCanal" [ngValue]="typeCanal"> 
+                    {{typeCanal?.label ? typeCanal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+        <div *ngIf="typeCBbusiness" class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="typeCBbusinessControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let typeCanal of typesCanal" [ngValue]="typeCanal"> 
+                    {{typeCanal?.label ? typeCanal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+        <div *ngIf="typeCBSponsor" class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="typeCBSponsorControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let typeCanal of typesCanal" [ngValue]="typeCanal"> 
+                    {{typeCanal?.label ? typeCanal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+        <div *ngIf="typeCBstoreComp" class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="typeCBstoreCompControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let typeCanal of typesCanal" [ngValue]="typeCanal"> 
+                    {{typeCanal?.label ? typeCanal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+        <div *ngIf="typeCBstore" class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="typeCBstoreControl" (change)="updateCanalForm(true, true)">
+                <option *ngFor="let typeCanal of typesCanal" [ngValue]="typeCanal"> 
+                    {{typeCanal?.label ? typeCanal?.label:'-' }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div *ngIf="showUserStore" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{labelUserStore}}  </label>
+        <div class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="userStoreControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let seller of storeSellers" [ngValue]="seller"> 
+                    {{ seller?.lastName | uppercase}} {{seller?.firstName | firstName}} 
+                </option>
+            </select>
+        </div>
+    </div>
+    <div *ngIf="showUserResp" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{labelUserResp}}</label>
+        <div class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="userRespControl"
+                (change)="updateAcquistionsCanaux()">
+                <option *ngFor="let resp of storeResps" [ngValue]="resp"> 
+                    {{ resp?.lastName | uppercase}} {{resp?.firstName | firstName}} 
+                </option>
+            </select>
+        </div>
+    </div>
+    <div *ngIf="showDetail1" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{lablDetail1}}</label>
+        <div class="col-sm-16 col-lg-16">
+            <input type="text" class="form-control athena" [(ngModel)]="details1" [formControl]="details1Control" (change)="updateAcquistionsCanaux()" />
+        </div>
+    </div>
+    <div *ngIf="showDetail2" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{lablDetail2}}</label>
+        <div class="col-sm-16 col-lg-16">
+            <input class="form-control athena" type="text" [(ngModel)]="details2" [formControl]="details2Control" (change)="updateAcquistionsCanaux()">
+        </div>
+    </div>
+    <div *ngIf="showDetail3" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">{{lablDetail3}}</label>
+        <div class="col-sm-16 col-lg-16">
+            <input class="form-control athena" type="text" [(ngModel)]="details3" [formControl]="details3Control" (change)="updateAcquistionsCanaux()">
+        </div>
+    </div>
+
+    <div *ngIf="showCustomerOther" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Nom du cooptant*</label> 
+         <div class="col-sm-16 col-lg-16">   
+            <mat-form-field class="large-chip-list" appearance="outline"  >
+                <input type="text"  matInput [matAutocomplete]="autoMembre" [formControl]="membreControl" required>
+                <mat-autocomplete #autoMembre="matAutocomplete" [displayWith]="displayClient" (optionSelected)="updateAcquistionsCanaux()"> 
+                    <ng-template ngFor let-item [ngForOf]="filteredMembre$ | async">
+                        <mat-option [value]="item" >
+                            <ul class="mat-summary">
+                                <li> {{item?.name}} </li>
+                                <li class="grey">{{ afficherNumContrat(item?.nicheIdentifier)}}</li>
+                                <li class="grey">{{item?.status}}</li>
+                            </ul>
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                    </ng-template>
+                    
+                </mat-autocomplete>
+            </mat-form-field>
+        </div> 
+    </div>
+    <div *ngIf="showUserCooptant" class="form-group row select_arrows">
+        <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Utilisateur cooptant*</label>
+        <div class="col-sm-16 col-lg-16">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" 
+                    [formControl]="userCooptantControl" (change)="checkUserCooptValidation()"
+                    [ngStyle]="{'border': true && !isUserCooptantValid ? '2px solid #f44336':''}">
+                <option *ngFor="let userCooptant of usersCooptant" [ngValue]="userCooptant"> 
+                    {{userCooptant?.lastName | uppercase}} {{userCooptant?.firstName | firstName}} 
+                </option>
+            </select>
+        </div>
+    </div>
+</div> 

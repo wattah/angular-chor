@@ -1,0 +1,98 @@
+<div class="block block-shadow" [hidden]="toClotureTask === false ">
+        <form [formGroup]="clotureForm" #formCloture="ngForm" (ngSubmit)="cloture()">
+        <h2 class="athena"> 1 -  CLÔTURE DE LA TÂCHE </h2>
+            <div class="col-lg-24 col-md-18">
+                <div>
+                    <ng-template #QuestionDynamique></ng-template>
+                </div>
+                <div *ngIf="!thetisTaskId" class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Résolution*</label>
+                    <div class="col-sm-18 col-form-label athena">
+                    <select class="form-control athena" id="traiteSelect"
+                      formControlName="resolutionStatut" (change)="onChangeResolutionValue($event)" >
+                      <option [ngValue]="null" disabled>--</option>
+                      <option [ngValue]="resolutionOfStatut.OK">{{resolutionOfStatut.OK.label}}</option>
+                      <option [ngValue]="resolutionOfStatut.KO">{{resolutionOfStatut.KO.label}}</option>
+                      <option [ngValue]="resolutionOfStatut.CANCEL">{{resolutionOfStatut.CANCEL.label}}</option>
+                    </select>
+                </div>
+                </div>
+                <div class="form-group row">
+                    <label for="start" class="col-sm-4 col-form-label mt-1 athena">Date de fin réelle* </label>
+                    <mat-form-field class="col-sm-4" appearance="outline">
+                        <input class="athena" matInput  formControlName="dateFin" readonly  [(ngModel)]="dateFin" [matDatepicker]="picker" 
+                        [min]="minDateFin"  (dateChange)="dateChanged()"
+                        placeholder="">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <span class="col-sm-1 col-form-label mt-2 ml-n1 icon calendar-grey clickable" (click)="picker.open()" ></span>
+                    <label for="start" class="offset-sm-1 col-sm-1 col-form-label mt-1 mr-2 athena"> à </label>
+                    <div class="col-sm-3 ">
+                        <app-athena-timer (selectTime)="onChangeTimeDateFin($event)" 
+                        [defaultHour]="defaultHour"  [defaultMinute]="defaultMinute"
+                        [minHour]= "minHour" (minHourChange)="this.minHour = $event" [minMinute] = "minMinute" (minMinuteChange)="this.minMinute = $event" >
+                        </app-athena-timer>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="suivieSelect" class="col-sm-4 col-form-label athena mt-1">Durée de résolution</label>
+                    <div class="col-sm-5 ">
+                        <app-athena-timer  (selectTime)="onChangeTimeResolution($event)" 
+                        [defaultHour]="0" [defaultMinute]="0" [maxHour]="10">
+                        </app-athena-timer >
+                    </div>
+                </div>
+            <div class="form-group row">
+                    <label for="descriptionTextarea" class="col-sm-4 col-form-label athena">Commentaire</label>
+                    <div class="col-sm-20">
+                        <textarea formControlName="commentaire" [(ngModel)]="commentaire" class="form-control athena" id="descriptionTextarea" rows="6" cols="3"></textarea>
+                    </div>
+            </div>
+            <div class="form-group row">
+                    <div class="col-sm-6 col-form-label">
+                        <a class="btn btn-link to-right athena" 
+                            [routerLink]="['/customer-dashboard', customerId, 'detail', 'request', idRequest]" 
+                            [queryParams]="{ refresh: true, taskId : this.task.id, thetisTaskId : this.task.thetisTaskId }"
+                            queryParamsHandling="merge" (click)="cancelCreation()">Annuler</a>
+                    </div>
+                    <div class="col-sm-6">
+                        <input class="btn btn-green athena" [disabled]="!isValide" value="{{valueBtnSubmit()}}" type="submit"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+</div>
+
+     <div [hidden]="toClotureRequest === false ">
+        <div class="block block-shadow">
+            <h2 class="block-title athena">
+                1 - CLÖTURE DE LA TÂCHE PRÉCÉDENTE N° {{task?.id}}
+            </h2>
+            <span class="grey">Début le : </span> {{ dateFormatter(task?.startDate) }}  <br />   
+             <span class="grey">Echéance le : </span> {{ (task?.dispalyEndDate) ? dateFormatter(task?.dispalyEndDate) : dateFormatter(task?.endDate)  }}  <br /> 
+             <span class="grey">Description : </span> <span style="white-space: pre-wrap"> {{ (!task?.description) ? '-' : task?.description }} </span> <br/>
+        </div>
+
+          <app-request-immediate-closure [isClosureTask] = "true" (onSubmittedChange)="onTaskCreated($event)" (onFormGroupChange)="onFormGroupChangef($event)" (onCanceledChange)="onCanceledChangef($event)" [requestId]="idRequest" [customerId]= "customerId"></app-request-immediate-closure>
+    </div>
+
+    <div [hidden]="toAffect === false ">
+     
+            <div class="block block-shadow">
+                <h2 class="block-title athena">
+                    1 - CLÖTURE DE LA TÂCHE PRÉCÉDENTE N° {{task?.id}}
+                </h2>
+                <span class="grey">Début le : </span> {{ dateFormatter(task?.startDate) }}  <br />   
+                 <span class="grey">Echéance le : </span> {{ (task?.dispalyEndDate) ? dateFormatter(task?.dispalyEndDate) : dateFormatter(task?.endDate)  }}  <br /> 
+                 <span class="grey">Description : </span> <span style="white-space: pre-wrap">{{ (!task?.description) ? '-' : task?.description }}  </span> <br/>
+            </div>
+        
+            <!-- Tasks Affectation-->
+            <app-task-affectation-list [isClosureTask] = "true" (onSubmittedChange)="onTaskCreated($event)" (onFormGroupChange)="onFormGroupChangef($event)" (onCanceledChange)="onCanceledChangef($event)" [users]="users"
+                [tasks]="tasksToAffect" [requestId] = "idRequest" [attachedUserId]="attachedUserId" [notCancel]="true">
+            </app-task-affectation-list>
+    
+    </div>
+
+
+

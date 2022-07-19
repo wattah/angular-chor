@@ -1,0 +1,34 @@
+@import '../../../../../styles/charte';
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.ag-theme-material .ag-header-cell {
+  white-space: normal;
+	&[col-id="numCptFact"], &[col-id="labelMouvement"] {
+    border-right: $border;
+  }
+  
+  &[col-id="remainingAmount"], &[col-id="initialAmountTTC"]{
+		.ag-cell-label-container {
+			float: right;
+    }
+    .ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-items: right;
+			justify-content: flex-end;
+		}
+	}
+}
+.accountlist .ag-row .ag-cell   { 
+  display: block !important;
+}

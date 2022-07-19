@@ -1,0 +1,31 @@
+<div id="body" class="container-fluid">
+    <div class="row">
+        <div class="col-24">
+            <div class="block block-transparent">
+                <h6 class="athena">
+                    Gestion par lots
+                </h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+        <div class="block_onglet  block block-shadow  ">
+            <div class="onglet_tabs">
+                <a class="block-title-item-link athena lotslien" [routerLink]="['/customer-dashboard','management-batches','loading-50D']"  queryParamsHandling="merge">Chargement 50D</a>
+                <mat-tab-group animationDuration="10ms" [disableRipple]="true">
+                    <mat-tab label="Factures" class="col-md-2">
+                        <app-bills></app-bills>
+                    </mat-tab>
+                    <mat-tab *ngIf="false" label="Comptes-rendus">
+                        <app-reports></app-reports>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+<router-outlet></router-outlet>

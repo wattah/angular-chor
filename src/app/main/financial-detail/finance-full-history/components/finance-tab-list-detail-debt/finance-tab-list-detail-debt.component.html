@@ -1,0 +1,96 @@
+<nav class="nav nav-tabs">
+    <a class="nav-item nav-link clickable"  [class.active]="selectedDebt.universSelected === UNIVERS_PENICHE.MOBILE.code"  (click)="changeUnivers(UNIVERS_PENICHE.MOBILE.code)" >Mobile</a>
+    <a class="nav-item nav-link clickable"  [class.active]="selectedDebt.universSelected === UNIVERS_PENICHE.SERVICE.code" (click)="changeUnivers( UNIVERS_PENICHE.SERVICE.code)"  >Service</a>
+    <a class="nav-item nav-link clickable"  [class.active]="selectedDebt.universSelected === UNIVERS_PENICHE.INTERNET.code"  (click)="changeUnivers(UNIVERS_PENICHE.INTERNET.code)" >Internet</a>
+</nav>
+<div class="tab-content"  *ngIf="!loadingActifAccounts; else loadingDataBlock">
+    <div class="block block-bordered" style="border-top: 0">
+        <h3 class="athena" *ngIf="debtsOfBillingAccount?.nbrTotalBillingAccounts === 0; else notEmptyData"> Pas de compte de facturation existant </h3>
+        <ng-template #notEmptyData>
+            <div class="tab-pane active" *ngIf="selectedDebt.universSelected === UNIVERS_PENICHE.INTERNET.code; else notInternetBloc">
+                <div class="row">
+                    <div class="col-md-22 offset-md-1">
+                        <h3 class="athena" > Solde Total Internet = {{ debtsOfBillingAccount?.totalBalance | number : '1.2-2' | replace : '[,]' : '.' }} € </h3> 
+                        <div>
+                            <app-billing-account [univers]="UNIVERS_PENICHE.INTERNET.code" 
+                            *ngFor="let accounti of debtsOfBillingAccount?.listBillingAccounts" 
+                            [billingAccount]='accounti' [selectedDebt]="selectedDebt" 
+                            [graybackground]="true">
+                            </app-billing-account>
+                        </div> 
+                        <h3 class="athena underline clickable" (click)="toggleInactifAccounts()">
+                            {{ (selectedDebt?.showInactifAccounts) ? 'Masquer ' : 'Afficher'  }} les Comptes de facturation inactifs 
+                            <span class="icon athena ml-1" [ngClass]="(selectedDebt?.showInactifAccounts)? 'arrow-top-blue' :'arrow-bottom-blue'"></span>
+                        </h3>
+                        <ng-template [ngIf]="selectedDebt?.showInactifAccounts">
+                            <div *ngIf="!loadingInactifAccounts; else loadingDataBlock">
+                                <app-billing-account  [univers]="UNIVERS_PENICHE.INTERNET.code"
+                                *ngFor="let accounti of detailsDebtsBillingAccountInactif"
+                                [billingAccount]='accounti' [selectedDebt]="selectedDebt"
+                                [graybackground]="false">
+                                </app-billing-account>
+                            </div> 
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <ng-template #notInternetBloc>
+                <div class="tab-pane active">
+                    <h3 class="athena">
+                        Solde Total {{selectedDebt.universSelected}} = {{ debtsOfBillingAccount?.totalBalance | number : '1.2-2' }} €
+                        <span class="mx-5">|</span>
+                        Dette {{selectedDebt.universSelected}} = 
+                        <span *ngIf="selectedDebt.universSelected === UNIVERS_PENICHE.SERVICE.code"> {{ selectedDebt.contractSelected.detteServiceTTC | absNumberFormatter}} €   </span>
+                        <span *ngIf="selectedDebt.universSelected === UNIVERS_PENICHE.MOBILE.code"> {{ selectedDebt.contractSelected.detteMobileTTC | absNumberFormatter}} €   </span>
+                        <span class="mx-5">|</span>
+                        Paiement en cours
+                        <span *ngIf="selectedDebt.universSelected === UNIVERS_PENICHE.SERVICE.code">Service = {{selectedDebt.contractSelected.totalCreditServiceTTC | number : '1.2-2' | replace : '[,]' : '.'}} € </span>
+                        <span *ngIf="selectedDebt.universSelected === UNIVERS_PENICHE.MOBILE.code">Mobile = {{selectedDebt.contractSelected.totalCreditMobileTTC | number : '1.2-2' | replace : '[,]' : '.' }} € </span>
+                    </h3>   
+                    <div class="row">
+                        <div class="col-md-22 offset-md-1">
+                                <app-finance-detail-debt-billing-account
+                                    *ngFor="let accounti of debtsOfBillingAccount?.listBillingAccounts ;  let i=index"
+                                    [billingAccount]='accounti' [univers]="selectedDebt.universSelected" [selectedDebt]="selectedDebt" [withSolde]="true" [index]="i">
+                                </app-finance-detail-debt-billing-account>
+                        </div>
+                    </div>
+                    <h3 class="athena underline clickable" (click)="toggleInactifAccounts()">
+                        {{ (selectedDebt?.showInactifAccounts) ? 'Masquer ' : 'Afficher'  }} les Comptes de facturation inactifs 
+                        <span class="icon athena ml-1" [ngClass]="(selectedDebt?.showInactifAccounts)? 'arrow-top-blue' :'arrow-bottom-blue'"></span>
+                    </h3>
+                    <ng-template [ngIf]="selectedDebt?.showInactifAccounts">
+                        <div *ngIf="!loadingInactifAccounts; else loadingDataBlock">
+                            <div *ngIf="detailsDebtsBillingAccountInactif?.length>0; else noInactifAccount">
+                                <div class="row">
+                                    <div class="col-md-22 offset-md-1  mt-2 ">
+                                        <app-finance-detail-debt-billing-account 
+                                            *ngFor="let accounti of detailsDebtsBillingAccountInactif ;  let i=index"
+                                            [copmteSansSolde]="true" [univers]="selectedDebt.universSelected" [billingAccount]="accounti" [selectedDebt]="selectedDebt" [withSolde]="true" [index]="i">
+                                        </app-finance-detail-debt-billing-account>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </ng-template>
+                </div>
+            </ng-template>    
+        </ng-template>
+    </div>
+</div>
+
+
+<ng-template #loadingDataBlock>
+    <div class="row">
+        <div class="col-md-22 offset-md-1  mt-2 ">
+            <app-athena-block-loader ></app-athena-block-loader>
+        </div>
+    </div> 
+</ng-template>
+
+<ng-template #noInactifAccount>
+    
+    <h3 class="athena text-center" *ngIf="detailsDebtsBillingAccountInactif?.length === 0">
+        Aucun Compte de facturation inactif
+    </h3>
+</ng-template>

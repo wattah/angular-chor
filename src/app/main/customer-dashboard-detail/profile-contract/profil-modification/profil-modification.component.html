@@ -1,0 +1,193 @@
+ <div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-5"></div>
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <img class="img-fluid maxProfilePicture" [src]="photo" alt="profile" />
+                </div>
+            </div>
+        </div>
+        <form [formGroup]="form">
+            <div class="form-group row mt-3">
+                <label for="titreSelect" class="col-md-5 col-form-label athena"> Changer de photo Fichier (<10Mo)</label>
+                <div [ngClass]="{' col-md-12 ': isRequestView, ' col-md-12': !isRequestView}">
+                    <ngx-dropzone name="file" [multiple]="false" [expandable]="true" class="fileDropProfile" (change)="onSelectFile($event)">
+                        <ngx-dropzone-label>
+                            Déposez des fichiers ici ou <br />
+                            cliquez pour <u class="blue"> télécharger</u> .
+                        </ngx-dropzone-label>
+                        <ngx-dropzone-preview class="fileinter" *ngFor="let f of files" [removable]="true" (removed)="onRemoveFile(f)">
+                            <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                        </ngx-dropzone-preview>
+                    </ngx-dropzone>
+                </div>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-lg-5 col-form-label athena"> Civilité*</label>
+                <div class="col-sm-20 col-lg-12">
+                    <select formControlName="title" name="title" class="form-control athena ng-pristine ng-invalid ng-touched">
+                        <option [ngValue]="null" disabled>- -</option>
+                        <option [ngValue]="'M'">Monsieur</option>
+                        <option [ngValue]="'MME'">Madame</option>
+                    </select>
+                    <mat-error *ngIf="form.controls['title'].touched && (form.get('title').value == null || form.get('title').value === undefined)">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label athena"> Titre</label>
+                <div class="col-sm-20 col-lg-12 addarrow">
+                    <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( form.get('refSocialTitle'), triggerTitle)">
+                        <input type="text"  matInput formControlName="refSocialTitle" name="refSocialTitle" 
+                            #triggerTitle="matAutocompleteTrigger" 
+                            (click)="clearAutoCompleteInputControl( form.get('refSocialTitle'), triggerTitle)"
+                            [matAutocomplete]="autoSocialTitle" />
+                        <mat-autocomplete #autoSocialTitle="matAutocomplete" required [displayWith]="display">
+                            <mat-option *ngFor="let socialTitle of filteredOptions | async" [value]="socialTitle" (click)="onChoseSocialTitle(socialTitle)">
+                                {{socialTitle.label}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Nom*</label>
+                <div class="col-sm-20 col-lg-12">
+                    <div class="d-flex">
+                        <input [ngClass]="[isValidBy('lastName') ? 'form-control ng-pristine ng-valid ng-touched athena error' : 'form-control ng-pristine ng-valid ng-touched athena']" formControlName="lastName" name="lastName" type="text" />
+                        <div *ngIf="isValidBy('lastName')"  class="col-sm-1 mt-2 athena">
+                            <span class="icon  status-exclamation"></span>
+                        </div>
+                    </div>
+                    <mat-error *ngIf="isValidBy('lastName')">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Nom interne*</label>
+                <div class="col-sm-20 col-lg-12">
+                    <div class="d-flex">
+                    <input [ngClass]="[isValidBy('crmName') ? 'form-control ng-pristine ng-valid ng-touched athena error' : 'form-control ng-pristine ng-valid ng-touched athena']" type="text" formControlName="crmName" name="crmName"/>
+                        <div *ngIf="isValidBy('crmName')"  class="col-sm-1 mt-2 athena">
+                            <span class="icon  status-exclamation"></span>
+                        </div>
+                    </div>
+                    <mat-error *ngIf="isValidBy('crmName')">Ce champ est obligatoire</mat-error>
+                    
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Nom d'usage</label>
+                <div class="col-sm-20 col-lg-12">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="nickname" name="nickname"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Prénom</label>
+                <div class="col-sm-20 col-lg-12">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="firstName" name="firstName" />
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label class="col-lg-5 col-form-label athena"> Nationalité</label>
+                <div class="col-sm-20 col-lg-12 addarrow">
+                    <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( form.get('refNationality'), triggerNationality)">
+                        <input type="text" class="" matInput formControlName="refNationality" name="refNationality"
+                        #triggerNationality="matAutocompleteTrigger" 
+                        (click)="clearAutoCompleteInputControl( form.get('refNationality'), triggerNationality)"
+                        [matAutocomplete]="autoNationality" />
+                        <mat-autocomplete #autoNationality="matAutocomplete" [displayWith]="display">
+                            <mat-option *ngFor="let nationality of filteredNationalities | async" [value]="nationality" (click)="onChoseNationality(nationality)">
+                                {{nationality.label}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="start mt-1" class="col-sm-5 col-form-label athena">Date de naissance</label>
+
+                <div class="col-sm-20 col-lg-12 m-0 p-0 d-flex">
+                    <mat-form-field class="bg-none col-lg-8 col-22 col-sm-23" appearance="outline">
+                        <input matInput [matDatepicker]="pickerRes" formControlName="birthdate" name="birthdate" (dateChange)="onSelectBirthDate($event)" placeholder="" readonly />
+                        <mat-datepicker #pickerRes></mat-datepicker>
+                    </mat-form-field>
+                    <div class="col-2 col-sm-6 margin-top p-0">
+                        <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes.open()"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label athena"> Langue favorite*</label>
+                <div class="col-sm-20 col-lg-12 addarrow">
+                    <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( form.get('refFavoriteLanguage'), triggerLang)">
+                        <input type="text" class="" matInput formControlName="refFavoriteLanguage" name="refFavoriteLanguage" 
+                        [matAutocomplete]="auto" #triggerLang="matAutocompleteTrigger"  (click)="clearAutoCompleteInputControl( form.get('refFavoriteLanguage'), triggerLang)" />
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="display">
+                            <mat-option *ngFor="let language of filteredLanguages | async" [value]="language" (click)="onChoseLanguage(language)">
+                                {{language.label}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-error *ngIf="form.controls['refFavoriteLanguage'].touched && (form.get('refFavoriteLanguage').value == null || form.get('refFavoriteLanguage').value === undefined || form.get('refFavoriteLanguage').value === '')">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label athena"> Secteur d'activité</label>
+                <div class="col-sm-20 col-lg-12 addarrow">
+                    <mat-form-field class="mat-select-arrow-wrapper large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl( form.get('refSocioEconomicGroup'), triggerGroup)">
+                        <input type="text" class="" matInput formControlName="refSocioEconomicGroup" name="refSocioEconomicGroup"
+                        #triggerGroup="matAutocompleteTrigger"  (click)="clearAutoCompleteInputControl( form.get('refSocioEconomicGroup'), triggerGroup)"  [matAutocomplete]="autoSector" />
+                        <mat-autocomplete #autoSector="matAutocomplete" [displayWith]="display">
+                            <mat-option *ngFor="let sector of filteredActivitySectors | async" [value]="sector" (click)="onChoseActivitySector(sector)">
+                                {{sector.label}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-5 col-form-label athena"> Métier</label>
+                <div class="col-sm-20 col-lg-12 addarrow">
+                    <app-athena-nested-drop-down    
+                        [list]="domains"
+                        [selectedValue]="{ label: (form?.get('refJob')?.value ) ? form?.get('refJob')?.value?.label : '--'}"
+                        (selectionChange)="onChoseDomain($event)">
+                    </app-athena-nested-drop-down>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Complément d'activité</label>
+                <div class="col-sm-20 col-lg-12">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" formControlName="jobTitle" name="jobTitle" type="text" />
+                </div>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-lg-5 col-form-label athena"> Type d'entreprise</label>
+                <div class="col-sm-20 col-lg-12">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refCompanyType" name="refCompanyType">
+                        <option [ngValue]="null" disabled>- -</option>
+                        <option *ngFor="let type of types" [ngValue]="type" >{{type.label}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena"> Nom de l'entreprise</label>
+                <div class="col-sm-20 col-lg-12">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="companyName" name="companyName" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label athena">Portrait</label>
+                <div class="col-sm-20 col-lg-12">
+                    <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="portraitByCoach" name="portraitByCoach"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

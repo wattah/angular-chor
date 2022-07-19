@@ -1,0 +1,36 @@
+<!-----------------------------BEGIN SECTION---------------------------------------------->
+<section class="mt-5 mb-3"   >
+
+    <div class="row" *ngIf="!loadingData && totalItems === 0" > 
+        <p  class="center">Votre recherche ne donne aucun résultat, veuillez la modifier.</p>
+    </div>
+<!-----------------------------BEGIN AGIGRID TABLE---------------------------------------------->
+    <div class="col-lg-24 col-md-24 order-lg-1"  [hidden]="loadingData || totalItems === 0" >
+        <div id="productsTabId" class="col-24 display-id">
+            <app-athena-ag-grid2
+             [columnDefs]="columnDefs"
+             [datasource]="datasource"
+             [paginationPageSize]="paginationPageSize"
+             [totalItems]="totalItems"
+             [showTopPagination]="true"
+             [suppressRowClickSelection]="true"
+             [loadAgGridParams]="params"
+             (createServerSideDatasource)="createServerSideDatasource($event)"
+             (clickCell)="clickCell($event)"
+            >
+            </app-athena-ag-grid2>
+            <button  type="submit" [ngStyle]="{'bottom':totalItems >= 20  ? '0px' : '-31px' }"
+            
+            
+            class="btn btn-green btn-addarticle mt-2" (click)="toMasterProduct()" *ngxPermissionsOnly="['ajout_administration_catalogue']">Ajouter un article</button> 
+
+        </div>
+    </div>
+<!-----------------------------END AGI GRID TABLE---------------------------------------------->
+     <app-athena-table-loader *ngIf="loadingData"></app-athena-table-loader>
+
+</section>
+<!-----------------------------END SECTION---------------------------------------------->
+<div *ngIf="loadingData" class="wrapper">
+    <div class="spinner">
+    </div>

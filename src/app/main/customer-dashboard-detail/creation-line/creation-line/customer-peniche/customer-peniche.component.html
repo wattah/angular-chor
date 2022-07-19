@@ -1,0 +1,356 @@
+<div class="container-fluid row">
+  <div class="col-lg-24 col-md-24 block block-shadow">
+      <form [formGroup]="formPeniche" >
+        <h2 class="block-title athena mb-4">Création du client péniche</h2>
+        <div *ngIf="formInValid" class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="block block-alert" >
+                    <table class="table table-not-bordered"><caption class="p-0"></caption>
+                        <tbody>
+                            <tr>
+                                <th id="th"></th>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                    <div *ngIf="isEmailExist">- Veuillez renseigner email notification sur client péniche </div>
+                                    <div *ngIf="raisonSocialPenich">- Veuillez renseigner Raison sociale sur client péniche </div>
+                                    <div *ngIf="nomPeniche">- Veuillez renseigner le nom sur client péniche </div>
+                                    <div *ngIf="prenomPeniche">- Veuillez renseigner le prénom sur client péniche </div>
+                                    <div *ngIf="adressFrancaisPeniche">- Veuillez renseigner adresse française sur client péniche <span *ngIf="villeOrCodePostalPeniche">(la ville et le code postal ne sont pas saisis et sont obligatoires si le CR attendu est coché )</span> </div>
+                                    <div *ngIf="paysPeniche">- Veuillez renseigner pays sur client péniche </div>
+                                    <div *ngIf="codePostalPeniche">- Veuillez renseigner code postale sur client péniche </div>
+                                    <div *ngIf="villePeniche">- Veuillez renseigner ville sur client péniche </div>
+                                    <div *ngIf="adressePeniche">- Veuillez renseigner adresse sur client péniche </div>
+                                    <div *ngIf="formatAdresseFrancais">- Le champ Adresse est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                                    <div *ngIf="civiliteValide">- Veuillez renseigner la civilité </div>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p class="athena grey my-3 font-italic" *ngIf="!isUpdate">
+            La création de la ligne, requiert un client péniche, hors le membre n’en détient pas.<br />
+            Vous devez donc créer le client péniche pour valider votre création de ligne.
+        </p>
+        <p class="athena grey my-3 font-italic" *ngIf="isUpdate">
+            L'activation de la ligne, requiert un client péniche, hors le membre n’en détient pas.<br />
+            Vous devez donc créer le client péniche pour valider votre activation de ligne.
+        </p>
+        <div class="col-lg-16 block_onglet pt-0">
+            <div class="form-group row mb-2">
+                <label class="col-sm-4 col-form-label athena">CR attendu </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="form-check-input athena" formControlName="billReport" 
+                    type="checkbox" id="crAttenduId" (change)="onchangeBillReport()">
+                    <label class="form-check-label athena" for="crAttenduId" ></label>
+                </div>
+            </div>
+
+            <div  *ngIf="isBillReport" class="form-group row">
+                <label class="col-lg-4 col-form-label athena"> Facture électronique* </label>
+                <div class="col-sm-20 col-lg-9">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" 
+                    (change)='changeFacture($event)' formControlName="facture">
+                        <option value= "NON">Non</option>
+                        <option value= "OUI">Oui</option>
+                    </select>
+                </div>          
+            </div>
+            <div *ngIf="isBillReport && isEnvoi" class="form-group row">
+                <label class="col-lg-4 col-form-label athena"> Envoi papier* </label>
+    
+                <div class="col-sm-20 col-lg-9">
+                    <div class="form-check">
+                        <input class="form-check-input athena" id="auto" name="typeEnvoi" 
+                        type="radio" [checked]="true" formControlName="typeEnvoi" value="PAPIER_AUTO"/>
+                        <label class="form-check-label athena" for="auto"> Auto </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input athena" id="manuel" value="MANUEL" 
+                        name="typeEnvoi" type="radio"  formControlName="typeEnvoi"/>
+                        <label class="form-check-label athena" for="manuel"> Manuel</label>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="isBillReport && isEmail">
+                <ng-container  *ngIf="cmBillingUsageVO; else billingUsageNotFound">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label athena"> Nom* </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <input formControlName="nomInter" readonly class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                        </div>
+                    </div>
+
+                    <div  class="form-group row">
+                        <label class="col-lg-4 col-form-label athena"> Mail* </label>
+                        <div class="col-sm-20 col-lg-9">
+                            <input formControlName="mail" readonly class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-template #billingUsageNotFound>
+                    <p class="red">Ce client ne possède aucune adresse mail de facturation</p>
+                </ng-template>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-sm-4 col-form-label athena pr-0"> Type de contrat</label>
+                <div class="col-sm-20 col-lg-9">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched"
+                    formControlName="typology" (change)='changeTypology($event)' >
+                        <option *ngFor="let type of lTypology" [ngValue]="type">
+                            {{type?.value}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Délais de facturation</label>
+                <div class="col-sm-20 col-lg-3">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched"
+                    formControlName="billingTime" >
+                        <option  value="8">
+                            J + 8
+                        </option>
+                        <option  value="15">
+                            J + 15
+                        </option>
+                        <option  value="22">
+                            J + 22
+                        </option> 
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-form-label athena col-sm-4"> Civilité* </label>
+                <div class="col-sm-4">
+                    <div *ngIf="showRaisonSociale" class="form-check">
+                        <input  [ngClass]="[civiliteValide ? ' form-check-input athena error':'form-check-input']"
+                        type="radio" formControlName="title" id="optionSociete" value="PM"
+                        (change)="radioChangeCivilite($event)" >
+                        <label class="form-check-label" for="optionSociete"> Société </label>
+                    </div>
+                    <div class="form-check">
+                        <input  [ngClass]="[civiliteValide ? ' form-check-input athena error':'form-check-input']"
+                         type="radio" formControlName="title" id="optionMadame" value="MME" 
+                        (change)="radioChangeCivilite($event)">
+                        <label class="form-check-label" for="optionMadame"> Madame </label>
+                    </div>
+                    <div class="form-check">
+                        <input  [ngClass]="[civiliteValide ? ' form-check-input athena error':'form-check-input']"
+                         type="radio" formControlName="title" id="optionMonsieur" value="MR" 
+                        (change)="radioChangeCivilite($event)">
+                        <label class="form-check-label" for="optionMonsieur"> Monsieur </label>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="showRaisonSociale" class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Raison sociale* </label>
+                <div class="col-sm-20 col-lg-9">
+                    <div class="d-flex block-info-cri">
+                        <input formControlName="society"
+                        [ngClass]="[showRaisonSociale && isValidBy('society') ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                          type="text" />
+                        <div *ngIf="showRaisonSociale && isValidBy('society')"  class="col-sm-1 mt-2 athena">
+                            <span class="icon  status-exclamation"></span>
+                        </div>
+                    </div>
+                    <mat-error *ngIf="showRaisonSociale && isValidBy('society')">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-sm-4 col-form-label athena pr-0"> Nom<span *ngIf="showAsterix">*</span></label>
+                <div class="col-sm-20 col-lg-9">
+                    <div class="d-flex block-info-cri">
+                        <input formControlName="lastName" 
+                        [ngClass]="[showAsterix && isValidBy('lastName') ? 'col-lg-24 athena form-control error  ng-pristine ng-valid ng-touched' : 'col-lg-24 athena form-control ng-pristine ng-valid ng-touched']"
+                        type="text" />
+                        <div *ngIf="showAsterix && isValidBy('lastName')"  class="col-sm-1 mt-2 athena">
+                            <span class="icon  status-exclamation"></span>
+                        </div>
+                    </div>
+                     <mat-error *ngIf="showAsterix && isValidBy('lastName')">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+
+            <div class="form-group row select_arrows">
+                <label class="col-sm-4 col-form-label athena pr-0"> Prénom<span *ngIf="showAsterix">*</span></label>
+                <div class="col-sm-20 col-lg-9">
+                    <div class="d-flex block-info-cri">
+                        <input formControlName="firstName" 
+                        [ngClass]="[showAsterix && isValidBy('firstName') ? 'col-lg-24 athena form-control error  ng-pristine ng-valid ng-touched' : ' col-lg-24 athena form-control ng-pristine ng-valid ng-touched']" 
+                         type="text" />
+                        <div *ngIf="showAsterix && isValidBy('firstName')"  class="col-sm-1 mt-2 athena">
+                         <span class="icon  status-exclamation"></span>
+                        </div>
+                     </div>
+                     <mat-error *ngIf="showAsterix && isValidBy('firstName')">Ce champ est obligatoire</mat-error>
+                </div>
+            </div>
+
+            <div class="form-group mb-2 row">
+                <div class="col-sm-4"></div>
+                <div class="col-12 col-sm-20 col-lg-9">
+                    <input class="form-check-input athena"  
+                          type="checkbox" id="frenchAdress" formControlName="isCheckFrench" 
+                          [checked]="isCheckFrench" (change)="onchangeIsFrench()">
+                        <label class="form-check-label" for="frenchAdress"> Adresse française </label>
+                </div>
+            </div>
+            <ng-template class="form-group  row" [ngIf]="isCheckFrench" [ngIfElse]="notFrench" >
+                <div class="form-group row">
+                    <label class="col-lg-4 col-form-label athena"> Adresse*</label>
+                    <div class="col-sm-20 col-lg-9">
+                            <div class="d-flex block-info-cri noborder">
+                                <mat-form-field [ngClass]="[isValidAddressFrench() ? 'p-0  col-sm-24 error' : 'p-0  col-sm-24']" appearance="outline"  >
+                                    <input type="text" placeholder="Ex: 12 bis rue campagne première 75014 Paris"  matInput [matAutocomplete]="autoAddress" 
+                                    formControlName="addressFrench">
+                                    <mat-autocomplete #autoAddress="matAutocomplete" [displayWith]="displayAddress" > 
+                                        <ng-template ngFor let-item [ngForOf]="filteredAddress$ | async">
+                                            <mat-option [value]="item" >
+                                                {{item?.line4}} {{ item?.postalCode}} {{ item?.cityName}}
+                                            </mat-option>
+                                        </ng-template>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <div *ngIf="isValidAddressFrench()" class="col-sm-1 mt-2 athena">
+                                    <span class="icon  status-exclamation"></span>
+                                </div>
+                            </div>
+                            <mat-error *ngIf="isSelectionAddress()">
+                                L’adresse n’est pas connue par ORAS, veuillez sélectionner une des adresses proposées. 
+                                Si vous souhaitez conserver votre adresse décocher la case "Adresse Française" pour effectuer votre saisie.
+                            </mat-error>
+                            <mat-error *ngIf="isValidAddressFrench()">
+                                Ce champ est obligatoire
+                            </mat-error>
+                            
+                        </div>
+                </div>
+            </ng-template>
+            <ng-template class="form-group  row" #notFrench >
+                <div class="form-group row select_arrows">
+                    <label class="col-sm-4 col-form-label athena pr-0"> Pays* </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <div class="d-flex block-info-cri noborder">
+                            <mat-form-field  [ngClass]="[!isCheckFrench && isValidBy('country') ? 'p-0  col-sm-24  error' : 'p-0  col-sm-24']" appearance="outline"  >
+                                <input type="text"  matInput [matAutocomplete]="autoCountry" formControlName="country" >
+                                <mat-autocomplete #autoCountry="matAutocomplete" [displayWith]="displayCountry">
+                                    <mat-option *ngFor="let item of filteredCountry | async" [value]="item" >
+                                        {{item?.label}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <div *ngIf="!isCheckFrench && isValidBy('country')"  class="col-sm-1 mt-2 athena">
+                                <span class="icon  status-exclamation"></span>
+                            </div>
+                        </div>
+                        <mat-error *ngIf="!isCheckFrench && isValidBy('country')">
+                            Ce champ est obligatoire
+                        </mat-error>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-3">
+                    <label class="col-12 col-sm-4 col-form-label athena"> Code Postal<span *ngIf="showAsterixZipCode()">*</span></label>
+                    <div class="col-sm-6 col-lg-9">
+                        <div class="d-flex">
+                            <input formControlName="zipCode"  [ngClass]="[isValidZipCode() ? 'col-lg-24 form-control athena error' : 'col-lg-24 form-control athena']"  type="text"/>
+                            <div *ngIf="isValidZipCode()"  class="col-sm-1 mt-2 athena">
+                                <span class="icon  status-exclamation"></span>
+                            </div>
+                        </div>
+                        <mat-error *ngIf="isValidZipCode()">
+                            Ce champ est obligatoire
+                        </mat-error>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Ville<span *ngIf="showAsterixCity()">*</span></label>
+                    <div class="col-sm-20 col-lg-9">
+                        <div class="d-flex">
+                            <input formControlName="city" [ngClass]="[isValidCity() ? 'col-lg-24 form-control athena error' : 'col-lg-24 form-control athena']" class="form-control athena" type="text"/>
+                            <div *ngIf="isValidCity()"  class="col-sm-1 mt-2 athena">
+                                <span class="icon  status-exclamation"></span>
+                            </div>
+                        </div>
+                        <mat-error *ngIf="isValidCity()">
+                            Ce champ est obligatoire
+                        </mat-error>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Adresse* </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <div class="d-flex block-info-cri">
+                            <input maxlength="38" formControlName="address4" [ngClass]="[isValidBy('address4') ? 'col-lg-24 form-control athena error' : 'col-lg-24 form-control athena']"   type="text"/>
+                            <div *ngIf="!formPeniche.get('isCheckFrench').value && isValidBy('address4')" class="col-sm-1 mt-2 athena">
+                              <span class="icon  status-exclamation"></span>
+                            </div>
+                        </div>
+                        <mat-error *ngIf="!formPeniche.get('isCheckFrench').value && isValidBy('address4')" >
+                            Ce champ est obligatoire
+                        </mat-error>
+                    </div>
+                </div>
+            </ng-template>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Appt / Etage (A) </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input maxlength="38" formControlName="address2" class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Bâtiment (B) </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input maxlength="38" formControlName="address3" class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Boite postale </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input maxlength="38" formControlName="address5" class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Infos supplémentaires pour livraison </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input maxlength="38" formControlName="deliveryInfo" class="athena form-control ng-pristine ng-valid ng-touched" type="text" />
+                </div>
+            </div>
+
+
+            <div class="row mt-2 mb-2 justify-content-left ml-5">
+                <button class="btn btn-link blue" [routerLink]="null" queryParamsHandling="merge" (click)="annuler()">
+                    Annuler
+                </button>
+                <button class="btn btn-green marginleft" type="submit" (click)="onSave()">
+                    Enregistrer
+                </button>
+            </div>
+        </div>
+    </form>
+   </div> 
+</div>
+
+<div *ngIf="false">
+    <p class="text-danger athena">
+        <span class="icon lightning athena"></span> Données manquantes. Connexion à Péniche perdue.
+        <a class="athena" href="{{jiraUrl}}" 
+        target="_blank" style="padding-left: 10px;" rel="noopener noreferrer">
+        Signaler au support <span class="icon icon-min arrow-right-blue athena"></span>
+        </a>
+    </p>
+</div>

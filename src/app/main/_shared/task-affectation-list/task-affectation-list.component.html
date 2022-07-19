@@ -1,0 +1,45 @@
+<div class="block block-shadow">
+    <h2 class="athena"> {{isClosureTask || precision  ? 2 : 3 }}  - AFFECTATION DES TÂCHES {{isClosureTask ? 'SUIVANTES' : '' }}</h2>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <ng-container *ngFor="let task of tasks; let index = index;">
+                <div class="row">
+                    <label for="tacheSelect" class="col-sm-8 col-form-label athena">Tâche {{index+1}}</label>
+                    <div class="col-sm-16">
+                        <label for="tache" class="col-form-label athena">{{task.name}}</label>
+                    </div>
+                </div>
+                
+                <app-task-affectation (formGroupChange)="formGroupChange($event)" (onSubmittedChange)="onSubmittedForm($event)" (formSubmitted)="onFormSubmitted($event)" [users]="users" [requestResultId]="requestId" [task]="task" [idFormTask]="index" [request]="request" [attachedUserId]="attachedUserId"></app-task-affectation>
+
+            </ng-container>
+            
+            <div class="form-group row" *ngIf="!notCancel; else isNotCanceled" >
+                <div  class="col-sm-8 col-form-label">
+                    <a class="btn btn-link to-right athena"
+                        [routerLink]="null"  (click)="annuler()" queryParamsHandling="merge">
+                        Annuler
+                    </a>
+                </div>
+                <div class="col-sm-16">
+                    <input [ngClass]="['btn', toutETValide ? 'btn-green' : 'btn-grey']" value="Enregistrer la tâche" type="submit" (click)="enregistrer()"  [disabled]="!toutETValide || formSubmitted  "/>
+                </div>
+            </div>
+             <ng-template #isNotCanceled>
+                <div class="form-group row" >
+                    <div  class="col-sm-8 col-form-label">
+                        
+                    </div>
+                    <div class="col-sm-16">
+                        <input [ngClass]="['btn', toutETValide ? 'btn-green' : 'btn-grey']" value="Enregistrer la tâche" type="submit" (click)="enregistrer()"  [disabled]="!toutETValide || formSubmitted  "/>
+                    </div>
+                </div>
+             </ng-template>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>

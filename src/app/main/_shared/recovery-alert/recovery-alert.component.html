@@ -1,0 +1,27 @@
+<ng-template [ngIf]="!error && detteTotal > 0 && (recoveryDate || entrepriseRecoveryDate) && requestId > 0 " >
+    <h2 class="red athena">
+    <span class="icon status-exclamation athena"></span> Recouvrement
+    <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'detail', 'request', requestId]" [queryParams] = "{isDetailRecovery: true}" queryParamsHandling="merge">
+
+        <span class="text-min normal no-transform athena">Voir le détail<span class="icon icon-min arrow-right-blue athena"></span></span>
+    </a>
+    </h2>
+    <p class="text-max red athena" *ngIf="recoveryDate && detteTotalTTC > 0">
+        <strong class="athena">Recouvrement sur le contrat {{nicheIdentifier}}</strong> 
+        depuis le <strong class="athena"> {{recoveryDate | dateFormatPipeFrench}}</strong> 
+        de <strong class="athena"> {{detteTotalTTC | currency:'€':'symbol':'.2-2':'fr'}}</strong> à ce jour.
+    </p> 
+    <p class="text-max red athena" *ngIf="displayTotal && entrepriseRecoveryDate && detteTotal > 0 && isEntreprise">
+        <strong class="athena">Recouvrement total de l'entreprise </strong> 
+        depuis le <strong class="athena"> {{entrepriseRecoveryDate | dateFormatPipeFrench}}</strong> 
+        de <strong class="athena"> {{detteTotal | currency:'€':'symbol':'.2-2':'fr'}}</strong> à ce jour.
+    </p>
+</ng-template>
+<ng-template [ngIf]="error "  >
+	<h2 class="red athena">
+    <span class="icon status-exclamation athena"></span> Recouvrement
+    </h2>
+    <p class="text-max red athena">
+        Données manquantes. Connexion à Péniche perdue.
+    </p>
+</ng-template>

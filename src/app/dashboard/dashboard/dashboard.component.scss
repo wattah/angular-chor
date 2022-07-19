@@ -1,0 +1,49 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
+@import '~src/styles/charte';
+
+h6 {
+    &.athena, &.title {
+        margin-bottom: 20px;
+        font-family: $font-family-dashboard;
+        text-transform: none;
+        text-align: left;
+    }
+}
+
+input {
+    &.btn, &.title {
+        font-size: $font-size-text;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    h6 {
+        &.athena, &.title {
+            margin-bottom: 20px;
+            font-family: $font-family-dashboard;
+            text-transform: none;
+            text-align: center;
+        }
+    }
+    .icon-dashbord-mobile {
+        width: 118px;
+        height: 118px;
+    }
+    
+    .wrapper-icon {
+        margin: 0px -40px -10px 0px;
+        float: right;
+        justify-content: right;
+    }
+    
+    .hidden-over-flow{
+        overflow: hidden;  
+        max-height: 200px;  
+    }
+
+    .text-title-small {
+        font-size: $font-size-badge;
+    }
+}

@@ -1,0 +1,121 @@
+
+<form [formGroup]="form">
+    <div class="underline mt-3 mb-2">NAS</div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Modèle 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="modele" name="modele" [(ngModel)]="interventionNas.modele"
+            [ngClass]="[modeleInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Nombre de disque
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="nbDisk" name="nbDisk" [(ngModel)]="interventionNas.nbDisk"
+            [ngClass]="[nbDiskInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Capacité par disque 
+            <span *ngIf="isRequired" class="red">*</span> </label>
+       
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="capaciteDisk" name="capaciteDisk" [(ngModel)]="interventionNas.capaciteDisk"
+            [ngClass]="[capaciteDiskInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">DDNS
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="ddns" name="ddns" [(ngModel)]="interventionNas.ddns"
+            [ngClass]="[ddnsInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Identifiant compte syno 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="idSyno" name="idSyno" [(ngModel)]="interventionNas.idSyno"
+            [ngClass]="[idSynoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Mot de passe Syno
+            <span *ngIf="isRequired" class="red">*</span>    
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="mdpSyno" name="mdpSyno" [(ngModel)]="interventionNas.mdpSyno"
+            [ngClass]="[mdpSynoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Quickconnect 
+            <span *ngIf="isRequired" class="red">*</span>  
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="quickconnect" name="quickconnect" [(ngModel)]="interventionNas.quickconnect"
+            [ngClass]="[quickconnectInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="comment" name="comment" [(ngModel)]="interventionNas.comment" maxlength="255"></textarea>
+            <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+
+
+    <app-port 
+        [interventionNas]="interventionNas"
+        (onAddAutreStation)="onAddAutreStationEvent($event)"
+        (onRemoveOtherStation)="onRemoveOtherStationEvent($event)"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+    ></app-port>
+    <app-user
+        *ngFor="let interventionComptesUsersNas of interventionComptesUsersNasList; let i=index"
+        [index]="i+1"
+        [isManadatoryFields]="isManadatoryFields"
+        [isVisibleNASBlock]="isVisibleNASBlock"
+        [tabchangedOrSave]="tabchangedOrSave"
+        [interventionComptesUsersNas]="interventionComptesUsersNas"
+        [interventionComptesUsersNasListLength]="interventionComptesUsersNasList.length"
+        (onRemoveUser)="onRemoveUserEvent($event)"
+        [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+    ></app-user>
+    <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addUser($event)"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter un utilisateur </a>
+
+    <div class="form-group row mb-0 mt-3">
+        <label class="col-sm-4 col-form-label athena">Backup </label>
+        <div class="col-sm-20 col-lg-9">
+            <section class="example-section mt-2">
+                <mat-checkbox class="normal" formControlName="isBackup" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab"> Oui</mat-checkbox>
+            </section>
+        </div>
+    </div>
+    <ng-container *ngIf="isVisibileBackupBlock">
+        <app-backup
+            *ngFor="let interventionBackupNas of interventionBackupNasList; let i=index"
+            [index]="i+1"
+            [interventionBackupNas]="interventionBackupNas"
+            [interventionBackupNasListLength]="interventionBackupNasList.length"
+            (onRemoveBackup)="onRemoveBackupEvent($event)"
+            [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab"
+        ></app-backup>
+        <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addBackup($event)"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter un Backup </a>
+    </ng-container>
+</form>

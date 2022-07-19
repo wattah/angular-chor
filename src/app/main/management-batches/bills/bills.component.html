@@ -1,0 +1,190 @@
+<div class="row justify-content-between">
+  <div class="col-6">
+    <div class="form-group row">
+      <label class="col-md-4  col-form-label athena">Univers</label>
+      <div class="col-md-20">
+        <select class="form-control athena"
+          (change)="selectedUnivers($event.target.value)">
+             <option [value]="0">- -</option>
+             <option *ngFor="let univers of lUnivers" [value]="univers?.id">{{univers?.label}}</option>
+         </select> 
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-group row">
+      <label class="col-md-6 col-form-label athena"> Mois</label>
+      <div class="col-md-18 m-0 p-0  d-flex">
+        <mat-form-field appearance="outline" class="col-lg-18 athena">
+          <input matInput [matDatepicker]="datepicker" [formControl]="date" readonly>
+          <mat-datepicker #datepicker startView="multi-year" 
+          (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, datepicker)">
+          </mat-datepicker>
+        </mat-form-field>
+        <div class="col-2  col-sm-6 margin-top p-0">
+          <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="datepicker.open()"></span>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+
+    <div class="form-group row">
+      <label class="col-md-4 col-form-label athena">Etat </label>
+      <div class="col-md-20">
+
+        <mat-form-field class="custum_stock">
+          <mat-select [disableRipple]="true" class="addarrow" [formControl]="fState" (selectionChange)="onSelectedState($event.value)">
+             <mat-option *ngFor="let state of lStateInvoice" [value]="state?.cle">
+                <span [ngClass]="state?.icon"></span>{{ state.label }}
+             </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-6">
+    <div class="form-group row">
+      <label class="col-md-4 col-form-label athena">Statut </label>
+      <div class="col-md-20">
+        <mat-form-field class="custum_stock">
+          <mat-select [disableRipple]="true" class="addarrow" [formControl]="fStatus" (selectionChange)="onSelectedStatus($event.value)">
+			<mat-option *ngFor="let status of lStatusInvoice" [value]="status?.cle">
+                <span [ngClass]="status?.icon"></span>{{ status.label }}
+             </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center my-3 ">
+  <button type="button" class="btn btn-green" (click)="rechercher()">Rechercher</button>
+</div>
+<div class="row mt-4" *ngIf="!isUniversSelected">
+  <p class="center">Veuillez sélectionner un univers avant de lancer la recherche.</p>
+</div>
+
+<div class="row mt-4" *ngIf="!isExistLivrable && isUniversSelected && isSelectedSearch">
+  <p class="center">Aucun résultat de recherche pour les filtres demandées.</p>
+</div>
+
+<app-athena-paginated-ag-grid  
+  class="bills env-blue" *ngIf="rowData?.length !== 0"
+  [showTopPagination]="true"
+  [defaultSortModel]="defaultSortModel"
+  [frameworkComponents]="frameworkComponents" 
+  [detailCellRenderer]="detailCellRenderer" 
+  [getRowHeight]="getRowHeight" 
+  [paginationPageSize]="20"
+  [columnDefs]="columnDefs" 
+  [suppressRowClickSelection]="true" 
+  [rowData]="rowData"
+  [masterDetail]="true" 
+  (clickedCell)="clickCell($event)"
+  [loadAgGridParams]="params"
+  [detailRowHeight]="210">
+</app-athena-paginated-ag-grid>
+<div class="col-sm-11 groupbtns" *ngIf="rowData?.length !== 0">
+	<div class="upload-bills d-inline-block">
+		<ngx-dropzone name="file" [multiple]="true" [expandable]="true" class="fileDropZone "  (change)="upload($event)">
+			<ngx-dropzone-label class="col-form-label btn btn-blue mx-2"> <span class="icon upload"></span>Upload</ngx-dropzone-label>
+		</ngx-dropzone> 
+	</div>
+    <button class="col-form-label btn btn-green mx-2" (click)="relookingStandard()">Relooking</button> 
+    <button class="col-form-label btn blueborder mx-2"  (click)="archiveLivrable()"><span class="icon cadenas"></span> Archiver</button>
+</div>
+<h2 class="athena mt-3">Progression facture</h2>
+<div class="block-progress border pl-3 mt-4">
+	<p [innerHTML]="messages"></p>
+</div>
+<div class="legends mt-4">
+	<h2 class="athena">Légendes</h2>
+	<div class="row">
+		<div class="col-1 p-0"></div>
+		<div class="col-6 p-0">
+			<div class="athena underline my-3">
+				Etat
+			</div>
+			<div class="mb-2">
+				<span class="icon etat-green mr-2"></span>Facture uploadée
+			</div>
+			<div class="mb-2">
+				<span class="icon etat-red mr-2"></span>Facture absente
+			</div>
+			<div class="mb-2">
+				<span class="icon status-renewal-done mr-2"></span>Générée sans erreurs
+			</div>
+			<div class="mb-2">
+				<span class="icon picto-exclamation-orange mr-2"></span>Générée avec erreurs mineures
+			</div>
+			<div class="mb-2">
+				<span class="icon picto-exclamation-rouge mr-2"></span>Générée avec erreurs
+			</div>
+			<div class="mb-2">
+				<span class="icon etat-relooking mr-2"></span>Relookée manuellement
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="athena underline my-3">
+				Statut
+			</div>
+			<div class="mb-2">
+				<span class="icon rond-blue mr-2"></span>Facture à vérifier
+			</div>
+			<div class="mb-2">
+				<span class="icon rond-orange mr-2"></span>Correction validée
+			</div>
+			<div class="mb-2">
+				<span class="icon rond-red mr-2"></span>Facture à corriger
+			</div>
+			<div class="mb-2">
+				<span class="icon rond-green-light mr-2"></span>Facture vérifiée
+			</div>
+			<div class="mb-2">
+				<span class="icon rond-green mr-2"></span>Facture archivée
+			</div>
+		</div>
+		<div class="col-5">
+			<div class="athena underline my-3">
+				PDF original
+			</div>
+			<div class="mb-2 env-blue">
+				<span class="icon pdf mr-2"></span>Original présent
+			</div>
+			<div class="mb-2">
+				<span class="icon picto-tache-assign-dans-d-lais mr-2"></span>Original présent, facture payée
+			</div>
+			<div class="mb-2">
+				<span class="icon picto-tache-close-hors-d-lais mr-2"></span>Original absent
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="athena underline my-3">
+				Picto du tableau
+			</div>
+			<div class="mb-2">
+				<span class="icon del mr-2"></span> Supprimer la facture
+			</div>
+			<div class="mb-2">
+				<span class="icon download mr-2"></span>Télécharger la facture
+			</div>
+			<div class="mb-2">
+				<span class="icon cadenas mr-2"></span>Facture archivée
+			</div>
+			<div class="mb-2">
+				<span class="icon etat-relooking mr-2"></span>Relooker la facture manuellement
+			</div>
+			<div class="mb-2">
+				<span class="icon parameters mr-2"></span>Actions possibles
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="loading" class="wrapper">
+        <div class="spinner">
+        </div>
+    </div>
+</div>

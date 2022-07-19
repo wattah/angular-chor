@@ -1,0 +1,5 @@
+<div class="modal-body text-center margin-pop-up" >
+  <p class="athena" [innerHTML]="message"></p>
+  <input class="btn btn-green mt-1" [value]="btnOkText" type="button" (click)="accept()" />
+  <button class="btn btn-link blue center mt-3" (click)="decline()" [hidden] = "!isCancelBtnVisible">{{ btnCancelText }}</button>
+</div>

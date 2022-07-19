@@ -1,0 +1,52 @@
+<div class="profil" >
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="block-1">
+                <div class="row">
+                    <div class="col-lg-7 p-0">
+                        <img class="img-fluid maxProfilePicture" [src]="photo" alt="profile" />
+                    </div>
+                    <div class="col-lg-17 pl-2">
+                        <div><span class="grey athena"> Civilité:</span> {{civility}}</div>
+                        <div><span class="grey athena">Titre:</span> {{person?.refSocialTitle?.label ? person?.refSocialTitle?.label:'-'}}</div>
+                        <div><span class="grey athena">Nom:</span> {{person?.lastName ? (person?.lastName | uppercase):'-'}}</div>
+                        <div><span class="grey athena">Nom interne:</span> {{person?.crmName ? person?.crmName:'-'}}</div>
+                        <div><span class="grey athena">Nom d'usage:</span> {{person?.nickname ? person?.nickname:'-'}}</div>
+                        <div><span class="grey athena">Prénom:</span> {{person?.firstName ? (person?.firstName | firstName):'-'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="block-2">
+                <div><span class="grey athena">Nationalité: </span>  {{person?.refNationality?.label ? person?.refNationality?.label:'-'}}</div>
+                <div><span class="grey athena">Date de naissance:</span> {{ birthdate ? birthdate:'-' }}</div>
+                <div><span class="grey athena">Langue favorite:</span> {{person?.refFavoriteLanguage?.label ? person?.refFavoriteLanguage?.label:'-'}}</div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="block-3" class="enableNewLine" style="word-break: break-all;">
+                <div><span class="grey athena">Secteur d'activité: </span> {{person?.refSocioEconomicGroup?.label ? person?.refSocioEconomicGroup?.label:'-'}}</div>
+                <div><span class="grey athena">Métier: </span> {{person?.refJob?.label ? person?.refJob?.label:'-'}}</div>
+                <div><span class="grey athena"> Complément d'activité:</span> {{person?.jobTitle ? person?.jobTitle:'-'}}</div>
+                <div><span class="grey athena">Type d'entreprise: </span> {{person?.refCompanyType?.label ? person?.refCompanyType?.label:'-'}}</div>
+                <div><span class="grey athena"> Nom de l'entreprise:</span> {{person?.companyName ? person?.companyName:'-'}} </div>
+            </div>
+        </div>
+        <div class="col-lg-7 pl-4">
+            <div class="block-4">
+                <div class="enableNewLine" style="word-break: break-all;">
+                    <span class="grey athena">Portrait:</span>
+                    {{person?.portraitByCoach ? person?.portraitByCoach:'-' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngxPermissionsOnly="['modification_profil']"  class="row mt-5 mb-2 justify-content-center">
+        <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateProfil()"><span class="icon pen-white d-block btn-modifie"></span>Modifier</button>
+    </div>
+</div>
+

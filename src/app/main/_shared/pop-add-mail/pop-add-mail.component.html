@@ -1,0 +1,51 @@
+	<div class="modal-body mt-2 px-3 px-sm-5 block_onglet">
+		<form  class="pt-3" [formGroup]="form">
+			<p class="title text-center mb-5 pt-3">Ajout d'un email temporaire</p>
+			<div class="row" *ngIf="mailNotValid || mailFormatNotValid">
+				<div class="form-group d-block w-100 mb-3">
+					<div class="block block-alert">
+						<table class="table table-not-bordered"><caption class="p-0"></caption>
+							<tbody>
+								<tr>
+									<th id="th"></th> 
+									<td class="alert-icon align-middle" >
+										<span class="icon icon-max status-exclamation-white mb-1"></span>
+									</td>
+									<td class="alert-text pb-0">
+										<strong class="athena red " style="padding-left: 9px;">
+											Ce formulaire n’est pas correctement renseigné
+										</strong>
+										<ul class="simple mr-0 mt-1 alert-padding">
+											<li *ngIf="mailNotValid">Le champ mail est obligatoire </li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="form-group row mb-3">
+				<label class="col-12 col-sm-3 col-form-label athena" >Mail*</label>
+				<div class="col-sm-21">
+					<div class="d-flex">
+						<input [ngClass]="[mailNotValid || mailFormatNotValid ? 'form-control error athena' : 'form-control athena']" name="mail" 
+						formControlName="mail" autofocus="false" type="text">
+						<div  class="col-sm-1 mt-2 athena" *ngIf="mailNotValid || mailFormatNotValid">
+							<span class="icon  status-exclamation mt-excla"></span>
+						</div>
+				    </div>
+					<mat-error *ngIf="mailNotValid">
+						Ce champ est obligatoire
+					</mat-error>
+					<mat-error *ngIf="mailFormatNotValid">
+						Entrez l’adresse de messagerie au format xyz@example.com.
+					</mat-error>
+			    </div>
+			</div>
+			<div class="text-center mb-3 mt-4">
+				<button type="submit"  (click)="save()" class="btn btn-green" >Enregistrer</button> <br />
+				<button class="btn btn-link blue mt-2"  (click)="annuler()">Annuler</button>
+			</div>
+	    </form>
+	</div>

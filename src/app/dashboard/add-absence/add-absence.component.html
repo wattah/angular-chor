@@ -1,0 +1,105 @@
+<div class="col-sm-24 col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena">{{title}}</h2>
+        <form [formGroup]="addAbsenceForm" #formAbsence="ngForm">
+            <div class="form-group row" *ngxPermissionsOnly="['ajout_absence']">
+                <label for="roleSelect" class="col-sm-3 col-md-3 col-lg-3 mr-lg-0 mr-md-3 col-form-label grey">Je déclare</label>
+                <div class="col-sm-9 offset-lg-n5 ml-lg-0 ml-md-5">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="isBackup" id="optionsRadios1" value="mine" [checked]="isMyAbsenceChecked"
+                        (change)="radioIsBackupChangeHandler($event)">
+                        <label class="form-check-label" for="optionsRadios1">
+                        Mon absence
+                        </label>
+                    </div>
+                    <div class="form-check" *ngxPermissionsOnly="['afficher_absences_autres']">
+                        <input class="form-check-input" type="radio" name="isBackup" id="optionsRadios2" value="else" [checked]="!isMyAbsenceChecked"
+                        (change)="radioIsBackupChangeHandler($event)">
+                        <label class="form-check-label" for="optionsRadios2">
+                        L'absence d'une autre personne
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row col-sm-4 col-md-24 col-lg-8">
+                <label for="start" class="col-lg-6 col-md-8 col-sm-16 col-form-label mt-1 mr-lg-5 mr-md-n5 athena">Date de début (incluse)*</label>
+                <mat-form-field class="col-lg-6 col-md-4 col-sm-2 ml-lg-0 ml-md-n5" appearance="outline" style="width:60%;">
+                    <input class="athena" matInput formControlName="startDate" (dateChange)="onSelectStartDate($event)" [matDatepicker]="pickerStart" readonly required>
+                    <mat-datepicker #pickerStart></mat-datepicker>
+                </mat-form-field>
+                <span class="col-2 col-form-label mt-2 ml-lg-n1 ml-sm-n3 icon calendar-grey clickable" (click)="pickerStart.open()" ></span>
+                <label for="start" class="offset-1 ml-lg-0 ml-md-n2 col-1 col-form-label mt-1 mr-1 athena"> à </label>
+                <div class="col-5 col-md-4">
+                    <app-athena-timer [defaultHour] = "startHour" [defaultMinute] = "startMinute" (selectTime)="onChangeTimeStart($event)"></app-athena-timer>
+                </div>
+            </div>
+            <div class="form-group row col-sm-4 col-md-24 col-lg-8">
+                <label for="end" class="col-lg-6 col-md-8 col-sm-16 col-form-label mt-1 mr-lg-5 mr-md-n5 athena">Date de fin (incluse)*</label>
+                <mat-form-field class="col-lg-6 col-md-4 col-sm-2 ml-lg-0 ml-md-n5" appearance="outline" style="width:60%;">
+                    <input class="athena" matInput formControlName="endDate" [min]="minDate" [matDatepicker]="pickerEnd" readonly required>
+                    <mat-datepicker #pickerEnd></mat-datepicker>
+                </mat-form-field>
+                <span class="col-2 col-form-label mt-2 ml-lg-n1 ml-sm-n3 icon calendar-grey clickable" (click)="pickerEnd.open()" ></span>
+                <label for="end" class="offset-1 ml-lg-0 ml-md-n2 col-1 col-form-label mt-1 mr-1 athena"> à </label>
+                <div class="col-5 col-md-4">
+                    <app-athena-timer [defaultHour] ="hourStartDate" [defaultMinute] = "minuteStartDate" (selectTime)="onChangeTimeEnd($event)"></app-athena-timer>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-md-6 col-lg-3 col-form-label mr-lg-0 mr-md-2 athena">Intérim assuré par</label> 
+                <div class="col-sm-6 col-md-8 col-lg-6 ml-lg-0 ml-md-n5">   
+                    <mat-form-field class="large-chip-list" appearance="outline">
+                        <input type="text"
+                            matInput
+                            [matAutocomplete]="autoC"
+                            [formControl]="interimControl">
+                          <mat-autocomplete #autoC="matAutocomplete" [displayWith]="displayUser">
+                            <mat-option *ngFor="let option of filteredInterim | async" [value]="option">
+                                {{option | fullNameFormatter:' '}} 
+                            </mat-option>
+                          </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div> 
+            <ng-container *ngxPermissionsOnly="['afficher_absences_autres']"> 
+                <div class="form-group row" *ngIf="isBackup">
+                    <label class="col-sm-3 col-md-6 col-lg-3 mr-lg-0 mr-md-2 col-form-label athena">Personne absente*</label> 
+                    <div class="col-sm-6 col-md-8 col-lg-6 ml-lg-0 ml-md-n5">   
+                        <mat-form-field class="large-chip-list" appearance="outline">
+                            <input type="text"
+                                matInput
+                                [matAutocomplete]="autoB"
+                                [formControl]="personControl" required>
+                            <mat-autocomplete #autoB="matAutocomplete" [displayWith]="displayUser">
+                                <mat-option *ngFor="let option of filteredPerson | async" [value]="option">
+                                    {{option | fullNameFormatter:' '}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div><br/>
+            </ng-container>
+            <div class="row control-buttons d-none d-lg-inline" style="display:inline;">
+                    <a class="offset-1 btn btn-link mb-n1 athena" [routerLink]="null" (click)="cancel()">Annuler</a>
+                    <input class="btn btn-green athena mr-3" value="Enregistrer" type="submit" (click)="save()" [disabled]="personControl.invalid"/>
+                    <input class="btn btn-blue athena" value="Enregistrer et nouveau" type="submit" (click)="saveAndNew()" [disabled]="personControl.invalid"/>
+            </div> 
+            <div class="row control-buttons d-lg-none d-none d-md-inline" style="display:inline;">
+                <a class="offset-1 btn btn-link athena" [routerLink]="null" (click)="cancel()">Annuler</a>
+                <input class="btn btn-green athena mr-3" style="height: 60px;" value="Enregistrer" type="submit" (click)="save()" [disabled]="personControl.invalid"/>
+                <input class="btn btn-blue athena" style="height: 60px;" value="Enregistrer et nouveau" type="submit" (click)="saveAndNew()" [disabled]="personControl.invalid"/>
+            </div> 
+            <div class="d-md-none d-lg-none"> 
+                    <div class="col-24 mb-2">
+                        <input class="btn btn-lg btn-block btn-green mb-2 athena" style="height: 50px;" (click)="save()" type="submit" value="Enregistrer" [disabled]="personControl.invalid"/>
+                    </div>
+                    <div class="col-24">
+                        <input class="btn btn-lg btn-block btn-blue mb-2 athena" style="height: 50px;" (click)="saveAndNew()" type="submit" value="Enregistrer et nouveau" [disabled]="personControl.invalid"/>
+                    </div>
+                    <div>
+                        <a class="btn btn-link btn-block athena" [routerLink]="null" (click)="cancel()">Annuler</a>
+                    </div>
+            </div>  
+        </form>
+    </div>
+</div>

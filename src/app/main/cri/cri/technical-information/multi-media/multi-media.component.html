@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+    <div class="underline mt-3 mb-2">Matériel multimédia</div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="multimediaInfo" name="multimediaInfo" [(ngModel)]="interventionDetail.multimediaInfo"
+            [ngClass]="[multimediaInfoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            maxlength="255">    
+        </textarea>
+        <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,66 @@
+
+
+<blockquote>
+    <form [formGroup]="form">
+        <div class="underline mt-4 mb-2">Compte utilisateurs N°{{index}}<span class="icon del ml-2" *ngIf="interventionComptesUsersNasListLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeUser()"></span></div>
+        <div class="form-group row select_arrows">
+            <label class="col-form-label athena col-sm-4"> Type d'utilisateur 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+
+            <div class="col-sm-4">
+                <div class="form-check">
+                    <input [ngClass]="[typeUserInvalid ? ' form-check-input athena error':'form-check-input athena']"
+                 id="{{isAdminRandomName}}" name="isAdmin" type="radio" [value]="true" formControlName="isAdmin" />
+                    <label class="form-check-label athena" for="{{isAdminRandomName}}"> Administrateur </label>
+                </div>
+                <div class="form-check">
+                    <input [ngClass]="[typeUserInvalid ? ' form-check-input athena error':'form-check-input athena']"
+                    id="{{isUserRandomName}}" name="isAdmin" type="radio" [value]="false" formControlName="isAdmin"/>
+                    <label class="form-check-label athena" for="{{isUserRandomName}}"> Utilisateur</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Nom 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="nom" name="nom" [(ngModel)]="interventionComptesUsersNas.nom"
+                [ngClass]="[nomInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Login 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="login" name="login" [(ngModel)]="interventionComptesUsersNas.login"
+                [ngClass]="[loginInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Password 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="password" name="password" [(ngModel)]="interventionComptesUsersNas.password"
+                [ngClass]="[passwordInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Adresse email
+                <span *ngIf="isRequired" class="red">*</span> </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="email" name="email" [(ngModel)]="interventionComptesUsersNas.email"
+                [ngClass]="[emailInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+    </form>
+</blockquote>
+

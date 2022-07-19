@@ -1,0 +1,133 @@
+<div class="row">
+    <header class="col-24">
+        <div class="block block-transparent">
+            <h6 class="athena">
+                Votre {{customerHardward?.productLabel}}
+            </h6>
+        </div>
+    </header>
+    <section class="col-md-24 col-lg-24 order-lg-1">  
+        <article class="block shadow-block">
+                <h2 class="athena">MODIFICATION</h2>
+                <form  [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onUpdateParcElement()">
+                    <div class="row">
+                        <div class="col-lg-18 col-md-18">                        
+                            <div class="form-group row" *ngIf="isEntreprise">
+                                <label for="" class="col-md-5 col-form-label athena">Contrat</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name=""
+                                    value="{{customerHardward?.customerNicheIdentifier}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="isEntreprise">
+                                <label for="" class="col-md-5 col-form-label athena">Bénéficiaire</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name=""
+                                    value="{{customerHardward?.customerBeneficeryName}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Catégorie</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name="" value="{{customerHardward?.category}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Catégorie récurrente</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name=""
+                                    value="{{recurrentCategory}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Service ou matériel</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name=""
+                                    value="{{customerHardward?.productLabel}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="!isOffreAndService && !isElse">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Date d'achat</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena" formControlName="buyingDate" name="subscriptionDate"
+                                    value="" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Date de résiliation</label>
+                                <mat-form-field class="col-md-4" appearance="outline">
+                                    <input class="athena" matInput formControlName="realizationDate"   [matDatepicker]="picker"  placeholder="" readonly>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-datepicker #picker disabled="false"></mat-datepicker> 
+                                </mat-form-field>
+                                <span class="col-form-label mt-2  icon calendar-grey clickable athena" (click)="picker.open()" ></span>
+                            </div>
+                            <div class="form-group row" *ngIf="!isOffreAndService">
+                                <label for="" class="col-md-5 col-form-label athena">Ligne associée</label>
+                                <div class="col-md-14 ">
+                                    <select   class="form-control col-md-14 mt-1 athena" formControlName="associetedLine" >
+                                        <option [ngValue]="null" disabled>--</option>
+                                        <option *ngFor="let park of parkItems" [ngValue]="park">
+                                            {{park.universe}} > {{park.webServiceIdentifier}} > {{park.libelleContract}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="!isOffreAndService">
+                                <label for="" class="col-md-5 col-form-label athena">Adresse d'installation</label>
+                                <div class="col-md-14 ">
+                                    <select class="form-control col-md-14 mt-1 athena" formControlName="installationAddress">
+                                        <option [ngValue]="null">--</option>
+                                    </select>
+                                </div>
+                            </div>                            
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Commentaire</label>
+                                <div class="col-md-14">
+                                    <textarea  class="form-control col-md-14 athena" formControlName="comment"  rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Numéro de série <span *ngIf="serialRequired">*</span></label>
+                                <div class="col-md-14">
+                                    <input  Class="form-control col-md-14 athena" formControlName="serielNumber" maxlength="50" type="text"/>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="!isProduct">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Début de facturation</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  formControlName="startBilling" name="startBilling" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="showStatus">
+                                <label for="" class="col-md-5 col-form-label athena">Statut*</label>
+                                <div class="col-md-14 ">
+                                    <select class="form-control col-md-14 mt-1 athena" formControlName="statut">
+                                        <option [ngValue]="null">--</option>
+                                        <option *ngFor="let s of statut" [ngValue]="s">{{s.value}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="category === 'SAV' && parcStatus.status === 'RESILIE'">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Statut</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  name=""
+                                    value="{{status}}" type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="row control-buttons">
+                                <div class="offset-md-2 mt-1 col-md-3">
+                                    <a class="btn btn-link athena"  [routerLink]="null" (click)="annuler()" 
+                                    >Annuler</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <input class="btn btn-green athena" value="Enregistrer " 
+                                            type="submit"  [disabled]="!form.valid || ngForm.submitted"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </article>   
+    </section>       
+</div>

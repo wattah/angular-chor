@@ -1,0 +1,264 @@
+<section class="catalogue_panier">
+    <div class="row">
+        <div *ngIf="isPanier && !isAdminCatalog"  class="col-lg-8 col-md-24 order-lg-2">
+            <div class="block block-shadow pb-2">
+                <div class="block_resume_panier p-0">
+                    <h2 class="athena">Panier (TTC)</h2>
+                    <div class="row">
+                        <div class="col-md-24 col-lg-24">
+                            <div class="red  mt-2 mb-3 text-semibold" *ngIf="cartHasBlockedItem">Validation nécessaire  </div>
+                            <app-basket-information
+                                [cartStatusValue]="CartStatusValue[cart?.status]"
+                                [cartLabel]="cartlabel"
+                                [numberOfArticle]="numberOfArticle"
+                                [calculateMargePourcent]="cart?.calculateMargePourcent"
+                                [orderId]="cart?.orderId"
+                                [cartTotal]="cartRecapVo?.cartTotal">
+                            </app-basket-information>
+                            <div class="d-flex justify-content-center" *ngIf="visibleActionsOnArticle">
+                                <button  class="col-form-label btn btn-blue" (click)="interClick()"> Voir le panier </button>
+                            </div>
+                            
+                            <div name="showField" ngDefaultControl [(ngModel)]="showCart" [hidden]="showCart === false" *ngIf="numberOfArticle > 0" class="link row mt-3">
+                                <hr class="col-4 col-md-5 col-lg-5 mr-2">
+                                <a class="athena col-12 col-md-11 col-lg-11 ml-2 p-0 text-center" (click)="OnshowCart()" >Voir le détail du panier
+                                    <span class="icon icon-min arrow-bottom-blue athena ml-1"></span></a>
+                                    <!-- changer arrow-bottom-blue  par arrow-top-blue fleche en haut -->
+                                    <hr class=" col-4 col-md-5 col-lg-5 ml-1 ">
+                                </div>
+
+                                <div *ngIf="!showCart" class="link row mt-3">
+                                    <hr class="col-4 col-md-5 col-lg-5 mr-2" />
+                                    <a class="athena col-12 col-md-11 col-lg-11 ml-2 p-0 text-center"(click)="OnHideCart()">Masquer le détail du panier <span class="icon icon-min arrow-top-blue athena ml-1"></span></a>
+                                    <!-- changer arrow-bottom-blue  par arrow-top-blue fleche en haut -->
+                                    <hr class="col-4 col-md-5 col-lg-5 ml-1" />
+                                </div>
+            
+                                <div  *ngIf="!showCart" class="block_recupilatif_panier">
+                                    <div class="d-flex justify-content-between line" *ngFor="let item of cartRecapItemsVo; let i=index">
+                                        <div> {{item.quantiteCartItem}} x {{item.labelCartItem}}</div>
+                                        <div class="price_space">{{item.totalePriceCartItem}} € </div>
+                                    </div>
+                
+                                    <div class="d-flex justify-content-between line">
+                                        <div >Remise totale</div>
+                                        <div class="red"> 
+                                            {{(!cartRecapVo?.totalDiscount) ? '' : '-'}}
+                                            {{(!cartRecapVo?.totalDiscount) ? '0' : cartRecapVo?.totalDiscount }} €
+                                         </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between line">
+                                        <div>Total mensuel</div>
+                                        <div>{{(!cartRecapVo?.monthlyTotal) ? '0' : cartRecapVo?.monthlyTotal }} €</div>
+                                    </div>
+                
+                                    <div class="d-flex justify-content-between line">
+                                        <div>Total annuel</div>
+                                        <div>{{(!cartRecapVo?.annualTotal) ? '0' : cartRecapVo?.annualTotal }} €</div>
+                
+                                    </div>
+                
+                                    <div class="d-flex justify-content-between line">
+                                        <div>Total ponctuel</div>
+                                        <div >{{(!cartRecapVo?.punctualTotal) ? '0' : cartRecapVo?.punctualTotal }} €</div>
+                
+                                    </div>
+                
+                                    <div class="d-flex justify-content-between line font-weight-bold my-3">
+                                        <div>Total Panier</div>
+                                        <div >{{(!cartRecapVo?.cartTotal) ? '0' : cartRecapVo?.cartTotal }} €</div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div [ngClass]=" isAdminCatalog ? 'col-lg-24 col-md-24 order-lg-1' : 'col-lg-16 col-md-24 order-lg-1'" >
+            <div class="block block-shadow">
+                <h2 class="athena" [hidden]="isAdminCatalog">Produits</h2>
+                <h2 class="athena"[hidden]="!isAdminCatalog">FILTRES</h2>
+                <div class="block block-alert mt-3" *ngIf="isWinGsmDown()">
+                    <table class="table table-not-bordered">
+                        <caption class="p-0"></caption>
+                        <tbody>
+                            <tr>
+                                <th id=""></th>
+                                <td class="alert-icon">
+                                    <span class="icon icon-max status-exclamation-white"> </span>
+                                </td>
+                                <td class="alert-text">Le service de gestion des stocks n'est pas disponible pour le moment.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Block forms -->
+                <div class="forms mt-4">
+                    <div class="row">
+                        <div class="col-sm-24 col-lg-12">
+                            <div class="form-group row select_arrows" [hidden]="isAdminCatalog">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Catégorie </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="categoryControl" (change)="onChangeCategory()">
+                                        <option *ngFor="let category of categoriesByOrder" [ngValue]="category"> 
+                                            {{category?.name ?  category?.name:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-1">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">
+                                    Nom, description, référence
+                                </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <mat-form-field class="w-100 catalogue_p"  appearance="outline">
+                                        <input type="text" matInput [formControl]="textSearchControl" [matAutocomplete]="auto" #desc="matAutocompleteTrigger"
+                                        (keydown.enter)="$event.target.blur(); desc.closePanel()" (change)="onInputClick()"/>
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let product of filteredServiceOrMateriel | async" [value]="product?.name" (onSelectionChange)="onSelectProduct($event)">
+                                                <ul class="mat-summary">
+                                                    <li>{{product?.name }}</li>
+                                                </ul>
+                                            </mat-option>
+                                        </mat-autocomplete> 
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-group row select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">Nomenclature 1 </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="nomenclature1" (change)="onSelectNom(1)">
+                                        <option *ngFor="let nomenc1 of nomenclatures1List" [ngValue]="nomenc1"> 
+                                            {{nomenc1?.label ?  nomenc1?.label:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">Nomenclature 2 </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="nomenclature2" (change)="onSelectNom(2)">
+                                        <option *ngFor="let nomenc2 of nomenclatures2List" [ngValue]="nomenc2"> 
+                                            {{nomenc2?.label ?  nomenc2?.label:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-24 col-lg-12">
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 3</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="nomenclature3" (change)="onSelectNom(3)">
+                                        <option *ngFor="let nomenc3 of nomenclatures3List" [ngValue]="nomenc3"> 
+                                            {{nomenc3?.label ?  nomenc3?.label:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 4</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="nomenclature4" (change)="onSelectNom(4)">
+                                        <option *ngFor="let nomenc4 of nomenclatures4List" [ngValue]="nomenc4"> 
+                                            {{nomenc4?.label ?  nomenc4?.label:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 5</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="nomenclature5" (change)="onSelectNom(5)">
+                                        <option *ngFor="let nomenc5 of nomenclatures5List" [ngValue]="nomenc5"> 
+                                            {{nomenc5?.label ?  nomenc5?.label:'-' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- button rechercher -->
+                <div class="text-center my-3 block_onglet">
+                    <button type="button" class="btn btn-green" (click)="search(true)">Rechercher</button>
+                </div>
+                 <!-- Block tri et pagination  -->
+                <div class="row tri_pagination mt-3" *ngIf="total>0 ">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="tri mt-2">
+                            <div class="form-group row mb-0 select_arrows">
+                                <label class="col-sm-8 col-lg-3 pl-0 col-form-label athena">Trié par </label>
+                                <div class="col-sm-8 col-lg-6">
+                                    <select class="form-control mb-0 athena ng-pristine ng-invalid ng-touched" [formControl]="filtre" (change)="onChangeFilter()">
+                                        <option selected value="null"> -- </option>
+                                        <option value="name">Nom</option>
+                                        <option value="priceHt">Prix TTC</option>
+                                        <option value="family">Famille</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-24 col-sm-12 col-xl-12" *ngIf="total>9 && !isAdminCatalog" >
+                        <div class="pagination-1">
+                            <div class="row justify-content-end mt-2 mb-2">
+                                <div class="col-24 col-sm-22 col-xl-20 col-md-18">
+                                    <app-athena-pagination [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="goToPage($event)"> </app-athena-pagination>
+                                    <div class="grey font-italic mt-2 athena">{{total}} RÉSULTATS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- blocks des produits -->
+                <div class="descrption_products" *ngIf="!isAdminCatalog">
+                    <div class="row">
+                        <div class="col-sm-8 col-lg-8" *ngFor="let product of products">
+                            <div class="block">
+                                <img class="img-fluid w-100" [src]="loadImageProduct(product)" alt="product.name" />
+                                <div class="description athena mt-2">
+                                    <div class="titre">{{product?.name}}</div>
+                                    <div><span class="grey athena">{{product?.libelleFacture? product?.libelleFacture : "-"}}</span></div>
+                                    <div><span class="grey athena">{{familyProductPath(product)}}</span></div>
+                                    <div *ngIf="checkAvailability(product)"><span class="grey athena">Stock Raspail : </span> {{getStockAvailability(product,"RASPAIL")}}</div>
+                                    <div><span class="grey athena" >Stock Publidispatch :  </span> {{getStockAvailability(product,"PUBLIDISPATCH")}}</div>
+                                    <div class="prix env-blue text-center mt-2">
+                                        <div class="title_prix red">{{getPriceText(product)}}</div>
+                                        <div class="icon mt-3 w-100">
+                                            <span class="icon pdf clickable" *ngIf="!notHasDescription(product)" (click)="downloadDocument(product)"></span>
+                                            <span class="icon picto-panier-ajout ml-3 clickable" (click)="addArticleToCart(product)" *ngIf="visibleActionsOnArticle"></span>
+                                            <span class="icon cadenas-rouge ml-3 clickable" *ngIf="product?.blocked"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1" *ngIf="!isAdminCatalog && (!products || products.length === 0)">
+                    <p class="center">Votre recherche ne donne aucun résultat, veuillez la modifier.</p>
+                </div>
+
+                <div class="row justify-content-end mt-1" *ngIf="total>9 && !isAdminCatalog">
+                    <div class="col-24 col-sm-18 col-lg-16">
+                        <app-athena-pagination [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="goToPage($event)"> </app-athena-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-24 col-md-24 order-lg-1" *ngIf="isAdminCatalog" >
+         <app-products-catalog-ag-grid  *ngIf="isAdminCatalog"  [filtersCreteria]="filtersCreteria"
+          [isSearchBtnClicked]="isSearchBtnClicked">
+        </app-products-catalog-ag-grid>
+        </div>
+    </div>
+    <div *ngIf="loading" class="wrapper">
+        <div class="spinner">
+        </div>
+    </div>
+</section>

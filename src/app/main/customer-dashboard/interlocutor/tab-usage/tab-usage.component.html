@@ -1,0 +1,137 @@
+<div class="groupblock " *ngIf="showusage">
+    <div id="usageDiv" class="padd-block block" *ngFor="let usageRef of usagesRefList">
+      <ng-container  *ngIf="getUsageListByRefKey(usageRef.key); let usage">
+      <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId , 'interlocutor-usage','modification', 'usage', usageRef.key]" queryParamsHandling="merge" *ngxPermissionsOnly="['modification_interlocuteur']">
+        <div class="block-title-item-icon">
+          <span class="icon pen athena"></span>
+        </div>
+      </a>
+      <div class="h7 underline mb-3">
+        {{usageRef.label}}
+      </div>
+  <!--Maison-->
+      <div class="mb-2 home" *ngIf="getUsageByCmMedia(usage, CM_MEDIA_REF.TEL_FIXE); let usageHome">
+        <span class="icon phone-home mb-1" style="cursor: pointer;" (click)="validPhoneHomeContact(usageHome.cmInterlocuteur)">
+          <span *ngIf="usageHome.cmInterlocuteur.isExpired" class="icon icon-alert" ngbTooltip="Pour valider cliquer ici"></span>
+          <span *ngIf="isValidContacts[usageHome.cmInterlocuteur.id]" class="icon icon-check"></span>
+        </span>
+        <span [ngClass]="['ml-1 tele', usageHome.cmInterlocuteur.isExpired ? 'pink' : '']">{{usageHome.cmInterlocuteur.value}}  
+          <span class="font-italic text-min pr-2 grey "> 
+        - {{getClientName(usageHome)}}  </span> 
+        </span>
+        <span>
+          <ng-template #popContent1> <ul class="ath-summary ">
+            <div class="row ">       
+              <span class="icon  info-grey col-2" ></span>
+              <span class="title col-17"> Rôle(s)  </span>
+              <span  class="icon close col-4 "> </span>
+          </div>
+            <li *ngFor="let role of usageHome.interlocutor.roles">{{role.label}} </li>
+          </ul> </ng-template>
+            <span class="icon info-grey cursour"placement="right"
+              [ngbPopover]="popContent1" >
+            </span>
+      </span>
+      </div>
+  <!--Télephone-->
+      <div class="mb-2 Telephone" *ngIf="getUsageByCmMedia(usage, CM_MEDIA_REF.TEL_MOBILE); let usageMobile">
+        <span class="icon phone-mobile" style="cursor: pointer;" (click)="validMobileContact(usageMobile.cmInterlocuteur)"> 
+          <span *ngIf="usageMobile.cmInterlocuteur.isExpired" class="icon icon-alert" ngbTooltip="Pour valider cliquer ici"></span>
+          <span *ngIf="isValidContacts[usageMobile.cmInterlocuteur.id]" class="icon icon-check"></span>
+        </span>
+        <span [ngClass]="['ml-1 tele', usageMobile.cmInterlocuteur.isExpired ? 'pink' : '']"> {{usageMobile.cmInterlocuteur.value}}  
+          <span class="font-italic text-min pr-2 grey"> - {{getClientName(usageMobile)}}  </span> 
+        </span>
+        <span>
+          <ng-template #popContent1> <ul class="ath-summary ">
+            <div class="row ">       
+              <span class="icon  info-grey col-2" ></span>
+              <span class="title col-17"> Rôle(s)  </span>
+              <span  class="icon close col-4 "> </span>
+          </div>
+          <li *ngFor="let role of usageMobile.interlocutor.roles">{{role.label}} </li>
+          </ul> </ng-template>
+            <span class="icon info-grey cursour"placement="right"
+              [ngbPopover]="popContent1" >
+            </span>
+      </span>
+      </div>
+  
+  <!-- Email-->
+      <div class=" mb-2 email" *ngIf="getUsageByCmMedia(usage, CM_MEDIA_REF.EMAIL); let usageEmail">
+        <span class="icon  mail" style="cursor: pointer;" (click)="validEmailContact(usageEmail.cmInterlocuteur)"> 
+          <span *ngIf="usageEmail.cmInterlocuteur.isExpired" class="icon icon-alert" ngbTooltip="Pour valider cliquer ici"></span> 
+          <span *ngIf="isValidContacts[usageEmail.cmInterlocuteur.id]" class="icon icon-check"></span>
+        </span>
+        <span [ngClass]="['ml-1 tele', usageEmail.cmInterlocuteur.isExpired ? 'pink' : '']"> {{usageEmail.cmInterlocuteur.value}} 
+           <span class="font-italic text-min pr-2 grey"> - {{getClientName(usageEmail)}}  </span> 
+        </span>
+  
+        <span>
+          <ng-template #popContent1> <ul class="ath-summary ">
+            <div class="row ">       
+              <span class="icon  info-grey col-2" ></span>
+              <span class="title col-17"> Rôle(s)  </span>
+              <span  class="icon close col-4 "> </span>
+          </div>
+          <li *ngFor="let role of usageEmail.interlocutor.roles">{{role.label}} </li>
+          </ul> </ng-template>
+            <span class="icon info-grey cursour"placement="right"
+              [ngbPopover]="popContent1" >
+            </span>
+      </span>
+      </div>
+  <!--Adress-->
+      <div class="adress d-flex" *ngIf="getUsageByCmMedia(usage, CM_MEDIA_REF.POSTAL_ADDRESS); let usagePA">
+        <div><span class="icon point" style="cursor: pointer;" (click)="validAddressContact(usagePA.cmInterlocuteur)">
+          <span *ngIf="usagePA.cmInterlocuteur.isExpired" class="icon icon-alert" ngbTooltip="Pour valider cliquer ici"></span>
+          <span *ngIf="isValidContacts[usagePA.cmInterlocuteur.id]" class="icon icon-check"></span>
+        </span></div>
+        <div class="block_left w-50">
+          <span [ngClass]="['ml-1 tele enableNewLine', usagePA.cmInterlocuteur.isExpired ? 'pink' : '']">
+            {{getAddress(usagePA.cmInterlocuteur.postalAddres)}}
+          </span>
+    
+          <div class="livraison" *ngIf="usagePA.cmInterlocuteur.postalAddres.addrLine2 || usagePA.cmInterlocuteur.postalAddres.addrLine3 || usagePA.cmInterlocuteur.postalAddres.logisticInfo">
+            <span class="underline text-min grey">Livraison</span>
+            <ul [ngClass]="['ath-summary pl-2', usagePA.cmInterlocuteur.isExpired ? 'pink' : '']">
+              <li *ngIf="usagePA.cmInterlocuteur.postalAddres.addrLine2">
+                A. {{usagePA.cmInterlocuteur.postalAddres.addrLine2}} 
+              </li>
+              <li *ngIf="usagePA.cmInterlocuteur.postalAddres.addrLine3">
+                B. {{usagePA.cmInterlocuteur.postalAddres.addrLine3}} 
+              </li>
+              <li *ngIf="usagePA.cmInterlocuteur.postalAddres.logisticInfo">
+                C. {{usagePA.cmInterlocuteur.postalAddres.logisticInfo}} 
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="center_bordure mx-1">
+        </div>
+        <div class="block_right align-self-center pl-3">
+          <span class="font-italic text-min pr-2 grey enableNewLine">
+            {{getClientName(usagePA)}}
+          </span>
+        </div>
+        <div class="icon icon align-self-center pl-2">
+          <span>
+            <ng-template #popContent1> <ul class="ath-summary ">
+              <div class="row ">       
+                <span class="icon  info-grey col-2" ></span>
+                <span class="title col-17"> Rôle(s)  </span>
+                <span  class="icon close col-4 "> </span>
+            </div>
+            <li *ngFor="let role of usagePA.interlocutor.roles">{{role.label}} </li>
+            </ul> </ng-template>
+              <span class="icon info-grey cursour"placement="right"
+                [ngbPopover]="popContent1" >
+              </span>
+        </span>
+  
+        </div>
+      </div>
+  
+      </ng-container>
+  </div>
+</div>

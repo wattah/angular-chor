@@ -1,0 +1,19 @@
+<div class="basic-container">
+  <span>
+    <!-- Handle branch node buttons here -->
+    <span *ngIf="parentNode?.children && parentNode?.children.length > 0">
+      <button type="button" mat-raised-button color="white" class="menu" [class.error]="hasError" [matMenuTriggerFor]="menu.childMenu">
+         {{selectedValue.label}}
+         <span class="icon chevron-form open"></span>
+      </button>
+      <app-athena-nested-drop-down-item #menu [items]="parentNode?.children" (selectedValue)="onSelectedValue($event)"></app-athena-nested-drop-down-item>
+    </span>
+    <!-- Leaf node buttons here -->
+    <span *ngIf="!parentNode?.children || parentNode?.children.length === 0">
+      <button type="button" mat-button color="primary" class="menu" [class.error]="hasError">
+          {{parentNode?.label}}
+          <span class="icon arrow-bottom-grey open"></span>
+      </button>
+    </span>
+  </span>
+</div>

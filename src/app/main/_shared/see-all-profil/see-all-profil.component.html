@@ -1,0 +1,144 @@
+<div [ngClass]="getClassEnvByTypeCustomer()">
+	<div class="block block-shadow block-with-background-oblique-container">
+		<div class="block-background-oblique-container">
+			<div class="block-background-oblique"></div>
+		</div>
+		<div class="block-with-background-oblique">
+			<div class="row">
+				<div class="col-22 col-lg-12">
+					<div class="row">
+						<div class="col-lg-14 col-md-24">
+							<table class="page-profile-container athena" aria-describedby="">
+								<th id=""></th>
+								<tr>
+								<td rowspan="2" class="align-top page-profile-avatar-container">
+									<div class="page-profile-avatar" [style.background-image]="'url(' +  infoCustomer?.membrePhoto + ')'"></div>								
+								</td>
+								<td class="align-top">
+									<div class="badge page-profile-badge" [ngClass]="getClassBadgeByTypeCustomer()">
+										{{ (typeCustomer === 'company') ? 'Entreprise' :  (typeCustomer === 'beneficiary' ) ? 'Bénéficiaire' : 'PARTICULIER' }} 
+									</div>
+									<p *ngIf="isEntreprise && infoCustomer" class="text-max athena">
+										<strong class="athena">
+											{{ infoCustomer?.companyName }}
+										</strong>
+									</p>
+									<p *ngIf="!isEntreprise"  class="text-max athena">
+										<strong class="athena">
+											<span class="capitalize athena">{{ infoCustomer?.title }}.</span>
+											<span class="capitalize athena"> {{ infoCustomer?.firstName | firstName}}</span>
+											<span class="uppercase athena"> {{ infoCustomer?.lastName | uppercase }}</span>
+										</strong>
+									</p>
+								</td>
+							</tr>
+							</table>
+							<ng-container *ngxPermissionsOnly="['affichage_recouvrement']">
+								<app-recovery-alert 
+									[recoveryDate]="recoveryDate"
+									[detteTotalTTC]="detteTotalTTC"
+									[detteTotal]="detteTotal"
+									[entrepriseRecoveryDate]="entrepriseRecoveryDate"
+									[nicheIdentifier]="nicheId"
+									[statusClient]="infoCustomer?.status"
+									[error]="errorRecovery"
+									[displayTotal]="displayTotal"
+								>
+								</app-recovery-alert>
+							</ng-container>
+						</div>
+						<ng-container *ngxPermissionsOnly="['affichage_profil']">
+							<div *ngIf="isEntreprise " class="col-lg-10 col-md-24" >
+								<div *ngIf="isEntreprise ">
+									<p class="athena">
+										<span class="grey athena">N° Contrat : </span>{{ infoCustomer?.nicheIdentifier }}<br />
+										<span class="grey athena">Etat du client : </span>{{ infoCustomer?.status }}<br />
+										<span *ngIf="infoCustomer?.siren.length<=14" class="grey" id='e2e_siren'>{{ (infoCustomer?.siren.length<=9) ? 'SIREN' : 'SIRET' }} : </span> {{ infoCustomer?.siren }}<br />
+										<span class="grey athena">Entrée dans le cercle : </span>{{ infoCustomer?.dateEntryCercle ? (infoCustomer?.dateEntryCercle | dateFormatPipeFrench ) : '-' }}<br />
+										<span class="grey athena">Offre : </span>{{ infoCustomer?.offerLabel }}<br />
+										<ng-template [ngIf]="referents && referents.length > 0">
+											<span class="grey athena">Coach : </span>{{ coachName }}<br />
+											<ng-container *ngIf="backUpCoach$ | async as backUpCoach; ">
+												<span class="red athena">({{ (backUpCoach?.backupId) ?  (backUpCoach?.backupFirstName | firstName ) + ' ' + ( backUpCoach?.backupLastName | uppercase) : 'Tous'}} du {{backUpCoach.beginDate | date: 'dd/MM/yyyy'}} au {{backUpCoach.endDate | date: 'dd/MM/yyyy'}})</span> <br />
+											</ng-container>
+											<span class="grey athena">Desk : </span>{{ deskName }}<br />
+											<ng-container *ngIf="backUpDesk$ | async as backUpDesk; ">
+												<span class="red athena">({{ (backUpDesk?.backupId) ?  (backUpDesk?.backupFirstName | firstName ) + ' ' + ( backUpDesk?.backupLastName | uppercase) : 'Tous'}} du {{backUpDesk.beginDate | date: 'dd/MM/yyyy'}} au {{backUpDesk.endDate | date: 'dd/MM/yyyy'}})</span><br />
+											</ng-container>
+										</ng-template>
+									</p>
+								</div>
+								<div *ngIf="isEntreprise" class="label-progress"><span class="grey">Score RCE : </span></div>
+								<div *ngIf="isEntreprise && (infoCustomer?.score == null || infoCustomer?.score == 0 ) "> - </div>
+								<div *ngIf="isEntreprise && infoCustomer?.score" class="value-on-progress">{{ infoCustomer?.score }}/20</div>
+								<div *ngIf="isEntreprise && infoCustomer?.score" class="progress">
+								<div *ngIf="isEntreprise && infoCustomer?.score" class="progress-bar bg-success" role="progressbar" [style.width]= "infoCustomer?.score*100/20 + '%'" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							</div>
+							<div *ngIf="!isEntreprise" class="col-lg-10 col-md-24">
+								<p class="athena"> 
+									<span class="grey athena">N° Contrat : </span>{{ infoCustomer?.nicheIdentifier }}<br />
+									<span class="grey athena">Etat du client : </span>{{ infoCustomer?.status }}<br />
+									<span *ngIf="infoCustomer?.status == 'Résilié'" class="grey athena" id='e2e_etatMembre'>Date de résiliation : </span><span *ngIf="infoCustomer?.status == 'Résilié'">{{ infoCustomer?.cancellationDate ? (infoCustomer?.cancellationDate | dateFormatPipeFrench ) : '-' }}<br/></span>
+									<span *ngIf="infoCustomer?.status == 'Résilié'"class="grey athena" id='e2e_etatMembre'>Motif : </span><span *ngIf="infoCustomer?.status == 'Résilié'">{{ infoCustomer?.cancellationReason ? infoCustomer?.cancellationReason : '-' }}<br/></span>
+									<span class="grey athena" id='e2e_nationalityMembry'>Nationalité : </span>{{ nationality ? nationality : '-' }}<br />
+									<span class="grey athena">Entrée dans le cercle : </span>{{ infoCustomer?.dateEntryCercle ? (infoCustomer?.dateEntryCercle | dateFormatPipeFrench ) : '-' }}<br />
+									<ng-container *ngIf="infoCustomer?.birthdate"> <span class="grey">{{ infoCustomer?.age }} ans, né(e) le  {{infoCustomer?.birthdate | dateFormatPipeFrench}}</span><br/></ng-container>
+									<ng-container *ngIf="infoCustomer?.providerSupplier">{{ infoCustomer?.providerSupplier }} <br /></ng-container>
+									<span class="grey athena">Secteur : </span>{{ infoCustomer?.businessSectorRef}}<br />
+									<span class="grey athena">Métier : </span>{{ infoCustomer?.professionRef}}<br />
+									<ng-template [ngIf]="referents && referents.length > 0">
+										<span class="grey athena">Coach : </span>{{ coachName }}<br />
+										<ng-container *ngIf="backUpCoach$ | async as backUpCoach; ">
+											<span class="red athena">({{ (backUpCoach?.backupId) ?  (backUpCoach?.backupFirstName | firstName ) + ' ' + ( backUpCoach?.backupLastName | uppercase) : 'Tous'}} du {{backUpCoach.beginDate | date: 'dd/MM/yyyy'}} au {{backUpCoach.endDate | date: 'dd/MM/yyyy'}})</span> <br />
+										</ng-container>
+										<span class="grey athena">Desk : </span>{{ deskName }}<br />
+										<ng-container *ngIf="backUpDesk$ | async as backUpDesk; ">
+											<span class="red athena">({{ (backUpDesk.backupId) ?  (backUpDesk.backupFirstName | firstName ) + ' ' + ( backUpDesk.backupLastName | uppercase) : 'Tous'}} du {{backUpDesk.beginDate | date: 'dd/MM/yyyy'}} au {{backUpDesk.endDate | date: 'dd/MM/yyyy'}})</span><br />
+										</ng-container>
+									</ng-template>
+								</p>
+								<p *ngIf="typeCustomer==='beneficiary'" class="athena"> 
+									<span class="badge badge-blue athena">Entreprise</span>
+									<a class="athena" [routerLink]="['/customer-dashboard/entreprise', infoCustomer?.companyCustomerId]"  
+									[queryParams]="{typeCustomer: 'company'}" target="_blank">   {{infoCustomer?.companyName}} </a> 
+								</p>
+							</div>
+						</ng-container>
+					</div>
+				</div>
+				<div class="col-2 col-lg-1">
+					<p *ngIf="isEntreprise && infoCustomer?.language" class="text-center athena">
+						<span *ngIf="infoCustomer?.language === 'Anglais'" class="icon en-flag athena"></span>
+              			<span *ngIf="infoCustomer?.language === 'Français'" class="icon fr-flag athena"></span>
+					</p>
+					<p *ngIf="!isEntreprise && infoCustomer?.language" class="text-right athena">
+						<span *ngIf="infoCustomer?.language === 'Anglais'" class="icon en-flag athena"></span>
+						<span *ngIf="infoCustomer?.language === 'Français'" class="icon fr-flag athena"></span>
+					</p>
+				</div>
+				<div class="d-none d-lg-block col-lg-1">
+					<div class="row">
+						<div class="col-12 bordered-right" style="height: 200px;">
+						</div>
+					</div>
+				</div>
+				<div class="d-lg-none col-24">
+					<br />
+				</div>
+				<div class="col-lg-10 col-md-24" *ngxPermissionsOnly="['affichage_bon_a_savoir']">
+					<h2 class="athena">
+						Bon à savoir
+					</h2>
+					<p class="athena"><span *ngIf="goodToKnow?.firstNameAuthor || goodToKnow?.lastNameAuthor" class="text-min grey athena">Par 
+							<a class="athena" [href]="openSkype(goodToKnow?.emailUser)">
+          						<span class="capitalize athena">{{goodToKnow?.firstNameAuthor | firstName}}</span>
+								<span class="uppercase athena">{{ goodToKnow?.lastNameAuthor | uppercase}}</span>
+        					</a>
+						<span class="athena" *ngIf="goodToKnow?.dateNote" >, le {{goodToKnow?.dateNote | dateFormatPipeFrench }}</span></span>
+						<br />{{goodToKnow?.value?.substring(0,500)}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

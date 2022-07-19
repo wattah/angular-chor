@@ -1,0 +1,134 @@
+	<h2 class="block-title athena">
+		Interactions client
+		<a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'interaction','creation-360']" queryParamsHandling="merge">
+			<div class="block-title-item-icon" *ngxPermissionsOnly="['ajout_interaction']">
+				<span class="icon add athena"></span>
+			</div>
+		</a>
+		<a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId ,'interaction', 'complete-history']" queryParamsHandling="merge">
+			<span class="text-min normal no-transform athena">Voir toutes les interactions</span>
+		</a>
+	</h2>
+	<div class="row">
+		<div class="col-lg-8 col-md-11">
+			<h4 class="athena">
+				Synthèse des 12 derniers mois
+			</h4>
+			<app-athena-block-loader *ngIf="inCompleteCall"></app-athena-block-loader>
+			<div class="row" *ngIf="!inCompleteCall">
+				<div class="col-12">
+					<table class="table table-not-bordered-2 athena" aria-describedby="interactions">
+						<th id=""></th>
+						<tbody>
+							<tr>
+								<td class="table-td-icon">
+									<span class="icon sav-home"></span>
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalHome === 0">
+										Pas de SAV home
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalHome !== 0">
+									<a class="athena" [routerLink]="null" (click)="toDetailOrFull(false,false,false,true)" queryParamsHandling="merge">{{ (infoClientLight?.nbrTotalHome + ' SAV home') }} </a>
+								</td>
+							</tr>
+							<tr>
+								<td class="table-td-icon">
+									<span class="icon sav-mobile"></span>
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalSAV === 0">
+										Pas de SAV mobile
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalSAV !== 0">
+									<a class="athena" [routerLink]="null" (click)="toDetailOrFull(false,true,false,false)" queryParamsHandling="merge">{{ (infoClientLight?.nbrTotalSAV + ' SAV mobile') }} </a>
+								</td>
+							</tr>
+							<tr>
+								<td class="table-td-icon">
+									<span class="icon megaphone"></span>
+								</td>
+								<td [class.link]=" infoClientLight?.nbrTotalHumeurMembre && infoClientLight?.nbrTotalHumeurMembre !== 0" (click)="toDetailOrFullListHumeurMembre()">
+									<ng-template [ngIf]="infoClientLight?.nbrTotalHumeurMembre === 0"  [ngIfElse]="notEmpty">
+										Pas d'humeur membre
+									</ng-template>	
+									<ng-template #notEmpty>
+										{{infoClientLight?.nbrTotalHumeurMembre}} {{(infoClientLight?.nbrTotalHumeurMembre===1) ? 'humeur' : 'humeurs'}} membre
+									</ng-template>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-12">
+					<table class="table table-not-bordered-2 athena" aria-describedby="interactions">
+						<th id=""></th>
+						<tbody>
+							<tr>
+								<td class="table-td-icon">
+									<span class="icon event"></span>
+								</td>
+								<td>
+										Pas d’évènement
+								</td>
+								<!-- Hide for the moment. No "parcours" ready for this type of information -->
+								<!--<td *ngIf="infoClientLight?.nbrTotalEvenement === 0">
+										Pas d’évènements
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalEvenement !== 0">
+									<a [routerLink]="null" queryParamsHandling="merge">{{ (infoClientLight?.nbrTotalEvenement + ' ' + totalEvenement)  }} </a>
+								</td>-->
+							</tr>
+							<tr>
+								<td class="table-td-icon">
+									<span class="icon euro-alert"></span>
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalRecouvrement === 0">
+										Pas de recouvrement
+								</td>
+								<td *ngIf="infoClientLight.nbrTotalRecouvrement !== 0">
+									<a class="athena" [routerLink]="null" (click)="toDetailOrFull(false, false, true,false)" queryParamsHandling="merge">{{ (infoClientLight?.nbrTotalRecouvrement + ' ' + totalRecouvrement) }} </a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- <p class="text-right"><a [routerLink]="null" queryParamsHandling="merge">Historique complet<span class="icon icon-min arrow-right-blue"></span></a></p> -->
+		</div>
+		<hr class="hr d-md-none athena" />
+		<div class="d-none d-md-block col-md-2">
+			<div class="row">
+				<div class="col-12 bordered-right" style="height: 200px;">
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-11">
+			<h4 id="e2e_titreTeamParnasse athena" class="athena">
+				Equipe Parnasse
+			</h4>
+			<app-athena-block-loader *ngIf="inCompleteCall"></app-athena-block-loader>
+			 <app-team-parnasse *ngIf="!inCompleteCall"  [referents]="referents"></app-team-parnasse> 
+		</div>
+		<hr class="hr d-lg-none athena" />
+		<div class="d-none d-lg-block col-lg-2">
+			<div class="row">
+				<div class="col-12 bordered-right" style="height: 200px;">
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-24">
+			<h4 class="athena"> </h4>
+			<table class="table table-not-bordered athena" aria-describedby="interactions">
+				<th id=""></th>
+				<tbody>
+					<tr>
+						<td>
+							<p class="text-center athena" style="margin-top: 50px; margin-bottom: 50px;">
+								<span class="icon calendar athena"></span><br />
+								Prochain RDV physique : <span class="grey athena"> {{(infoClientLight?.dateProchainRDV ) ? (infoClientLight?.dateProchainRDV | dateFormatPipeFrench) : 'Aucun' }}</span>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>

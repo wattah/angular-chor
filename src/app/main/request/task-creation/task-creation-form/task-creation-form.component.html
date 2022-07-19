@@ -1,0 +1,110 @@
+<div class="block block-shadow">
+    <h2 class="athena">{{isCreationRequest ?  (precision ? "2 - " : "3 - " ):""}} Création d'une tâche manuelle</h2>
+    <form [formGroup]="taskForm" #formTask="ngForm" (ngSubmit)="createTask()">
+        <div class="row">
+            <div class="col-md-18" [ngClass]="isCreationRequest ? 'col-lg-12' : 'col-lg-18'">
+                
+                <div class="form-group row">
+                    <label for="" class="col-sm-6 col-form-label athena">Tâche *</label>
+                    <div class="col-sm-14 ">
+                        <app-athena-nested-drop-down [list]="referenceDataList" (selectionChange)="onSelectReferenceData($event)"></app-athena-nested-drop-down>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="start" class="col-sm-6 col-form-label athena">Début</label>
+                    <div class="col-sm-10">
+                        <mat-form-field appearance="outline">
+                            <input class="athena" matInput  formControlName="startDate" [matDatepicker]="pickerStart" (dateChange)="onSelectStartDate($event)" placeholder="">
+                            <mat-datepicker #pickerStart disabled="false"></mat-datepicker> 
+                        </mat-form-field>
+                        <span class=" ml-1 icon calendar-grey clickable athena" (click)="pickerStart.open()" ></span>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <app-athena-timer
+                          (selectTime)="onChangeTimeDD($event)"
+                          [defaultHour]="defaulStarttHours"
+                          [defaultMinute]="defaultStartMinute"
+                        ></app-athena-timer>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="start athena" class="col-sm-6 col-form-label athena">Echéance</label>
+                    <div class="col-sm-10">
+                        <mat-form-field appearance="outline">
+                            <input class="athena" formControlName="endDate" [min]="rangeOfEndDate"  matInput [matDatepicker]="picker"  placeholder="">
+                            <mat-datepicker #picker disabled="false"></mat-datepicker> 
+                        </mat-form-field>
+                        <span class=" ml-1 icon calendar-grey clickable athena" (click)="picker.open()" ></span>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <app-athena-timer
+                          (selectTime)="onChangeEndTime($event)"
+                          [defaultHour]="defaulEndtHours"
+                          [defaultMinute]="defaultEndMinute"
+                        ></app-athena-timer>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="checkbox athena" class="col-sm-6 col-form-label athena">
+                        Tâche prioritaire
+                        <span class="icon priority athena"></span>
+                    </label>
+                    <div class="col-sm-16">
+                        <div class="form-check checkBoxPosition">
+                            <input class="form-check-input athena" formControlName="isPriority" type="checkbox" id="checkbox1">
+                            <label class="form-check-label athena" for="checkbox1">
+                     
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="traiteSelect athena" class="col-sm-6 col-form-label athena">Traité par *</label>
+                    <div class="col-sm-14">
+                        <select formControlName="assignedTo" class="form-control athena" id="traiteSelect">
+                            <option [value]="null" disabled >--</option>
+                            <option *ngFor="let assignedTo of users" [ngValue]="assignedTo">{{assignedTo | fullNameFormatter }}</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="suivieSelect athena" class="col-sm-6 col-form-label athena">Suivie par *</label>
+                    <div class="col-sm-14">
+                        <select formControlName="inChargeOf" class="form-control athena" id="suivieSelect">
+                            <option [value]="null" disabled>--</option>
+                            <option *ngFor="let inChargeOf of users" [ngValue]="inChargeOf">{{inChargeOf | fullNameFormatter }}</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                        <label for="suivieSelect athena" class="col-sm-6 col-form-label athena">Clôture notifiée à </label>
+                        <div class="col-sm-14">
+                            <select formControlName="userToNotify" class="form-control athena" id="notifieSelect">
+                                <option [value]="null" disabled>--</option>
+                                <option *ngFor="let userToNotify of users" [ngValue]="userToNotify">{{userToNotify | fullNameFormatter }}</option>    
+                            </select>
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <label for="descriptionTextarea" class="col-sm-6 col-form-label athena">Description</label>
+                    <div class="col-sm-14">
+                        <textarea formControlName="description" class="form-control athena" id="descriptionTextarea" rows="3" maxlength="4000"></textarea>
+                    </div>
+                </div>
+                <div class="row control-buttons">
+                    <div class="offset-sm-5 col-sm-6">
+                        <a class="btn btn-link athena" [routerLink]="(typeCustomer === 'company') 
+                        ? ['/customer-dashboard/entreprise', customerId]
+                        : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}" (click)="cancelCreation()">Annuler</a>
+                    </div>
+                    <div class="col-sm-12">
+                        <input [ngClass]="['btn', taskForm?.valid ? 'btn-green' : 'btn-grey']" value="Enregistrer la tâche" 
+                                type="submit"  [disabled]="!taskForm?.valid || formTask.submitted"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

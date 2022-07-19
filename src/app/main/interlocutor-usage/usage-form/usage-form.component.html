@@ -1,0 +1,228 @@
+
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena" > {{ (creationMode) ? 'Création d’un usage': 'Modification' }}</h2>
+        <div class="row" *ngIf="!isValidForm">
+            <div class="col-md-9 col-lg-9">
+                <div class="block block-alert">
+                    <table class="table table-not-bordered"  aria-describedby="mydesc">
+                        <tbody>
+                            <tr hidden>
+                                <th id=""></th>
+                                <th id=""></th>
+                            </tr>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong class="athena red " style="padding-left: 9px;">
+                                        Ce formulaire n’est pas correctement renseigné
+                                    </strong>
+                                    <ul *ngIf="!isValidUsage" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Usage est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidMobileInterloc" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Interlocuteur mobile est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidMobileNum" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Numéro mobile est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidNums" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Numéro fixe ou champ Numéro mobile est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidMailInterloc" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Interlocuteur Mail est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidMail" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Mail est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidAdrInterloc" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Interlocuteur Adresse est obligatoire </li>
+                                    </ul>
+                                    <ul *ngIf="!isValidAdresse" class="simple mr-0 mt-1 alert-padding">
+                                        <li>Le champ Adresse est obligatoire </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form class="pt-3" [formGroup]="form" >
+            <!-- création usage-->
+            <article class="mb-3" *ngIf="creationMode">
+                <div class="form-group row">
+                    <label for="usageSelect" class="col-sm-2 col-form-label athena">Usage*</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidUsage ? 'error' : '']" id="usageSelect" formControlName="usage" (change)="enableValidation()">
+                            <option *ngFor="let usage of listUsagesNotCreated" [ngValue]="usage">
+                                {{usage?.label }}
+                            </option>
+                            
+                        </select>
+                        <mat-error *ngIf="!isValidUsage">Ce champ est obligatoire</mat-error>
+                        <p class="grey font-italic mt-1">
+                            Seul les usages non créés sont disponibles dans cette liste déroulante, 
+                            les autres usages sont modifiables sur la fiche 360.
+                        </p>
+                    </div>
+                    <span *ngIf="!isValidUsage" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+            </article>
+
+            <!-- tel fixe-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Numéro de téléphone fixe
+                </h4>
+                <div class="form-group row">
+                    <label for="interlocuteurFixeSelect" class="col-sm-2 col-form-label athena">Interlocuteur <span *ngIf="typeCustomer === 'entreprise'"> {{showAsterix}} </span></label>
+                    <div class="col-sm-6">
+                        <select  class="athena form-control" id="interlocuteurFixeSelect" (change)="onSelectInterlocFixe()" formControlName="fixeInterloc" >
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let interloc of interlocutors" [ngValue]="interloc"> 
+                                {{getClientName(interloc)}} - {{formatterRole(interloc?.roles)}}
+                            </option>
+                        </select>
+                    </div> 
+                </div>
+                <div class="form-group row">
+                    <label for="fixeNumSelect" class="col-sm-2 col-form-label athena">Numéro<span *ngIf="typeCustomer === 'entreprise'"> {{showAsterix}} </span></label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidNums ? 'error' : '']" id="fixeNumSelect" formControlName="fixeNum"  (change)="enableValidation()">
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let fixe of fixes" [ngValue]="fixe"> 
+                                {{fixe?.types ? fixe?.types[0].label:'' }} - 
+                                {{fixe?.value ?  fixe?.value:'' }}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidNums">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidNums" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+            </article>
+
+            <!-- tel mobile-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Numéro de téléphone mobile
+                </h4>
+                <div class="form-group row">
+                    <label for="interlocuteurMobileSelect" class="col-sm-2 col-form-label athena">Interlocuteur{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidMobileInterloc ? 'error' : '']" class="athena form-control" id="interlocuteurMobileSelect" (change)="onSelectInterlocMobile()" formControlName="mobileInterloc" >
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let interloc of interlocutors" [ngValue]="interloc"> 
+                                {{getClientName(interloc)}} - {{formatterRole(interloc?.roles)}}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidMobileInterloc">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidMobileInterloc" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="mobileNumSelect" class="col-sm-2 col-form-label athena">Numéro{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidMobileNum || !isValidNums ? 'error' : '']" id="mobileNumSelect" formControlName="mobileNum" (change)="enableValidation()">
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let mobile of mobiles" [ngValue]="mobile"> 
+                                {{mobile?.types ? mobile?.types[0].label:'' }} - 
+                                {{mobile?.value ?  mobile?.value:'' }}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidMobileNum || !isValidNums">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidMobileNum || !isValidNums" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+            </article>
+
+            <!-- mail-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Mail
+                </h4>
+                <div class="form-group row">
+                    <label for="interlocuteurMailSelect" class="col-sm-2 col-form-label athena">Interlocuteur{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidMailInterloc ? 'error' : '']" id="interlocuteurMailSelect" (change)="onSelectInterlocMail()" formControlName="mailInterloc" >
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let interloc of interlocutors" [ngValue]="interloc"> 
+                                {{getClientName(interloc)}} - {{formatterRole(interloc?.roles)}}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidMailInterloc">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidMailInterloc" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="mailSelect" class="col-sm-2 col-form-label athena">Mail{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidMail ? 'error' : '']" id="mailSelect" formControlName="mail" (change)="enableValidation()" >
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let mail of mails" [ngValue]="mail"> 
+                                {{mail?.types ? mail?.types[0].label:'' }} - 
+                                {{mail?.value ?  mail?.value:'' }}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidMail">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidMail" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+            </article>
+
+            <!-- Adresse postale-->
+            <article class="mb-5">
+                <h4 class="subtitle athena mb-4">
+                    Adresse postale
+                </h4>
+                <div class="form-group row">
+                    <label for="interlocuteurAdrSelect" class="col-sm-2 col-form-label athena">Interlocuteur{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidAdrInterloc ? 'error' : '']" id="interlocuteurAdrSelect" (change)="onSelectInterlocAdresse()" formControlName="adrInterloc">
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let interloc of interlocutors" [ngValue]="interloc"> 
+                                {{getClientName(interloc)}} - {{formatterRole(interloc?.roles)}}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="!isValidAdrInterloc">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidAdrInterloc" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="addressSelect" class="col-sm-2 col-form-label athena">Adresse postale{{showAsterix}}</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="['athena form-control', !isValidAdresse ? 'error' : '']" id="addressSelect" formControlName="address"  (change)="enableValidation()">
+                            <option [ngValue]="null" >--</option>
+                            <option  *ngFor="let CMadresse of adresses" [ngValue]="CMadresse"> 
+                                {{CMadresse?.types ? CMadresse.types[0].label:'' }} - 
+                                {{CMadresse?.postalAddres.addrLine2 ?  CMadresse?.postalAddres.addrLine2:'' }}
+                                {{CMadresse?.postalAddres.addrLine3 ?  CMadresse?.postalAddres.addrLine3:'' }}
+                                {{CMadresse?.postalAddres.logisticInfo ?  CMadresse?.postalAddres.logisticInfo:'' }}
+                                {{CMadresse?.postalAddres.addrLine4 ?  CMadresse?.postalAddres.addrLine4:'' }}
+                                {{CMadresse?.postalAddres.addrLine5 ?  CMadresse?.postalAddres.addrLine5:'' }}
+                                {{CMadresse?.postalAddres.postalCode ?  CMadresse?.postalAddres.postalCode:'' }} 
+                                {{CMadresse?.postalAddres.city ?  CMadresse?.postalAddres.city:'' }} {{CMadresse?.postalAddres.cedex ?  CMadresse?.postalAddres.cedex:'' }} 
+                                {{CMadresse?.postalAddres.country ?  CMadresse?.postalAddres.country:'' }}
+                            </option >
+                        </select>
+                        <mat-error *ngIf="!isValidAdresse">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span *ngIf="!isValidAdresse" class="icon col-1 mt-1 ml-n2 status-exclamation"></span>
+                </div>
+            </article>
+            
+            <!-- buttons-->
+            <div class="row control-buttons ">
+                <div class="col-sm-2 text-right">
+                    <a class="btn btn-link mt-1 athena" [routerLink]="['/customer-dashboard', typeCustomer,  this.customerId]" queryParamsHandling="merge" (click)="annuler()" >Annuler</a>
+                </div>
+                <div class="col-sm-6">
+                    <input type="button"  class="btn btn-green athena"  value="Enregistrer"  (click)="save()" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

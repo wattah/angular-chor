@@ -1,0 +1,210 @@
+<div class="row">
+    <div class="col-md-24 col-lg-24">
+        <div class="block block-shadow">
+            <h2 class="athena">Ajout d’une intéraction </h2>
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="block block-alert" >
+                        <table class="table table-not-bordered athena" aria-describedby="">
+                            <th id=""></th>
+                            <tbody>
+                                <tr>
+                                    <td class="alert-icon align-middle" >
+                                        <span class="icon icon-max status-exclamation-white"></span>
+                                    </td>
+                                    <td class="alert-text">
+                                        <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                        <span>- Le champ nom ne doit pas contenir de chiffre</span> <br/>   
+                                        <span>- Le champ code postal est obligatoire</span> <br/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <form class="pt-3" >
+                <div class="form-group row">
+                    <label for="mediaSelect" class="col-sm-3 col-form-label athena">L’intéraction est-elle liée à une demande ? *</label>
+                    <div class="col-sm-9">
+                        <div class="form-check">
+                            <input class="form-check-input athena" type="radio" name="optionsRadios" id="optionsRadios1" value="optionsRadios1" checked>
+                            <label class="form-check-label athena" for="optionsRadios1">
+                            Oui
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input athena" type="radio" name="optionsRadios" id="optionsRadios2" value="optionsRadios2">
+                            <label class="form-check-label athena" for="optionsRadios2">
+                            Non
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-18 col-lg-18">
+                    <app-athena-ag-grid  
+                    [defaultSortModel]="defaultSortModel" 
+                    [columnDefs]="columnDefs" 
+                    [rowData]="requests">
+                </app-athena-ag-grid>
+                <mat-error >Veuillez sélectionner une demande</mat-error>
+                </div>		
+                <div class="form-group row pt-4 ">
+                    <label for="mediaSelect" class="col-sm-3 col-form-label athena">Média*</label>
+                    <div class="col-sm-6">
+                        <select name="media" class="form-control error athena" id="mediaSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                        </select> 
+                        <mat-error >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="mediaSelect" class="col-sm-3 col-form-label athena">Univers*</label>
+                    <div class="col-sm-12 row">
+                        <div class="form-check mr-5">
+                            <input class="form-check-input athena" type="radio" name="optionsRadiosUnivers" id="optionsRadios3" value="optionsRadios3" checked>
+                            <label class="form-check-label athena" for="optionsRadios3">
+                            Service
+                            </label>
+                        </div>
+                        <div class="form-check mr-5">
+                            <input class="form-check-input athena" type="radio" name="optionsRadiosUnivers" id="optionsRadios4" value="optionsRadios4">
+                            <label class="form-check-label athena" for="optionsRadios4">
+                            Mobile
+                            </label>
+                        </div>
+                        <div class="form-check mr-5">
+                            <input class="form-check-input athena" type="radio" name="optionsRadiosUnivers" id="optionsRadios5" value="optionsRadios5">
+                            <label class="form-check-label athena" for="optionsRadios5">
+                            Internet
+                            </label>
+                        </div>
+                        <div class="form-check mr-5">
+                            <input class="form-check-input athena" type="radio" name="optionsRadiosUnivers" id="optionsRadios6" value="optionsRadios6">
+                            <label class="form-check-label athena" for="optionsRadios6">
+                            Fixe
+                            </label>
+                        </div>
+                        <div class="form-check mr-5">
+                            <input class="form-check-input athena" type="radio" name="optionsRadiosUnivers" id="optionsRadios7" value="optionsRadios7">
+                            <label class="form-check-label athena" for="optionsRadios7">
+                            Autres
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="motifSelect" class="col-sm-3 col-form-label athena">Motif*</label>
+                    <div class="col-sm-6">
+                        <select name="motif" class="form-control error athena" id="motifSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                        </select>
+                        <mat-error >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="interlocuteurSelect" class="col-sm-3 col-form-label athena">Interlocuteur</label>
+                    <div class="col-sm-6">
+                        <select name="interlocuteur" class="form-control athena" id="interlocuteurSelect">
+                            <option [ngValue]="null" >--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="destinataireSelect" class="col-sm-3 col-form-label athena">Destinataires*</label>
+                    <div class="col-sm-6">
+                        <select name="destinataire" class="form-control error athena" id="destinataireSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                        </select>
+                        <mat-error >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="adresseSelect" class="col-sm-3 col-form-label athena">Adresse RDV</label>
+                    <div class="col-sm-6">
+                        <select name="adresse" class="form-control athena" id="adresseSelect">
+                            <option [ngValue]="null" >--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="precisionSelect" class="col-sm-3 col-form-label athena">Précision*</label>
+                    <div class="col-sm-6">
+                        <select name="precision" class="form-control error athena" id="precisionSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                        </select>
+                        <mat-error >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="start mt-1" class="col-sm-3 col-form-label athena">Date*</label>  
+                    <mat-form-field class="col-sm-2" appearance="outline">
+                        <input class="athena" matInput [matDatepicker]="pickerStart" placeholder="">
+                        <mat-datepicker #pickerStart></mat-datepicker>
+                    </mat-form-field>
+                    <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerStart.open()" ></span>
+                    <label  class="col-form-label marged-label mt-1 athena"> de </label>
+                    <div class="col-sm-2 ">
+                        <app-athena-timer [defaultHour] = "''" [defaultMinute] = "''" ></app-athena-timer>
+                    </div>
+                    <label  class="col-form-label mt-1 marged-label athena"> jusqu'à </label>
+                    <div class="col-sm-2 ml-1 ">
+                        <app-athena-timer [defaultHour] = "''" [defaultMinute] = "''" ></app-athena-timer>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="participantSelect" class="col-sm-3 col-form-label athena">Participants*</label>
+                    <div class="col-sm-6">
+                        <mat-form-field class="example-chip-list " appearance="outline" id="participantSelect" >
+                            <mat-chip-list #chipList >
+                                <mat-chip
+                                errorState="true"
+                                *ngFor="let fruit of fruits"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(fruit)">
+                                {{fruit}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                class="athena"
+                                placeholder=""
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                >
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" required>
+                                <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                                {{fruit}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="descriptionTextarea" class="col-sm-3 col-form-label athena">Description</label>
+                    <div class="col-sm-6">
+                        <textarea name="description" class="form-control athena" id="descriptionTextarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="row control-buttons ">
+                    <div class="col-sm-3 text-right">
+                        <a class="btn btn-link mt-1" href="#">Annuler</a>
+                    </div>
+                    <div class="col-sm-6">
+                        <input class="btn btn-green athena" value="Enregistrer" type="submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena" >Création </h2>
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-10">
+                <p class="text-max text-center athena mt-5 mb-5">
+                    <strong class="athena">
+                        Que souhaitez vous créer ? 
+                    </strong>
+                </p>
+                <div class="block_us mt-2"> 
+                    <button type="button" [ngClass]="{'background-color ': type === 'USAGE', 'active': type === 'USAGE'}" class="btn2 grey" (click)="onChoosingType('USAGE')">Usage(s)</button>
+                    <div class="vertical-line"></div>
+                    <button type="button" [ngClass]="{'background-color ': type === 'INTERLOCUTOR', 'active': type === 'INTERLOCUTOR'}" class="btn2 grey "(click)="onChoosingType('INTERLOCUTOR')">Interlocuteur(s)</button>
+                </div>
+                <p *ngIf="blockCreationUsage" class="text-center grey font-italic">
+                    La limite de 5 usages est atteinte. <br/>
+                    Seule la création d’interlocuteur est possible.
+                </p>
+                <div class="text-center mt-5 mb-4">
+                    <a class="text-center btn btn-link " [routerLink]="null" (click)="annuler()"  queryParamsHandling="merge">Annuler</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

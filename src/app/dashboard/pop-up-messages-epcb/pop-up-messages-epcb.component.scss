@@ -1,0 +1,15 @@
+  p {
+    text-align: center;
+    color: white; 
+    font-size: 1.5em;
+  }
+
+  div {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    border-radius: 15px;
+    background-color: dimgray;
+    }

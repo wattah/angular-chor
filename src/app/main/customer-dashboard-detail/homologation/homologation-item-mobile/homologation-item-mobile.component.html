@@ -1,0 +1,22 @@
+
+<div class="block block-shadow">
+    <h2 class="block-title athena">
+        OFFRE MOBILE
+    </h2>
+    <div class="block_onglet p-0">
+        <app-athena-paginated-ag-grid 
+            *ngIf="lines && lines.length !== 0"
+            [defaultSortModel]="defaultSortModel"
+            [columnDefs]="columnDefs" 
+            [rowData]="lines"
+            [paginationPageSize]="5"
+            [detailCellRenderer]="detailCellRenderer"
+            [frameworkComponents]="frameworkComponents"
+            [masterDetail]="true"
+            [detailRowHeight]="100">
+        </app-athena-paginated-ag-grid>	
+    </div>
+    <p class="athena no-result" *ngIf="!lines || lines.length === 0 ">
+        Ce membre n’a pas d’offre mobile.
+    </p>
+</div>

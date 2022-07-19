@@ -1,0 +1,21 @@
+<div class="row">  
+    <div  class="col-24">
+    <div class="block block-transparent">
+        <h6 class="athena" style="margin-bottom: 0;"> {{detailRequest?.requestTypeLabel}} </h6>
+        <h5 class="grey text-center athena">  Demande N°{{detailRequest?.idRequest}} </h5>
+    </div>
+</div> 
+    
+    <div class="col-md-24 col-lg-8 order-lg-2">
+        <!-- REQUEST SUMMARY  -->
+        <app-task-creation-request-summary  [detailRequest]="detailRequest" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-task-creation-request-summary>     
+    </div>  
+
+    <div class="col-md-24 col-lg-16 order-lg-1" >
+        <app-request-closer-form [closerOutsideProcess]= true [isClosureTask] = "true" (onSubmittedChange)="onTaskCreated($event)" (onFormGroupChange)="onFormGroupChangef($event)" (onCanceledChange)="onCanceledChangef($event)" [requestId]="idRequest" [customerId]= "customerId"></app-request-closer-form>
+    </div>
+</div>
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>

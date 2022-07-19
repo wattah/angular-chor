@@ -1,0 +1,59 @@
+// change relatif path of the import
+@import '../../../../styles/charte.scss';
+
+.box-delay {	
+    box-sizing: border-box;
+    display: inline-block;
+    height: 60px;	
+    min-width: 60px;	
+    border: 2px solid $red;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px;
+}
+
+.modification-title{
+    border-bottom: none;
+    margin-top: 10px;
+}
+
+.no-border-bottom {
+    border-bottom: none;
+}
+
+th, td {
+    &[col-id="date"]{
+        width : 22%;
+        vertical-align: middle;
+    }
+    &[col-id="action"]{
+        width : 15%;
+        vertical-align: middle;
+    }
+    &[col-id="auteur"]{
+        width : 18%;
+        vertical-align: middle;
+    }
+    &[col-id="detail"]{
+        width : 45%;
+        vertical-align: middle;
+    }
+}
+
+.link {
+    text-decoration: underline;
+    color: #4480c8;
+    cursor: pointer;
+  }
+
+  ul {
+    margin: 0; 
+    padding:0;
+    margin-left: 5%;
+  }
+  b, strong {
+    font-family: $font-family-strong !important;
+  }
+  .tanswers {
+    margin-top: 1% !important;
+  }

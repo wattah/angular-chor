@@ -1,0 +1,61 @@
+<div class="block block-shadow">
+<h2 class="block-title athena">
+	Documents
+	<a class="block-title-item-link athena"  [routerLink]="['/customer-dashboard', customerId ,'add-document']" [queryParams]="{requestId: null, fromHistory: 'yes'}" queryParamsHandling="merge" *ngxPermissionsOnly="['ajout_document']">
+		<div class="block-title-item-icon">
+			<span class="icon add-on"></span>
+		</div>
+	</a>
+</h2>
+<app-filters-form [types]="types"  (changeFilters)="launchSearch($event)"></app-filters-form>
+
+<section>
+	<div  [ngClass]="getClassEnvByTypeCustomer()" [hidden]="totalItems === 0 || !isDataReady">
+		<app-athena-ag-grid2
+			[columnDefs]="columnDefs"
+			[datasource]="datasource"
+			[paginationPageSize]="paginationPageSize"
+			[totalItems]="totalItems"
+			[frameworkComponents]="frameworkComponents"
+			[showTopPagination]="true"
+			[suppressRowClickSelection]="true"
+			[loadAgGridParams]="params"
+			(clickCell)="clickedCell($event)"
+			(clickLink)="changeProtailVisibility($event)" 
+			(createServerSideDatasource)="createServerSideDatasource($event)">
+		</app-athena-ag-grid2>
+	</div>
+</section>
+<app-athena-table-loader class="mt-3" *ngIf="!isDataReady"></app-athena-table-loader>
+
+<p class="athena no-result" *ngIf="totalItems === 0 && isDataReady">
+	Votre recherche ne donne aucun résultat.
+</p>
+
+<h2 class="mt-4 athena">
+	Légendes
+</h2>
+<div class="row ml-4 mt-4" > 
+	<div class="col-sm-8 ">
+		<span class="athena underline">
+			Picto du tableau
+		</span>
+		<table class="table table-not-bordered athena  mt-3" aria-describedby="">
+			<tbody>
+				<tr hidden>
+					<th id=""></th>
+					<th id=""></th>
+				</tr>
+				<tr>
+					<td class="table-td-icon"><span class="icon del"></span></td>
+					<td>Supprimer le document</td>
+				</tr>
+				<tr>
+					<td class="table-td-icon"><span class="icon download"></span></td>
+					<td>Télécharger le document</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>

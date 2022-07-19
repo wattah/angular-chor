@@ -1,0 +1,79 @@
+<div id="body" class="container-fluid env-blue">
+	<div class="row">
+		<div class="col-lg-8 col-md-8">
+			<div class="block block-shadow">
+				<app-profil-information 
+					[infoCustomer]="infoCustomer"
+					[severalCustomerTit]="severalCustomerTit"
+					[isProfilReduit]= "true"
+					[typeCustomer]="typeCustomer"
+					[isEntreprise]="isEntreprise"
+					[recoveryDate]="dateRecouvrement"
+					[customerId]="customerId"
+					[entrepriseRecoveryDate]="entrepriseRecoveryDate"
+					[homologationsIds]="homologationsIds"
+					(onSendNichesWithRemainingGreatThanZero)="onSendNichesWithRemainingGreatThanZeroEvent($event)" 
+					(onSendRemaining)="onSendRemainingEvent($event)"
+					*ngxPermissionsOnly="['affichage_profil']; else permissionNotFountBlock"
+				></app-profil-information>
+				 <ng-template #permissionNotFountBlock>
+					<div class="row" style="text-align: center;">permission not found</div>
+				</ng-template>
+
+				<app-good-to-know *ngxPermissionsOnly="['affichage_bon_a_savoir']"></app-good-to-know>
+			<!--	<h2>
+					Bon à savoir
+					<a class="block-title-item-link" [routerLink]="null">
+						<div class="block-title-item-icon">
+							<span class="icon pen"></span>
+						</div>
+					</a>
+				</h2>
+				<p class="text-min grey">Par <span class="capitalize">Pierre</span> <span class="uppercase">Chevignon</span>, le 25 sept. 2018</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				-->
+				<app-interlocutor *ngxPermissionsOnly="['affichage_interlocuteurs']"></app-interlocutor>
+				<!--<app-contacts-information [coordonnes]="coordonnes" [isEntreprise]="isEntreprise"></app-contacts-information>-->
+				
+			</div>
+		</div>
+		<div class="col-lg-16 col-md-16">
+			<app-customer-complaint [nbrTotalRecouvrement]="totalNumberOfRecouverement" [detteTotalTTC]="detteTotalTTC"></app-customer-complaint>
+			<div class="block block-shadow" *ngxPermissionsOnly="['affichage_interactions']">
+				<app-interactions-customer [isParticular]="false"></app-interactions-customer>
+			</div>
+
+			<!-- requests customer-->
+			<div class="block block-shadow" *ngxPermissionsOnly="['affichage_demandes']">
+				<app-requests-customer [isEntreprise]="isEntreprise"></app-requests-customer>
+			</div>
+
+			<app-beneficiaire-list *ngxPermissionsOnly="['affichage_beneficiaires']"></app-beneficiaire-list> 	
+			<div class="row">
+				<div class="col-lg-24 col-md-24">
+					<div class="block block-shadow">
+					  <app-parc-services [isEntreprise]="isEntreprise" [seeMore]="false" *ngxPermissionsOnly="['affichage_parc_services']; else permissionNotFountBlock"></app-parc-services>
+					  <ng-template #permissionNotFountBlock>
+						<h2 class="block-title athena">
+							Parc service et matériel récurrent
+						</h2>
+						<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+					</ng-template>
+					</div>
+					<app-finance  [nicheValue] = "infoCustomer?.nicheIdentifier" [isEntreprise]="true" *ngxPermissionsOnly="['affichage_finances']; else permissionNotFountBlock"></app-finance>
+					<ng-template #permissionNotFountBlock>
+						<div class="block block-shadow">
+							<h2 class="block-title athena">
+								Finances
+							</h2>
+							<div class="navbar-search-container" style="text-align: center;">permission not found</div>
+						</div>
+					</ng-template>
+					<div class="block block-shadow" *ngxPermissionsOnly="['affichage_documents']">
+                    	<app-customer-document [years]="yearsDocumentFilter" [nicheIdentif] = "infoCustomer?.nicheIdentifier" [isParticular]="false" *ngxPermissionsOnly="['affichage_documents']"></app-customer-document>
+					</div> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

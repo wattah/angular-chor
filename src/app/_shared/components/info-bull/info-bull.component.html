@@ -1,0 +1,18 @@
+<div class="bull">
+    <span class="icon" [ngClass]="iconName" 
+    (click)="showBullBody()"></span>
+    <div class="bull-body" *ngIf="state ">
+        <div class="row ">       
+            <span class="icon  col-2" [ngClass]="iconName" (click)="hideBullBody()"></span>
+            <span class="title col-19"> {{title}} </span>
+            <span  class="icon close col-2 " (click)="hideBullBody()"> </span>
+        </div>
+        <div class="row">
+            <div class="col-24">
+                <ng-content class="description"></ng-content>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

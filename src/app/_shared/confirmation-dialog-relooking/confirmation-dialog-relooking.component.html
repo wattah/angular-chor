@@ -1,0 +1,9 @@
+<div class="modal-body text-center margin-pop-up relook-popup" >
+  <p class="athena" [innerHTML]="message"></p>
+  <ngx-dropzone name="file" [multiple]="false" [expandable]="true" class="fileDropZone"  (change)="onSelectFile($event)">
+      <ngx-dropzone-label class="btn btn-green mt-1"> {{btnOkText}}</ngx-dropzone-label>
+  </ngx-dropzone> 
+  <button class="btn btn-link blue center" (click)="decline()" [hidden] = "!isCancelBtnVisible">{{ btnCancelText }}</button>
+  
+  
+</div>

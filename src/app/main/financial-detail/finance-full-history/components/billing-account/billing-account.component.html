@@ -1,0 +1,84 @@
+<div class="block pb-0" [ngClass]="[!this.graybackground ? 'block-grey' : '' ]">
+	<h2 class="block-title athena">
+		Compte de facturation N°{{billingAccount?.identifier}} - 
+		<span> {{ billingAccount?.status }} </span>
+		<div class="ml-2 block-title-item-link athena">
+			<a *ngxPermissionsOnly="['modification_infos_finances']" 
+		     [routerLink]="['/customer-dashboard',this.customerId,'financial-detail','bill-account', billingAccount?.identifier,'modification']" 
+		     queryParamsHandling="merge"
+		     [queryParams]="{
+				 typeCustomer: typeCustomer, 
+				 nicheIdentifier: selectedDebt.contractSelected.nicheIdentifier, 
+				 univers: univers,
+				 rowSelected: selectedDebt.rowSelected
+				}">	
+			<span class='icon pen athena'></span>
+			</a>
+		</div>
+	</h2>
+
+	<div class="row">
+		<div class="col-md-6">
+			<h2 class="subtitle athena">
+				Lignes associées, actives ou suspendues
+			</h2>
+			<div *ngFor="let ligne of billingAccount?.billAccountLines">
+				{{ligne?.lineIdentifier | ligne }}
+		    </div>
+		</div>
+		<div class='col-md-7 offset-md-2'>
+			<h2 class="subtitle athena">
+				Facturation
+			</h2>
+			<p class="athena">
+				<span class="text-min">
+					{{ typeEnvoi }} <span class="grey">{{ typeDest }}</span><br>
+					Jour de facturation : <span class="grey">{{billingAccount?.billingDay}}</span><br>
+					Conditions de règlement : <span class="grey">{{billingAccount?.conditionReglementLibelle}}</span><br>
+					Contrôle systématique : <span class="grey">{{ controleSystem }}</span><br>
+					Exonération TVA : <span class="grey">{{billingAccount?.tvaExemption ? 'Oui' : 'Non'}}</span><br>
+					Date d'entrée : <span class="grey">{{billingAccount?.nicheAdmissionDate}}</span><br>
+					CR attendu : <span class="grey">{{billingAccount?.compteRenduAttendu ? 'Oui' : 'Non' }}</span><br>
+				</span>
+			</p>
+		</div>
+
+		<div class="col-md-7 offset-md-2">
+			<h2 class="subtitle athena">Informations
+			</h2>
+			<p class="athena text-min">
+				<span >Mode de règlement : </span>
+				<span class="grey">{{paymentMethod}}</span>
+				<br />
+				<span >Titulaire : </span>
+				<span class="grey">{{getNameForInternet(true)}}</span>
+				<br />
+				<ng-template [ngIf]="billingAccount.payerLastName !== billingAccount.titularLastName">
+					<span >Tiers payeur : </span>
+					<span class="grey">{{getNameForInternet(false)}}</span>
+					<br />
+				</ng-template>
+			</p>
+		</div>
+		
+        <div [hidden]="totalItems === 0" class="col-md-24">
+		    <app-athena-ag-grid2
+                [columnDefs]="columnDefs"
+                [rowStyle]="rowStyle"
+				[defaultSortModel]="defaultSortModel"
+                [datasource]="datasource"
+                [paginationPageSize]="paginationPageSize"
+                [totalItems]="totalItems"
+                [showTopPagination]="true"
+                [loadAgGridParams]="params"
+                [suppressRowClickSelection]="true"
+                (clickCell)="clickCell($event)">
+            </app-athena-ag-grid2>
+        </div>
+	</div>
+	<div class="sold-btn-blue text-center">
+		<p class="m-0">
+			Solde
+		</p>{{ (billingAccount?.balance) ? billingAccount?.balance : '0.00'}}€
+	</div>
+</div>

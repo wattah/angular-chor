@@ -1,0 +1,130 @@
+<form [formGroup]="form">
+<div class="information">
+    <div class="col-lg-16">
+        <div class="form-group row select_arrows mb-2">
+            <label class="col-sm-4 col-form-label athena">Etat </label>
+            <div class="col-sm-20 col-lg-9">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="status" (change)="onChangeState()">
+                    <option *ngFor="let state of stateList" [ngValue]="state.key">{{state.data}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row mb-3" *ngIf="showResiliationDate">
+            <label for="start mt-1" class="col-sm-4 col-form-label athena">Date de résiliation </label>
+
+            <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+                <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                    <input matInput [matDatepicker]="pickerRes12" formControlName="terminationDate" placeholder="" readonly />
+                    <mat-datepicker #pickerRes12></mat-datepicker>
+                </mat-form-field>
+                <div class="col-2 col-sm-2 margin-top p-0">
+                    <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes12.open()"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row select_arrows" *ngIf="universe !== 'MOBILE'">
+            <label class="col-sm-4 col-form-label athena">Récurent</label>
+            <div class="col-sm-20 col-lg-9">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="recurrent" (change)="onChangeRecurrentOption()">
+                    <option *ngFor="let option of recurrentList" [ngValue]="option.key">{{option.data}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena p-0">Condition de règlement
+                <span *ngIf="TelcoUniverse.SERVICE === universe">* </span> 
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <div class="d-flex block-info-cri">
+                    <select class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('paymentCondition') ? 'error' : ''"
+                     formControlName="paymentCondition">
+                        <option *ngFor="let condition of paymentConditonsList" [ngValue]="condition.key">{{condition.data}}</option>
+                    </select>
+                    <div *ngIf="isNotValid('paymentCondition')"  class="col-sm-1 mt-2 athena">
+                        <span class="icon status-exclamation"></span>
+                    </div>
+                </div>
+                <mat-error *ngIf="isNotValid('paymentCondition')">Ce champ est obligatoire</mat-error>
+            </div>
+        </div>
+
+        <div class="form-group row mb-0">
+            <label class="col-sm-4 col-form-label athena">Contrôle facture systématique</label>
+            <div class="col-sm-20 col-lg-9">
+                <section class="example-section mt-2">
+                    <mat-checkbox class="normal" [disableRipple]="true" (change)="enableTextArea($event)" formControlName="controlCF" ></mat-checkbox>
+                </section>
+            </div>
+        </div>
+
+        <div *ngIf="test" class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Justification contrôle</label>
+            <div class="col-sm-20 col-lg-9">
+                <textarea class="form-control athena ng-pristine ng-valid ng-touched" formControlName="justificationControle" rows="10" maxlength="200"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">CR attendu </label>
+            <div class="col-sm-20 col-lg-9">
+                <section class="example-section mt-2">
+                    <mat-checkbox class="normal" [disableRipple]="true" formControlName="compteRenduAttendu" ></mat-checkbox>
+                </section>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Jour de facturation</label>
+            <div class="col-sm-20 col-lg-3 number-wrapper">
+                <input class="athena form-control" max="28" min="1" type="number" formControlName="billingDay" 
+                onkeydown="if(event.key==='.' || event.key==='/' || event.key===';' || event.key===':'){event.preventDefault();}" change="isBillingDayEmpty($event)"/>
+            </div>
+        </div>
+
+        <div class="form-group row select_arrows mb-0">
+            <label class="col-sm-4 col-form-label athena">Mode de règlement* </label>
+            <div class="col-sm-20 col-lg-9">
+                <div class="d-flex block-info-cri">
+                    <select class="athena form-control ng-pristine ng-valid ng-touched" [ngClass]="isNotValid('paymentMode') ? 'error' : ''"
+                     formControlName="paymentMode" (change)="onTypeSelect()" (click)="clickPenicheListTypes()" (blur)="blurPenicheListTypes()" >
+                        <option *ngFor="let type of PenichPaymentType" [ngValue]="type.key">{{type.data}}</option>
+                    </select>
+                <div *ngIf="isNotValid('paymentMode')"  class="col-sm-1 mt-2 athena">
+                    <span class="icon status-exclamation"></span>
+                </div>
+            </div>
+            <mat-error *ngIf="isNotValid('paymentMode')">Ce champ est obligatoire</mat-error>
+            </div>
+        </div>
+
+        <div class="form-group row mb-0">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-20 col-lg-9">       
+                <label class="col-lg-24 col-form-label" *ngIf="showIbanSentence"><strong>{{paymentModeAccount}}</strong></label>
+                <div class="d-flex mt-3 mb-3 justify-content-between" *ngIf="showIbanButton && universe === 'SERVICE'">
+                    <input class="btn btn-grey" type="button" value="Saisir un IBAN" (click)="onSendIbanClick()" />
+                    <input class="btn btn-grey" *ngIf="getIbanButton" type="button" value="Récupérer l'IBAN" (click)="onGetIbanClick()" />
+                </div>
+                <label class="col-lg-24 col-form-label" *ngIf="showCardSentence"><strong>{{cardNumberToShow}}</strong></label>
+                <div class="d-flex mt-3 mb-3 justify-content-between" *ngIf="sendCard && universe === 'SERVICE' && isEditMode">
+                    <input class="btn btn-grey mr-3" type="button" value="Saisir le numéro de la carte" (click)="onCardSelect()" />
+                    <input class="btn btn-grey" *ngIf="getCard" type="button" value="Récupérer le numéro" (click)="onClickResponseCardInfo()" />
+                </div> 
+            </div>
+        </div>
+        <div class="row mb-3" *ngIf="!sendCard || !showIbanButton"></div>
+        <div class="table-associe" *ngIf="isEditMode && universe === 'MOBILE'">
+            <div class="row">
+                <div class="col-lg-19">
+                    <div class="grey athena mb-2 pl-2">Lignes associées</div>
+
+                    <app-athena-ag-grid [defaultSortModel]="defaultSortModel" [columnDefs]="columnDefs" [rowData]="rowData"></app-athena-ag-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

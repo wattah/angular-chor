@@ -1,0 +1,197 @@
+
+<div class="underline mt-3 mb-2">Fibre optique N ° {{index}} <span class="icon del ml-2" *ngIf="fibreOptiquesLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeOpticalFiber()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> AID
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="aid" name="aid" [(ngModel)]="opticalFiber.aid"
+            [ngClass]="[aidInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+       />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> ND Fictif
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="ndFictif" name="ndFictif" [(ngModel)]="opticalFiber.ndFictif" 
+            [ngClass]="[ndFictifInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+       />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> ND VOIP
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="ndVoip" name="ndVoip" [(ngModel)]="opticalFiber.ndVoip"
+            [ngClass]="[ndVoipInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena pr-0"> Identifiant de connexion 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="identConnexion" name="identConnexion" [(ngModel)]="opticalFiber.identConnexion"
+            [ngClass]="[identConnexionInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena pr-0"> Mot de passe de connexion 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="mdpConnexion" name="mdpConnexion" [(ngModel)]="opticalFiber.mdpConnexion"
+            [ngClass]="[mdpConnexionInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> SLID 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="slid" name="slid" [(ngModel)]="opticalFiber.slid"
+            [ngClass]="[slidInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Emplacement PTO
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="emplacementPto" name="emplacementPto"
+            [ngClass]="[emplacementPtoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let emplacementPto of emplacementPtos" [ngValue]="emplacementPto">{{emplacementPto.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row" *ngIf="isVisiblePrecisionEmplacementPto">
+        <label class="col-sm-4 col-form-label athena">Précision </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacementPto" name="autreEmplacementPto" [(ngModel)]="opticalFiber.autreEmplacementPto"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Emplacement ONT
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="emplacementOnt" name="emplacementOnt"
+            [ngClass]="[emplacementOntInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let emplacementOnt of emplacementOnts" [ngValue]="emplacementOnt">{{emplacementOnt.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="isVisiblePrecisionEmplacementOnt">
+        <label class="col-sm-4 col-form-label athena">Précision </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacementOnt" name="autreEmplacementOnt" [(ngModel)]="opticalFiber.autreEmplacementOnt"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Mesure à la PTO </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="mesurePto" name="mesurePto" [(ngModel)]="opticalFiber.mesurePto"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Emplacement Livebox 
+            <span *ngIf="isRequired" class="red">*</span> 
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="emplacementLivebox" name="emplacementLivebox"
+            [ngClass]="[emplacementLiveboxInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let emplacementLivebox of emplacementLiveBoxs" [ngValue]="emplacementLivebox">{{emplacementLivebox.label}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row" *ngIf="isVisiblePrecisionEmplacementLivebox">
+        <label class="col-sm-4 col-form-label athena">Précision </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacementLivebox" name="autreEmplacementLivebox" [(ngModel)]="opticalFiber.autreEmplacementLivebox"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Offre PRO</label>
+        <div class="col-sm-20 col-lg-9">
+            <section class="example-section mt-2">
+                <mat-checkbox class="normal" formControlName="isCheckedOffrePro" name="isCheckedOffrePro" [(ngModel)]="opticalFiber.isCheckedOffrePro"
+                [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                 Oui</mat-checkbox> 
+            </section>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Numéro de la PTO 
+            <span *ngIf="isRequired" class="red">*</span> 
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="numeroPto" name="numeroPto" [(ngModel)]="opticalFiber.numeroPto"
+            [ngClass]="[numeroPtoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire</label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="comment" name="comment" [(ngModel)]="opticalFiber.comment"
+            maxlength="255">
+        </textarea>
+        <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Opérateur d'immeuble </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="operateurImmeuble" name="operateurImmeuble" [(ngModel)]="opticalFiber.operateurImmeuble"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Nom du site </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="nomSite" name="nomSite" [(ngModel)]="opticalFiber.nomSite"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena"> Ingénierie </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="ingenierie" name="ingenierie"
+            >
+                <option [ngValue]="null" disabled>--</option>
+                <option *ngFor="let ingenierie of ingenieries" [ngValue]="ingenierie">{{ingenierie.label}}</option>
+            </select>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,16 @@
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlock">
+    <app-relational-consultation 
+        [person]="person" 
+        [typeCustomer]="typeCustomer"
+        (updateRelational)="onUpdateModeofRelational($event)">
+    </app-relational-consultation>
+</ng-template>
+<ng-template #modificationBlock>
+    <app-relational-modification 
+      [person]="person" 
+      [typeCustomer]="typeCustomer" 
+      (updateRelational)="onUpdateModeofRelational($event)"
+      (changeForm)="onChangeRelationalForm($event)"
+      (isChangeDirty)="onChangeDirtyRelationalForm($event)"
+      ></app-relational-modification>
+</ng-template>

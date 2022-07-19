@@ -1,0 +1,24 @@
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockClientPeniche">
+    <app-customer-peniche-consultation 
+    (updateCustomerPeniche)="onUpdateCustomerPeniche($event)"
+    [isPenicheUp] = "isPenicheUp" [isClientExist]= "isClientExist" [penicheCustomerResponseVO]= "penicheCustomerResponseVO" [jiraUrl]="jiraUrl">
+</app-customer-peniche-consultation>
+</ng-template>
+    
+<ng-template #modificationBlockClientPeniche>
+    <app-customer-peniche-modification (onchangePenicheCustomerResponseVO)="onUpdateCustomerPeniche" 
+        (updateCustomerPeniche)="onUpdateCustomerPeniche($event)"
+        [identifier] = "nicheIdentifier"
+        [isClientExist]= "isClientExist" 
+        [penicheCustomerResponseVO]= "penicheCustomerResponseVO"
+        (changeForm)="onChangePenicheForm($event)"
+        (changeDirtyPenicheForm)="OnchangeDirtyPenicheForm($event)"
+        (isAddressFrench) = "onChangeIsFrench($event)"
+        (isFormatValid) = "onChangeFormatValid($event)"
+        (isEntreprise) = "onChangIsEntreprise($event)"
+        [cmBillingUsageVO] = "cmBillingUsageVO"
+        [isSelected] = "isSelected"
+        [isPenicheUp] = "isPenicheUp"
+        [jiraUrl]="jiraUrl">
+    </app-customer-peniche-modification>
+</ng-template>

@@ -1,0 +1,83 @@
+@import '~src/styles/charte';
+.ag-theme-material .ag-header-cell {
+	//background-color:#f0f2f5;
+	white-space: normal;
+	&[col-id="remainingAmount"], &[col-id="initialAmountTTC"], &[col-id="paye"]{
+		.ag-cell-label-container {
+			float: right;
+		}
+		.ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-items: right;
+			justify-content: flex-end;
+		}
+	}
+}
+
+.popup_solde {
+	.modal-dialog {
+		max-width: 610px;
+	}
+	.modal-content {
+		border-radius: 0px;
+	}
+	.font-text {
+		font-size: 12px;
+	}
+	.title-sold {
+		font-family: $font-family-bold;
+	}
+}
+.historique-solde {
+	width: 252px;
+	margin: 0 auto 40px;
+	.ag-header-row-column {
+		height: 60px !important;
+	}
+	.ag-header {
+		height: 60px !important;
+		min-height: 60px !important;
+	}
+	
+	.ag-header-cell-label {
+		justify-content: center;
+	}
+	.borderRight {
+		border-right: $border;
+		.ag-header-cell-text {
+			text-transform: uppercase;
+		}
+	}
+	.ag-header-cell-text {
+		text-decoration: none !important;
+		justify-content: center;
+		text-align: center;
+		text-transform: uppercase;
+	}
+	.ag-theme-material .ag-row.ag-row-last {
+		border-bottom-style: none;
+	}
+	.justify-content-end {
+		justify-content: center !important;
+	}
+}
+
+
+.lik {
+	background-color:#f0f2f5;
+	.ag-theme-material .ag-header-cell {
+		background-color:#f0f2f5;
+	}
+	.ag-layout-auto-height .ag-center-cols-container {
+		background-color:#f0f2f5;
+	}
+}
+.blueborder {
+	border: 1px solid #4480c8;
+	color:#4480c8 !important ;
+}

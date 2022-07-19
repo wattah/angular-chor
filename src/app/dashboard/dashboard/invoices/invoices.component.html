@@ -1,0 +1,80 @@
+<ng-container *ngIf="(!isCallingToGet && !isCallingToCheck && !isCallingToSend) &&
+   (invoicesToGet && (invoicesToGet.length === 0 || (invoicesToGet[0] && invoicesToGet[0].total === 0) )) &&
+   (invoicesToCheck && (invoicesToCheck.length === 0 || (invoicesToCheck[0] && invoicesToCheck[0].total === 0) )) &&
+   (invoicesToSend && (invoicesToSend.length === 0 || (invoicesToSend[0] && invoicesToSend[0].total === 0) ) );
+  else isNotEmptyBloc">
+  <div class="block block-shadow d-none d-sm-none d-md-block col-md-24 col-lg-24" [ngClass]="{'block-grey': !invoicesToGet && !invoicesToCheck && !invoicesToSend && !isCallingToGet && !isCallingToCheck && !isCallingToSend}">
+    <h2 class="block-title athena">
+        Pas de Factures
+    </h2>
+    <section class="container-fluid">
+      <header class="row" *ngxPermissionsOnly="['afficher_recup_controle_factures_autres']">
+          <span class="col-md-3 col-lg-1 col-form-label grey"> Deskeur </span>
+          <select class="form-control athena col-md-6 col-lg-6" id="desk2" 
+                [(ngModel)]="selectedDeskId" name="selectedDeskId2" (change)="changeDesk()">
+              <option *ngFor="let desk of deskList" [ngValue]="desk.id">
+                {{ desk?.lastName | uppercase}} {{desk?.firstName | firstName}}
+              </option>
+          </select>
+      </header>
+    </section> 
+   </div> 
+  </ng-container>
+  <ng-template #isNotEmptyBloc>
+    <div class="block block-shadow d-none d-sm-none d-md-block col-md-24 col-lg-24" [ngClass]="{'block-grey': !invoicesToGet && !invoicesToCheck && !invoicesToSend && !isCallingToGet && !isCallingToCheck && !isCallingToSend}">
+      <h2 class="block-title athena">
+          Factures
+      </h2>
+        <ng-container *ngIf="isCallingToGet || isCallingToCheck || isCallingToSend || invoicesToGet || invoicesToCheck || invoicesToSend;else disconnectedBloc">
+          <section class="container-fluid">
+            <header class="row" *ngxPermissionsOnly="['afficher_recup_controle_factures_autres']">
+                <span class="col-md-3 col-lg-1 col-form-label grey"> Deskeur </span>
+                <select class="form-control athena col-md-6 col-lg-6" id="desk" 
+                      [(ngModel)]="selectedDeskId" name="selectedDeskId" (change)="changeDesk()">
+                    <option *ngFor="let desk of deskList" [ngValue]="desk.id">
+                      {{ desk?.lastName | uppercase}} {{desk?.firstName | firstName}}
+                    </option>
+                </select>
+            </header>
+            <section class="row mt-2">
+              <article class="col-md-24 col-lg-8 pr-3">
+                <app-invoices-table [invoices]="invoicesToGet" [invoiceSatus]="invoiceSatus.TO_GET.key"
+                [selectedDeskId]="selectedDeskId" [isCallingToGot]="isCallingToGet" [connectedUserId]="connectedUser.id"
+                (refreshTable)="refreshTable($event)" (startLoading)="startLoading($event)" *ngxPermissionsOnly="['afficher_recup_controle_factures']; else permissionNotFountBlock">
+                </app-invoices-table>
+                <ng-template #permissionNotFountBlock>
+                  <div class="navbar-search-container" style="text-align: center;">permission not found</div>
+                </ng-template>
+                </article>
+                <article class="col-md-24 col-lg-8 pr-3">  
+                <app-invoices-table [invoices]="invoicesToCheck" [invoiceSatus]="invoiceSatus.TO_CHECK.key"
+                [selectedDeskId]="selectedDeskId" [isCallingToGot]="isCallingToCheck" [connectedUserId]="connectedUser.id"
+                (refreshTable)="refreshTable($event)" (startLoading)="startLoading($event)" *ngxPermissionsOnly="['afficher_recup_controle_factures']; else permissionNotFountBlock">
+                </app-invoices-table>
+                <ng-template #permissionNotFountBlock>
+                  <div class="navbar-search-container" style="text-align: center;">permission not found</div>
+                </ng-template>
+                </article>
+                <article class="col-md-24 col-lg-8 pr-3">
+                <app-invoices-table [invoices]="invoicesToSend" [invoiceSatus]="invoiceSatus.TO_SEND.key"
+                [selectedDeskId]="selectedDeskId" [isCallingToGot]="isCallingToSend" [connectedUserId]="connectedUser.id" *ngxPermissionsOnly="['afficher_recup_controle_factures']; else permissionNotFountBlock">
+                </app-invoices-table>
+                <ng-template #permissionNotFountBlock>
+                  <div class="navbar-search-container" style="text-align: center;">permission not found</div>
+                </ng-template>
+              </article>
+            </section>
+          </section>
+        </ng-container>
+
+      <ng-template  #disconnectedBloc>
+        <p class="text-danger athena">
+          <span class="icon lightning athena"></span> Données manquantes. Connexion à Péniche perdue.
+          <a class="athena" href="{{jiraUrl}}" target="_blank" style="padding-left: 10px;" rel="noopener noreferrer">
+            Signaler au support <span class="icon icon-min arrow-right-blue athena"></span>
+          </a>
+        </p>
+      </ng-template>
+      
+    </div>
+</ng-template>

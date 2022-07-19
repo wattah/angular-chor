@@ -1,0 +1,69 @@
+
+<ng-template  [ngIf]="!showTopPagination" [ngIfElse]="topPagination">
+   <h2 class="not-bordered athena" > {{ title }} </h2> 
+</ng-template>
+
+<ng-template #topPagination >
+    <div class="row justify-content-end mt-2 mb-2">
+        <div class="col-md-20 col-lg-20 " >
+            <app-athena-pagination
+                [totalPages]="totalPages" 
+                [currentPage]="currentPage"
+                (goToPage)="goToPage($event)" >
+            </app-athena-pagination>
+            <span class="total athena" *ngIf="showTotalRows"> {{rowData.length}} RÉSULTATS  &nbsp;&nbsp;</span>
+        </div>
+    </div>
+</ng-template>
+
+<div class="block block-transparent">
+    <app-athena-ag-grid  
+        [columnDefs]="columnDefs"
+        [defaultSortModel]="defaultSortModel" 
+        [rowData]="rowData" 
+        [currentPage]="currentPage"
+        [paginationPageSize]="paginationPageSize"
+        [rowStyle]="rowStyle"
+        [suppressRowClickSelection]="suppressRowClickSelection"
+        [frameworkComponents]="frameworkComponents"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+        [getDataPath]="getDataPath"
+        [treeData]="treeData"
+        [masterDetail]="masterDetail"
+        [rowDragManaged]="true"
+        [detailCellRendererParams]="detailCellRendererParams"
+        [detailCellRenderer]="detailCellRenderer"
+        [detailRowHeight]="detailRowHeight"
+        [getRowHeight]="getRowHeight"
+        [loadAgGridParams]="loadAgGridParams"
+        [redrawDetailsRows]="redrawDetailsRows"
+        [enableCellChangeFlash]="enableCellChangeFlash"
+        [newRowData]="newRowData"
+        [groupDefaultExpanded]="groupDefaultExpanded"
+        [expandedAllRows]="expandedAllRows"
+        [collapseAllRows]="collapseAllRows"
+        [suppressMoveWhenRowDragging]="suppressMoveWhenRowDragging"
+        [rowSelection]="rowSelection"
+        [resize]="resize"
+        [pagination]="pagination"
+        [isRowMaster]="isRowMaster"
+		(selectRow)="selectRowClick($event)"
+        (selectRows)="selectRowsClick($event)"
+        (clickCell)="onClickCell($event)"
+        (changedCellValue)="onCellValueChanged($event)"
+        (clickLink)="onClickLink($event)"
+        [headerHeight]="headerHeight"
+    >
+    </app-athena-ag-grid>
+</div>
+<div class="row justify-content-end mt-2">
+    <div class="col-md-8 col-lg-8 " >
+        <app-athena-pagination
+            [totalPages]="totalPages"
+            [currentPage]="currentPage" 
+            (goToPage)="goToPage($event)" >
+        </app-athena-pagination>
+    </div>
+</div>
+
+  

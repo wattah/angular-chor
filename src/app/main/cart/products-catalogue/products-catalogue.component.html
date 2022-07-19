@@ -1,0 +1,269 @@
+<div class="row">
+    <div class="col-24">
+        <div class="block block-transparent">
+            <h6 class="athena">
+                Catalogue des produits
+            </h6>
+        </div>
+    </div>
+</div>
+<section class="catalogue_panier">
+    <div class="row">
+        <div class="col-lg-24 col-md-24 order-lg-1">
+            <div class="block block-shadow">
+                <h2 class="athena">Catalogue des Produits</h2>
+                <!-- Block forms -->
+                <div class="forms mt-4">
+                    <div class="row">
+                        <div class="col-sm-24 col-lg-12">
+                            <div class="form-group row ">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">
+                                 Nom, description, référence
+                                </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <mat-form-field class="w-100 catalogue_p" appearance="outline">
+                                        <input type="text" matInput [formControl]="textSearchControl" [matAutocomplete]="auto" />
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                {{option.nameProduct}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-group row select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Catégorie </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched">
+                                        <option>Tous</option>
+                                        <option>Valeur 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">Nomenclature 1 </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" disabled>
+                                        <option>Tous</option>
+                                        <option>Services</option>
+                                        <option>Matériels</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena">Nomenclature 2 </label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" disabled>
+                                        <option>Tous</option>
+                                        <option>Valeur 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-24 col-lg-12">
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 3</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" disabled>
+                                        <option>Tous</option>
+                                        <option>Valeur 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 4</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" disabled>
+                                        <option>Tous</option>
+                                        <option>Valeur 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row justify-content-end select_arrows">
+                                <label class="col-sm-4 col-lg-6 pl-0 pr-0 col-form-label athena"> Nomenclature 5</label>
+                                <div class="col-sm-20 col-lg-16">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched" disabled>
+                                        <option>Tous</option>
+                                        <option>Valeur 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- button rechercher -->
+                <div class="text-center my-3 block_onglet">
+                    <button type="button" class="btn btn-green">Rechercher</button>
+                </div>
+                 <!-- Block tri et pagination  -->
+                <div class="row tri_pagination mt-3">
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="tri">
+                            <div class="form-group row mb-2 select_arrows">
+                                <label class="col-sm-8 col-lg-3 col-form-label athena">Trié par </label>
+                                <div class="col-sm-8 col-lg-6">
+                                    <select class="form-control athena ng-pristine ng-invalid ng-touched">
+                                        <option selected value="null"> -- </option>
+                                        <option value="name">Nom</option>
+                                        <option value="priceHt">Prix TTC</option>
+                                        <option value="family">Famille</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-24 col-sm-12 col-xl-12">
+                        <div class="pagination-1">
+                            <div class="row justify-content-end mt-2 mb-2">
+                                <div class="col-24 col-sm-22 col-xl-10 col-md-18">
+                                    <app-athena-pagination [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="goToPage($event)"> </app-athena-pagination>
+                                    <div class="grey font-italic mt-2 athena">25 RÉSULTATS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- blocks des produits -->
+            <div class="descrption_products">
+                <div class="row">
+                    <div class="col-sm-8 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-6">
+                        <div class="block">
+                            <img class="img-fluid w-100" [src]="loadImageProduct()" alt="product.name" />
+                            <div class="description athena mt-2">
+                                <div class="titre">Imprimante HP LaserJet Pro 100 MFP M175A</div>
+                                <div><span class="grey athena">Imprimante HP LaserJet Pro 100 MFP M175A</span></div>
+                                <div><span class="grey athena">Produit > Informatique > Imprimante</span></div>
+                                <div><span class="grey athena">Stock Raspail : </span> 1</div>
+                                <div><span class="grey athena">Stock Opéra : </span> 5</div>
+                                <div><span class="grey athena">Stock Publidispatch : </span> 10</div>
+                                <div><span class="grey athena">Stock Riviera :</span> 2</div>
+                                <div><span class="grey athena">Stock Aix-en-Provence : </span> 0</div>
+                                <div><span class="grey athena">Stock Annecy : </span> 0</div>
+                                <div><span class="grey athena">Stock Lyon : </span> 1</div>
+                                <div><span class="grey athena">Stock Lille : </span> 1</div>
+                                <div class="prix env-blue text-center mt-2">
+                                    <div class="title_prix red">Prix sur devis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <div class="row justify-content-end mt-1">
+                    <div class="col-24 col-sm-18 col-lg-16">
+                        <app-athena-pagination [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="goToPage($event)"> </app-athena-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

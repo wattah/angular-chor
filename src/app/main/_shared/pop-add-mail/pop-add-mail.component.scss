@@ -1,0 +1,14 @@
+@import '~src/styles/charte';
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: .5em 0 .7em 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix-invaid {
+    padding: .5em 0 .7em 0 !important ;
+    border-color: $red !important;
+}
+
+.cdk-overlay-container {
+    z-index:9999 ;
+}
+

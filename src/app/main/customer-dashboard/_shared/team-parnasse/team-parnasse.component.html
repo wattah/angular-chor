@@ -1,0 +1,85 @@
+<table class="table table-not-bordered">
+  <tbody>
+    <tr  id="e2e_coach">
+      <td class="table-td-min-text">
+        Coach :
+      </td>
+      <td class="table-td-icon" *ngIf="emailCoach">
+        <a class="athena" [href]="openOutlook(emailCoach)">
+          <span class="icon mail"></span>
+        </a>
+      </td>
+      <td class="table-td-icon" *ngIf="emailCoach">
+        <a class="athena" [href]="openSkype(emailCoach)">
+          <span class="icon skype"></span>
+        </a>
+      </td>
+      <td>
+        <span *ngIf="emailCoach" class="text-min grey">
+          <a [href]="openSkype(emailCoach)" class="break-word athena"> {{coach}} </a>
+        </span>
+        <span *ngIf="!emailCoach" class="text-min grey"> - </span>
+      </td>
+    </tr>
+    <ng-container *ngIf="coach && coach != '-'">
+      <tr *ngIf="backUpCoach$ | async as backUpCoach; ">
+        <td colspan="4">
+          <div class="red athena">
+            ({{ (backUpCoach.backupId) ?  backupFullName(backUpCoach) : 'Tous'}} du {{backUpCoach.beginDate | date: 'dd/MM/yyyy'}} au {{backUpCoach.endDate | date: 'dd/MM/yyyy'}})
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <tr  id="e2e_desk">
+      <td class="table-td-min-text">
+        Attaché :
+      </td>
+      <td *ngIf="emailDesk" class="table-td-icon">
+        <a class="athena" [href]="openOutlook(emailDesk)">
+          <span class="icon mail"></span>
+        </a>
+      </td>
+      <td class="table-td-icon" *ngIf="emailDesk">
+        <a class="athena" [href]="openSkype(emailDesk)">
+          <span class="icon skype"></span>
+        </a>
+      </td>
+      <td>
+        <span *ngIf="emailDesk" class="text-min grey">
+          <a [href]="openSkype(emailDesk)" class="break-word athena"> {{desk}} </a>
+        </span>
+        <span *ngIf="!emailDesk" class="text-min grey"> - </span>
+      </td>
+    </tr>
+    <ng-container *ngIf="desk && desk != '-'">
+      <tr *ngIf="backUpDesk$ | async as backUpDesk; ">
+        <td colspan="4">
+          <div class="red athena" >
+            ({{ (backUpDesk.backupId) ?  backupFullName(backUpDesk) : 'Tous'}}  du {{backUpDesk.beginDate | date: 'dd/MM/yyyy'}} au {{backUpDesk.endDate | date: 'dd/MM/yyyy'}})
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <tr  id="e2e_adhesion">
+      <td class="table-td-min-text">
+        Adhésion :
+      </td>
+      <td *ngIf="emailAdhesion" class="table-td-icon">
+        <a class="athena" [href]="openOutlook(emailAdhesion)">
+          <span class="icon mail"></span>
+        </a>
+      </td>
+      <td class="table-td-icon" *ngIf="emailAdhesion">
+        <a class="athena" [href]="openSkype(emailAdhesion)">
+          <span class="icon skype"></span>
+        </a>
+      </td>
+      <td>
+        <span *ngIf="emailAdhesion"  class="text-min grey">
+          <a [href]="openSkype(emailAdhesion)" class="break-word athena"> {{adesion}} </a>
+        </span>
+        <span *ngIf="!emailAdhesion" class="text-min grey"> - </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

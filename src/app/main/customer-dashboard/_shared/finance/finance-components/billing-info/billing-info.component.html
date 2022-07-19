@@ -1,0 +1,19 @@
+<span class="red" *ngIf="dateRecouvrement"><span class="icon status-exclamation"></span> Recouvrement depuis le {{dateRecouvrement | date:'dd MMM yyyy'}}</span>
+	<a class="block-title-item-link" [routerLink]="['modification-note', personIdNote ]" queryParamsHandling="merge">
+			<div class="block-title-item-icon" *ngxPermissionsOnly="['modification_infos_finances']">
+				<span class="icon" [ngClass]="(isModifier) ? ['icon pen alt alt-left'] : ['icon pen alt alt-info alt-left']"></span>
+			</div>
+	</a>
+	<p class="enableNewLine"><span class="text-min grey"><span class="uppercase"><u>Infos facturation</u></span> 
+		{{infoFacturation?.lastNameAuthor ? '- Modifié par' : ''}} 
+		<ng-container *ngIf="emailUser">
+		<a class="athena" [href]="openSkype(infoFacturation.emailUser)">  <span>{{infoFacturation?.firstNameAuthor | firstName}}</span> 
+			<span> {{infoFacturation?.lastNameAuthor | uppercase}} </span> </a>
+		</ng-container>
+		<ng-container *ngIf="!emailUser">
+			 <span>{{infoFacturation?.firstNameAuthor | firstName}}</span> 
+				<span> {{infoFacturation?.lastNameAuthor | uppercase}} </span>
+			</ng-container>
+		{{infoFacturation?.value ? ',' : ''}} {{infoFacturation?.value ? 'le' : ''}}
+		 {{infoFacturation?.dateNote | date:'dd MMM yyyy'}}	 {{infoFacturation?.value ? 'à' : ''}}   {{infoFacturation?.dateNote | date:"HH'h'mm"}}{{infoFacturation?.dateNote ? '.' : ''}} </span><br />
+		 {{infoFacturation?.value}}</p>

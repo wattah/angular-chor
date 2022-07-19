@@ -1,0 +1,149 @@
+[
+    {
+        "a": [
+            {
+                "motCleSearch": "copin",
+                "nbElement": 0,
+                "customer_id": 8942
+            },
+            {
+                "motCleSearch": "cosq",
+                "nbElement": 0,
+                "customer_id": 10366
+            }
+        ],
+        "b": [
+            {
+                "motCleSearch": 130110008,
+                "nbElement": 0,
+                "telephone1_person_id": 41261,
+                "telephone1_value": "0787868786",
+                "telephone1_role": "Administrateur",
+                "telephone1_type": "TELEPHONE FIXES",
+                "telephone1_label": " -Jens LANG - Administrateur",
+                "telephone2_person_id": 16759,
+                "telephone2_value": "0149891969",
+                "telephone2_label": " -Jens LANG - Titulaire",
+                "telephone2_type": "TELEPHONE FIXES",
+                "telephone3_person_id": 16759,
+                "telephone3_value": "0627453845",
+                "telephone3_label": " -Jens LANG - Titulaire",
+                "telephone3_type": "TELEPHONE FIXES",
+                "customer_id": 4541
+            }
+        ],
+        "c": [
+            {
+                "motCleSearch": "EGYP",
+                "nbElement": 0,
+                "description": "Coordonnées fiche 360 JD3 contient un numero RP",
+                "telephone1_person_id": 41427,
+                "telephone1_value": "0645857021",
+                "telephone1_label": " - EGYPTE - Titulaire",
+                "telephone1_type": "TELEPHONE MOBILE",
+                "telephone2_person_id": 41427,
+                "telephone2_value": "0645857021",
+                "telephone2_label": " - EGYPTE - Titulaire",
+                "telephone2_type": "TELEPHONE FIXES",
+                "telephone3_person_id": 41429,
+                "telephone3_value": "0645857021",
+                "telephone3_type": "TELEPHONE MOBILE",
+                "telephone3_label": " -Marit KOCH - Représentant légal",
+                "email1_person_id": 41427,
+                "email1_value": "8KCvLP.ozjgu@VkdX.d67",
+                "email1_label": " - EGYPTE - Titulaire",
+                "email2_person_id": 41427,
+                "email2_value": "8KCvLP.ozjgu@VkdX.d67",
+                "email2_label": " - EGYPTE - Titulaire",
+                "email3_person_id": 41429,
+                "email3_value": "8KCvLP.ozjgu@VkdX.d67",
+                "email3_label": " -Marit KOCH - Représentant légal",
+                "adresse1_person_id": 41427,
+                "idMethode1": 78978,
+                "adresse1": "EGYPTE- Titulaire\nGroupe Marchand de construction navale\nEGYPTE\nLA PETITE LANDE\nR MAR FOCH\n44110 CHATEAUBRIANT",
+                "adresse2_person_id": 41427,
+                "idMethode2": 78978,
+                "adresse2_value": "",
+                "adresse2": "EGYPTE- Titulaire\nGroupe Marchand de construction navale\nEGYPTE\nLA PETITE LANDE\nR MAR FOCH\n44110 CHATEAUBRIANT",
+                "adresse3_person_id": 41429,
+                "idMethode3": 78984,
+                "adresse3": "Marit KOCH- Représentant légal\nMarit KOCH\nLA PETITE LANDE\nR MAR FOCH\n44110 CHATEAUBRIANT",
+                "customer_id": 21519
+            }
+        ],
+        "d": [
+            {
+                "motCleSearch": "comp",
+                "description": "Coordonnées fiche 360 JD3 contient un numero RP",
+                "nbElement": 1,
+                "telephone1_person_id": 16939,
+                "telephone1_value": "06 85 61 1",
+                "telephone1_type": "TELEPHONE MOBILE",
+                "telephone1_label": " -Steafan DESBOIS - Titulaire",
+                "telephone2_person_id": 16939,
+                "telephone2_value": "0616453841",
+                "telephone2_label": " -Steafan DESBOIS - Titulaire",
+                "telephone2_type": "TELEPHONE MOBILE",
+                "telephone3_person_id": 16939,
+                "telephone3_value": "0770186380",
+                "telephone3_label": " -Steafan DESBOIS - Titulaire",
+                "telephone3_type": "TELEPHONE FIXES",
+                "customer_id": 3368
+            }
+        ],
+        "e": [
+            {
+                "motCleSearch": "120507005",
+                "nbElement": 0,
+                "telephone1_value": "0603097272",
+                "telephone1_label": " - BBB - Administrateur",
+                "telephone1_type": "TELEPHONE FIXES",
+                "telephone2_value": "0611444509",
+                "telephone2_label": " - BBB - Administrateur",
+                "telephone2_type": "TELEPHONE FIXES",
+                "telephone3_value": "0603230480",
+                "telephone3_type": "TELEPHONE FIXES",
+                "telephone3_label": " -Vardah AAA - Titulaire",
+                "customer_id": 3102
+            }
+        ],
+        "f": [
+            {
+                "motCleSearch": 130110008,
+                "nbElement": 0,
+                "telephone1_person_id": 41261,
+                "telephone1_value": "0787868786",
+                "telephone1_role": "Administrateur",
+                "telephone1_type": "TELEPHONE FIXES",
+                "telephone1_label": " - Jens LANG - Administrateur",
+                "telephone2_person_id": 16759,
+                "telephone2_value": "0149891969",
+                "telephone2_label": " - Jens LANG - Titulaire",
+                "telephone2_type": "TELEPHONE FIXES",
+                "telephone3_person_id": 16759,
+                "telephone3_value": "0627453845",
+                "telephone3_label": " - Jens LANG - Titulaire",
+                "telephone3_type": "TELEPHONE FIXES",
+                "customer_id": 4541
+            }
+        ],
+        "g": [
+            {
+                "motCleSearch": "copin",
+                "nbElement": 0,
+                "id_customer": 8942,
+                "telephones": "0041227359416 - Assistant(e) de direction\n0623158390 - Autre\n0652797467 - Assistant(e) de direction\n0652797467 - Assistant(e) de direction\n0676007260 -Rina COPPEE - Titulaire",
+                "emails": "8KCvLP.ozjgu@VkdX.d67 - Facturation\n8KCvLP.ozjgu@VkdX.d67 -Rina COPPEE - Titulaire\n8KCvLP.ozjgu@VkdX.d67 - Assistant(e) de direction\n8KCvLP.ozjgu@VkdX.d67 - Facturation\n8KCvLP.ozjgu@VkdX.d67 -Rina COPPEE - Titulaire",
+                "adresses": "Rina COPPEE- Titulaire\nHolding Ouverte d'assortiment de confiseries\nBAILLARD Terezia\nBOIS DE NEFLES\n22B CHE BOIS DE NATTES\n97490 SAINTE CLOTILDE\nRina COPPEE- Titulaire\nConfrerie Locale d'assemblage de batiment\nBRASSART Rebeccah\n169 R GONNEAU\nLIGNE PARADIS\n16B CHE LUSPOT\n97410 SAINT PIERRE\nPro\nConcertation Populaire de selection ovine\nCOPPEE Rina\nSAINTE ANNE\n2 IMP EMERAUDES\n97437 SAINTE ANNE\nPro\nConcertation Populaire de selection ovine\nCOPPEE Rina\nSAINTE ANNE\n2 IMP EMERAUDES\n97437 SAINTE ANNE\nRina COPPEE- Titulaire\nConcertation Populaire de selection ovine\nCOPPEE Rina\nMOUFIA\n19 RTE MOUFIA\n97490 SAINTE CLOTILDE\nRina COPPEE- Titulaire\nConcertation Populaire de selection ovine\nCOPPEE Rina\nMOUFIA\n19 RTE MOUFIA\n97490 SAINTE CLOTILDE\nRina COPPEE- Titulaire\nConcertation Populaire de selection ovine\nCOPPEE Rina\nSTE CLOTILDE\n141 RTE ANANAS\n97490 SAINTE CLOTILDE\nRina COPPEE- Titulaire\nAlliance Populaire d'assortiment industriel\nCOPPEE Rina\n5 CHE MARINE\nSTE CLOTILDE\n141 RTE ANANAS\n97490 SAINTE CLOTILDE\nRina COPPEE- Titulaire\nConcertation Populaire de selection ovine\nGUILLERMET Renita\nLIGNE PARADIS\n16B CHE LUSPOT\n97410 SAINT PIERRE\nAutre\nRegroupement Parisien du Limousin\nTISSERANT Tadeo\nMTSAPERE\n2 R COLLEGE DOUJANI\n97600 MAMOUDZOU\nRina COPPEE- Titulaire\nTISSERANT Tadeo\nMTSAPERE\n2 R COLLEGE DOUJANI\n97600 MAMOUDZOU"
+            }
+        ],
+        "h": [
+            {
+                "motCleSearch": "180829012",
+                "nbElement": 0,
+                "titre": "COORDONNÉES",
+                "customer_id": 21176
+            }
+        ]
+    }
+]

@@ -1,0 +1,22 @@
+<app-athena-paginated-ag-grid  
+  *ngIf="dataSourcePrivate.length > 0"
+  [title]="'PERSONNES &#xAB;' + searchPattern + '&#xBB; (' +  dataSourcePrivate.length + ')'"
+  [paginationPageSize]="paginationPageSize"
+  [columnDefs]="columnDefsPrivate" 
+  [rowData]="dataSourcePrivate"  
+  [defaultSortModel]="defaultSortModel" 
+  (selectRow)="rowAction($event)"
+>
+</app-athena-paginated-ag-grid>
+<div class="mt-2"></div>
+<app-athena-paginated-ag-grid
+  *ngIf="dataSourceEntreprise.length > 0"  
+  [title]="'ENTREPRISES &#xAB;' + searchPattern + '&#xBB; (' +  dataSourceEntreprise.length + ')'"
+  [paginationPageSize]="paginationPageSize"
+  [columnDefs]="columnDefsEntreprise" 
+  [rowData]="dataSourceEntreprise"  
+  [defaultSortModel]="defaultSortModelEntreprise"
+  (selectRow)="rowAction($event)"
+>
+</app-athena-paginated-ag-grid
+>

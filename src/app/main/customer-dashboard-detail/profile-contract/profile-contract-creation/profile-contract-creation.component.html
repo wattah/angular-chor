@@ -1,0 +1,178 @@
+<div class="container-fuild">
+    <div class="row">
+        <div class="col-24">
+            <div class="block block-transparent">
+                <h6 class="athena">
+                   PROFIL ET CONTRAT
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="notValidForm ||msgPenicheKO">
+        <div class="col-md-14 col-lg-14">
+            <div class="block block-alert" >
+                <table class="table table-not-bordered"><caption class="p-0"></caption>
+                    <tbody>
+                        <tr>
+                            <th id="th"></th> 
+                            <td class="alert-icon align-middle" >
+                                <span class="icon icon-max status-exclamation-white"></span>
+                            </td>
+                            <td class="alert-text">
+                             <div *ngIf="nomProfile">- Veuillez renseigner le nom sur profil </div>
+                             <div *ngIf="nomInterne">- Veuillez renseigner le nom interne sur profil </div>
+                             <div *ngIf="language">- Veuillez renseigner la langue favorite sur profil </div>
+                             <div *ngIf="companyName">- Veuillez renseigner Raison sociale sur profil </div>
+                             <div *ngIf="crmName">- Veuillez renseigner le nom interne sur profil </div>
+                             <div *ngIf="siren">- Veuillez saisir un SIREN à format valide composé de neuf chiffres sur profil</div>
+                             <div *ngIf="dateEntreeStatut">- Veuillez renseigner date d'entrée sur statut contractuel </div>
+                             <div *ngIf="dateSigneStatut">- Veuillez renseigner date de signature sur statut contractuel </div>
+                             <div *ngIf="dateHomologueStatut">- Veuillez renseigner date d'homologation sur statut contractuel </div>
+                             <div *ngIf="cancellationDateStatut">- Veuillez renseigner date de résiliation sur statut contractuel </div>
+                             <div *ngIf="cancellationMotifStatut">- Veuillez renseigner le motif de résiliation sur statut contractuel </div>
+                             <div *ngIf="isEmailExist && isAccessToClientPeniche">- Veuillez renseigner email notification sur client péniche </div>
+                             <div *ngIf="raisonSocialPenich && isAccessToClientPeniche">- Veuillez renseigner Raison sociale sur client péniche </div>
+                             <div *ngIf="!isClientExist && !isProspectOrContact && !isTerminated && isAccessToClientPeniche">- Le client Péniche n'existe pas pour ce membre, veuillez le créer pour valider votre enregistrement</div>
+                             <div *ngIf="nomPeniche && isAccessToClientPeniche">- Veuillez renseigner le nom sur client péniche </div>
+                             <div *ngIf="prenomPeniche && isAccessToClientPeniche">- Veuillez renseigner le prenom sur client péniche </div>
+                             <div *ngIf="adressFrancaisPeniche && isAccessToClientPeniche">- Veuillez renseigner adresse française sur client péniche <span *ngIf="villeOrCodePostalPeniche">(la ville et le code postal ne sont pas saisis et sont obligatoires si le CR attendu est coché )</span> </div>
+                             <div *ngIf="paysPeniche && isAccessToClientPeniche">- Veuillez renseigner pays sur client péniche </div>
+                             <div *ngIf="codePostalPeniche && isAccessToClientPeniche">- Veuillez renseigner code postale sur client péniche </div>
+                             <div *ngIf="villePeniche && isAccessToClientPeniche">- Veuillez renseigner ville sur client péniche </div>
+                             <div *ngIf="adressePeniche && isAccessToClientPeniche">- Veuillez renseigner adresse sur client péniche </div>
+                             <div *ngIf="formatAdresseFrancais && isAccessToClientPeniche">- Le champ Adresse est invalide, merci de sélectionner une adresse proposée par ORAS.</div>
+                             <div *ngIf="msgPenicheKO && isAccessToClientPeniche && !isTerminated && !isProspectOrContact">-Attention : Problème de connexion à Péniche. Les données saisies dans l'onglet Péniche n'ont pas été prises en compte. Veuillez contacter le support.</div>
+                             <ng-template [ngIf]="errorsFormDataParnasseAsSelected.length > 0">
+                                <div *ngFor="let item of errorsFormDataParnasseAsSelected">
+                                    {{item}}
+                                </div>
+                            </ng-template>
+                             <div *ngIf="isVendeurHomologation">- Veuillez renseigner vendeur sur client vente et homologation </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-24 col-md-24">
+            <div class="block_onglet block block-shadow">
+                <div class="onglet_tabs">
+                    <mat-tab-group animationDuration="10ms" [disableRipple]="true" [selectedIndex]="indexTab">
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <div> Profil
+                                    <span *ngIf="badgeProfileError" class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                            </ng-template>
+                            <ng-template [ngIf]="typeCustomer!=='company'" [ngIfElse]="entrepriseBlock">
+                                <app-profil [person]="customerProfile?.person" 
+                                (changeProfilForm)="onChangeProfilForm($event)"
+                                [photo] = "photo" (changeDirtyProfilForm)="onChangeDirtyProfilForm($event)"
+                                [isSelected] = "isSelected"> 
+                            </app-profil>
+                            </ng-template>
+                            <ng-template #entrepriseBlock>
+                                <app-profil-entreprise [person]="customerProfile?.person" 
+                                (changeProfilEntrepriseForm)="onChangeProfilEntrepriseForm($event)"
+                                (changeDirtyProfilEntrepriseForm)="onChangeDirtyProfilEntrepriseForm($event)"
+                                [photo] = "photo"
+                                [isSelected] = "isSelected">
+                            </app-profil-entreprise>
+                            </ng-template>
+                            
+                        </mat-tab>
+                        <mat-tab *ngIf="typeCustomer!=='company'">
+                            <ng-template mat-tab-label>
+                                <div> Relationnel
+                                    <span *ngIf="badgeRelationnelError" class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                            </ng-template>
+                             <app-relational [person]="customerProfile?.person" 
+                             (changeRelationalForm)="onChangeRelationalForm($event)"
+                             (changeDirtyRelationalForm)="onChangeDirtyRelationalForm($event)"> 
+                            </app-relational>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <div>Données Parnasse
+                                    <span *ngIf="badgeDonneeParnasse"  class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                              </ng-template>
+                              <app-data-parnasse 
+                                [customerProfile]="customerProfile" 
+                                [isSelected] = "isSelected"
+                                (changeDataParnasseForm)="changeDataParnasseForm($event)"
+                              > </app-data-parnasse> 
+                        </mat-tab>
+                        <mat-tab> 
+                            <ng-template mat-tab-label>
+                                <div>Vente et homologation
+                                    <span *ngIf="badgeVenteHomologationError"  class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                              </ng-template>
+                            <app-sale-approval 
+                                (changeSaleApprovalForm)="onChangeSaleApprovalForm($event)"
+                                [customer] = "customerProfile?.customer"
+                                (changeAcquistionCanal) = "onChangeAcquistionCanal($event)"
+                                (changeDirtySaleApprovalForm)="onChangeDirtySaleApprovalForm($event)"
+                                [isSelected] = "isSelected"> 
+                            </app-sale-approval>
+                        </mat-tab>
+                        <mat-tab> 
+                            <ng-template mat-tab-label>
+                                <div> Statut Contractuel
+                                    <span *ngIf="badgeStatutError" class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                            </ng-template>
+                            <app-contractual-status 
+                            (changePersonFormStatus)="onChangePersonStatutForm($event)" 
+                            (changeCustomerFormStatus)="onChangeCustomerStatutForm($event)" 
+                            (changeDirtyStatusContractualForm)="onChangeDirtyStatusContractualForm($event)"
+                            [person] = "customerProfile?.person"
+                            [customer] = "customerProfile?.customer"
+                            [isSelected] = "isSelected"> 
+                            </app-contractual-status>
+                        </mat-tab>
+                        <mat-tab > 
+                            <ng-template mat-tab-label>
+                                <div *ngxPermissionsOnly="['affichage_client_peniche']" > Client Péniche
+                                    <span *ngIf="badgePenicheError && !isProspectOrContact" class="icon badge-top picto-exclamation-rouge "> </span>
+                                </div>
+                            </ng-template>
+                            <app-customer-peniche
+                            *ngxPermissionsOnly="['affichage_client_peniche']" 
+                            [nicheIdentifier] = "nicheIdentifier"
+                            [penicheCustomerResponseVO] = "penicheCustomerResponseVO"
+                            (changePenicheForm) = "onChangePenicheForm($event)"
+                            (changeDirtyPenicheForm)="onChangeDirtyPenicheForm($event)"
+                            (isAddressFrench) = "onChangeIsFrench($event)"
+                            (isFormatValid) = "onChangeFormatValid($event)"
+                            (isEntreprise) = "onChangIsEntreprise($event)"
+                            [customerId] = "customerId"
+                            [isClientExist] = "isClientExist"
+                            [isPenicheUp] = "isPenicheUp"
+                            [isSelected] = "isSelected"> 
+                            </app-customer-peniche>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 mb-3 justify-content-center" *ngIf="!(consultationModePage$ | async)">
+    <button class="btn btn-link blue" [routerLink]="null" queryParamsHandling="merge" (click)="onCancel()">
+        Annuler
+    </button>
+
+    <input class="btn btn-green"  type="button" value="Enregistrer" (click)="onUpdate()" />
+</div>
+
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>
+

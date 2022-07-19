@@ -1,0 +1,24 @@
+<div id="body" class="container-fluid " [ngClass]="(isParticular)?'env-pink':'env-yellow'">
+	<div class="row">
+		<div class="d-none d-md-block col-24">
+			<app-see-all-profil 
+				[isEntreprise]="isEntreprise"
+				[infoCustomer]="infoProfil" 
+				[goodToKnow]="goodToKnow"
+				[typeCustomer]="typeCustomer" 
+				[recoveryDate]="recoveryDate"
+				[totalDebt]="totalDebt"> 
+			</app-see-all-profil>
+		</div>
+		<div class="col-24">
+			<p>
+				<a class="athena" [routerLink]="(isEntreprise) ? ['/customer-dashboard/entreprise', customerId] : ['/customer-dashboard/particular', customerId]" queryParamsHandling="merge">
+					<span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+				</a>
+			</p>
+			<div class="block block-shadow">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</div>
+</div>

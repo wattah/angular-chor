@@ -1,0 +1,99 @@
+@import '../../../../../styles/charte';
+.menu {
+  min-width: 230px;
+ /* height: 203px;*/
+  box-shadow: $box-shadow;
+  background-color: $white;
+  margin: 0 0 0 5px;
+}
+ 
+.FILTRES {
+  width: 56px;
+  height: 22px;
+  
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.57;
+  letter-spacing: normal;
+  color: $black;
+  padding-top: 14px;
+  padding-bottom: 20px;
+  margin-left: 20px;
+}
+
+.mat-list-item {
+  font-weight: 500;
+  color: $grey;
+  
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  padding: 0px;
+  height: 18px;
+}
+
+.mat-list-item-content {
+  padding: 0px;
+  margin: 0px;
+}
+
+.margin {
+  padding: 0px 0px 4px 5px;
+}
+
+mat-list-item.item{
+  @extend .mat-list-item;
+  margin: 20px 0 20px 1px;
+  width: 220px;
+}
+
+mat-list-item.subItem{
+  @extend .mat-list-item;
+  width: 180px;
+  margin: 14px 0 14px 0;
+}
+
+mat-list-item.active{
+  font-weight: 500;
+  color: $blue;
+}
+
+mat-list-item.disabled{
+  cursor: default !important;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.img {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.mat-list-base {
+  margin-top: 0px;
+}
+
+.help {
+  position: absolute;
+  left:110px;
+  top: 300px;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.2;
+  letter-spacing: normal;
+  color: $black;
+  padding: 10px;
+  margin: 10px;
+  z-index: 120;
+  width: 252px;
+  height: 231px;
+  box-shadow: $box-shadow;
+  background-color: $white;
+}

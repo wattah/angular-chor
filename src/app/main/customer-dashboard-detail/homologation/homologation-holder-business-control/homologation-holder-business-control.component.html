@@ -1,0 +1,71 @@
+<div class="block block-shado fixhaut">
+    <h2 class="athena">contrôle métier titulaire / homologation</h2>
+    <form [formGroup]="form" (ngSubmit)="updateHomologation()">
+        <div class="row">
+            <div class="col-lg-24 ">            
+                <div class="form-group row">
+                    <label for="athena" class="col-lg-7 mt-3 col-form-label athena">Déclaris/préventel</label>
+                    <div class="col-lg-5">
+                        <select  class="form-control mt-3 athena" formControlName="declarationPreventionHomologation" [(ngModel)]="declarationPreventionHomo"
+                        (change)="updateHomologation()">
+                        <option [value]="null">--</option>
+                            <option *ngFor="let item of listOkKO" [ngValue]="item.ref"
+                                         [selected]="item.ref == declarationPreventionHomo">{{item.label}}</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="athena" class="col-lg-7 col-form-label athena">Contrôle de solvabilité</label>
+                    <div class=" col-lg-5 ">
+                        <select  class="form-control athena" formControlName="solvabilityHomologation" [(ngModel)]="solvabilityHomo"
+                        (change)="updateHomologation()">
+                        <option [value]="null">--</option>
+                            <option *ngFor="let item of listOkKO" [ngValue]="item.ref"
+                                         [selected]="item.ref == solvabilityHomo">{{item.label}}</option>    
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label  class="col-lg-7 col-form-label athena">Commentaire</label>
+                    <div class="col-lg-10">
+                        <textarea  class="form-control athena"  rows="4" formControlName="commentHomologation" [(ngModel)]="commentHomo"
+                        (change)="updateHomologation()"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="athena" class="col-lg-7 col-form-label athena">Desk</label>
+                    <div class="col-lg-10">
+                        <select  class="form-control mt-1 athena" formControlName="listDeskHomologation"
+                        [(ngModel)]="selectedDeskId"  (change)="updateHomologation()">
+                            <option [value]="null">--</option>       
+                            <option *ngFor="let desk of deskList" [ngValue]="desk.id" 
+                            [selected]="desk.id == selectedDeskId ">
+                                {{desk | fullNameFormatter}}
+                            </option>    
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label for="athena" class="col-lg-7 col-form-label athena">Décision</label>
+                    <div class="col-lg-10">
+                        <select  class="form-control mt-1 athena" formControlName="decisionHomologation" [(ngModel)]="decisionHomo" 
+                        (change)="initDateDecision()" (change)="updateHomologation()">
+                        <option [value]="null">--</option>
+                            <option *ngFor="let item of listDecision" [ngValue]="item.ref"
+                                         [selected]="item.ref == decisionHomo ">{{item.label}}</option>    
+                        </select>
+                    </div>
+                    <label  class="col-form-label marged-label mt-1 ml-2 mr-2"> le </label>
+                                <mat-form-field class="athena col-md-4 col-lg-4 md-5 " appearance="outline" >
+                                    <input matInput [matDatepicker]="pickerStart" placeholder="" 
+                                    readonly  formControlName="dateHomologation" [(ngModel)]="decisionDateHomo"  
+                                    (dateChange)="updateHomologation()">
+                                    <mat-datepicker #pickerStart ></mat-datepicker>
+                                </mat-form-field>  
+                                <span class="col-form-label mt-2 ml-2 icon calendar-grey clickable athena " (click)="pickerStart.open()"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

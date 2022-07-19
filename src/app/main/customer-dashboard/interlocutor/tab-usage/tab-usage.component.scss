@@ -1,0 +1,11 @@
+@import '../../../../../styles/charte';
+
+.icon{
+    &.add{
+        display: block;
+    }
+}
+
+#usageDiv:empty {
+    display: none;
+}

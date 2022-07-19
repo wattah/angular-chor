@@ -1,0 +1,68 @@
+<div class="underline mt-3 mb-2" >Avoir / complémentaire N ° {{formNumber}}</div>
+<form [formGroup]="lineDetailsform">
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label athena">Libellé*</label>
+        <div class="col-sm-20 col-lg-12 pl-n3">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="label" name="libelle"  [(ngModel)]="lineDetails.lineLabel"
+            [ngClass]="[!isDetailsLinesValid && labelInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+            <mat-error *ngIf="labelInvalid">Ce champ est obligatoire</mat-error>
+        </div>
+        <span class="icon mt-1 status-exclamation" *ngIf="labelInvalid"></span>
+        <span class="icon del clickable mt-2 ml-4" *ngIf="linesDetailsLength !== 1 && formNumber !== 1" (click)="removeOtherCredit()"></span>
+    </div>
+    <div class="form-group row select_arrows">
+        <label class="col-sm-3 col-form-label athena"> Catégorie*</label>
+        <div class="col-sm-6 col-lg-8 pl-n3">
+            <select [ngClass]="[!isDetailsLinesValid && categoryInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'form-control athena ng-pristine ng-invalid ng-touched']"
+              name="categorie" formControlName="category" [(ngModel)]="lineDetails.lineCategory">
+                <option [ngValue]="null" disabled>--</option>
+                <option >Abonnement</option>
+                <option >Consommations</option>
+                <option >Service</option>
+            </select>
+            <mat-error *ngIf="categoryInvalid">Ce champ est obligatoire</mat-error>
+        </div>
+        <span class="icon mt-1 status-exclamation" *ngIf="categoryInvalid"></span>
+    </div>
+    <div class="form-group row">
+    
+        <div class="col-sm-8 row">
+            <label class="col-sm-9 col-form-label athena">Montant HT*</label>
+            <div class="col-sm-12 d-flex">
+                <input [ngClass]="[!isDetailsLinesValid && amountHTInvalid ? 'athena form-control error ml-1 col-sm-12 ng-pristine ng-valid ng-touched' : 'athena form-control ml-1 col-sm-16 ng-pristine ng-valid ng-touched']"
+                type="number"  (keypress)="filterInput($event)" formControlName="amountHT" name="montant"
+                [(ngModel)]="lineDetails.amount" (ngModelChange)="calculateAmountTTC()"  />
+                <span class="icon ml-1 mt-1 status-exclamation" *ngIf="amountHTInvalid"></span>
+            </div>
+            <div class=" col-sm-9"></div>
+            <div class=" col-sm-9 ml-1">
+                <mat-error *ngIf="amountHTInvalid">Ce champ est obligatoire</mat-error>
+            </div>      
+        </div>
+    
+        <div  class="col-sm-4 ml-4 row">
+        <label class="col-sm-9 col-form-label athena ml-n3">TVA*</label>
+        <div class="col-sm-12">
+            <select [ngClass]="[!isDetailsLinesValid && tvaInvalid ? 'athena form-control error col-sm-19 ng-pristine ng-valid ng-touched' : 'form-control athena col-sm-19 ng-pristine ng-invalid ng-touched']"
+             type="number" formControlName="tva"  name="tva"
+            [(ngModel)]="lineDetails.tvaRate" (ngModelChange)="calculateAmountTTC()" >
+                <option >20</option>
+                <option >7</option>
+                <option >19.6</option>
+                <option >5.5</option>   
+            </select>
+        </div>
+        </div>
+    
+    <div>
+        <label class=" col-form-label athena">Montant TTC</label>
+    </div>
+    
+    <div  class="col-sm-6 ml-5 pl-3">
+        <div class="mt-2">{{amountTTC  | number : '1.2-2'}} €</div>
+    </div>
+    
+    </div>
+    
+</form>

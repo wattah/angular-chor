@@ -1,0 +1,264 @@
+<ng-template [ngIf]="showinterlocuteur">
+	<div class="bloc_intelocuteur" *ngFor="let interlocutor of interlocutorList">
+		<div class="padd-block block" *ngIf="isInRoleBenefOrTituOrParticular(interlocutor)" >
+			<a class="block-title-item-link athena clickable" *ngxPermissionsOnly="['modification_interlocuteur']" [routerLink]="null" (click)= "redirectToEditBenOrParOrEnt(interlocutor?.personId, false)">
+			<div class="block-title-item-icon">
+				<span class="icon pen athena"></span>
+			</div></a>
+			<div [ngClass]="[getClientName(interlocutor)=='-' ? 'h7  mb-3' : 'h7 underline mb-3']">
+				{{getClientName(interlocutor)}}
+			</div>
+			<div class="subtitle grey">
+				<span class="icon interlocutor-details-new"></span> 
+				<span class="enableNewLine inline-flex"> {{formatterRole(interlocutor?.roles)}}</span>
+			</div>
+			<div class="block_principale" *ngIf="cmPrincipalList">
+				<p class="text-max athena"><strong>Principal</strong></p>
+				<div class="d-flex mb-2">
+					<ng-container *ngIf="cmListByMedia(cmPrincipalList, cmMediaRef.TEL_FIXE, true, false); let priTituHome">
+						<div class="home" *ngFor="let principal of priTituHome" (click)="validPhoneHomeContact(principal)">
+							<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+								<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']"> {{principal?.value }} </span>
+						</div>
+						
+						<div [ngClass]="[priTituHome.length !== 0 ? 'mobile ml-3' : 'mobile']" *ngFor="let principal of cmListByMedia(cmPrincipalList, cmMediaRef.TEL_MOBILE, true, false)" (click)="validMobileContact(principal)">
+								<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+								<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']"> {{principal?.value}}</span>
+						</div>
+					</ng-container>
+				</div>
+				<div class="address mb-2" *ngFor="let principal of cmListByMedia(cmPrincipalList, cmMediaRef.EMAIL, true, false)" (click)="validEmailContact(principal)">
+					<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+					<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{principal?.value }}</span>
+				</div>
+				<div class="addres_livraison d-flex" *ngFor="let principal of cmListByMedia(cmPrincipalList, cmMediaRef.POSTAL_ADDRESS, true, false)">
+					<div class="address w-50 mr-2">
+						<u class="text-min grey athena ml-4">Adresse 
+							<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" (click)="validaddressContact(principal)" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+						</u>
+						<div class="d-flex" >
+							<div>
+								<span class="icon nav mr-1" style="cursor: pointer;"></span>
+							</div>
+							<div>
+								<span [ngClass]="[principal?.isExpired ? 'red' : 'black']">{{getFullAddress(principal?.postalAddres)}}<br></span>
+							</div>
+						</div><span class="icon point mr-1"></span> <span [ngClass]="[principal?.isExpired ? 'red' : 'black']">{{principal?.postalAddres.country}}</span>
+					</div>
+					<div class="livraion w-50" *ngIf="principal?.postalAddres?.addrLine2 || principal?.postalAddres?.addrLine3 || principal?.postalAddres?.logisticInfo">
+						<u class="text-min grey athena ml-4">Livraison</u>
+						<ul class="ath-summary">
+							<li *ngIf="principal?.postalAddres?.addrLine2"><span class="black mr-2">A.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.addrLine2}}</span></li>
+							<li *ngIf="principal?.postalAddres?.addrLine3"><span class="black mr-2">B.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.addrLine3}}</span></li>
+							<li *ngIf="principal?.postalAddres?.logisticInfo"><span class="black mr-2">C.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.logisticInfo}}</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<hr class="athena" *ngIf="cmPrincipalList.length !== 0 && cmProList.length !== 0 && typeCustomer !== 'company'">
+			<div class="block_professionnel" *ngIf="cmProList.length !== 0  && typeCustomer !== 'company'">
+				<p class="text-max athena"><strong>Professionnel</strong> <span class="icon del athena float-right clickable" *ngxPermissionsOnly="['suppression_interlocuteur']" (click)="deleteCm('professionnelles', interlocutor, false)"></span></p>
+				<div class="d-flex mb-2" >
+					<ng-container *ngIf="cmListByMedia(cmProList, cmMediaRef.TEL_FIXE, false, false); let proTituHome">
+						<div class="home" *ngFor="let pro of proTituHome" (click)="validPhoneHomeContact(pro)">
+							<span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span>
+							<span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+						</div>
+					
+						<div [ngClass]="[proTituHome.length !== 0 ? 'mobile ml-3' : 'mobile']" *ngFor="let pro of cmListByMedia(cmProList, cmMediaRef.TEL_MOBILE, false, false)" (click)="validMobileContact(pro)">
+							<span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> 
+							<span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+						</div>
+					</ng-container>
+				</div>
+				<div class="address" *ngFor="let pro of cmListByMedia(cmProList, cmMediaRef.EMAIL, false, false)" (click)="validEmailContact(pro)">
+				  <span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> 
+				  <span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+	
+				</div>
+				<div class="addres_livraison d-flex" *ngFor="let pro of cmListByMedia(cmProList, cmMediaRef.POSTAL_ADDRESS, false, false)">
+					<div class="address w-50 mr-2">
+						<u class="text-min grey athena ml-4">Adresse
+						   <span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;" (click)="validaddressContact(pro)"></span>
+						</u>
+						<div class="d-flex">
+							<div>
+								<span class="icon nav mr-1" style="cursor: pointer;"></span>
+							</div>
+							<div>
+								<span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{getFullAddress(pro?.postalAddres)}}<br></span>
+							</div>
+						</div><span class="icon point mr-1"></span> <span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{pro?.postalAddres.country}}</span>
+					</div>
+					<div class="livraion w-50" *ngIf="pro?.postalAddres?.addrLine2 || pro?.postalAddres?.addrLine3 || pro?.postalAddres?.logisticInfo">
+						<u class="text-min grey athena ml-4">Livraison</u>
+						<ul class="ath-summary">
+							<li *ngIf="pro?.postalAddres?.addrLine2"><span class="black mr-2">A.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black' ]">{{pro?.postalAddres?.addrLine2}}</span></li>
+							<li *ngIf="pro?.postalAddres?.addrLine3"><span class="black mr-2">B.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black' ]">{{pro?.postalAddres?.addrLine3}}</span></li>
+							<li *ngIf="pro?.postalAddres?.logisticInfo"><span class="black mr-2">C.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black' ]">{{pro?.postalAddres?.logisticInfo}}</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<hr class="athena" *ngIf="cmSeconList.length !== 0 && typeCustomer !== 'company' && (cmPrincipalList.length !== 0 || cmProList.length !== 0 )">
+			<div class="block_secondaire" *ngIf="cmSeconList.length !== 0  && typeCustomer !== 'company'">
+				<p class="text-max athena"><strong>Secondaire</strong> <span class="icon del athena float-right clickable" *ngxPermissionsOnly="['suppression_interlocuteur']" (click)="deleteCm('secondaires', interlocutor, false)"></span></p>
+				<div class="d-flex mb-2 flex-wrap">
+					<ng-container *ngIf="cmListByMedia(cmSeconList, cmMediaRef.TEL_FIXE, false, true); let secTituHome">
+						<div class="home mt-2" *ngFor="let sec of secTituHome" (click)="validPhoneHomeContact(sec)">
+							<span [ngClass]="sec?.iconAlert" ngbTooltip="{{sec?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> <span [ngClass]="[sec?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{sec?.value}}</span>
+						</div>
+				   
+						<div [ngClass]="[secTituHome.length !== 0 ? 'mobile mt-2' : 'mobile']" *ngFor="let sec of cmListByMedia(cmSeconList, cmMediaRef.TEL_MOBILE, false, true)" (click)="validMobileContact(sec)">
+							<span [ngClass]="sec?.iconAlert" ngbTooltip="{{sec?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> <span [ngClass]="[sec?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{sec?.value}}</span>
+						</div>
+					</ng-container>
+				</div>
+					
+					<div class="address" *ngFor="let sec of cmListByMedia(cmSeconList, cmMediaRef.EMAIL, false, true)" (click)="validEmailContact(sec)">
+						<span [ngClass]="sec?.iconAlert" ngbTooltip="{{sec?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> 
+						<span [ngClass]="[sec?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{sec?.value}}</span>
+		  
+					</div>
+				
+				<div class="addres_livraison d-flex" *ngFor="let sec of cmListByMedia(cmSeconList, cmMediaRef.POSTAL_ADDRESS, false, true)">
+					<div class="address w-50  mr-2">
+						<u class="text-min grey athena ml-4">Adresse
+							<span [ngClass]="sec?.iconAlert" style="cursor: pointer;" (click)="validaddressContact(sec)" ngbTooltip="{{sec?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+						</u>
+						<div class="flex" style="display: flex;">
+							<div>
+								<span class="icon nav mr-1" style="cursor: pointer;"></span>
+							</div>
+							<div>
+								<span [ngClass]="[sec?.isExpired ? 'red' : 'black']">{{getFullAddress(sec?.postalAddres)}}<br></span>
+							</div>
+						</div><span class="icon point mr-1"></span> <span [ngClass]="[sec?.isExpired ? 'red' : 'black']">{{sec?.postalAddres.country}}</span>
+					</div>
+					<div class="livraion w-50" *ngIf="sec?.postalAddres?.addrLine2 || sec?.postalAddres?.addrLine3 || sec?.postalAddres?.logisticInfo">
+						<u class="text-min grey athena ml-4">Livraison</u>
+						<ul class="ath-summary">
+							<ul class="ath-summary">
+								<li *ngIf="sec?.postalAddres?.addrLine2"><span class="black mr-2">A.</span><span [ngClass]="[sec?.isExpired ? 'red' : 'black' ]">{{sec?.postalAddres?.addrLine2}}</span></li>
+								<li *ngIf="sec?.postalAddres?.addrLine3"><span class="black mr-2">B.</span><span [ngClass]="[sec?.isExpired ? 'red' : 'black' ]">{{sec?.postalAddres?.addrLine3}}</span></li>
+								<li *ngIf="sec?.postalAddres?.logisticInfo"><span class="black mr-2">C.</span><span [ngClass]="[sec?.isExpired ? 'red' : 'black' ]">{{sec?.postalAddres?.logisticInfo}}</span></li>
+							</ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	  <!-- block 2-->
+		<div class="padd-block block block_dexuieme" *ngIf="checkInterlocutor(interlocutor)">
+			<a class="block-title-item-link athena" >
+			<div class="block-title-item-icon">
+				<span [ngClass]="getFlagClass(interlocutor?.favoriteLanguage)"></span> <span class="icon help-grey athena mr-3"></span> 
+				<span class="icon pen athena mr-3 clickable" *ngxPermissionsOnly="['modification_interlocuteur']" (click)= "redirectToEditBenOrParOrEnt(interlocutor?.personId, true)"></span>
+				<span class="icon del athena  clickable" *ngxPermissionsOnly="['suppression_interlocuteur']" (click)="deleteInterlocutor(interlocutor)"></span> 
+			</div>
+			</a>
+			<div [ngClass]="[getClientName(interlocutor)=='-' ? 'h7  mb-3' : 'h7 underline mb-3']">
+				{{getClientName(interlocutor)}}
+			</div>
+			<div class="subtitle grey">
+				<span class="icon interlocutor-details-new"></span>
+				<span class="enableNewLine inline-flex"> {{formatterRole(interlocutor?.roles)}}</span>
+			</div>
+			<div class="block_principale" *ngIf="checkIsExistPrincipal(interlocutor)">
+				<p class="text-max athena"><strong>Principal</strong> 
+					<a class="block-title-item-link athena"><span  (click)="deleteCm('principales',interlocutor, true)" class="icon del athena float-right clickable">
+				    </span> </a></p>
+				<div class="d-flex mb-2" >
+					<ng-container *ngIf="getcmListInterlocutorBy(interlocutor, cmMediaRef.TEL_FIXE, true); let priInterHome"> 
+						<div class="home"  *ngFor="let principal of priInterHome" (click)="validPhoneHomeContact(principal)">
+							<span [ngClass]="principal?.iconAlert" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+							<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']"> {{principal?.value }} </span>
+						</div>
+					
+						<div [ngClass]="[priInterHome.length !== 0 ? 'mobile ml-3' : 'mobile']" *ngFor="let principal of getcmListInterlocutorBy(interlocutor, cmMediaRef.TEL_MOBILE, true)" (click)="validMobileContact(principal)">
+							<span [ngClass]="principal?.iconAlert" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+							<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{principal?.value}}</span>
+						</div>
+					</ng-container>
+				</div>
+	
+					<div class="address mb-2" *ngFor="let principal of getcmListInterlocutorBy(interlocutor, cmMediaRef.EMAIL, true)" (click)="validEmailContact(principal)">
+						<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span> 
+						<span [ngClass]="[principal?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{principal?.value}}</span>
+		  
+					</div>
+				<div class="addres_livraison d-flex pink" *ngFor="let principal of getcmListInterlocutorBy(interlocutor, cmMediaRef.POSTAL_ADDRESS, true)">
+					<div class="address pink w-50 mr-2">
+						<u class="text-min grey athena ml-4">Adresse 
+							<span [ngClass]="principal?.iconAlert" style="cursor: pointer;" (click)="validaddressContact(principal)" ngbTooltip="{{principal?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+						</u>
+						<div class="flex" style="display: flex;">
+							<div>
+								<span class="icon nav mr-1" style="cursor: pointer;"></span>
+							</div>
+							<div>
+								<span [ngClass]="[principal?.isExpired ? 'red' : 'black']">{{getFullAddress(principal?.postalAddres)}}<br></span>
+							</div>
+						</div><span class="icon point mr-1"></span> <span [ngClass]="[principal?.isExpired ? 'red' : 'black']">{{principal?.postalAddres.country}}</span>
+					</div>
+					<div class="livraion ml-4 w-50" *ngIf="principal?.postalAddres?.addrLine2 || principal?.postalAddres?.addrLine3 || principal?.postalAddres?.logisticInfo">
+						<u class="text-min grey athena ml-4">Livraison</u>
+						<ul class="ath-summary">
+							<li *ngIf="principal?.postalAddres?.addrLine2"><span class="black mr-2">A.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.addrLine2}}</span></li>
+							<li *ngIf="principal?.postalAddres?.addrLine3"><span class="black mr-2">B.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.addrLine3}}</span></li>
+							<li *ngIf="principal?.postalAddres?.logisticInfo"><span class="black mr-2">C.</span><span [ngClass]="[principal?.isExpired ? 'red' : 'black' ]">{{principal?.postalAddres?.logisticInfo}}</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<hr class="athena" *ngIf="checkIsExistPrincipal(interlocutor) && checkIsExistPro(interlocutor)">
+			<div class="block_professionnel" *ngIf="checkIsExistPro(interlocutor)">
+				<p class="text-max athena"><strong>Professionnel</strong> <span (click)="deleteCm('professionnelles',interlocutor, false)" class="icon del athena float-right" *ngxPermissionsOnly="['suppression_interlocuteur']"></span></p>
+				<div class="d-flex mb-2">
+					<ng-container *ngIf="getcmListInterlocutorBy(interlocutor, cmMediaRef.TEL_FIXE, false); let proInterHome">
+						<div  *ngFor="let pro of proInterHome" (click)="validPhoneHomeContact(pro)">
+							<span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}" style="cursor: pointer;"></span> 
+							<span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+						</div>
+				   
+						<div [ngClass]="[proInterHome.length !== 0 ? 'mobile ml-3' : 'mobile']" *ngFor="let pro of getcmListInterlocutorBy(interlocutor, cmMediaRef.TEL_MOBILE, false)" (click)="validMobileContact(pro)">
+							<span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+							<span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+						</div>
+					</ng-container>
+					
+				</div>
+				<div class="address mb-2" *ngFor="let pro of getcmListInterlocutorBy(interlocutor, cmMediaRef.EMAIL, false)" (click)="validEmailContact(pro)">
+					<span [ngClass]="pro?.iconAlert" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+					<span [ngClass]="[pro?.isExpired ? 'ml-1 tele pink' : 'ml-1 tele']">{{pro?.value}}</span>
+				</div>
+				<div class="addres_livraison d-flex" *ngFor="let pro of getcmListInterlocutorBy(interlocutor, cmMediaRef.POSTAL_ADDRESS, false)">
+					<div class="address w-50 mr-2">
+						<u class="text-min grey athena ml-4">Adresse
+							<span [ngClass]="pro?.iconAlert" style="cursor: pointer;" (click)="validaddressContact(pro)" ngbTooltip="{{pro?.isExpired ? 'Pour valider cliquer ici':''}}"></span>
+						</u>
+						<div class="d-flex">
+							<div>
+								<span class="icon nav mr-1" style="cursor: pointer;"></span>
+							</div>
+							<div>
+								<span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{getFullAddress(pro?.postalAddres)}}<br></span>
+							</div>
+						</div><span class="icon point mr-1"></span> <span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{pro?.postalAddres.country}}</span>
+					</div>
+					<div class="livraion w-50" *ngIf="pro?.postalAddres?.addrLine2 || pro?.postalAddres?.addrLine3 || pro?.postalAddres?.logisticInfo">
+						<u class="text-min grey athena ml-4">Livraison</u>
+						<ul class="ath-summary">
+							<ul class="ath-summary">
+								<li *ngIf="pro?.postalAddres?.addrLine2"><span class="black mr-2">A.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{pro?.postalAddres?.addrLine2}}</span></li>
+								<li *ngIf="pro?.postalAddres?.addrLine3"><span class="black mr-2">B.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{pro?.postalAddres?.addrLine3}}</span></li>
+								<li *ngIf="pro?.postalAddres?.logisticInfo"><span class="black mr-2">C.</span><span [ngClass]="[pro?.isExpired ? 'red' : 'black']">{{pro?.postalAddres?.logisticInfo}}</span></li>
+							</ul>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-template>	

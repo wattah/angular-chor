@@ -1,0 +1,213 @@
+<div class="block block-shadow block_onglet p-4 onglet_tabs">
+  <h2 class="block-title athena mb-3">Gestion des factures </h2>
+  <div class="row ">
+    <div class="col-4">
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label athena"> Mois</label>
+        <div class="col-md-18 m-0 p-0  d-flex">
+          <mat-form-field appearance="outline" class="col-lg-18 athena">
+            <input matInput [matDatepicker]="datepicker" [formControl]="date" readonly>
+            <mat-datepicker #datepicker startView="multi-year" 
+              (yearSelected)="chosenYearHandler($event)"
+              (monthSelected)="chosenMonthHandler($event, datepicker)">
+            </mat-datepicker>
+          </mat-form-field>
+          <div class="col-2  col-sm-6 margin-top p-0">
+            <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="datepicker.open()"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-1"> </div>
+    <div class="col-6">
+      <div class="form-group row">
+        <label class="col-md-4  col-form-label athena">Etat</label>
+        <div class="col-md-20">
+          <mat-form-field class="heightchamps addarrow custum_stock">
+            <mat-select name="etat" class="" [(ngModel)]="selectedState" multiple>
+              <mat-select-trigger>
+                <ng-template [ngIf]="selectedState?.length == valuesState.length">
+                  Tous
+                </ng-template>
+                <ng-template [ngIf]="selectedState?.length != valuesState.length">
+                  <span> {{updateEtat()}} </span>
+                </ng-template>
+              </mat-select-trigger>
+
+              <mat-option disabled="disabled" class="filter-option my-1">
+                <span class="black mr-2">Tous</span>
+                <span class="text-sm link " (click)="selectState()">Cocher</span>
+                <span class="mx-2">|</span>
+                <span class="text-sm link" (click)="deselectState()">Décocher
+                </span>
+              </mat-option>
+              <mat-option *ngFor="let etat of valuesState" [value]="etat">
+                {{etat.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-1"> </div>
+    <div class="col-6">
+      <div class="form-group row">
+        <label class="col-md-4  col-form-label athena">Statut</label>
+        <div class="col-md-20">
+          <mat-form-field class="heightchamps addarrow custum_stock">
+            <mat-select name="statut" [(ngModel)]="selectedStatut" multiple>
+              <mat-select-trigger>
+                <ng-template [ngIf]="selectedStatut?.length == valuesStatut.length">
+                  Tous
+                </ng-template>
+                <ng-template [ngIf]="selectedStatut?.length != valuesStatut.length">
+                  <span> {{updateStatut()}} </span>
+                </ng-template>
+              </mat-select-trigger>
+
+              <mat-option disabled="disabled" class="filter-option my-1">
+                <span class="black mr-2">Tous</span>
+                <span class="text-sm link " (click)="selectStatut()">Cocher</span>
+                <span class="mx-2">|</span>
+                <span class="text-sm link" (click)="deselectStatut()">Décocher
+                </span>
+              </mat-option>
+              <mat-option *ngFor="let statut of valuesStatut" [value]="statut">
+                {{statut.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center my-3 ">
+    <button type="button" class="btn btn-green"  (click)="onSearchOnClientLivrables()">Rechercher</button>
+  </div>
+  <div class="text-center" *ngIf="rowData?.length === 0 && selectedState?.length !== 0 && selectedStatut?.length !== 0">
+    <p class="block-title athena mb-3">Aucun résultat de recherche pour les filtres demandés</p>
+  </div>
+  <div class="text-center">
+    <p class="block-title athena mb-3" *ngIf="selectedState?.length === 0 || selectedStatut?.length === 0">Veuillez sélectionner au moins un état et un statut avant de lancer la recherche</p>
+  </div>
+    
+  <app-athena-paginated-ag-grid
+    *ngIf="rowData?.length !== 0"
+    class="bills env-blue" 
+    [showTopPagination]="true"
+    [frameworkComponents]="frameworkComponents" 
+    [getRowHeight]="getRowHeight" 
+    [paginationPageSize]="20"
+    [columnDefs]="columnDefs" 
+    [suppressRowClickSelection]="true" 
+    [rowData]="rowData"
+    [detailCellRenderer]="detailCellRenderer" 
+    [masterDetail]="true" 
+    [detailRowHeight]="210"
+    [loadAgGridParams]="params"
+    (clickedCell)="clickCell($event)">
+  </app-athena-paginated-ag-grid>
+  <div class="col-sm-11 groupbtns my-3 pb-1">
+    <div class="upload-bills d-inline-block">
+      <ngx-dropzone name="file" [multiple]="true" [expandable]="true" class="fileDropZone" (change)="upload($event)">
+        <ngx-dropzone-label class="col-form-label btn btn-blue mx-2"> <span class="icon upload"></span>Upload</ngx-dropzone-label>
+      </ngx-dropzone> 
+    </div>  
+  <button class="col-form-label btn btn-green mx-2" (click)="standardRelooking()" *ngIf="rowData?.length !== 0">Relooking</button> 
+  <button class="col-form-label btn blueborder mx-2" (click)="archiveLivrable()" *ngIf="rowData?.length !== 0"><span class="icon cadenas"></span> Archiver</button> 
+</div>
+<h2 class="athena">Progression facture</h2>
+<div class="block-progress border pl-3 mt-4">
+  <p [innerHTML]="messages"></p>
+</div>
+<div class="legends mt-4">
+<h2 class="athena">Légendes</h2>
+<div class="row">
+  <div class="col-1 p-0"></div>
+  <div class="col-6 p-0">
+    <div class="athena underline my-3">
+      Etat
+    </div>
+    <div class="mb-2">
+      <span class="icon etat-green mr-2"></span>Facture uploadée
+    </div>
+    <div class="mb-2">
+      <span class="icon etat-red mr-2"></span>Facture absente
+    </div>
+    <div class="mb-2">
+      <span class="icon status-renewal-done mr-2"></span>Générée sans erreurs
+    </div>
+    <div class="mb-2">
+      <span class="icon picto-exclamation-orange mr-2"></span>Générée avec erreurs mineures
+    </div>
+    <div class="mb-2">
+      <span class="icon picto-exclamation-rouge mr-2"></span>Générée avec erreurs
+    </div>
+    <div class="mb-2">
+      <span class="icon etat-relooking mr-2"></span>Relookée manuellement
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="athena underline my-3">
+      Statut
+    </div>
+    <div class="mb-2">
+      <span class="icon rond-blue mr-2"></span>Facture à vérifier
+    </div>
+    <div class="mb-2">
+      <span class="icon rond-orange mr-2"></span>Correction validée
+    </div>
+    <div class="mb-2">
+      <span class="icon rond-red mr-2"></span>Facture à corriger
+    </div>
+    <div class="mb-2">
+      <span class="icon rond-green-light mr-2"></span>Facture vérifiée
+    </div>
+    <div class="mb-2">
+      <span class="icon rond-green mr-2"></span>Facture archivée
+    </div>
+  </div>
+  <div class="col-5">
+    <div class="athena underline my-3">
+      PDF original
+    </div>
+    <div class="mb-2 env-blue">
+      <span class="icon pdf mr-2"></span>Original présent
+    </div>
+    <div class="mb-2">
+      <span class="icon picto-tache-assign-dans-d-lais mr-2"></span>Original présent, facture payée
+    </div>
+    <div class="mb-2">
+      <span class="icon picto-tache-close-hors-d-lais mr-2"></span>Original absent
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="athena underline my-3">
+      Picto du tableau
+    </div>
+    <div class="mb-2">
+      <span class="icon del mr-2"></span> Supprimer la facture
+    </div>
+    <div class="mb-2">
+      <span class="icon download mr-2"></span>Télécharger la facture
+    </div>
+    <div class="mb-2">
+      <span class="icon cadenas mr-2"></span>Facture archivée
+    </div>
+    <div class="mb-2">
+      <span class="icon etat-relooking mr-2"></span>Relooker la facture manuellement
+    </div>
+    <div class="mb-2">
+      <span class="icon parametres mr-2"></span> Actions possibles
+    </div>
+    <div class="mb-2">
+      <span class="icon add-on mr-2"></span>Créer un avoir/facture complémentaire
+    </div>
+    <div class="mb-2">
+      <span class="icon paiement mr-2"></span> Marquer la facture comme payée / Supprimer le marquage
+    </div>
+  </div>
+</div>
+</div>
+  
+</div>

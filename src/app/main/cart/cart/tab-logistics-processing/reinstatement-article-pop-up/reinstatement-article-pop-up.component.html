@@ -1,0 +1,41 @@
+<div class="modal-body margin-pop-up" >
+    <p class="title text-center underline">
+        Génération d’un ordre de commande de réintégration
+    </p>
+    <p *ngIf="!allIsReintegre" class=" athena grey mb-1">
+        Quel(s) article(s) souhaitez-vous réintégrer ? 
+    </p>
+    <p *ngIf="allIsReintegre" class=" athena grey mb-1">
+        L'ensemble des articles de cet ordre de commande ont été réintégrés 
+    </p>
+    
+    <div class="block_onglet p-0" >
+        <app-athena-paginated-ag-grid 
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefs" 
+        [rowData]="rowData"
+        [paginationPageSize]="5"
+        [rowSelection]="'multiple'"
+        (clickedCell)="clickedRow($event)"
+        [loadAgGridParams]="params"
+    >
+    </app-athena-paginated-ag-grid>	
+    </div>
+    
+
+    
+    <div class="form-group row mt-2" >
+        <label class="col-sm-6 col-form-label athena">Stock de réintégration * </label>
+        <div class="col-sm-8" >
+            <select class="form-control athena " [(ngModel)]="reinstatementStockSelected">
+                <option *ngFor="let stock of reinstatementStocksOptions" [ngValue]="stock" >{{reinstatementStocks[stock]}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="text-center">
+        <input class="btn btn-green mt-3" [value]="'Réintégrer'" type="button" (click)="accept()" [disabled]="!enableSendButton"/>
+        <br/>
+        
+        <button class="btn btn-link blue center mt-2" (click)="decline()">Quitter</button>    
+    </div>
+</div>

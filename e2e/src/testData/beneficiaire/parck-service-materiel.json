@@ -1,0 +1,49 @@
+[
+    {
+        "a": [
+            {
+                "motCleSearch": "TOUDIC",
+                "noElement": 0,
+                "customer_id": 484,
+                "Famille1": "Frais",
+                "Article1": "Frais d'adhésion",
+                "statut1": 0,
+                "Famille2": "Abonnement",
+                "Article2": "Parnasse Affaires",
+                "statut2": 1,
+                "Famille3": "Mobile",
+                "Article3": "iPhone 5s Or 32 Go",
+                "statut3": 0,
+                "Famille4": "Mobile",
+                "Article4": "Désimlockage",
+                "statut4": 0
+            }
+        ],
+        "b": [
+            {
+                "motCleSearch": "RAVE",
+                "noElement": 9,
+                "customer_id": 4937,
+                "nbLigne": 3,
+                "idLigne1":15141,
+                "famille1": "Frais",
+                "article1": "Frais de souscription au programme",
+                "statut1": "icon status-red",
+                "famille2": "Abonnement",
+                "article2": "Membership",
+                "statut2": "icon status-red",
+                "famille3": "Mobile",
+                "article3": "iPhone 5 32Go Noir & ardoise",
+                "statut3": "icon status-green"
+            }
+        ],
+        "c": [
+            {
+                "motCleSearch": "bouq",
+                "noElement": 0,
+                "id_customer": 20253
+            }
+        ]
+      
+    }
+]

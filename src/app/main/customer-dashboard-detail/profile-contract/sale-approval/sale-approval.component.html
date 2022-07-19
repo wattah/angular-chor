@@ -1,0 +1,18 @@
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockSaleApproval">
+   <app-sale-approval-consultation 
+      (updateSaleApproval)="onUpdateSaleApproval($event)"
+      [person] = "person" 
+      [customer] = "customer">
+   </app-sale-approval-consultation>
+</ng-template>
+<ng-template #modificationBlockSaleApproval>
+   <app-sale-approval-modification 
+         (updateSaleApproval)="onUpdateSaleApproval($event)"
+         [customer] = "customer"
+         (changeForm)="onChangeSaleApprovalForm($event)"
+         (changeAcquistionCanal) = "onChangeAcquistionCanal($event)"
+         (changeDirtySaleApprovalForm) = "OnChangeDirtySaleApprovalForm($event)"
+         [isSelected] = "isSelected">
+   </app-sale-approval-modification>
+</ng-template>
+

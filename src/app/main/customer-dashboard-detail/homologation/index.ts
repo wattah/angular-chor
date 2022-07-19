@@ -1,0 +1,13 @@
+export { HomologationComponent } from './homologation.component';
+export { HomologationKeyDatesComponent } from './homologation-key-dates/homologation-key-dates.component';
+export { HomologationContractHolderComponent } from './homologation-contract-holder/homologation-contract-holder.component';
+export { HomologationContractualInformationComponent } from './homologation-contractual-information/homologation-contractual-information.component';
+export { HomologationHolderBusinessControlComponent } from './homologation-holder-business-control/homologation-holder-business-control.component';
+export { PreHomologationHolderBusinessControlComponent } from './pre-homologation-holder-business-control/pre-homologation-holder-business-control.component';
+export { HomologationItemServiceComponent } from './homologation-item-service/homologation-item-service.component';
+export { HomologationItemMobileComponent } from './homologation-item-mobile/homologation-item-mobile.component';
+export { HomologationItemMobileDetailComponent } from './homologation-item-mobile/homologation-item-mobile-detail.component';
+export { HomologationApprovalDocumentsComponent } from './homologation-approval-documents/homologation-approval-documents.component';
+export { HomologationBeneficiaryListComponent } from './homologation-beneficiary-list/homologation-beneficiary-list.component';
+export { HomologationBeneficiariesBusinessControlComponent } from './homologation-beneficiaries-business-control/homologation-beneficiaries-business-control.component';
+export { HomologationCommiteeSelectionComponent } from './homologation-commitee-selection/homologation-commitee-selection.component';

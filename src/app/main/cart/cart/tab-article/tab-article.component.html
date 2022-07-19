@@ -1,0 +1,169 @@
+<div class="onglet_article">
+    <!-- Block dépli et pagination  -->
+    <div class="row align-items-center">
+        <div class="col-sm-12 col-lg-24 p-0 mb-1 mt-2 athena d-flex justify-content-{{cartItems === null || cartItems === undefined || cartItems?.length === 0 ? 'center':'left'}}"
+        *ngIf="visibleActionsOnArticle">
+            <button class="col-form-label btn btn-blue mobilebtn" (click)="addArticles()"><span class="icon add-blc"></span> Ajouter un article</button>
+        </div>
+
+        <div class="d-none d-sm-none d-lg-block mb-2" *ngIf="cartItems?.length > 1">
+            <div class="col-sm-12 col-lg-24" [hidden]="show === false">
+                <div class="athena link font-weight-bold" (click)="expandedAll()">
+                    Déplier toutes les lignes du tableau
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-24" *ngIf="!show">
+                <div class="athena link font-weight-bold" (click)="collapseAll()">
+                    Plier toutes les lignes du tableau
+                </div>
+            </div>
+        </div>
+
+        <div class="col-24 col-sm-12 col-xl-12 ml-auto">
+            <div class="row justify-content-end mb-2">
+                    <div class="grey font-italic mt-2 mr-2 athena  pagination" *ngIf="cartItems?.length <=  20 ">{{cartItems?.length}} ARTICLES</div> 
+                <div class="col-24 col-sm-22 col-xl-16 col-md-18" *ngIf="cartItems?.length>  20 "> 
+                    <div class="athena link font-weight-bold pagination" (click)="showAllArticles()">
+                        {{ showAllMessage }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- premier tableau des articles -->
+    <div class="tableau_articles">
+        <app-athena-paginated-ag-grid
+            *ngIf="cartItems?.length > 20  && !showAllRows"
+            style="width: 100%; height: 100%;"
+            [columnDefs]="columnDefs"
+            [suppressRowClickSelection]="true"
+            [rowData]="rowData"
+            [loadAgGridParams]="params"
+            [detailCellRenderer]="detailCellRenderer"
+            [frameworkComponents]="frameworkComponents"
+            [masterDetail]="true"
+            [redrawDetailsRows]="redrawDetailsRows"
+            [expandedAllRows]="expandedAllRows"
+            [collapseAllRows]="collapseAllRows"
+            [groupDefaultExpanded]="groupDefaultExpanded"
+            [detailRowHeight]="detailleheight"
+            (clickedCell)="clickCell($event)"
+            [newRowData]="oldRowData"
+            [showTopPagination]="true"
+            (changedCellValue)="onCellValueChanged($event)" 
+            
+        >
+        </app-athena-paginated-ag-grid>
+        
+        <app-athena-ag-grid
+            class="dragmargin"
+            *ngIf="cartItems?.length > 0 && showAllRows || cartItems?.length <= 20"
+            style="width: 100%; height: 100%;"
+            [columnDefs]="columnDefs"
+            [paginationPageSize]="cartItems?.length"
+            [suppressRowClickSelection]="true"
+            [rowData]="rowData"
+            [loadAgGridParams]="params"
+            [detailCellRenderer]="detailCellRenderer"
+            [frameworkComponents]="frameworkComponents"
+            [masterDetail]="true"
+            [rowDragManaged]="true"
+            [expandedAllRows]="expandedAllRows"
+            [collapseAllRows]="collapseAllRows"
+            [groupDefaultExpanded]="groupDefaultExpanded"
+            [detailRowHeight]="275"
+            [pagination]="false"
+            (clickCell)="clickCell($event)"
+            (onDragEndOnRow)="onRowDragEnd($event)"
+        >
+        </app-athena-ag-grid>
+    </div>
+    
+        <div class="col-24 col-xl-24 row m-0 p-0">
+             <div class="col-sm-12 col-xl-12">
+                <div class="" *ngIf="cartItems?.length > 20  && visibleActionsOnArticle">
+                    <button class="col-form-label btn btn-blue mobilebtn" (click)="addArticles()"><span class="icon add-blc"></span> Ajouter un article</button>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-12 p-0">
+                <div class="" *ngIf="cartItems?.length > 20">
+                    <div class="grey mt-2 athena d-none d-sm-none d-lg-block">
+                        <div class="athena link font-weight-bold pagination" (click)="showAllArticles()">
+                            {{ showAllMessage }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    <div class="link row center text-center ng-star-inserted mt-4" *ngIf="deletedItems?.length > 0" [hidden]="showHistrq === false">
+        <hr class="col-md-5 col-lg-5 mr-2" />
+        <div class="athena col-sm-7 col-24 col-lg-6" (click)="onShowHistrq()">
+            Voir l’historique du panier
+            <span class="icon icon-min arrow-bottom-blue athena ml-1"></span>
+        </div>
+        <hr class="col-md-5 col-lg-5 ml-1" />
+    </div>
+
+    <div class="link row center mt-3 text-center" *ngIf="!showHistrq">
+        <hr class="col-md-5 col-lg-5 " />
+        <div class="athena col-sm-7 col-24 col-lg-6" (click)="onHideHistrq()">
+            Masquer l’historique du panier
+            <span class="icon icon-min arrow-top-blue athena ml-1"></span>
+        </div>
+        <hr class="col-md-5 col-lg-5 ml-1" />
+    </div>
+
+<!-- deuxieme tableau des histouriques -->
+    <div class="tableau_articles" *ngIf="!showHistrq">
+        <app-athena-paginated-ag-grid
+        *ngIf="deletedItems.length > 0"
+            style="width: 100%; height: 100%;"
+            [paginationPageSize]="5"
+            [showTopPagination]="false"
+            [columnDefs]="columnDefsHistrq"
+            [suppressRowClickSelection]="true"
+            [rowData]="deletedItems"
+            [detailCellRendererParams]="detailCellRendererParamsHistrq"
+            [masterDetail]="true"
+            [rowStyle]="rowStyle"
+            [detailRowHeight]="detailleheighthisrq"
+        >
+        </app-athena-paginated-ag-grid>
+    </div>
+
+<!-- block des legends -->
+    <div class="mt-4">
+        <h2 class="athena">Légendes</h2>
+
+        <span class="athena underline ml-4">
+            Picto du tableau
+        </span>
+        <div class="row mt-4 mb-4 ml-0 ml-lg-4 ml-sm-4">
+            <div class="col-lg-6 col-sm-6">
+                <div class="mb-2"><span class="icon arrow-right-grey hicone"> </span> Déplier la ligne</div>
+                <div><span class="icon drag"> </span> Ordonner les produits</div>
+            </div>
+            <div class="col-lg-18 col-sm-18">
+                <div class="mb-2"><span class="icon picto-exclamation-rouge mr-2"> </span>Le commentaire de ce produit est obligatoire</div>
+                <div><span class="icon del mr-2"> </span>Supprimer</div>
+            </div>
+        </div>
+        <span class="athena underline ml-4">
+            Renouvellement
+        </span>
+        <div class="row mt-4 ml-0 ml-lg-4 ml-sm-4">
+            <div class="col-lg-6 col-sm-6">
+                <div class="mb-2"><span class="icon status-green-teleco mr-2"> </span> Autorisé</div>
+                <div class="mb-2"><span class="icon status-renewal-done mr-2"> </span> En cours</div>
+                <div class="mb-2"><span class="icon status-stop mr-2"> </span> Déjà effectué</div>
+                <div class="mb-2"><span class="icon status-red mr-2"> </span> Non éligible</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngFor="let form of forms;let i=index">
+    from{{ i }} {{ form.value | json }}
+</div>

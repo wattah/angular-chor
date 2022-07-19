@@ -1,0 +1,91 @@
+<div id="body" class="container-fluid" >
+    <div class="row">
+        <div class="d-none d-sm-block col-md-20 col-lg-20">
+            <div class="block block-transparent">
+                <h6 class="athena title">
+                    Bienvenue sur Athena,
+                </h6>
+            </div>
+        </div>
+        <div class="d-none d-sm-block col-md-4 col-lg-4 text-right">
+            <a (click)="openUrlApollon()"> 
+                 <button type="submit" class="btn btn-green">Ajouter un contact</button>
+            </a> 
+         </div>
+    </div>
+    <div class="row">
+        <div class="d-none d-sm-none d-md-block col-md-24 col-lg-24 ">
+             <!-- Bloc tache a traiter -->
+            <app-task-to-process  (numberOfTasks)="getNumberOfTasks($event)" *ngxPermissionsOnly="['affichage_taches']"  ></app-task-to-process> 
+            <!-- Bloc des interactions -->
+            <interactions></interactions>
+            <!-- Bloc Factures "Desktop Device"-->
+            <app-invoices (numberOfInvoiceToGet)="getNumberOfInvoiceToGet($event)" (numberOfInvoiceToCheck)="getNumberOfInvoiceToCheck($event)" (numberOfInvoiceToSend)="getNumberOfInvoiceToSend($event)" *ngxPermissionsOnly="['afficher_recup_controle_factures']" ></app-invoices>
+        </div>
+    </div>
+    <!-- 
+        MOBILE SECTION  
+        rouge -> env-pink
+        orange -> env-yellow
+        vert -> env-green
+    -->
+    <div class="row">
+        <div class="d-md-none col-12 col-sm-6  " *ngxPermissionsOnly="['affichage_taches']">
+            <div [ngClass]="( numberOfTasks < 6 )?'env-green':( numberOfTasks > 10 )?'env-pink' :
+                 (numberOfTasks >= 6 && numberOfTasks <= 10)?'env-yellow':'env-green'" 
+                class="block block-shadow pb-0 hidden-over-flow">
+               
+                <span class="athena uppercase colored text-title-small mb-2">Tâche à traiter </span>
+                <h1 class="colored "> <strong> {{numberOfTasks}} </strong> </h1>
+                <div class="wrapper-icon">
+                    <span class="icon icon-dashbord-mobile tasks-to-process"></span>
+                </div>
+            </div> 
+        </div>
+        
+        <div class="d-md-none col-12 col-sm-6  " *ngxPermissionsOnly="['afficher_recup_controle_factures']">
+            <div [ngClass]="( numberOfInvoiceToGet < 6 )?'env-green':( numberOfInvoiceToGet > 10 )?'env-pink' :
+                (numberOfInvoiceToGet >= 6 && numberOfInvoiceToGet <= 10)?'env-yellow':'env-green'" 
+                class="block block-shadow  pb-0 hidden-over-flow">
+            	<span class="athena uppercase colored text-title-small mb-2">Facture à récuperer </span>
+  				<h1 class="colored "> <strong> {{numberOfInvoiceToGet}} </strong> </h1>
+  				<div class="wrapper-icon">
+      				<span class="icon icon-dashbord-mobile invoice-to-recover"></span>
+  				</div>
+            </div>
+        </div>
+        <div class="d-md-none col-12 col-sm-6  " *ngxPermissionsOnly="['afficher_recup_controle_factures']">
+            <div [ngClass]="( numberOfInvoiceToCheck < 6 )?'env-green':( numberOfInvoiceToCheck > 10 )?'env-pink' :
+                (numberOfInvoiceToCheck >= 6 && numberOfInvoiceToCheck <= 10)?'env-yellow':'env-green'" 
+                 class="block block-shadow pb-0 hidden-over-flow">
+                <span class="athena uppercase colored text-title-small mb-2">Facture à vérifier </span>
+                <h1 class="colored "> <strong> {{numberOfInvoiceToCheck}} </strong> </h1>
+                <div class="wrapper-icon">
+                    <span class="icon icon-dashbord-mobile invoice-to-be-checked"></span>
+                </div>
+            </div> 
+        </div>
+        <div class="d-md-none col-12 col-sm-6  " *ngxPermissionsOnly="['afficher_recup_controle_factures']">
+            <div [ngClass]="( numberOfInvoiceToSend < 6 )?'env-green':( numberOfInvoiceToSend > 10 )?'env-pink' :
+                (numberOfInvoiceToSend >= 6 && numberOfInvoiceToSend <= 10)?'env-yellow':'env-green'" 
+                class="block block-shadow  pb-0 hidden-over-flow">
+                <span class="athena uppercase colored text-title-small mb-2">Facture à envoyer manuellement </span>
+                <h1 class="colored "> <strong> {{numberOfInvoiceToSend}} </strong> </h1>
+                <div class="wrapper-icon">
+                    <span class="icon icon-dashbord-mobile invoice-to-send"></span>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div>
+        <app-invoice-statistics *ngxPermissionsOnly="['new_peniche_statistiques']"></app-invoice-statistics>
+    </div>
+
+      <div class=" block block-shadow">
+              <h2 class="block-title athena"> Administration </h2>
+                <a class="text-min normal no-transform athena" (click)="toCatalogue()"
+                  [routerLink]="null" *ngxPermissionsOnly="['consultation_administration_catalogue']"> Catalogue des produits
+              </a>
+          </div>
+</div>
+

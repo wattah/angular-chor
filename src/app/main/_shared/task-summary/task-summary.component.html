@@ -1,0 +1,22 @@
+<div class="block block-shadow">
+        <blockquote>
+            <h4 class="subtitle athena">Résumé de la tâche {{task?.id}} </h4>
+            <span class="grey athena">Début le : </span> {{ dateFormatter(task?.startDate) }}  <br />   
+            <span class="grey athena">Echéance le : </span> {{ (task?.dispalyEndDate) ? dateFormatter(task?.dispalyEndDate) : dateFormatter(task?.endDate) }}  <br /> 
+            <span class="grey athena">Description : </span> <span style="white-space: pre-wrap"> {{ (!task?.description) ? '-' : task?.description }}   <br/></span>
+                <br/>
+              <a *ngIf="!toNextTasks" [routerLink]="null" queryParamsHandling="merge"  (click)="navigateTask()">
+                <span class="text-min normal no-transform athena">
+                    <span class="icon icon-min arrow-left-blue athena"></span> Tâche
+                </span>
+            </a>
+
+            <a *ngIf="toNextTasks" class="disabled" [routerLink]="null" >
+                <span class="text-min normal no-transform athena">
+                    <span class="icon icon-min arrow-left-blue athena"></span> Tâche
+                </span>
+            </a>
+
+        </blockquote>
+    </div>    
+ 

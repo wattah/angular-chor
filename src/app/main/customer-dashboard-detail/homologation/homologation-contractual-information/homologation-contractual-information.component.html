@@ -1,0 +1,69 @@
+<div class="block block-shadow">
+    <h2  class="block-title athena ">Informations contractuelles </h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        <p class="athena">
+            <span class="grey athena">Date de signature: </span> {{homologation?.signDate ? getDate(homologation?.signDate) : "-" }} <br />
+            <span class="grey athena">Vendeur : </span>  {{homologation?.seller ? ((homologation?.sellerFirstName | firstName) + " " + (homologation?.sellerLastName | uppercase)) : (homologation?.sellerCuid ? homologation?.sellerCuid : "-") }}  <br />
+            <span class="grey athena">Responsable adhésion : </span>   {{homologation?.membershipManager ? ((homologation?.membershipManagerFirstName | firstName) + " " + (homologation?.membershipManagerLastName | uppercase)) : "-" }} <br />
+            <span class="grey athena">Statut :</span> {{homologation?.refMembershipStatus ? homologation?.refMembershipStatus : "-" }} <br />
+            <span class="grey athena">Commentaire :</span> <span class="enableNewLine athena"> {{homologation?.comment ? homologation?.comment : "-" }}</span><br />
+        </p>
+    </div>
+    <ng-template [ngIf]="isAmendment" [ngIfElse]="isContract">
+        <div class="col-lg-8 ml-5">
+            <span class="grey">Canal : </span>{{amendmentCanal}}
+        </div>
+    </ng-template>
+    <ng-template #isContract>
+        <div class="col-lg-8 ml-5">
+            <app-canal-acquisition [acquisitionsCanaux]="canalMotifHomologation.acquisitionsCanaux" [numberCanal]="0"  (onChangeFirstCanal)="onChangeFirstCanal($event)" (onUpdateAcquistionCanal)="onUpdateAcquistionCanal($event)"></app-canal-acquisition>
+            <app-canal-acquisition [acquisitionsCanaux]="canalMotifHomologation.acquisitionsCanaux" [numberCanal]="1" [firstCanalChanged]="firstCanalChanged" (onUpdateAcquistionCanal)="onUpdateAcquistionCanal($event)"></app-canal-acquisition>
+        </div>
+        <div class="col-lg-8 ml-5">
+            <div class="form-group row select_arrows">
+                <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Motif d'adhésion </label>
+                <div class="col-sm-16 col-lg-16">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" [formControl]="motifAdhesion1Control"
+                        (change)="changeMemberShipReason()">
+                        <option *ngFor="let membershipReason of membershipReasons" [ngValue]="membershipReason"> 
+                            {{membershipReason?.label ? membershipReason?.label:'-' }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row select_arrows mb-0">
+                <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Motif d'adhésion secondaire</label>
+                <div class="col-sm-16 col-lg-16">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched"  [formControl]="motifAdhesion2Control"
+                        (change)="changeMemberShipReason2()">
+                        <option *ngFor="let membershipReason of membershipReasons" [ngValue]="membershipReason"> 
+                            {{membershipReason?.label ? membershipReason?.label:'-' }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row select_arrows">
+                <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Comment le membre a-t-il connu Parnasse ? </label>
+                <div class="col-sm-16 col-lg-16">
+                    <app-athena-nested-drop-down    
+                        [list]="knowledgeParnasse"
+                        [selectedValue]="{ label: onKnowledgeSelected()}"
+                        (selectionChange)="onSelectKnowledge($event)">
+                    </app-athena-nested-drop-down>
+                </div>
+            </div>
+
+            <div *ngIf="showMotif" class="form-group row select_arrows">
+                <label class="col-sm-7 col-lg-7 pl-0 pr-0 col-form-label athena">Motif*</label>
+                <div class="col-sm-16 col-lg-16">
+                    <input class="form-control athena" type="text" [(ngModel)]="canalMotifHomologation.membershipReasonComment" 
+                    [ngStyle]="{'border': true && !isMotifValid ? '2px solid #f44336':''}" (change)="changeMotif()">
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+   
+</div>

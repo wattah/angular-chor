@@ -1,0 +1,98 @@
+    <div class="block block-shadow">
+                <form [formGroup]="modifyTaskForm" #fromTaskUpdate="ngForm" (ngSubmit)="saveTask()">
+                <h2 class="athena">MODIFICATION</h2>
+                    <div class="row">
+                        <div class="col-lg-13 col-md-13">
+                            <div class="form-group row">
+                                <label for="start" class="col-sm-8 col-form-label mt-1 athena">Date de début</label>
+                                <mat-form-field class="col-sm-6" appearance="outline">
+                                    <input class="athena" matInput  formControlName="startDate" [(ngModel)]="startDate" 
+                                    [matDatepicker]="pickerStart" placeholder="" (dateChange)="dateDebutValueChange()">
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-sm-2 col-form-label mt-2 ml-n1 icon calendar-grey clickable" (click)="pickerStart.open()" ></span>
+                                <label for="start" class="offset-sm-1 col-sm-1 col-form-label mt-1 mr-1 athena"> à </label>
+                                <div class="col-sm-5 ">
+                                    <app-athena-timer (selectTime)="onChangeTimeDD($event)" 
+                                    [defaultHour]="defaultHoursDD" [defaultMinute]="defaultMinuteDD"></app-athena-timer>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="start" class="col-sm-8 col-form-label mt-1 athena">Echéance</label>
+                                <mat-form-field class="col-sm-6" appearance="outline">
+                                    <input class="athena" matInput  formControlName="echeanceDate"  [(ngModel)]="echeanceDate" [matDatepicker]="picker" 
+                                    [min]="minDateEcheance"  (dateChange)="dateChanged()"
+                                     placeholder="">
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-sm-2 col-form-label mt-2 ml-n1 icon calendar-grey clickable" (click)="picker.open()" ></span>
+                                <label for="start" class="offset-sm-1 col-sm-1 col-form-label mt-1 mr-1 athena"> à </label>
+                                <div class="col-sm-5 ">
+                                    <app-athena-timer (selectTime)="onChangeTimeEcheance($event)" 
+                                    [defaultHour]="defaultHour" [defaultMinute]="defaultMinute"
+                                    [minHour]= "minHour" (minHourChange)="this.minHour = $event" [minMinute] = "minMinute" (minMinuteChange)="this.minMinute = $event" >
+                                    </app-athena-timer>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="checkbox" class="col-sm-8 col-form-label athena">
+                                    Tâche prioritaire
+                                    <span class="icon priority"></span>
+                                </label>
+                                <div class="col-sm-15">
+                                    <div class="form-check checkBoxPosition">
+                                        <input class="form-check-input athena" formControlName="isPriority" [(ngModel)]="task.isPriority" type="checkbox" id="isPriority">
+                                        <label class="form-check-label athena" for="isPriority">
+                                           
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect" class="col-sm-8 col-form-label athena">Traité par *</label>
+                                <div class="col-sm-15">
+                                    <select formControlName="assignedTo" class="form-control athena" id="traiteSelect" [(ngModel)]="task.assignedToId">
+                                         <option *ngFor="let assignedTo of users" [ngValue]="assignedTo.id"
+                                         [selected]="assignedTo.id === assigneId">{{assignedTo | fullNameFormatter}}</option>
+                                    </select> 
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
+                                <label for="suivieSelect" class="col-sm-8 col-form-label athena">Suivie par *</label>
+                                <div class="col-sm-15">
+                                    <select formControlName="inChargeOf" class="form-control athena" id="suivieSelect" [(ngModel)]="task.inChargeOfId">
+                                        <option *ngFor="let inChargeOf of users" [ngValue]="inChargeOf.id"
+                                        [selected]="inChargeOf.id === inChargeOfId" >{{inChargeOf | fullNameFormatter }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                    <label for="suivieSelect" class="col-sm-8 col-form-label athena">Notification de clôture</label>
+                                    <div class="col-sm-15">
+                                        <select formControlName="userToNotify" class="form-control athena" id="notifieSelect" [(ngModel)]="task.userIdToNotify">
+                                            <option [value]="null" disabled>--</option>
+                                            <option *ngFor="let userToNotify of users" [ngValue]="userToNotify.id"
+                                            [selected]="userToNotify.id === notifyId">{{userToNotify | fullNameFormatter }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            <div class="form-group row">
+                                <label for="descriptionTextarea" class="col-sm-8 col-form-label athena">Description</label>
+                                <div class="col-sm-15">
+                                    <textarea formControlName="description" [(ngModel)]="task.description" class="form-control athena" id="descriptionTextarea" rows="3" autosize maxlength="4000"></textarea>
+                                </div>
+                            </div>
+                            <div class="row control-buttons ">
+                                <div class="offset-sm-5 col-sm-6">
+                                    <a class="btn btn-link athena"  [routerLink]="['/customer-dashboard', customerId, 'detail', 'request', idRequest]" 
+                                    queryParamsHandling="merge" (click)="cancelCreation()">Annuler</a>
+                                </div>
+                                <div class="col-sm-12">
+                                    <input class="btn btn-green athena" value="Enregistrer la modification" type="submit" [disabled]="fromTaskUpdate.submitted"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>

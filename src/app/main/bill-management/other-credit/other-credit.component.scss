@@ -1,0 +1,4 @@
+/* No scroll on Number input */
+input[type=number] {
+    -moz-appearance: textfield;
+  }

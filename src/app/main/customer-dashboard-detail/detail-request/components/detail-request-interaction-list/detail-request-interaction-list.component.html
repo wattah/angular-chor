@@ -1,0 +1,31 @@
+<div class="block block-shadow">
+    <h2 class="athena">Interactions liées à cette demande
+        <ng-container *ngxPermissionsOnly="['ajout_interaction']">
+            <a *ngIf="isDetailRequestReady" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'interaction','creation', detailRequest?.idRequest ]" [queryParams]="{ previousPage: 'request' }" queryParamsHandling="merge">
+                <span class="icon add"></span>
+            </a>
+            <span class="block-title-item-link athena">
+                <span class="text-giant normal light-grey no-transform athena">|</span>
+            </span>
+        </ng-container>
+        <ng-container *ngxPermissionsOnly="['envoyer_mails']">
+            <a *ngIf="isDetailRequestReady" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'interaction','mail-sending', detailRequest?.idRequest , detailRequest?.requestTypeId , detailRequest?.universId ]" queryParamsHandling="merge">
+                <span class="text-min normal no-transform d-md-inline athena">Mail</span>
+            </a>
+        </ng-container>
+        <ng-container *ngxPermissionsOnly="['envoyer_sms']">
+            <span class="block-title-item-link athena">
+                <span class="text-giant normal light-grey no-transform athena">|</span>
+            </span>
+            <a *ngIf="isDetailRequestReady" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'interaction',idRequest,'sending-sms' ]" queryParamsHandling="merge">
+                <span class="text-min normal no-transform d-md-inline athena">SMS</span>
+            </a>
+        </ng-container>
+    </h2>
+    <app-athena-ag-grid 
+        [defaultSortModel]="defaultSortModel"
+        [columnDefs]="columnDefs" 
+        [rowData]="interactions"
+        (clickCell)="clickCell($event)">
+    </app-athena-ag-grid>
+</div>

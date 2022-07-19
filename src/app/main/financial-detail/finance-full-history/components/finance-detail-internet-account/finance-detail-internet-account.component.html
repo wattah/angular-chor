@@ -1,0 +1,25 @@
+<h3 class="athena" *ngIf="!isEmpty(detailsDebtsBillingAccountAvecSolde) || 
+!isEmpty(detailsDebtsBillingAccountSansSolde)">
+	Solde Total Internet = {{ totalBalance | number : '1.2-2' | replace : '[,]' : '.' }} € </h3> 
+
+<div>
+	<app-billing-account [univers]="univers" 
+	*ngFor="let accounti of detailsDebtsBillingAccountAvecSolde" 
+	[billingAccount]='accounti'[selectedDebt]="selectedDebt" 
+	[graybackground]="true">
+	</app-billing-account>
+</div>
+
+<h3 class="athena  py-4 mb-3"
+*ngIf="detailsDebtsBillingAccountSansSolde !== null && detailsDebtsBillingAccountSansSolde !== undefined && detailsDebtsBillingAccountSansSolde.length > 0 ">
+Compte(s) de facturation inactifs
+</h3>
+                            
+
+<div>
+	<app-billing-account  [univers]="univers" 
+	*ngFor="let accounti of detailsDebtsBillingAccountSansSolde"
+	[billingAccount]='accounti' [selectedDebt]="selectedDebt"
+	 [graybackground]="false">
+	</app-billing-account>
+</div>

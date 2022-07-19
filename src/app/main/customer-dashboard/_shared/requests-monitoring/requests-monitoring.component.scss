@@ -1,0 +1,35 @@
+@import '../../../../../styles/charte';
+
+.ag-theme-material .ag-header-cell {
+  white-space: normal;
+	&[col-id="description"] {
+    border-right: $border;
+	}
+}
+
+.margin-table {
+  margin: 0;
+}
+
+.padding-table {
+  padding: 0;
+}
+
+.bordered-tr {
+  border-bottom: $border;
+	
+}
+
+.table .table {
+   background-color: transparent;
+}
+
+.unselectable{ 
+  font-style: italic;
+  color: $grey;
+}
+.bordered-bottom {
+  display: revert;
+  padding-bottom: 0px;
+  align-items: center
+}

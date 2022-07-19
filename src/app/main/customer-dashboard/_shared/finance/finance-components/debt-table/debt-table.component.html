@@ -1,0 +1,17 @@
+	<span class="text-max uppercase">DETTES ÉCHU</span> <span class="grey text-min normal"> (€ en TTC)</span>
+	<!-- <a class="block-title-item-link" [routerLink]="null" queryParamsHandling="merge" >
+		<span class="icon paiement icon-marged"></span><span class="text-min normal no-transform">Paiement libre</span>
+	</a> -->
+
+	<app-athena-paginated-ag-grid [columnDefs]="columnDefs" [showTopPagination]="false" [paginationPageSize]="4" [goToPageNumber]="pageNumber" [rowData]="rowData" [rowStyle]="rowStyle" (clickedCell)="navigateToDebtDeatil($event)"></app-athena-paginated-ag-grid>
+	<br>
+	<div class="row" *ngIf="isEntreprise && totalDebt.length > 4">
+		<span class="offset-6 col-2 mt-1">
+			<strong> Totaux </strong>
+		</span>
+		<div class="col-16 ">
+			<div class="totalTable">
+				<app-athena-ag-grid  [columnDefs]="columnDefsTotals" [rowData]="rowDataTotals"  [rowStyle]="rowStyleTotals" [headerHeight]=0 ></app-athena-ag-grid>
+			</div>
+		</div>
+	</div>

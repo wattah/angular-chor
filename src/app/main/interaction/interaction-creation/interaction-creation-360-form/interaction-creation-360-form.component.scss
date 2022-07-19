@@ -1,0 +1,21 @@
+@import '../../../../../styles/charte';
+
+.example-chip-list {
+    width: 100%;
+}
+
+.margin-top {
+  margin-top: .5rem !important;
+}
+
+.marged-label {
+  margin : 0 .5rem 0 .5rem;
+}
+
+.ag-theme-material .ag-header-cell {
+	&[col-id="dateCreation"] {
+		.ag-header-cell-label {
+			margin-left: 43px;
+		}
+	}
+}

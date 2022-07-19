@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-24">
+        <div class="block block-transparent">
+            <h6 class="athena">
+                Demande N°{{detailRequest?.idRequest}} : {{detailRequest?.requestTypeLabel}}
+                <a *ngIf=!isDetailRecovery  class="block-title-item-link athena" [ngClass]="{'disabled': (lastId === detailRequest?.idRequest)}" [routerLink]="null"   (click)="getPreviousOrNextRequestId(true)" queryParamsHandling="merge">
+                    <span *ngIf="isDetailRequestReady" class="text-min normal no-transform athena">Suivant<span class="icon icon-min athena" [ngClass]="getArrowRightClass()"></span></span>
+                </a>
+                <span *ngIf=!isDetailRecovery  class="block-title-item-link athena">
+                    <span class="text-giant normal light-grey no-transform athena">|</span>
+                </span>
+       
+                <a *ngIf=!isDetailRecovery class="block-title-item-link athena" [ngClass]="{'disabled': (firstId === detailRequest?.idRequest)}"  [routerLink]="null" (click)="getPreviousOrNextRequestId(false)" queryParamsHandling="merge">
+                    <span *ngIf="isDetailRequestReady" class="text-min normal no-transform athena"><span class="icon icon-min athena" [ngClass]="getArrowLeftClass()"></span>Précédent</span>
+                </a>
+            </h6>
+        </div>
+    </div>
+    <div class="col-md-24 col-lg-8 order-lg-2">
+        <!-- REQUEST SUMMARY -->
+        <app-detail-request-summary  [customerId]="customerId" [detailRequest]="detailRequest" [requestAnswers]="requestAnswers" (sendIsClosedRequest)="getIsClosedRequestResume($event)" (sendIsClosed)="getIsClosedResume($event)"></app-detail-request-summary>
+    </div>
+    <div class="col-md-24 col-lg-16 order-lg-1" [ngClass]="getClassEnvByTypeCustomer()" >
+        <!-- TASK LIST -->
+        <app-detail-request-task-list [customerId]="customerId" [idRequest]="detailRequest?.idRequest" [requestObject]="detailRequest?.title" [homologationsIds]="homologationsIds"
+        [processInstanceId]="detailRequest?.instanceId" [tasks] ="inProgressTasks" [requestLabel] = "detailRequest?.requestTypeLabel" [requestStatus]="detailRequest?.statuts"
+        [isClosedRequest] ='isClosedRequest' [isClosed] ='isClosed' [requestTypeId]="detailRequest?.requestTypeId" [isConnectedOnWF]="detailRequest?.isConnectedOnWf"
+        [cartHasBlockedItem]="cartHasBlockedItem" [universId]="detailRequest?.universId" [workflowId]="detailRequest?.workflowId" *ngIf="inProgressTasks?.length !== 0"></app-detail-request-task-list>
+       <!-- TASK COPMLETED -->
+        <app-detail-request-task-completed 
+            [completedTasks]="completedTasks"
+            [customerId]="customerId"
+            [idRequest]="detailRequest?.idRequest"
+            [requestStatus]="detailRequest?.statuts"
+            [isClosed] ='isClosed'
+            [hasIncompletedTasks]='inProgressTasks?.length !== 0'
+            *ngIf="completedTasks?.length !== 0"> </app-detail-request-task-completed>
+        <!-- INTERACTIONS LIST -->
+        <app-detail-request-interaction-list [interactions]="interactions" 
+        [customerId]="customerId" [detailRequest] = "detailRequest" [requestAnswers]="requestAnswers"></app-detail-request-interaction-list>
+        <!-- DOCUMENTS LIST-->
+        <app-detail-request-document-list [customerId]="customerId" [idRequest]="detailRequest?.idRequest" [documents]="documents"></app-detail-request-document-list>
+    </div>       
+</div>

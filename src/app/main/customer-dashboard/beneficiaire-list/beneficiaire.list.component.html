@@ -1,0 +1,41 @@
+<div class="block block-shadow">
+  <h2 class="block-title athena">
+    {{
+      (!isEmptyBeneficiares)
+        ? 'PARC LIGNES PARNASSE'
+        : 'Pas de lignes en cours'
+    }}
+    <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', 
+    customerId, 'detail','creation-line','line-detail']"
+    [queryParams]="{ modificationLine :  'false'  }"
+    queryParamsHandling="merge">
+      <div class="block-title-item-icon">
+        <span class="icon add-on athena"></span>
+      </div>
+    </a>
+  </h2>
+  <div>
+	  <app-athena-table-loader *ngIf="inCompleteCall"></app-athena-table-loader>
+    <app-athena-ag-grid
+	  [defaultSortModel]="defaultSortModel"
+	  *ngIf="!isEmptyBeneficiares && !inCompleteCall"
+      [columnDefs]="columnDefs"
+      [rowData]="actifBenefeciries"
+      (selectRow)="selectRow($event)"
+    ></app-athena-ag-grid>
+  </div>
+  <div class="text-right mt-3">
+    <a
+      class="athena"
+      [routerLink]="[
+        '/customer-dashboard',
+        customerId,
+        'park-item',
+        'list-enterprise'
+      ]"
+      [queryParams]="{ typeRequest: 'all' }"
+      queryParamsHandling="merge"
+      >Voir toutes les lignes<span class="icon icon-min arrow-right-blue athena"></span>
+    </a>
+  </div>
+</div>

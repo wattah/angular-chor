@@ -1,0 +1,10 @@
+<div class="modal-body text-center " id="pop-up-envoi-sms">
+    <p class="mt-2 mb-4">
+        Êtes-vous sûr de vouloir débloquer la ligne? <br/>
+        
+    </p>
+    
+    <input class="btn btn-green" value="Oui, je veux la débloquer" type="button" (click)="unlockParkItem()"/>
+    <br/>
+    <a [routerLink]="null" queryParamsHandling="merge"  (click)="destroy()" >Non je ne veux pas </a>
+</div>

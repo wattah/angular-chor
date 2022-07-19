@@ -1,0 +1,60 @@
+
+
+<div class="underline mt-3 mb-2">Femtocell N ° {{index}} <span class="icon del ml-2" *ngIf="interventionFemtocellsLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeFemtocell()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">IMEI 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="numImei" name="numImei" [(ngModel)]="this.interventionFemtocell.numImei"
+            [ngClass]="[numImeiInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Emplacement de la femtocell
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="emplacementFemtocell" name="emplacementFemtocell" [(ngModel)]="this.interventionFemtocell.emplacementFemtocell"
+            [ngClass]="[emplacementFemtocellInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">ND du titulaire
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="otherNumbersTitulaire" name="otherNumbersTitulaire"
+            [ngClass]="[otherNumbersTitulaireInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Commentaire </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="comment" name="comment" [(ngModel)]="this.interventionFemtocell.comment" maxlength="255"></textarea>
+            <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows">
+        <label class="col-sm-4 col-form-label athena pr-0"> Ligne du parc impactée </label>
+        <div class="col-sm-20 col-lg-9">
+            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="impactedLineId" name="impactedLineId">
+                <option [value]="null" disabled>--</option>
+                <option *ngFor="let impactParkItemLine of impactParkItemLines" [ngValue]="impactParkItemLine">
+                    {{impactParkItemLine.universe}} - {{impactParkItemLine.webServiceIdentifier}} - {{impactParkItemLine.libelleContract}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Autre </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="otherLine" name="otherLine" [(ngModel)]="this.interventionFemtocell.otherLine"/>
+        </div>
+    </div>
+</form>

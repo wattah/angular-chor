@@ -1,0 +1,302 @@
+<div formGroupName="delivery">
+    <div class="form-group row">
+            <label class="col-sm-6 col-form-label athena">Stock prélevé <span *ngIf="isStockRequired" >*</span>  </label>
+            <div class="col-sm-20 col-lg-9">
+             <mat-form-field class="custum_stock"
+             [ngStyle]="{'border': isStockRequired && formsSubmitted && (!form.get('delivery').get('stockPreleve').value || form.get('delivery').get('stockPreleve').value.length === 0) && (this.parcoursKey !== 'Assistance SAV mobile') ? '2px solid #f44336':''}">
+                    <mat-select [disableRipple]="true" 
+                    class="ng-pristine ng-invalid ng-touched addarrow" 
+                    #stockPre
+                    formControlName="stockPreleve">
+                        <mat-option *ngFor="let stock of stocks" [value]="stock.store"  (onSelectionChange) = "onChangeStock($event)" >
+                            <!-- Pour icone vert et supprimer d-none -->
+                              <span class="icon status-red-teleco mr-1" *ngIf="stock.available=='NOT_EXIST' ? true : false"> </span> 
+                              <span class="icon status-green-teleco mr-1" *ngIf="stock.available=='IN' ? true : false"> </span>
+                              <span class="icon status-gray-teleco mr-1" *ngIf="stock.available=='ERROR' ? true : false"> </span>
+                              {{stock?.store}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>    
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-6 col-form-label athena">Mode de livraison* </label>
+            <div class="col-sm-20 col-lg-9">
+                    <app-athena-nested-drop-down    
+                       [list]="refs" [hasError]="formsSubmitted && (!form.get(DELIVERY).get(MODE_LIVRAISON).value || form.get(DELIVERY).get(MODE_LIVRAISON).value.length === 0) && (this.parcoursKey !== ASSISTANT_SAV_MOBILE)"
+                       [selectedValue]="{ label: (this.modeLivraison) ? this.modeLivraison : '--'}"
+                       (selectionChange)="onSelectModeDelivery($event)">
+                    </app-athena-nested-drop-down>
+
+            </div>
+        </div> 
+    
+        <div class="form-group row" *ngIf="showReception">
+            <label class="col-sm-6 col-form-label athena">Destinataire* </label>
+    
+            <div class="col-sm-20 col-lg-9">
+                <mat-form-field class="large-chip-list" appearance="outline">
+                    <input type="text" matInput formControlName="receptionnerControl" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete"  >
+                      <mat-option (click)="onClickPerson(option)" *ngFor="let option of filteredPersons | async" [value]="option.name">
+                        {{option?.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-group row mb-1">
+            <label class="col-sm-6 pl-0 pr-0 col-form-label athena">Contact pour réceptionner la <br/>livraison (si différent du destinataire)</label>
+            <div class="col-sm-20 col-lg-9">
+                <input type="text" class="form-control mt-1 athena" formControlName="contactreceptionnerLivraison" />
+            </div>
+        </div>
+    
+        <div class="form-group row" *ngIf="showAdresse">
+            <label class="col-sm-6 col-form-label athena">Adresse* </label>
+            <div class="col-sm-20 col-lg-9">
+                <mat-form-field class="large-chip-list" appearance="outline" >
+                    <input type="text" formControlName="address" matInput [matAutocomplete]="autoService"  
+                    (keyup)="changeAdresseInput($event)"  >
+                    <mat-autocomplete #autoService="matAutocomplete" required>
+                        <mat-option class="pl-0"  *ngFor="let rdv of adresseRdv" [value]="'Adresse '+rdv.types[0].label" (click)="onChoseAddress(rdv)" >
+                            <div class="adress_bordure pr-0">
+                                <p class="mb-2"> 
+                                    <strong> Adresse {{ rdv.types ? rdv.types[0].label:'' }}</strong> 
+                                </p>
+                                <p class="m-0 grey lowercase" *ngIf="rdv.companyName"> 
+                                    {{ rdv.companyName ? rdv.companyName:'' }} 
+                                </p>
+                                <p class="m-0 grey lowercase"> 
+                                    {{ rdv.addrLine2 ?  rdv.addrLine2:'' }}
+                                    {{ rdv.addrLine3 ?  rdv.addrLine3:'' }}
+                                    {{ rdv.logisticInfo ?  rdv.logisticInfo:'' }}
+                                    {{ rdv.addrLine4 ?  rdv.addrLine4:'' }}
+                                    {{ rdv.addrLine5 ?  rdv.addrLine5:'' }}
+                                </p>
+                                <p class="m-0 grey lowercase"> 
+                                    {{ rdv.postalCode ?  rdv.postalCode:'' }} {{ rdv.city ?  rdv.city:'' }} 
+                                </p>
+                            </div>
+                        </mat-option>
+                        <mat-divider></mat-divider>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group mb-2 row" *ngIf="showAdresse">
+            <label class="col-sm-6 col-form-label athena"> </label>
+            <div class="col-sm-10 mb-2" *ngIf="!visibleActionsOnLivraison">
+                <span class="athena clickable link font-weight-bold"  (click)="openPopup()">
+                    <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une adresse temporaire
+                </span>
+            </div>
+        </div>
+    
+       
+        
+        <div class="form-group row">
+            <label class="col-sm-6 col-form-label athena">
+                Mobile du contact *
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                    <input  formControlName="phoneContact" minlength="1"
+                    type="text" class="form-control athena"
+                    [ngStyle]="{'border': formsSubmitted && (!form.get(DELIVERY).get(PHONE_CONTACT).value || form.get(DELIVERY).get(PHONE_CONTACT).value.length === 0 || form.get(DELIVERY).get(PHONE_CONTACT).value.length > 20)  && (this.parcoursKey !== ASSISTANT_SAV_MOBILE) ? '2px solid #f44336':''}"
+                    (ngModelChange)="changeNumber($event)"
+                    [matAutocomplete]="autoMobile"
+                    numberPhoneInternationalOnly/>
+                    <mat-autocomplete #autoMobile="matAutocomplete">
+                        <mat-option *ngFor="let mobile of listMobileAsync | async" [value]="mobile?.value">
+                        {{formatterNameListMobile(mobile)}}
+                        </mat-option>
+                    </mat-autocomplete>
+            </div>
+        </div>
+    
+        <div class="form-group row mb-2">
+            <label for="start mt-1" class="col-sm-6 col-form-label athena">Date de livraison souhaitée*</label>
+    
+            <div class=" col-sm-20 col-lg-12 m-0 p-0 d-flex">
+                <mat-form-field class="bg-none col-lg-6 col-22  col-sm-23" appearance="outline">
+                    <input matInput [matDatepicker]="pickerRes" [min]="minDeliveryWishDate" [ngModel]="desiredDate" 
+                    placeholder="" readonly formControlName="dateDeliveryControl"/>
+                    <mat-datepicker #pickerRes></mat-datepicker>
+    
+                    
+                </mat-form-field>
+                <div class="col-2  col-sm-6 margin-top p-0">
+                    <span class=" icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes.open()"></span>
+    
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group row mb-2">
+            <label class="col-sm-6 col-form-label athena">Créneau de livraison souhaité </label>
+            <div class="col-sm-20 col-lg-3">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="creneauDeliveryControl">
+                    <option disabled="" value="null">- -</option>
+                    <option *ngFor="let time of deliveryTimes" [ngValue]="time" 
+                    [selected]="time.id === iDeliveryTime"
+                    >
+                        {{time?.label}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="form-group row">
+            <label class="col-sm-6 col-form-label athena">Date et créneau  <br> de livraison à éviter </label>
+            <div class="col-sm-20 col-lg-9">
+                <textarea class="form-control athena" rows="5" formControlName="aeviterDeliveryControl"></textarea>
+            </div>
+        </div>
+    
+        <div class="form-group row">
+            <label class="col-sm-6 col-form-label athena">Notification coach* </label>
+    
+            <div class="col-sm-20 col-lg-9">
+                <mat-form-field class="large-chip-list" appearance="outline">
+                    <input type="text" matInput formControlName="notifCoachControl" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let user of filteredNotifOptions | async" [value]="user" (onSelectionChange)="onChangeNotificationCaoch($event)">
+                        {{user | fullNameFormatter }}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+    
+        <div class="form-group row mb-2">
+            <label class="col-sm-6 col-form-label athena">Sms de confirmation au membre </label>
+            <div class="col-sm-20 col-lg-9">
+                <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="smsControl">
+                    <option disabled [ngValue]="null">- -</option>
+                    <option *ngFor="let park of parkItems" [ngValue]="park.webServiceIdentifier">
+                        {{park.name}} - {{park.webServiceIdentifier}} 
+                    </option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="form-group mb-2 row">
+            <label class="col-sm-6 col-form-label athena"> Tél pour notification Parnasse</label>
+            <div class="col-sm-10">
+                <p class="athena mt-2">
+                   {{cart?.coachNotificationParnassePhoneNumber}} 
+                </p>
+            </div>
+        </div>
+    
+       
+    </div>
+<div formGroupName="deliveryHardware">
+    <div *ngIf="isRequestSav && isAssistanceSAVMobile" class="form-group mb-2 row">
+        <label class="col-sm-6 col-form-label athena"> </label>
+        <div class="col-sm-20 col-lg-10">
+            <section class="example-section mt-2">
+                <mat-checkbox class="" formControlName= "isDeliveryHardware" [disableRipple]="true" > Matériel à récupérer lors de la livraison</mat-checkbox>
+            </section>
+        </div>
+    </div>
+</div>
+
+        <div class="row mt-5 mb-4 athena justify-content-left">
+            <div class="col-sm-24" *ngIf="showDownloadButton">
+                <button class="col-form-label btn btn-blue" *ngxPermissionsOnly="['pending_facturation','awaiting_approval_facturation', 'validate_facturation' , 'estimate_sent_facturation' , 'ready_deliver_facturation' , 'delivered_facturation' , 'abandon_facturation']" (click)="downloadPV()"><span class="icon download-blanc"></span> PV d'installation</button>
+            </div>
+        </div>
+
+
+        
+<!-- Block popup ajouter une adress temporaire -->
+
+    <ng-template #content let-modal>
+        <div class="modal-body mt-2 px-3 px-sm-5">
+            <p class="title text-center">Ajout d'une adresse temporaire</p>
+    
+            <div class="form-group mb-2 row">
+                <div class="col-12 col-sm-20 col-lg-10">
+                    <section class="example-section mt-2">
+                        <mat-checkbox class="normal" [disableRipple]="true">Adresse française</mat-checkbox>
+                    </section>
+                </div>
+            </div>
+    
+            <div class="form-group row select_arrows">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena">Pays *</label>
+                <div class="col-sm-20 col-lg-17">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched">
+                        <option>
+                            - -
+                        </option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Code Postale *</label>
+                <div class="col-sm-20 col-lg-17">
+                    <input class="athena form-control" type="text" />
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Ville *</label>
+                <div class="col-sm-20 col-lg-17">
+                    <input class="athena form-control" type="text" />
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Adresse *</label>
+                <div class="col-sm-20 col-lg-17">
+                    <mat-form-field class="large-chip-list catalogue_p" appearance="outline">
+                        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" />
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn2">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+    
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Apt / Etage (A)</label>
+                <div class="col-sm-20 col-lg-17">
+                    <input class="athena form-control" type="text" />
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Bâtiment (B)</label>
+                <div class="col-sm-20 col-lg-17">
+                    <input class="athena form-control" type="text" />
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label class="col-12 col-lg-6 col-sm-4 col-form-label athena"> Code porte (C)</label>
+                <div class="col-sm-20 col-lg-17">
+                    <input class="athena form-control" type="text" />
+                </div>
+            </div>
+    
+            <div class="">
+                <ul class="ath-summary mt-4">
+                    <div class="row">
+                        <span class="icon help-grey mx-1 mt-1"></span>
+                        <span class="title p-0 mt-1 mb-2"> Information de livraison </span>
+                    </div>
+                    <li>Limite de 69 caractères sur la somme des champs A,B & C .</li>
+                    <li>Le premier(A) et second (B) champs peuvent figurer sur le courrier.</li>
+                    <li>le dernier(C) champs ne figure pas sur le courrier .</li>
+                </ul>
+            </div>
+            <div class="text-center mb-3 mt-4">
+                <button type="button" class="btn btn-green" (click)="modal.close('Close click')">Enregistrer</button> <br />
+                <button class="btn btn-link blue mt-2" [routerLink]="null" queryParamsHandling="merge" (click)="annuler()">Annuler</button>
+            </div>
+        </div>
+    </ng-template>
+    

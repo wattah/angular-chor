@@ -1,0 +1,15 @@
+<div class="">
+
+    <app-interaction-creation-360-form *ngIf="is360" (onFormGroupChange)="onFormGroupChange($event)"
+    (onSubmittedChange)="onSubmittedChange($event)" (onCanceledChange)="onCanceledChange($event)" 
+    [requests] = "requests" [customerId] = "customerId" [mediaData]= "mediaData" [interlocutors] = "interlocutors" 
+     [destinataires] = "destinataires" [adresseRdv] = "adresseRdv" [listUsers] = "listUsers"></app-interaction-creation-360-form>
+
+
+
+<app-interaction-creation-form class="row" *ngIf="!is360" (onFormGroupChange)="onFormGroupChange($event)"
+    (onSubmittedChange)="onSubmittedChange($event)" (onCanceledChange)="onCanceledChange($event)" 
+    [customerId] = "customerId" [request] = "request" [mediaData]= "mediaData"
+    [interlocutors] = "interlocutors" [destinataires] = "destinataires" [adresseRdv] = "adresseRdv" 
+    [listUsers] = "listUsers" [requestAnswers]="requestAnswers"></app-interaction-creation-form>
+</div>

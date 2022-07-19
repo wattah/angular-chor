@@ -1,0 +1,15 @@
+<div id="breadcrumb" class="container-fluid">
+    <div class="cti-container animated minimized d-none d-md-block" id="bandeauCti">
+        <div class="cti"></div>
+    </div>
+    <ul class="breadcrumb athena">
+        <li *ngFor="let breadcrumb of breadcrumbs$ | async; let last = last" class="breadcrumb-item athena">
+            <a *ngIf="!last || breadcrumb?.label === 'Page.HomeComponent.breadcrumb' " class="link-to athena" [routerLink]="breadcrumb.url" [queryParams]="queryParams">
+            {{ breadcrumb?.label |translate}}
+          </a>
+          <div *ngIf="last && breadcrumb?.label !== 'Page.HomeComponent.breadcrumb'" class="d-inline link-to-selected">
+            {{ breadcrumb?.label |translate}}
+          </div>
+        </li>
+    </ul> 
+</div>

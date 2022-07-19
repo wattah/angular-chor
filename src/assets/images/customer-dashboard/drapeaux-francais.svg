@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="13px" viewBox="0 0 20 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>A8848EA1-AB50-4646-B710-2488CDE34347</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="drapeaux-francais">
+            <path d="M7,13 L0.36208523,13 C0.162134449,13 0,12.8468053 0,12.6578794 L0,0.342120561 C0,0.153194673 0.162134449,0 0.36208523,0 L7,0 L7,13 Z" id="Path" fill="#41479B"></path>
+            <rect id="Rectangle" fill="#F5F5F5" x="7" y="0" width="7" height="13"></rect>
+            <path d="M19.6379148,13 L13,13 L13,0 L19.6379148,0 C19.8378656,0 20,0.15319513 20,0.342121581 L20,12.6579172 C20,12.8468824 19.8378656,13 19.6379148,13 Z" id="Path" fill="#FF4B55"></path>
+        </g>
+    </g>
+</svg>

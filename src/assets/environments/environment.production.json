@@ -1,0 +1,14 @@
+{
+  "production": true,
+  "baseUrl": "https://parnasse-athena.sso.francetelecom.fr/athena",
+  "adaBannerPlateforme": "PROD",
+  "adaBannerPlateformeUrl": "https://adalight-ssl.sso.francetelecom.fr",
+  "aideLignePlateformeUrl": "https://ael.si.francetelecom.fr",
+  "plateFormeName":"",
+  "bid": "com.apple.messages.MSMessageExtensionBalloonPlugin:JNVAG2CN37:com.parnasse.Parnasse-iPhone.ParnasseMessagesExtension",
+  "accessNotAuthenticatedRedirectUrl":"https://gassi.sso.francetelecom.fr/",
+  "version": "G02R00C00",
+  "sessionExperation": 5400,
+  "urlApollon":"https://adhesion.revlamp102.as44099.com/#/login",
+  "urlJira":"https://portail.agir.orange.com/servicedesk/customer/portal/29"
+}

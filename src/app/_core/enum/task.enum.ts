@@ -1,0 +1,5 @@
+export enum PendingStatus {
+  WITH_TASKS = 'WITH_TASKS',
+  WITH_LATE_TASKS = 'WITH_LATE_TASKS',
+  WITHOUT_TASKS = 'WITHOUT_TASKS'
+}

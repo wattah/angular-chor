@@ -1,0 +1,25 @@
+
+<div class="bon-savoir block shadow">
+    <h2  class="block-title athena mb-3"> Modification du bon à savoir</h2>
+    <div class="form-group row mt-4">
+      <label class="col-sm-3 col-form-label athena">Bon à savoir</label>
+      <div class="col-sm-7">
+          <textarea class="form-control athena ng-pristine ng-valid ng-touched" [(ngModel)]="value" (change)="isValueChanged()" name="infoGoodToKhow" id="infoGoodToKhow" rows="5"  ></textarea>
+      </div>
+    </div>
+    <div class="row mt-2 mb-2 justify-content-left  align-items-center ml-5">
+      <div><button class="btn mt-3 btn-link blue marginleft"  queryParamsHandling="merge"
+        [routerLink]="(typeCustomer === 'company') 
+        ? ['/customer-dashboard/entreprise', customerId]
+        : ['/customer-dashboard/particular', customerId]"
+      [queryParams]="{typeCustomer: typeCustomer}">Annuler</button></div>
+      <button class="btn btn-green  mt-3 " type="submit" (click)="enregistrer()"
+      [routerLink]="(typeCustomer === 'company') 
+      ? ['/customer-dashboard/entreprise', customerId]
+      : ['/customer-dashboard/particular', customerId]"
+    [queryParams]="{typeCustomer: typeCustomer}">
+          Enregistrer
+      </button>
+    </div>
+  </div>
+

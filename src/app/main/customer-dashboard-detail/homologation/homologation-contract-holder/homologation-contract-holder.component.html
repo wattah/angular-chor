@@ -1,0 +1,60 @@
+<div class="block block-shadow">
+    <h2  class="block-title athena">Informations sur le détenteur du contrat</h2>
+    <div class="infos-entrprise" *ngIf="typeCustomer === 'company'">
+    <div class="row">
+        <div class="class col-lg-12 col-sm-6 heauteur-company">
+            <p class="athena">
+                <span  class="grey athena">Civilité : </span> {{(homologation?.representantLegal !== null && homologation?.representantLegal.title !== null) ? (homologation?.representantLegal.title | civility) : "-"}} <br />
+                <span class="grey athena">Nom : </span> {{(homologation?.representantLegal !== null && homologation?.representantLegal.lastname !== null) ? (homologation?.representantLegal.lastname | uppercase) : "-"}} <br />
+                <span class="grey athena">Prénom :</span> {{(homologation?.representantLegal !== null && homologation?.representantLegal.firstname !== null) ? (homologation?.representantLegal.firstname | firstName) : "-"}}<br />
+                <span class="grey athena">Nom d'entreprise : </span> {{(homologation?.company !== null && homologation?.company.companyName !== null) ? (homologation?.company.companyName) : "-"}}<br />
+                <span class="grey athena">Siren : </span> {{(homologation?.company !== null && homologation?.company.siren !== null) ? (homologation?.company.siren) : "-"}}<br />
+            </p>
+        </div>
+        <div class="class col-lg-12 col-sm-6">
+            <div class="row">
+                <div class="col-lg-4 px-0 ml-1"> <span class="grey athena"> Adresse : </span></div> 
+                <div class="col-lg-12"> 
+                    {{(homologation?.company && homologation?.company.adressesList !== null && homologation?.company.adressesList.length>0) ? (formattedAddressParticipant(homologation?.company.adressesList)) : "-"}}
+               </div>
+            </div>
+            <p class="athena">
+                <span class="grey athena "> Téléphone :</span> {{(homologation?.company !== null && homologation?.company.phoneNumber !== null) ? (homologation?.company.phoneNumber) : "-"}}<br />
+                <span class="grey athena">  Mail :  </span> {{(homologation?.company !== null && homologation?.company.mail !== null) ? (homologation?.company.mail) : "-"}}<br />
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="infos-partuc" *ngIf="typeCustomer !== 'company'">
+    <div class="row">
+        <div class="class col-lg-12 col-sm-6 heauteur-benifice">
+            <p class="athena mb-0">
+                <span class="grey athena">Civilité : </span> {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].title !== null) ? (homologation?.beneficiaires[0].title | civility) : "-"}} <br />
+                <span class="grey athena">Nom : </span> {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].lastname !== null) ? (homologation?.beneficiaires[0].lastname | uppercase) : "-"}} <br />
+                <span class="grey athena">Prénom :</span> {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].firstname !== null) ? (homologation?.beneficiaires[0].firstname | firstName) : "-"}}<br />
+            </p>
+            <div class="row">
+                <div class="col-lg-4 px-0 ml-1"> <span class="grey athena"> Adresse : </span></div> 
+                <div class="col-lg-12"> 
+                    {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].adressesList !== null && homologation?.beneficiaires[0].adressesList.length>0) ? (formattedAddressParticipant(homologation?.beneficiaires[0].adressesList)) : "-"}}
+               </div>
+            </div>
+            <p class="athena">
+                <span class="grey athena "> Téléphone :</span> {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].phoneNumber !== null) ? (homologation?.beneficiaires[0].phoneNumber) : "-"}}<br />
+                <span class="grey athena">  Mail :  </span> {{(homologation?.beneficiaires !== null && homologation?.beneficiaires.length === 1 && homologation?.beneficiaires[0].mail !== null) ? (homologation?.beneficiaires[0].mail) : "-"}}<br />
+            </p>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+

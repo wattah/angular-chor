@@ -1,0 +1,157 @@
+<form [formGroup]="form">
+<div class="container-fluid row">
+    <div class="col-lg-24 col-md-24 block block-shadow">
+            <div class="col-lg-16 block_onglet pt-0">
+                <h2 class="block-title athena mb-4">Création compte de facturation - Infos nécessaires</h2>
+                <div *ngIf="isSubmitted && ( !identifierIsValid || !paymentModeIsValid)" class="row">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="block block-alert" >
+                            <table aria-describedby="" class="table table-not-bordered"><caption class="p-0"></caption>
+                                <tbody>
+                                    <tr>
+                                        <th id="th"></th>
+                                        <td class="alert-icon align-middle" >
+                                            <span class="icon icon-max status-exclamation-white"></span>
+                                        </td>
+                                        <td class="alert-text">
+                                            <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                            <div *ngIf="!identifierIsValid">- Le champ N° compte de facturation est obligatoire</div> 
+                                            <div *ngIf="!paymentModeIsValid">- Le champ mode de paiement est obligatoire</div>           
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="athena grey my-3 font-italic" *ngIf="!isUpdate">
+                        La création de la ligne, requiert un compte de facturation, hors le membre n’en détient pas. <br>
+                        Vous devez donc créer le compte de facturation pour valider votre création de ligne. 
+                    </p>
+                    <p class="athena grey my-3 font-italic" *ngIf="isUpdate">
+                        L'activation de la ligne, requiert un compte de facturation, hors le membre n’en détient pas. <br>
+                        Vous devez donc créer le compte de facturation pour valider votre activation de ligne. 
+                    </p>
+                </div>
+                <div class="form-group row mb-2" *ngIf="universe === 'INTERNET' || universe === 'FIXE'">
+                    <label class="col-sm-4 col-form-label athena">N° compte de facturation*</label>
+                    <div class="col-sm-20 col-lg-9 mt-1">
+                        <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="identifier" [ngClass]="isSubmitted && !identifierIsValid ? 'error' : ''"/>
+                        <mat-error *ngIf="isSubmitted && !identifierIsValid" >Ce champ est obligatoire</mat-error>
+                    </div>
+                </div>
+                <div class="form-group row select_arrows mb-2">
+                    <label class="col-sm-4 col-form-label athena">Etat</label>
+                    <div class="col-sm-20 col-lg-9">
+                        <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="status" (change)="onChangeState()">
+                            <option *ngFor="let state of stateList" [ngValue]="state.key">{{state.data}}</option>
+                        </select>
+                    </div>
+                </div>
+                
+        
+                <div class="form-group row mb-3" *ngIf="showResiliationDate">
+                    <label for="start mt-1" class="col-sm-4 col-form-label athena">Date de résiliation </label>
+        
+                    <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+                        <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                            <input matInput [matDatepicker]="pickerRes12" formControlName="terminationDate" placeholder="" readonly />
+                            <mat-datepicker #pickerRes12></mat-datepicker>
+                        </mat-form-field>
+                        <div class="col-2 col-sm-2 margin-top p-0">
+                            <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes12.open()"></span>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-group row select_arrows" *ngIf="universe !== 'MOBILE'">
+                    <label class="col-sm-4 col-form-label athena">Récurrent</label>
+                    <div class="col-sm-20 col-lg-9">
+                        <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="recurrent">
+                            <option *ngFor="let option of recurrentList" [value]="option.key">{{option.data}}</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena p-0">Condition de règlement</label>
+                    <div class="col-sm-20 col-lg-9">
+                        <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="paymentCondition"  >
+                            <option *ngFor="let condition of paymentConditonsList" [value]="condition.key">{{condition.data}}</option>
+                        </select>
+                    </div>
+                </div>
+        
+                <div class="form-group row mb-0">
+                    <label class="col-sm-4 col-form-label athena">Contrôle facture systématique</label>
+                    <div class="col-sm-20 col-lg-9">
+                        <section class="example-section mt-2">
+                            <mat-checkbox class="normal" [disableRipple]="true" (change)="enableTextArea($event)" formControlName="controlCF"></mat-checkbox>
+                        </section>
+                    </div>
+                </div>
+        
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Justification contrôle </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <textarea class="form-control athena ng-pristine ng-valid ng-touched" formControlName="justificationControle" rows="5" maxlength="30"></textarea>
+                    </div>
+                </div>
+        
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">CR attendu </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <section class="example-section mt-2">
+                            <mat-checkbox class="normal" [disableRipple]="true" formControlName="compteRenduAttendu" ></mat-checkbox>
+                        </section>
+                    </div>
+                </div>
+        
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label athena">Jour de facturation</label>
+                    <div class="col-sm-20 col-lg-3 number-wrapper">
+                        <input class="athena form-control" max="28" min="1" type="number" formControlName="billingDay" 
+                        onkeydown="if(event.key==='.' || event.key==='/' || event.key===';' || event.key===':'){event.preventDefault();}" change="isBillingDayEmpty($event)"/>
+                    </div>
+                </div>
+        
+                <div class="form-group row select_arrows mb-0">
+                    <label class="col-sm-4 col-form-label athena">Mode de règlement* </label>
+                    <div class="col-sm-20 col-lg-9">
+                        <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="paymentMode" (change)="onTypeSelect()" [ngClass]="isSubmitted && !paymentModeIsValid ? 'error' : ''">
+                            <option *ngFor="let type of PenichPaymentType" [value]="type.key">{{type.data}}</option>
+                        </select>
+                        <mat-error *ngIf="isSubmitted && !paymentModeIsValid" >Ce champ est obligatoire</mat-error>
+                    </div>
+                </div>
+        
+                <div class="form-group row mb-0">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-20 col-lg-9">       
+                        <label class="col-lg-24 col-form-label" *ngIf="showIbanSentence"><strong>{{paymentModeAccount}}</strong></label>
+                    </div>
+                </div>
+                <div class="row mb-3"></div>
+                <div class="table-associe" *ngIf="universe === 'MOBILE'">
+                    <div class="row">
+                        <div class="col-lg-19">
+                            <div class="grey athena mb-2 pl-2">Lignes associées</div>
+        
+                            <app-athena-ag-grid [defaultSortModel]="defaultSortModel" [columnDefs]="columnDefs" [rowData]="rowData"></app-athena-ag-grid>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-4 mb-2 justify-content-left ml-5">
+                <a class="btn btn-link mt-1 athena" [routerLink]="null" (click)="annuler()">Annuler</a>
+                <button class="btn btn-green marginleft" type="submit"  (click)="gotoBillInfo()">
+                    Passer à l'étape suivante
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+

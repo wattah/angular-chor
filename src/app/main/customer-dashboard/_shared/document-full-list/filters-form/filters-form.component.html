@@ -1,0 +1,81 @@
+<form class="pt-3">  
+	<article class="row">
+		<div class="col-md-7 col-lg-7">
+			<div class="form-group row">
+				<label class="col-md-3 col-lg-6 col-form-label athena">Type</label>
+				<div class="col-md-16">
+					<mat-form-field class="large-chip-list" appearance="outline" (click)="clearAutoCompleteInputControl(typeControl, trigger)">
+						<input type="text"
+							matInput
+							[matAutocomplete]="type"
+							[formControl]="typeControl"
+							#trigger="matAutocompleteTrigger" 
+                            (click)="clearAutoCompleteInputControl(typeControl, trigger)"
+							>
+						<mat-autocomplete #type="matAutocomplete"  [displayWith]="displayType" >
+							<mat-option *ngFor="let option of filteredType | async" [value]="option">
+								{{ (option.documentTypeName === '--') ? 'Tous' : option.documentTypeName }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<div class="offset-md-1 col-md-7 offset-lg-1 col-lg-7">
+			<div class="form-group row">
+				<label class="col-md-3 col-lg-6 col-form-label athena">Titre</label> 
+				<div class="col-md-16">
+					<mat-form-field class="large-chip-list " appearance="outline"  >
+						<mat-chip-list #chipList >
+						  <mat-chip 
+						  	*ngFor="let title of selectedTitles"
+							(removed)="remove(title)">
+								{{title}}
+								<mat-icon matChipRemove>cancel</mat-icon>
+						  </mat-chip>
+						  <input
+							placeholder=""
+							#titleInput
+							[formControl]="titleControl"
+							[matAutocomplete]="auto"
+							[matChipInputFor]="chipList"
+							[matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+						</mat-chip-list>
+						<mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+						  <mat-option *ngFor="let title of filteredTitles$ | async" [value]="title">
+							{{title}}
+						  </mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<div class="offset-md-1 col-md-8 offset-lg-1 col-lg-8">
+			<label class="col-md-3 col-lg-6 col-form-label athena">Date d'ajout</label>
+			<mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+				<input matInput [matDatepicker]="pickerStart" placeholder="" 
+				readonly name="dateDebut" [formControl]="startDate" (dateChange)="onSelectStartDate($event)">
+				<mat-datepicker #pickerStart></mat-datepicker>
+			</mat-form-field>  
+			<span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerStart.open()" ></span>
+			<label  class="col-form-label marged-label mt-1 ml-2 mr-2"> à </label>
+			<mat-form-field class="athena col-md-6 col-lg-6" appearance="outline">
+				<input matInput [matDatepicker]="pickerFinish" placeholder="" 
+				readonly name="dateFin" [min]="minDate" [formControl]="endDate" (dateChange)="onSelectEndDate($event)">
+				<mat-datepicker #pickerFinish></mat-datepicker>
+			</mat-form-field>  
+			<span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerFinish.open()" ></span>
+				
+		</div>
+		
+		<div class="col-md-8 col-lg-8">
+			<div class="form-check">
+				<input 
+					class="form-check-input" type="checkbox" id="optionCheck"
+					(change)="onChangeShowRequest()" 
+					[checked]="documentSearchCriteria?.showRequestsDoc" >
+				<label class="form-check-label" for="optionCheck"> Inclure les documents des demandes</label>
+			</div>
+		</div>	
+	</article>	
+</form>

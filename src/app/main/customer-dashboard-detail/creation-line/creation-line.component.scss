@@ -1,0 +1,165 @@
+.stepper {
+    background-color: transparent;
+    margin: auto;
+    width: fit-content;
+    display: flex;
+    margin-bottom: 75px;
+    .link-step1 {
+        left: -38px !important;
+    }
+    .link-step4 {
+        left: -62px !important;
+        width: max-content;
+    }
+    .grey-round {
+        background-color: #dadada;
+    }
+    .text-center {
+        position: relative;
+    }
+    .link {
+        font-family: "Sofia Pro Light", Arial, sans-serif;
+        position: absolute;
+        font-size: 14px;
+        left: -34%;
+    }
+    .round {
+        border-radius: 50%;
+        height: 29px;
+        width: 29px;
+        position: relative;
+    }
+
+    .dark-blue {
+        background-color: #1b72ad;
+    }
+    .light-blue1 {
+        background-color: #2990c1;
+    }
+    .light-blue2 {
+        background-color: #39b4da;
+    }
+    .light-blue3-active {
+        background-color: #47d0ed;
+    }
+}
+
+.custom-stepper {
+    background-color: transparent;
+    margin-left: 30%;
+    display: flex;
+    margin-bottom: 75px;
+    .link-step1 {
+        left: -38px !important;
+    }
+    .link-step4 {
+        left: -62px !important;
+        width: max-content;
+    }
+    .grey-round {
+        background-color: #dadada;
+    }
+    .text-center {
+        position: relative;
+    }
+    .link {
+        font-family: "Sofia Pro Light", Arial, sans-serif;
+        position: absolute;
+        font-size: 14px;
+        left: -34%;
+    }
+    .round {
+        border-radius: 50%;
+        height: 29px;
+        width: 29px;
+        position: relative;
+    }
+
+    .dark-blue {
+        background-color: #1b72ad;
+    }
+    .light-blue1 {
+        background-color: #2990c1;
+    }
+    .light-blue2 {
+        background-color: #39b4da;
+    }
+    .light-blue3-active {
+        background-color: #47d0ed;
+    }
+}
+
+.progress-bar-2 {
+    flex: auto;
+    height: 2px;
+    margin: 0px -100px 0px -87px;
+    min-width: 50px;
+    width: 280px;
+}
+
+.progress-bar-1 {
+    flex: auto;
+    height: 2px;
+    margin: 0px -79px 0px -80px;
+    min-width: 50px;
+    width: 400px;
+}
+
+.inactive {
+    background-color: #dadada;
+}
+
+.s1-to-s2-done {
+    background-image: linear-gradient(to right, #1b72ad, #47d0ed);
+}
+
+.s1-to-s2 {
+    background-image: linear-gradient(to right, #1b72ad, #31a1cd);
+}
+
+.s2-to-s3 {
+    background-image: linear-gradient(to right, #31a1cd, #49d4f0);
+}
+
+.icon-done {
+    background-color: #1b72ad;
+}
+.light-blue3-active {
+    background-color: #47d0ed;
+}
+
+.icon-middle-bgc {
+    background-color: #31a1cd;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.required {
+    color: red;
+    font-weight: bold;
+}
+
+/** Stepper with two steps "To refactor after"**/
+
+
+.progress-bar {
+    flex: auto;
+    height: 2px;
+    margin: 0 -16px;
+    min-width: 50px;
+    width: 260px;
+}
+
+.hidden-bar {
+    height: 2px;
+    margin: 0 -16px;
+    min-width: 50px;
+    width: 260px;
+}
+

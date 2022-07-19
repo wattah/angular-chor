@@ -1,0 +1,298 @@
+<div class="col-md-24 col-lg-24">
+    <div class="block block-shadow">
+        <h2 class="athena" >Ajout d’un service ou matériel</h2>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="block block-alert" *ngIf="inValidFormular">
+                    <table class="table table-not-bordered athena" aria-describedby="">
+                        <tbody>
+                            <tr hidden>
+                                <th id=""></th>
+                                <th id=""></th>
+                            </tr>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <strong class="alert-title">Ce formulaire n’est pas correctement renseigné</strong>
+                                    <ul class="simple mr-0 mt-2">
+                                        <li>Le champ Contrat est obligatoire </li>
+                                        <li>Le champ Bénéficiaire est obligatoire </li>
+                                        <li>Le champ Catégorie est obligatoire </li>
+                                        <li>Le champ Catégorie récurrente est obligatoire </li>
+                                        <li>Le champ Service ou matériel est obligatoire </li>
+                                        <li>Le champ Date d'achat est obligatoire </li>
+                                        <li>Le champ Libellé facture est obligatoire </li>
+                                        <li>Le champ Prix unitaire HT est obligatoire </li>
+                                        <li>Le champ Compte de facturation est obligatoire </li>
+                                        <li>Le champ Début de facturation est obligatoire </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form class="pt-3" [formGroup]="form" #ngForm="ngForm" (ngSubmit)="onSaveParcElement()">
+            <div class="row">
+                <div class="col-10">
+                    <div class="form-group row" *ngIf="isEntreprise">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Contrat*</label>
+                        <div class="col-15">
+                            <mat-form-field class="large-chip-list" appearance="outline">
+                                <input type="text" formControlName="contract" matInput required [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete"  required>
+                                    <mat-option *ngFor="let contrat of filteredContract | async" [value]="contrat.offre" (click)="onChoseContract(contrat)">
+                                        {{contrat.offre}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error 
+                            *ngIf="(form.controls.contract.value===null || form.controls.contract.value==='--') && ngForm.submitted"
+                            >Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.contract.value===null || form.controls.contract.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row" *ngIf="isEntreprise">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Bénéficiaire*</label>
+                        <div class="col-15">
+                            <mat-form-field class="large-chip-list" appearance="outline"  >
+                                <input type="text" formControlName="beneficiarie"  matInput [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete"  required>
+                                    <mat-option *ngFor="let beneficiarie of filteredBeneficiarie | async" [value]="beneficiarie.label" (click)="onChoseBeneficiarie(beneficiarie)">
+                                        {{beneficiarie.label}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="(form.controls.beneficiarie.value===null || form.controls.beneficiarie.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.beneficiarie.value===null || form.controls.beneficiarie.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Catégorie*</label>
+                        <div class="col-15">
+                            <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="category" name="category">
+                                <option *ngFor="let category of categories" [ngValue]="category"> 
+                                    {{category?.name ?  category?.name:'-' }}
+                                </option>
+                            </select>
+                            <mat-error *ngIf="(form.controls.category.value===null || form.controls.category.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.category.value===null || form.controls.category.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Catégorie récurrente</label>
+                        <label for="participantSelect" class="col-15 col-form-label">{{recurrentCategory}}</label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Service ou matériel*</label>
+                        <div class="col-15">
+                            <mat-form-field class="large-chip-list" appearance="outline"  >
+                                <input type="text" formControlName="serviceOrMateriel" matInput [matAutocomplete]="autoService">
+                                <mat-autocomplete #autoService="matAutocomplete"  required> 
+                                    <mat-option *ngFor="let product of products" [value]="product.name" (click)="onChoseProduct(product)">
+                                        <ul class="mat-summary">
+                                            <li>{{product.name}}</li>
+                                            <li class="grey">{{ getPriceTtcAllInclusive(product) }} € TTC</li>
+                                            <li class="grey" *ngIf="product &&  (product.isOnStock || product.isOnPublidispatchStock)"> Stock Parnasse : {{ product.stockQuantity }}</li>
+                                            <li class="grey" *ngIf="product &&  (product.isOnStock || product.isOnPublidispatchStock)"> Stock Publidispatch : {{ product.publidispatchStockQuantity }}</li>
+                                            <li class="grey" *ngIf="product &&  (product.isOnStock || product.isOnPublidispatchStock)"> Commande en cours : {{ product.stockOrder }}</li>
+                                        </ul> 
+                                    </mat-option>
+                                    <mat-divider></mat-divider>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="(form.controls.serviceOrMateriel.value===null || form.controls.serviceOrMateriel.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.serviceOrMateriel.value===null || form.controls.serviceOrMateriel.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row" *ngIf="!isOffreAndService && !isElse">
+                        <label for="start mt-1" class="col-8 col-form-label athena">Date d'achat*</label> 
+                        <div class="col-15">
+                            <div class="col-20 m-0 p-0">
+                                <mat-form-field appearance="outline" style="width: 60%;" >
+                                    <input matInput formControlName="buyingDate" [matDatepicker]="pickerStart" placeholder="" required readonly >
+                                    <mat-datepicker #pickerStart></mat-datepicker>
+                                </mat-form-field>
+                                <span class="icon  icon-marged calendar-grey clickable mt-n2" (click)="pickerStart.open()" ></span>      
+                                <span class="icon  icon-marged status-exclamation mt-n2" *ngIf="(form.controls.buyingDate.value===null || form.controls.buyingDate.value==='--') && ngForm.submitted"></span>
+                            </div>
+                            <div class="col-24">
+                                <mat-error *ngIf="(form.controls.buyingDate.value===null || form.controls.buyingDate.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group row">
+                        <label for="start mt-1" class="col-8 col-form-label athena">Date de résiliation</label> 
+                        <div class="col-15">
+                            <div class="col-20 m-0 p-0">
+                                <mat-form-field appearance="outline" style="width: 60%;" >
+                                    <input matInput formControlName="realizationDate" [matDatepicker]="pickerRes" placeholder="" readonly >
+                                    <mat-datepicker #pickerRes></mat-datepicker>
+                                </mat-form-field>
+                                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes.open()" ></span>      
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="form-group row" *ngIf="!isOffreAndService">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">Ligne associée</label>
+                        <div class="col-15">
+                            <select class="athena form-control"  formControlName="associetedLine" >
+                                <option [ngValue]="null" disabled>--</option>
+                                <option *ngFor="let park of parkItems" [ngValue]="park">
+                                    {{park.universe}} > {{park.webServiceIdentifier}} > {{park.libelleContract}}
+                                </option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="!isOffreAndService">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">Adresse d'installation</label>
+                        <div class="col-15">
+                            <select class="athena form-control" formControlName="installationAddress" >
+                                <option [ngValue]="null" disabled>--</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="descriptionTextarea" class="col-8 col-form-label athena">Commentaire</label>
+                        <div class="col-15">
+                            <textarea formControlName="comment" class="form-control athena"  rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="precision" class="col-8 col-form-label athena">Numéro de série <span *ngIf="serialRequired">*</span></label>
+                        <div class="col-15">
+                            <mat-form-field  class="w-100" appearance="outline">
+                                <input type="text" formControlName="serielNumber" matInput  >
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">À facturer</label>
+                        <div class="col-15">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="optionYes" value="oui" formControlName="radio">
+                                <label class="form-check-label" for="optionYes"> Oui </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="optionNo" value="non" formControlName="radio">
+                                <label class="form-check-label" for="optionNo"> Non </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">Facture déjà réglée</label>
+                        <div class="col-15">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" formControlName="invoiceAlreadyPaid"  id="optionCheck" [checked]="false">
+                                <label class="form-check-label" for="optionCheck"> &nbsp; </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="precision" class="col-8 col-form-label athena">Libellé facture*</label>
+                        <div class="col-15">
+                            <mat-form-field  class="large-chip-list" required appearance="outline">
+                                <input type="text" formControlName="wordingBill" matInput  >
+                            </mat-form-field> 
+                            <mat-error *ngIf="(form.controls.wordingBill.value===null || form.controls.wordingBill.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.wordingBill.value===null || form.controls.wordingBill.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="precision" class="col-8 col-form-label athena">Prix unitaire HT*</label>
+                        <div class="col-10">
+                            <mat-form-field  class="large-chip-list" appearance="outline">
+                                <input type="text" formControlName="unitPricHT" matInput (change)="calculatePrice()"  required>
+                            </mat-form-field> 
+                            <mat-error *ngIf="(form.controls.unitPricHT.value===null || form.controls.unitPricHT.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-2 status-exclamation" *ngIf="(form.controls.unitPricHT.value===null || form.controls.unitPricHT.value==='--') && ngForm.submitted"></span>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="precision" class="col-8 col-form-label athena">Remise</label>
+                        <div class="col-10">
+                            <input class="form-control " formControlName="discount" type="text" (change)="calculatePrice()"/>
+                            <mat-error *ngIf="form.get('discount').errors?.discountValidator">La remise doit être inférieur au prix de l'article</mat-error>   
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">Quantité</label>
+                        <div class="col-10">
+                            <input type="number" class="athena form-control" min="1" formControlName="quantity" (change)="calculatePrice()" [attr.disabled]="quantityBlocked ? '':null"> 
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="mediaSelect" class="col-8 col-form-label athena">TVA</label>
+                        <div class="col-10">
+                            <select class="athena form-control" formControlName="tva" (change)="calculatePrice()">
+                                <option [ngValue]="null" selected>20</option>
+                                <option [ngValue]="10">10</option>
+                                <option [ngValue]="7">7</option>
+                                <option [ngValue]="0">0</option>
+                                <option [ngValue]="19.6">19,6</option>
+                                <option [ngValue]="5.5">5,5</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Prix HT</label>
+                        <label for="participantSelect" class="col-15 col-form-label ">{{htPrice}}€</label>
+                    </div>
+                    <div class="form-group row" *ngIf="showFacturation">
+                        <label for="participantSelect" class="col-8 col-form-label athena">Prix TTC</label>
+                        <label for="participantSelect" class="col-15 col-form-label ">{{ttcPrice}}€</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="showFacturation">
+                <div class="col-20">
+                    <div class="form-group row">
+                        <label for="" class="col-4 col-form-label athena">Compte de facturation*</label>
+                        <div class="col-19">
+                            <app-athena-paginated-ag-grid  
+                                [columnDefs]="columnDefs" 
+                                [rowData]="rowData"
+                                (selectRow)="onRowSelected($event)"
+                                >
+                            </app-athena-paginated-ag-grid>
+                            <mat-error *ngIf="(accountBilling === null || accountBilling=== undefined) && ngForm.submitted">Veuillez sélectionner un compte de facturation</mat-error>
+                        </div>
+                        <span class="icon col-1 mt-3 status-exclamation" *ngIf="(accountBilling === null || accountBilling=== undefined) && ngForm.submitted"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-10">
+                    <div class="form-group row" *ngIf="!isProduct && showFacturation">
+                        <label for="start mt-1" class="col-8 col-form-label athena">Début de facturation*</label> 
+                        <div class="col-15">
+                            <div class="col-20 m-0 p-0">
+                                <mat-form-field appearance="outline" style="width: 60%;" >
+                                    <input matInput formControlName="startBilling" [matDatepicker]="pickerFactu" placeholder="" readonly >
+                                    <mat-datepicker #pickerFactu></mat-datepicker>
+                                </mat-form-field>
+                                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerFactu.open()" ></span>      
+                                <span class="icon icon-marged status-exclamation mt-n2" *ngIf="(form.controls.startBilling.value===null || form.controls.startBilling.value==='--') && ngForm.submitted"></span>
+                            </div>
+                            <div class="col-24">
+                                <mat-error *ngIf="(form.controls.startBilling.value===null || form.controls.startBilling.value==='--') && ngForm.submitted">Ce champ est obligatoire</mat-error>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row control-buttons ">
+                        <div class="col-8 text-right">
+                            <a class="btn btn-link mt-1" [routerLink]="null" queryParamsHandling="merge" (click)="annuler()">Annuler</a>
+                        </div>
+                        <div class="col-15">
+                            <input [ngClass]="['btn', ((accountBilling !== undefined && accountBilling !== null) && form.valid) || ngForm.submitted ? 'btn-green' : 'btn-grey']"  value="Enregistrer" type="submit" [disabled]="((accountBilling === undefined || accountBilling === null) || !form.valid) || ngForm.submitted"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

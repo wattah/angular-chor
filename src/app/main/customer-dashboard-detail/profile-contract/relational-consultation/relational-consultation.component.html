@@ -1,0 +1,52 @@
+<!-- PART I : CONSULTATION -->
+<section class="relationnel-consultation">
+   
+    <section class="row">
+        
+        <article class="col-5">
+            <h4 class="athena mintitle"> Relation avec Parnasse </h4>
+            <ul class="ath-summary mt-2 ">
+                <li><span class="grey">Entité gestion Parnasse : </span> {{person?.refLocation?.label | isNull}}</li>
+                <li *ngIf="typeCustomer==='particular'"><span class="grey">Client OBS : </span>{{ person?.obsType?.label | isNull }}</li>
+                <li *ngIf="typeCustomer==='particular'"><span class="grey">Information gestionnaire OBS : </span> {{ person?.obscomment | isNull }} </li>
+                <li><span class="grey">Apporteur d’affaire pour Parnasse : </span>{{ (person?.isBusinessProvider) ? 'Oui' : 'Non' }}</li>
+                <li><span class="grey">Partenaire pour Parnasse : </span> {{ (person?.isPartnerProvideurContributor) ? 'Oui' : 'Non' }} </li>
+            </ul>
+        </article>
+        <article class="offset-1 col-6">
+            <h4 class="athena mintitle"> Événements </h4>
+            <ul class="ath-summary mt-2 ">
+                <li><span class="grey">Présence aux événements  : </span> {{ (person?.isPresentToEvent) ? 'Oui' : 'Non' }} 
+                <li><span class="grey">Nombre d'événements demandés avec participation : </span> - </li>
+                <li><span class="grey">No show : </span> - </li>
+                <li><span class="grey">Dernier événement participé : </span> - </li>
+                <li><span class="grey">Date de cet événement : </span> - </li>
+                <li><span class="grey">Raison de non participation aux événements :  </span>{{ person?.refEventAbsenceReason?.label | isNull }}</li>
+            </ul> 
+        </article>
+        <article class="offset-1 col-11">
+            <h4 class="athena mintitle"> Segmentation </h4>
+            <ul class="ath-summary mt-2 ">
+                <li><span class="grey">Niveau d’influence : </span> {{ formatLabel(person?.refInfluence?.key, 'levelInfluence') }}</li>
+                <li>
+                    <span class="grey">Membre sensible : </span> 
+                    {{ (person?.isSensitiveMember) ? 'Oui' : 'Non'}} 
+                    {{ (person?.sensitiveMemberComent) ? (', ' + person?.sensitiveMemberComent) : '' }}
+                </li>
+                <li><span class="grey">Accessibilité : </span>{{ formatLabel(person?.refAccessibility?.key, 'accessibility') }}</li>
+                <li><span class="grey">Raison d’inaccessibilité : </span> {{ person?.refInaccessibilityReason?.label | isNull }}</li>
+                <li><span class="grey">Posture avec Parnasse : </span>
+                    {{ (person?.isBehaviorWithParnasse) ? 'Mauvaise' : 'Bonne'}} 
+                    {{ (person?.behaviorWithParnasseComent) ? (', ' + person?.behaviorWithParnasseComent) : '' }}</li>
+                <li><span class="grey">Segment : </span>{{ person?.segment ? person?.segment : '-' }}</li>
+                <li><span class="grey">Potentiel CA : </span> {{ formatLabel(person?.refPotentialTurnover?.key, 'potentiel') }}</li>
+                <li><span class="grey">Potentiel cooptation : </span>{{ formattedLabelPotentielCooptation(person?.refPotentialCooptation?.ordinal) }} </li>
+            </ul>
+        </article>
+    </section>
+    <section class="row justify-content-center mt-5">
+        <button class="btn btn-blue" (click)="onUpdateRelational()">
+                <span class="icon d-inline-block pen-white mr-1"></span><span>Modifier</span>
+        </button>
+    </section>
+</section>

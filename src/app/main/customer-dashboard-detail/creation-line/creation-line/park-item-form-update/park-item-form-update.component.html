@@ -1,0 +1,198 @@
+<div class="row">
+    <header class="col-24">
+        <div class="block block-transparent">
+            <h6 class="athena">
+                Ligne {{customerParkItem?.universe ? customerParkItem?.universe  : '-'}} :
+                 {{(customerParkItem?.webServiceIdentifier) ? ( customerParkItem?.webServiceIdentifier| ligne) : '-'}}
+            </h6>
+        </div>
+    </header>
+    <section class="col-md-24 col-lg-24 order-lg-1">
+        
+        <article class="block shadow-block">
+            
+                <h2 class="athena">MODIFICATION DE LA LIGNE</h2>
+                <form   [formGroup]="customerParkItemUpdateForm" #fromUpdateCustomerParkItem="ngForm" (ngSubmit)="updateCustomerParkItem()">
+                    <div class="row">
+                        <div class="col-lg-18 col-md-18">
+                            
+                            <div class="form-group row">
+                                <label for="" class="col-md-5 col-form-label athena">Statut ligne*</label>
+                                <div class="col-md-14 ">
+                                    <select  formControlName="status"  class="form-control col-md-14 mt-1 athena" 
+                                    #st (change)="onChangeStatus(st.value)"
+                                    [ngModel]="customerParkItem.nicheContractStatus" >
+                                    <!--il faut que la liste recupere soit trie par ordre alpha-->
+                                    <option *ngFor="let status of selectedStatusList" [selected]="status === customerParkItem.nicheContractStatus"
+                                    [value]="status">
+                              {{NicheContractStatustValue[status]}}
+                            </option>
+                                   
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Motif</label>
+                                <div class="col-md-14">
+                                    <textarea  formControlName="reason" class="form-control col-md-14 athena"  rows="4" 
+                                    [(ngModel)]="customerParkItem.reason" ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="showInputSubscriptionDate">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Souscription contrat ligne</label>
+                                <div class="col-md-14">
+                                    <input class="form-control-plaintext font-weight-bold athena"  
+                                     [value]="(customerParkItem?.dateSubscription)  ? (customerParkItem?.dateSubscription | dateFormatPipeFrench ): '-'" 
+                                    name="subscriptionDateInput"
+                                    type="text" disabled>
+
+                                </div>
+                            </div>
+                            <div class="form-group row" *ngIf="showPickerSubscriptionDate">
+                                <label for="traiteSelect athena" class="col-md-3 col-form-label athena">Souscription contrat ligne*</label>
+                                <mat-form-field class="offset-md-2  col-md-4" appearance="outline">
+                                    <input class="athena" matInput  formControlName="subscriptionDate" [ngModel]="subscriptionDate" 
+                                    [matDatepicker]="pickerSubsciption" placeholder="" readonly>
+                                    <mat-datepicker #pickerSubsciption></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-form-label mt-2  icon calendar-grey clickable athena" (click)="pickerSubsciption.open()" ></span>
+                            </div>
+            
+                           <div class="form-group row" *ngIf="showInputCancellationDate">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Résiliation contrat ligne</label>
+                                <div class="col-md-14">
+                                    <input readonly="" class="form-control-plaintext font-weight-bold athena"  name="cancellationDateInput" 
+                                     [value]="(customerParkItem?.dateCancellation)? (customerParkItem?.dateCancellation| dateFormatPipeFrench) : '-'" 
+                                    type="text" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row"  *ngIf="showPickerCancellationDate" >
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Résiliation contrat ligne*</label>
+                                <mat-form-field class="col-md-4" appearance="outline">
+                                    <input class="athena" matInput  formControlName="cancellationDate" [(ngModel)]="cancellationDate" 
+                                    [matDatepicker]="pickercancellation" placeholder="" readonly>
+                                    <mat-datepicker #pickercancellation></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-form-label mt-2  icon calendar-grey clickable athena" (click)="pickercancellation.open()" ></span>
+                            </div>
+                            <div class="form-group row" *ngIf="showPickerUnnumberedDate">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Date dénumérotation*</label>
+                                <mat-form-field class="col-md-4" appearance="outline">
+                                    <input class="athena" matInput  formControlName="unnumberedDate" [(ngModel)]="unnumberedDate" 
+                                    [matDatepicker]="pickerunnumbered" placeholder="" readonly>
+                                    <mat-datepicker #pickerunnumbered></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-form-label mt-2  icon calendar-grey clickable athena" (click)="pickerunnumbered.open()" ></span>
+                            </div>
+                           
+                            <div class="form-group row"   *ngIf="showNewNumber">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Nouveau numéro*</label>
+                                <div class="col-md-14">
+                               <input  Class="form-control col-md-14 athena"  name="newNumber"   formControlName="newNumber" type="text"  ng-init="'-'" 
+                               [(ngModel)]="customerParkItem.newNumber" 
+                               />
+                                </div>
+                            </div>
+                           <div class="form-group row">
+                                <label for="" class="col-md-5 col-form-label  athena">Origine de la ligne*</label>
+                                    <select  formControlName="origine" class="ml-1 form-control col-md-4 athena" ng-init="'-'" 
+                                    [ngModel]="customerParkItem?.lineOrigin?.id">
+                                        il faut que la liste recupere soit trie par ordre alpha
+                                        <option *ngFor="let origine of origineLine" [ngValue]="origine.id"
+                                        [selected]="origine.id === idOrigineLine ">{{origine.label}} </option>
+                                    </select>
+                                   
+                            </div>
+                            <div class="form-group row">
+                                <label for="checkbox  athena" class="col-form-label col-md-5 athena">
+                                    Mon n° Parnasse
+                                </label>
+                                <div class="col-md-16">
+                                    <div class="form-check checkBoxPosition">
+                                        <input class="form-check-input athena"  type="checkbox" id="isParnasseNumber"  
+                                        formControlName="isParnasseNumber" [(ngModel)]="customerParkItem.isParnasseNumber" >
+                                        <label class="form-check-label athena" for="isParnasseNumber">
+                                 
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="" class="col-md-5 col-form-label  athena">Utilisateur de la ligne</label>
+                                <div class="col-md-14 ">
+
+                                    <select   formControlName="category" class="form-control col-md-14 athena" id="traiteSelect" 
+                                    [ngModel]="customerParkItem?.lineHolder?.id">
+                                        <option *ngFor="let category of userCatgory" [ngValue]="category.id"
+                                        [selected]="category.id === idLineHolder">{{category.label}} </option>
+                                   </select>
+                                   
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Nom de l'utilisateur</label>
+                                <input  Class="form-control ml-1 col-md-8 athena"  name="lineHolderName"   formControlName="lineHolderName" type="text" 
+                                [(ngModel)]="customerParkItem.lineHolderName"    id="lineHolderName"/>
+                            
+                             <div class="mt-2 ml-4 athena"><span class='icon info-grey'></span ><span class="grey"> Ce nom est affiché sur le portail parnasse.fr</span></div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Infos complémentaires</label>
+                                <div class="col-md-14">
+                                    <textarea name="comment" formControlName="comment" class="form-control col-md-14 athena"  rows="4"
+                                     [(ngModel)]="customerParkItem.comment" id="commentTextarea"></textarea>
+                                </div>
+                            </div>
+                           
+                        
+                            <div class="form-group row"  *ngIf="isAuthorized" >
+                                <label for="checkbox  athena" class="col-sm-6 col-form-label col-md-5 athena">
+                                    Renouvellement mobile
+                                </label>
+                                <div class="col-sm-16">
+                                    <div class="form-check checkBoxPosition">
+                                        <input class="form-check-input athena"  type="checkbox" id="checkbox2"  (change)="OncheckRenewMobile($event)"  >
+                                        <label class="form-check-label athena" for="checkbox2">
+                                 
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="form-group row" *ngIf="isAuthorized"  >
+                                <label for="traiteSelect athena" class="col-md-3 col-form-label athena">Date de renouvellement*</label>
+                                <mat-form-field class="offset-md-2 col-md-4" appearance="outline">
+                                    <input class="athena" matInput  formControlName="renewalDate"  name ="renewalDateName"
+                                    [(ngModel)]="renewalDate" [matDatepicker]="pickerrenewalDate" placeholder="" readonly>
+                                    <mat-datepicker #pickerrenewalDate></mat-datepicker>
+                                </mat-form-field>
+                                <span class="col-form-label mt-2  icon calendar-grey clickable athena" (click)="pickerrenewalDate.open()" ></span>
+                            </div>
+                            <div class="form-group row" *ngIf="isAuthorized">
+                                <label for="traiteSelect athena" class="col-md-5 col-form-label athena">Commentaires*</label>
+                                <div class="col-md-14">
+                                    <textarea  class=" col-md-14 athena" name="commentMobile"  formControlName="commentMobile" placeholder="Indiquer le modèle du mobile et son IMEI" rows="4"
+                                    [(ngModel)]="customerParkItem.commentRenewal" id="commentMobileTextarea"></textarea>
+                               
+                                </div>
+                            </div>
+                            <div class="row control-buttons">
+                                <div class="offset-md-2 mt-1 col-md-3">
+                                    <a class="btn btn-link athena" 
+                                    [routerLink]="null"   
+                                    queryParamsHandling="merge" (click)="routerAfterCanceling(true)" >Annuler</a>
+                                </div>
+                                <div class="col-md-12">
+
+                                        <input [ngClass]="['btn', fromUpdateCustomerParkItem?.valid ? 'btn-green' : 'btn-grey']" value="Enregistrer" 
+                                type="submit"  />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </article>   
+    </section>       
+</div>

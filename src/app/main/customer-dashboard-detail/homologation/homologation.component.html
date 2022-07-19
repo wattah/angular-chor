@@ -1,0 +1,96 @@
+<div class="container-fuild">
+    <div class="row">
+        <div class="col-24">
+            <div class="block block-transparent">
+                <h6 class="athena">
+                    Dossier d’homologation
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <app-homologation-key-dates [homologation]="homologation"></app-homologation-key-dates>
+        </div>
+        <div class="col-12">
+            <app-homologation-contract-holder [homologation]="isAmendment ? holderHomologation : homologation"></app-homologation-contract-holder>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-beneficiary-list *ngIf="showBenifice" [homologation]="homologation"
+            ></app-homologation-beneficiary-list>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-contractual-information [homologation]="homologation" [canalMotifHomologation]="canalMotifHomologation" 
+            [infoCustomerHomologation]="infoCustomerHomologation" [isAmendment]="isAmendment"></app-homologation-contractual-information>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-item-service [homologation]="homologation" [isAmendment]="isAmendment"></app-homologation-item-service>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-item-mobile [lines]="homologation?.lines" ></app-homologation-item-mobile>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-approval-documents [homologation]="homologation" [canalMotifHomologation]="canalMotifHomologation" [infoCustomerHomologation]="infoCustomerHomologation"></app-homologation-approval-documents>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <app-pre-homologation-holder-business-control [homologation]="homologation" [isHomologated]="isHomologated"></app-pre-homologation-holder-business-control>
+        </div>
+        <div class="col-12">
+            <app-homologation-holder-business-control [homologation]="homologation" [isHomologated]="isHomologated"></app-homologation-holder-business-control>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <app-homologation-beneficiaries-business-control 
+            [homologation]="homologation"
+                (onChangebeneficiaries)="onChangebeneficiaries($event)"
+                ></app-homologation-beneficiaries-business-control>
+        </div>
+    </div>
+        <div class="row">
+        <div class="offset-lg-6 col-12">
+            <app-homologation-commitee-selection 
+            [homologation]="homologation"
+            (onChangebeneficiaries)="onChangebeneficiaries($event)"
+            ></app-homologation-commitee-selection>
+        </div>
+    </div>
+    <div class="row mt-md-5 mb-2 justify-content-center btn_responsive">
+        <div _ngcontent-jtr-c11="" class=" ">
+            <input
+                _ngcontent-jtr-c11=""
+                class="btn btn-green"
+                queryparamshandling="merge"
+                type="button"
+                value="Enregistrer"
+                tabindex="0"
+                ng-reflect-query-params-handling="merge"
+                ng-reflect-router-link="/customer-dashboard,1200,detai"
+                [disabled]="isHomologated"
+                (click)="save()"
+            />
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <a class="btn btn-link athena" [ngClass]="{'disabled' : isHomologated}" 
+        [routerLink]="null"
+        queryParamsHandling="merge" (click)="cancel()"> Annuler</a>
+    </div>
+</div>
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>

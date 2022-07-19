@@ -1,0 +1,103 @@
+<ng-container *ngIf="noAccountBilling  ; else isNotEmptyBloc">
+    <div class="row athena justify-content-center my-4 ">
+        <div  class="text grey">Ce client n'a pas de compte de facturation</div>
+    </div>
+</ng-container>
+<ng-template #isNotEmptyBloc>
+    <ng-container *ngIf="billAccounts ; else disconnectedBloc">
+    <div [ngClass]="{'avoid-clicks': !hasVisibleActionOnBilling, 'allow-clicks':hasVisibleActionOnBilling }" class="onglet_traitement-facturation">
+        <div class="row athena justify-content-left">
+            <div  class="text grey pl-2">Veuillez sélectionner un compte de facturation *</div>
+            </div>
+            <div  [ngClass]="{'disabled' : isNotElligible }" class="d-none d-sm-none d-md-block col-md-24 col-lg-24 ">
+                <app-athena-paginated-ag-grid  
+                [columnDefs]="columnDefs" 
+                [rowData]="rowData"
+                [redrawDetailsRows]="redrawDetailsRows"
+                [loadAgGridParams]="params"
+                [newRowData]="oldRowData"
+                (selectRow)="selectedRow($event)"
+                (clickedCell)="clickedRow()"
+                >
+                </app-athena-paginated-ag-grid>
+            </div>
+            
+            <div class="row">
+                <div class="  d-md-none col-24   "> 
+                            <mat-button-toggle-group #group="matButtonToggleGroup" [value]= "selectedVal" (change)="onValChange(group.value, i)" *ngFor="let bill of rowData ;let i = index" class=" my-3 row" name="fontStyle" aria-label="Font Style"   >
+                                
+                                 <!-- Block 1 version responsive-->
+                                <mat-button-toggle [disableRipple]="true" [value]="'materialExample2-'+i"  class="col-12  col-sm-12 "aria-label="Text align left">    
+                                    <div class="form-check text-center mb-4">
+                                        <input type="radio"
+                                        [checked]="arrayOfBolean[i]"
+                                        class="form-check-input" id="{{idOfRadioButtons}}"  >
+                                        <label class="form-check-label" for="{{idOfRadioButtons}}"></label>
+                                      </div>
+                                <div class="detaille black"  >
+                                    
+                                    <div> <span  class="grey athena"> Catégorie:</span>   {{ bill?.billAccountRedcurrent}}   </div>
+                                    <div>  <span  class="grey athena"> N ° client:</span>   {{ bill?.billAccountNicheIdentifiant}}   </div>
+                                    <div> <span  class="grey athena"> N ° compte:</span>    {{ bill?.billAccountIdentifier}}  </div>
+                                    <div> <span  class="grey athena"> Règlement:</span>  {{  (bill?.billAccountPaymentMode) ? getLabel(bill?.billAccountPaymentMode) : '' }}   </div>
+                                    <div> <span  class="grey athena"> Payeur: </span>  {{ getPayerName(bill) }}  </div>
+                                </div>
+                               </mat-button-toggle>
+                      
+                            
+             
+            
+                            </mat-button-toggle-group>
+                       
+            
+            
+            
+            
+            
+               
+                </div>
+            
+            </div>
+
+
+
+
+
+
+
+            <div class="description">
+                <span class="icon info-grey cursour mr-1"> </span> 
+                <span class="text font-italic text-min grey"> 
+                    Pour choisir un compte de facturation, veuillez poser les deux questions suivantes: <br>
+                    <ul>
+                        <li>
+                            - Le membre souhaite être prélevé? Si oui veuillez prendre un compte de facturation avec un règlement par prélèvement, si non prenez un compte avec un autre type de règlement.
+                        </li>
+                        <li>
+                            - Qui doit être facturé? le titulaire ou un tiers payeur? Veuillez regarder la colonne «payeur» pour vous aider
+                        </li>
+                    </ul>
+                <span class="ml-4"> Pour information: </span>
+                <ul>
+                    <li> - Un compte récurrent -> la facture sera émise en début de mois suivant</li>
+                    <li> - Un compte non récurrent -> La facture sera émise quelques jours après la validation</li>
+                </ul>
+                </span>
+            </div>
+            <div class="row mt-5 mb-4 athena justify-content-left">
+                <div class="col-sm-24" *ngIf="showDownloadButton">
+                    <button class="col-form-label btn btn-blue" (click)="downloadTinyBill()"><span class="icon download-blanc"></span> Facturette</button>
+                </div>
+            </div>
+        
+    </div>
+</ng-container>
+    <ng-template  #disconnectedBloc>
+        <p class="text-danger athena">
+            <span class="icon lightning athena"></span> Données manquantes. Connexion à Péniche perdue.
+            <a class="athena" href="{{jiraUrl}}" target="_blank" style="padding-left: 10px;" rel="noopener noreferrer">
+                Signaler au support <span class="icon icon-min arrow-right-blue athena"></span>
+            </a>
+        </p>
+    </ng-template>
+</ng-template>

@@ -1,0 +1,45 @@
+<div class="underline mt-3 mb-2">Ligne fixe N ° {{index}} <span class="icon del ml-2" *ngIf="interventionLandLinesLength !== 1"  [class.disabled]="!allowedToModifyTechnicalInformationTab"(click)="removeLandLine()"></span></div>
+<form [formGroup]="form">
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">ND 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="nd" name="nd" [(ngModel)]="this.interventionLandLine.nd"
+            [ngClass]="[ndInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            >
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena"> Emplacement de la DTI
+            <span *ngIf="isRequired" class="red">*</span> </label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="dtiLocation" name="dtiLocation" [(ngModel)]="this.interventionLandLine.dtiLocation"
+            [ngClass]="[dtiLocationInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            />
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Sucloc</label>
+        <div class="col-sm-20 col-lg-9">
+            <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="sucloc" name="sucloc" [(ngModel)]="this.interventionLandLine.sucloc"/>
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <label class="col-sm-4 col-form-label athena">Infos complémentaires 
+            <span *ngIf="isRequired" class="red">*</span>
+        </label>
+        <div class="col-sm-20 col-lg-9">
+            <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="suplementInfo" name="suplementInfo" [(ngModel)]="this.interventionLandLine.suplementInfo"
+            [ngClass]="[suplementInfoInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+            ></textarea>
+        </div>
+    </div>    
+</form>
+
+
+
+

@@ -1,0 +1,71 @@
+<div class="donne-parnasse">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="contrat">
+                <h4 class="athena mintitle mb-2">Contrat</h4>
+                <div><span class="grey athena">N ° de compte :</span> {{ customerProfile?.customer?.nicheIdentifier }}</div>
+                <div *ngIf="typeCustomer ==='beneficiary'"><span class="grey athena">Titulaire :</span> {{ customerProfile?.customer?.companyCustomerFullName }}</div>
+                <div *ngIf="typeCustomer ==='company'" class="d-flex">
+                    <span class="grey athena">Bénéficiaires :</span> 
+                    <ul class="athena ath-summary">
+                        <li *ngFor="let item of customerProfile?.customer?.customerAffiliates" >
+                            {{ item.persons[0].fullName }}
+                        </li>
+                    </ul>
+                </div>
+                <div><span class="grey athena">Gestion :</span> {{ (customerProfile?.customer?.freeManagement === null ) ? '-' : ( customerProfile?.customer?.freeManagement === 'true' ) ? 'Libre' : 'Pilotée'  }} </div>
+            </div>
+
+            <div class="contrat mt-3">
+                <h4 class="athena mintitle mb-2">Team Parnasse</h4>
+                <div><span class="grey athena">Coach :</span> {{ coach | isNull }}</div>
+                <div class="red athena" *ngIf="backUpCoach$ | async as backUpCoach; ">
+                    (Du {{backUpCoach.beginDate | dateFormatPipeFrench}} au {{backUpCoach.endDate | dateFormatPipeFrench}} <br />
+                    {{ (backUpCoach.backupId) ?  (backUpCoach.backupFirstName | firstName ) + ' ' + ( backUpCoach.backupLastName | uppercase) : 'Tous'}} est en charge de ce dossier)
+                </div>
+                <div><span class="grey athena">Desk :</span> {{ desk | isNull }} </div>
+                <div class="red athena" *ngIf="backUpDesk$ | async as backUpDesk; ">
+                    (Du {{backUpDesk.beginDate | dateFormatPipeFrench}} au {{backUpDesk.endDate | dateFormatPipeFrench}} <br />
+                    {{ (backUpDesk.backupId) ?  (backUpDesk.backupFirstName | firstName ) + ' ' + ( backUpDesk.backupLastName | uppercase) : 'Tous'}} est en charge de ce dossier)
+                </div>
+                <div><span class="grey athena"> Coach référent :</span> {{ coachReferent | isNull }}</div>
+                <div class="red athena" *ngIf="backUpCoachReferent$ | async as backUpCoach; ">
+                    (Du {{backUpCoach.beginDate | dateFormatPipeFrench}} au {{backUpCoach.endDate | dateFormatPipeFrench}} <br />
+                    {{ (backUpCoach.backupId) ?  (backUpCoach.backupFirstName | firstName ) + ' ' + ( backUpCoach.backupLastName | uppercase) : 'Tous'}} est en charge de ce dossier)
+                </div>
+            </div>
+
+            <div class="team-parnasse mt-3">
+                <h4 class="athena mintitle mb-2">Infos complémentaires</h4>
+                <div><span class="grey athena">Newsletter :</span> {{ (customerProfile?.customer?.newsletter) ? 'Oui' : 'Non' }}</div>
+                <div><span class="grey athena">Login portail :</span> {{ customerProfile?.person?.login | isNull }}</div>
+                <div><span class="grey athena"> Second login :</span> {{ customerProfile?.person?.secondLogin | isNull }}</div>
+                <div>{{formatterCreatedByAndCreationDate}}</div>
+            </div>
+        </div>
+
+        <div class="col-lg-11">
+            <div class="Dossier enableNewLine">
+                <h4 class="athena mintitle mb-2">Dossier sensible</h4>
+                <div><span class="grey athena">Dossier sensible :</span> {{(customerProfile?.customer?.isComplaint) ? 'Oui' : 'Non' }}</div>
+                <div *ngIf="customerProfile?.customer?.isComplaint"><span class="grey athena">Date de début :</span> {{customerProfile?.customer?.dateDebutComplaint | dateFormatPipeFrench }}</div>
+                <div *ngIf="customerProfile?.customer?.isComplaint">
+                    <span class="grey athena">Commentaire :</span> {{customerProfile?.customer?.complaintValue | isNull }}
+                </div>
+                <div *ngIf="customerProfile?.customer?.isComplaint"><span class="grey athena">Date de fin:</span> {{customerProfile?.customer?.dateFinComplaint | dateFormatPipeFrench }}</div>
+            </div>
+
+            <div class="Dossier mt-3 enableNewLine">
+                <h4 class="athena mintitle mb-2">Recouvrement</h4>
+                <div><span class="grey athena">Profil de recouvrement :</span> {{ customerProfile?.customer?.recoveryProfil | isNull}}</div>
+                <div><span class="grey athena">Commentaire : </span>{{ customerProfile?.customer?.recoveryComment | isNull}}</div>
+                <div><span class="grey athena">Délai accordé : </span>{{ (customerProfile?.customer?.recoveryExtensionAllowed) ? 'Oui' : 'Non' }}</div>
+                <div><span class="grey athena">Commentaire : </span>{{ customerProfile?.customer?.recoveryExtensionComment | isNull}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-2 justify-content-center">
+        <button class="col-form-label btn btn-blue mt-2" (click)="onUpdateDataParnasse()"><span class="icon pen-white d-block btn-modifie"></span>Modifier</button>
+    </div>
+</div>

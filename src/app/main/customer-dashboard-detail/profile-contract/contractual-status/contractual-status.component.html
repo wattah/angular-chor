@@ -1,0 +1,15 @@
+<ng-template [ngIf]="consultationModePage$  | async" [ngIfElse]="modificationBlockContractuelStatus">
+    <app-contractual-status-consultation [person] = "person" [customer] = "customer"
+       (updateContractualStatus)="onUpdateContractualStatus($event)">
+    </app-contractual-status-consultation>
+    </ng-template>
+    
+    <ng-template #modificationBlockContractuelStatus> 
+    <app-contractual-status-modification [person] = "person" [customer] = "customer" 
+    (updateContractualStatus)="onUpdateContractualStatus($event)"
+    (changePersonFormStatus)="onChangePersonStatutForm($event)"
+    (changeCustomerFormStatus)="onChangeCustomerStatutForm($event)"
+    (changeDirtyStatusContractualForm)="onChangeDirtyStatusContractualForm($event)"
+    [isSelected] = "isSelected">
+     </app-contractual-status-modification>
+    </ng-template>

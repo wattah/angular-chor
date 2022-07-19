@@ -1,0 +1,30 @@
+@import '~src/styles/charte';
+
+.ag-theme-material .ag-header-cell {
+	white-space: normal;
+	&[col-id="status"], &[col-id="type"], &[col-id="rang"]{
+		.ag-header-cell-label {
+			text-align: center !important;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+	&[col-id="horsF"]{
+		.ag-cell-label-container {
+			float: right;
+		}
+		.ag-header-cell-label {
+			display: flex;
+			flex: 1 1 auto;
+			overflow: hidden;
+			align-items: center;
+			text-overflow: ellipsis;
+			align-self: stretch;
+			justify-items: right;
+			justify-content: flex-end;
+		}
+	}
+}
+.no-cursor {
+    cursor: default !important;
+}

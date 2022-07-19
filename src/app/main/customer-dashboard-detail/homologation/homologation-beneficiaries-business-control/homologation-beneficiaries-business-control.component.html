@@ -1,0 +1,16 @@
+<div class="block block-shadow">
+    <h2  class="block-title athena mb-3">Contrôle métier des bénéficiaires</h2>
+    <div class="beneficiaries">
+        <app-athena-paginated-ag-grid 
+        class="table"
+        [columnDefs]="columnDefs"
+        [frameworkComponents]="frameworkComponents"
+        [rowData]="homologation?.beneficiaires"
+        [paginationPageSize]="5"
+        [resize]="resize"
+        [loadAgGridParams]="params"
+        (clickLink)="changeCell($event)"
+      >
+    </app-athena-paginated-ag-grid >
+    </div> 
+  </div>

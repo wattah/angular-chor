@@ -1,0 +1,57 @@
+
+
+<blockquote>
+    <form [formGroup]="form">
+        <div class="underline mt-3 mb-2">Backup N°{{index}} <span class="icon del ml-2" *ngIf="interventionBackupNasListLength !== 1" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="removeBackup()"></span></div>
+        <div class="form-group row select_arrows">
+            <label class="col-form-label athena col-sm-4"> Type </label>
+
+            <div class="col-sm-4">
+                <div class="form-check">
+                    <input class="form-check-input athena" id="{{isAppelRandomName}}" name="isApple" type="radio" formControlName="isApple" [value]="'isApple'"/>
+                    <label class="form-check-label athena" for="{{isAppelRandomName}}"> Apple </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input athena" id="{{isWindowsRandomName}}" name="isApple" type="radio" formControlName="isApple" [value]="'isWindows'"/>
+                    <label class="form-check-label athena" for="{{isWindowsRandomName}}"> Windows</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input athena" id="{{isDsmRandomName}}" name="isApple" type="radio"  formControlName="isApple" [value]="'isDsm'"/>
+                    <label class="form-check-label athena" for="{{isDsmRandomName}}"> DSM</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Description</label>
+            <div class="col-sm-20 col-lg-9">
+                <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="5" formControlName="description" name="description" [(ngModel)]="interventionBackupNas.description"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena pr-0">Compte utilisateur utilisé </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text"  formControlName="compteUserUtilise" name="compteUserUtilise" [(ngModel)]="interventionBackupNas.compteUserUtilise"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Mot de passe </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="motDePasse" name="motDePasse" [(ngModel)]="interventionBackupNas.motDePasse"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Utilisateur utilisé </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="utilitaireUtilise" name="utilitaireUtilise" [(ngModel)]="interventionBackupNas.utilitaireUtilise"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Dossier partagé </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="dossierPartage" name="dossierPartage" [(ngModel)]="interventionBackupNas.dossierPartage"/>
+            </div>
+        </div>
+    </form>
+</blockquote>

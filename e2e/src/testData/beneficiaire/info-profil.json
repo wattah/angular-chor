@@ -1,0 +1,39 @@
+[
+    {
+        "jd": "1",
+        "description": ":un bénéficiare qui possède toute les informations",
+        "motCleSearch": "rubin",
+        "noElement": 3,
+        "civilite": "homme",
+        "photo": false,
+        "fullName": "M. Shama RUBIN",
+        "ncontrat": "12 04 21 001",
+        "etatMembre": "Inactive",
+        "age": "53 ans né(e) le 25 avr. 1966",
+        "apporteurFournisseur": "Fournisseur",
+        "secteur": "Informatique/ électronique/ e-commerce/ télécom",
+        "metier": "PDG / administrateur / conseil d'administration",
+        "langue": "Français",
+        "entreprise": "Association Regionale d'assemblage automobile ",
+        "idEntreprise": 3438,
+        "id": 3049
+    },
+    {
+        "jd": "2",
+        "description": ":un bénéficiare qui ne possède pas les informtions:age secteur,metier,apporteur/fournisseur",
+        "motCleSearch": 160219021,
+        "noElement": 0,
+        "fullName": "Mme Olivia GOBERT",
+        "civilite": "femme",
+        "ncontrat": "16 02 19 021",
+        "etatMembre": "Inactive",
+        "age": "",
+        "photo": false,
+        "secteur": "-",
+        "metier": "-",
+        "langue": "Anglais",
+        "entreprise": "Association Marchande d'assortiment de jouets ",
+        "idEntreprise": 6968,
+        "id": 13368
+    }
+]

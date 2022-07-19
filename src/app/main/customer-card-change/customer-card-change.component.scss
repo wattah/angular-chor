@@ -1,0 +1,689 @@
+.iconImport{
+  vertical-align: bottom;
+  margin-right: 5px;
+}
+
+.dataCol{
+  position: relative;
+  top: -2.5rem;
+  margin-left: 20%
+}
+
+.saveButton{
+  margin-left: 16%
+}
+
+.errorText{
+  color: red
+}
+
+.refCustomer{
+  transform: rotateZ(-0.25turn);
+  transform-origin: left;
+  margin-left: -3rem;
+}
+
+.customerForm{
+  margin-left: 4rem;
+}
+.fiche360{
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-bottom: 2%;
+}
+
+.customer-niche-id{
+  margin-left: 2rem;
+}
+.Administratif {
+margin-left: 20%;
+width: 109px;
+height: 22px;
+// 
+font-size: 15px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.47;
+letter-spacing: normal;
+color: #479aef;
+margin-top: 2%;
+}
+.Champ-obligatoire {
+margin-left: 20%;
+//width: 89px;
+height: 17px;
+// 
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: #777777;
+}
+.Civilit {
+width: 37px;
+height: 20px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+}
+.Line-2-Copy {
+width: 829px;
+height: 2px;
+}
+.Line-2-Copy-2 {
+margin-left: 20%;
+width: 350px;
+height: 2px;
+}
+.Madame {
+width: 48px;
+height: 20px;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.67;
+letter-spacing: normal;
+color: #333333;
+}
+.Oval-Copy {
+width: 15px;
+height: 15px;
+background-color: hsl(0, 0%, 100%);
+}
+.Monsieur {
+width: 51px;
+height: 20px;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.67;
+letter-spacing: normal;
+color: #333333;
+}
+
+.base-entreprise {
+width: 829px;
+height: 100%;
+box-shadow: 1px 1px 10px 0 rgba(119, 119, 119, 0.17);
+background-color: #ffffff;
+margin-bottom: 2%;
+}
+
+.base-particulier-beneficiaire {
+width: 829px;
+height: 100%;
+box-shadow: 1px 1px 10px 0 rgba(119, 119, 119, 0.17);
+background-color: #ffffff;
+margin-bottom: 2%;
+}
+.Rectangle {
+width: 829px;
+height: 60px;
+background-color: rgba(230, 28, 93, 0.1);
+}
+.Particulier {
+margin-left: 23%;
+margin-right: 10px;
+width: 80px;
+height: 18px;
+object-fit: contain;
+margin-top: 17px;
+
+}
+.Name-Particulier {
+margin-top: 13px;
+height: 22px;
+
+font-size: 15px;
+font-weight: bold;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.47;
+letter-spacing: normal;
+color: #333333;
+width: auto;
+max-width: 300px;
+}
+.Name-Particulier .text-style-1 {
+font-size: 12px;
+font-weight: normal;
+color: #777777;
+}
+.Modification-de-prof {
+padding-top: 20px;
+padding-bottom: 40px;
+//width: 220px;
+height: 22px;
+
+font-size: 22px;
+font-weight: 900;
+font-style: normal;
+font-stretch: normal;
+line-height: 1;
+letter-spacing: normal;
+color: #333333;
+}
+.Prnom {
+width: 43px;
+height: 0px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+}
+.Rectangle-Copy-2 {
+width: 289px;
+height: 30px;
+background-color: #ffffff;
+}
+.Nom- {
+width: 100%;
+height: 0px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+}
+.Date-de-naissance {
+width: 100%;
+height: 0px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+height: 20px;
+}
+.Langue-prfre {
+width: 91px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+}
+.Oval {
+width: 15px;
+height: 15px;
+background-color: #ffffff;
+}
+.Anglais {
+width: 40px;
+height: 20px;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.67;
+letter-spacing: normal;
+color: #333333;
+}
+.Franais {
+width: 46px;
+height: 20px;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.67;
+letter-spacing: normal;
+color: #333333;
+}
+.Bon-savoir {
+width: 100%;
+height: 0px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: #333333;
+}
+.Limite-atteinte-dans {
+width: 100%;
+height: 0px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: #777777;
+}
+.caractres-max {
+width: 350px;
+height: 100px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.4;
+letter-spacing: normal;
+color: #777777;
+}
+.Fiche-360---Form-2 {
+width: 1440px;
+height: 958px;
+background-color: #ffffff;
+}
+.rouge {
+width: 129px;
+height: 38px;
+background-color: #ed5565;
+}
+.vert {
+width: 129px;
+height: 38px;
+background-color: #bed600;
+}
+.Button-name {
+ //width: 68px;
+//height: 22px;
+
+font-size: 14px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.57;
+letter-spacing: normal;
+text-align: center;
+color: hsl(0, 0%, 100%);
+}
+.button-row button {
+margin-right: 10%;
+margin-bottom: 2%;
+}
+
+.btn {
+ font-size: 14px;
+ font-weight: normal;
+ font-style: normal;
+ font-stretch: normal;
+ line-height: 1.57;
+ letter-spacing: normal;
+ text-align: center;
+ color: hsl(0, 0%, 100%);
+ margin: 0 5% 2% 5%;
+ 
+ }
+.La-date-de-naissance {
+width: 300px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+margin-top: 0%;
+}
+.Ce-champ-ne-doit-pas {
+width: auto;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+}
+.Ce-champ-dpasse-le {
+height: 22px;
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+}
+.Rectangle-entreprise {
+width: 829px;
+height: 80px;
+background-color: hsla(213, 55%, 53%, 0.1);
+//margin-left: 2%;
+}
+.Rectangle-entreprise .ENTREPRISE {
+margin-left: 23%;
+margin-right: 10px;
+width: 80px;
+height: 20px;
+
+font-size: 9px;
+font-weight: 900;
+font-style: normal;
+font-stretch: normal;
+line-height: 2;
+letter-spacing: normal;
+text-align: center;
+color: hsl(0, 0%, 100%);
+margin-top: 20px;
+}
+.Rectangle-entreprise .Entreprise-name---16-0 {
+
+font-size: 15px;
+font-weight: 900; 
+font-style: normal;
+font-stretch: normal;
+letter-spacing: normal;
+color: #333333;
+margin-top: 19px;
+margin-left: 0.3em;
+width: auto;
+max-width: 300px;
+}
+.Entreprise-name---16-0 .text-style-1 {
+font-size: 15px;
+font-weight: bold;
+color: hsl(0, 0%, 20%);
+}
+
+.N-Contrat-16-08--entreprise1 {
+//   width: 150px;
+//   height: 60px;
+width: auto;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+letter-spacing: normal;
+color: #777777;
+margin-top:23px;
+margin-left: 0.3em;
+}
+
+.N-Contrat-16-08-1 {
+//   width: 150px;
+//   height: 60px;
+width: auto;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+letter-spacing: normal;
+color: #777777;
+margin-top:16px;
+margin-left: 0.3em;
+}
+.N-Contrat-16-08-1-benef {
+//   width: 150px;
+//   height: 60px;
+width: auto;
+
+font-size: 12px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+letter-spacing: normal;
+color: #777777;
+margin-top: 16px;
+margin-left: 0.3em;
+}
+.SIRET {
+width: 100%;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: hsl(0, 0%, 20%);
+margin-top: 2%;
+margin-bottom: -5%;
+}
+.SIREN- {
+margin-left: 15px;
+height: 0px;
+width: 40px;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+
+.siret- {
+margin-left: 15px;
+padding-top: 3px;
+padding-bottom: 3px;
+padding-left: 10px;
+padding-right: 19px;
+width: 80px;
+height: 30px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+.Rectangle-siret {
+width: 80px;
+height: 30px;
+background-color: hsl(0, 0%, 100%);
+}
+.nic- {
+padding-top: 3px;
+padding-bottom: 3px;
+padding-left: 10px;
+padding-right: 10px;
+margin-left: 20px;
+width: 51px;
+height: 30px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+.NIC {
+margin-left: 20px;
+height: 0px;
+width: 29px;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+.nic-width {
+  width: 80px;
+}
+.Raison-Social- {
+width: 100%;
+height: 0px;
+
+font-size: 12px;
+font-weight: 500;
+font-style: normal;
+font-stretch: normal;
+line-height: 1.83;
+letter-spacing: normal;
+color: hsl(0, 0%, 20%);
+}
+.raisonSocial- {
+padding-left: 10px;
+width: 50%;
+height: 30px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+.Le-champ-SIREN-est-o {
+margin-left: 15px;
+width: 100%;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+}
+.Ce-champ-est-obligat {
+width: 100%;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+}
+
+.Le-champ-SIREN-est-o-hau {
+width: 100%;
+height: 22px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(354, 81%, 63%);
+}
+input::-webkit-outer-adjust-hue-button,
+input::-webkit-inner-adjust-hue-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+  -moz-appearance:textfield; /* Firefox */
+}
+.Date-de-naissance-rectangle {
+width: 100%;
+
+font-size: 10px;
+height: auto;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+background-color: hsl(0, 0%, 100%);
+height: 20px;
+}
+.Rectangle-Copy-5 {
+width: 289px;
+height: 30px;
+background-color: hsl(0, 0%, 100%);
+}
+.nom-style {
+width: 50%;
+height: 30px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+.Rectangle-Copy-4 {
+width: 289px;
+height: 30px;
+background-color: hsl(0, 0%, 100%);
+}
+
+
+.prenom-style {
+width: 50%;
+height: 30px;
+
+font-size: 10px;
+font-weight: normal;
+font-style: normal;
+font-stretch: normal;
+line-height: 2.2;
+letter-spacing: normal;
+color: hsl(0, 0%, 47%);
+}
+
+.custom-control-label::before {
+  background-color: darkorange;
+}
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+background-color: rgba(0,0,0,.87);
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+border-color: rgba(0,0,0,.87);
+}
+::ng-deep .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+background-color: rgba(0,0,0,.87);
+}
+.Rectangle-beneficiaire {
+width: 829px;
+height: 60px;
+background-color: hsla(39, 94%, 52%, 0.2);
+}
+
+textarea[cdktextareaautosize].mat-input-element {
+  overflow: hidden;
+}

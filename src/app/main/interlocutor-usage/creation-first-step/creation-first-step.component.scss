@@ -1,0 +1,11 @@
+@import '~src/styles/charte';
+
+.vertical-line {
+    border-left: $border;
+}
+
+.vertical-centred {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}

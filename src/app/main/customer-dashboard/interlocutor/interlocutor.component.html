@@ -1,0 +1,59 @@
+
+<h2 class="athena my-3">
+  USAGES ET INTERLOCUTEURS 
+  <a class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId , 'interlocutor-usage','creation']" queryParamsHandling="merge">
+    <div class="block-title-item-icon" *ngxPermissionsOnly="['ajout_interlocuteur']">
+      <span class="icon add athena"></span>
+    </div>
+  </a>
+</h2>
+
+<div class="block_us"> 
+  <button type="button" [ngClass]="{'background-color ': isActive, 'active':isActive}" class="btn2 grey" (click)="usageClick()">Usage(s)</button>
+  <button type="button" [ngClass]="{'background-color ': !isActive, 'active':!isActive}" class="btn2 grey "(click)="interClick()">Interlocuteur(s)</button>
+</div>
+
+<ng-template [ngIf]="inCompleteCall" [ngIfElse]="callCompleted">
+  <app-athena-table-loader ></app-athena-table-loader>
+</ng-template>
+
+<ng-template #callCompleted >
+
+<!-- Partie Usage-->
+<app-tab-usage
+    [showusage] = "showusage"
+    [usageList]="usageList" 
+    (onValidateMobileContact)="onValidateMobileContactEvent($event)" 
+    (onValidateEmailContact)="onValidateEmailContactEvent($event)"
+    (onValidateAddressContact)="onValidateAddressContactEvent($event)"
+    (onValidatePhoneHomeContact)="onValidatePhoneHomeContactEvent($event)"
+    >
+</app-tab-usage>
+
+<!-- Partie Interlocuteur -->
+
+<app-tab-interlocutor 
+    [customerId] = "customerId"
+    [typeCustomer] = "typeCustomer"  
+    [interlocutorList] = "interlocutorList" 
+    [showinterlocuteur] = "showinterlocuteur"
+    (onValidMobileContact)="onValidInterlocutorMobileContactEvent($event)"
+    (onValidPhoneHomeContact)="onValidInterlocutorPhoneHomeContact($event)"
+    (onValidEmailContact)="onValidInterlocutorEmailContact($event)"
+    (onValidAddressContact)="onValidInterlocutorAddressContact($event)">
+  </app-tab-interlocutor>
+
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+

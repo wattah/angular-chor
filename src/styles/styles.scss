@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+$grid-columns: 24;
+$grid-gutter-width: 10px;
+
+@import url("../assets/fonts/sofia_pro_light/stylesheet.css");
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/bootstrap.scss";
+
+@import 'charte'; /*design*/
+@import 'athena'; /*dev*/
+@import "../assets/fonts/font.css"; /*fonts*/
+
+
+

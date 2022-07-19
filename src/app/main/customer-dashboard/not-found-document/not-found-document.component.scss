@@ -1,0 +1,44 @@
+/*positionning*/
+
+.error-page {
+  background-image: url(../../../../assets/images/error-background.jpg);
+}
+.middle-container {
+  background-size: cover;
+  position: absolute;
+  width: auto;
+  min-height: calc(80vh - 114px);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+ 
+  .middle-container .middle-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+  }
+  .middle-container .text-center {
+    justify-content: center;
+  }
+  .middle-container .text-title {
+    font-size: 27px;
+  }
+  .middle-container.text-giant {
+    font-size: 20px;
+  }
+  .middle-container .middle-content-back {
+    position: absolute;
+    bottom: 0;
+    top: auto;
+  }
+  
+  .link {
+    text-decoration: underline;
+    color: #4480c8;
+    cursor: pointer;
+  }
+ 

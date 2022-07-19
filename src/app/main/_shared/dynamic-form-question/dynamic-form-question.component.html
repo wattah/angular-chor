@@ -1,0 +1,40 @@
+<div>
+    <form *ngIf="formData" [formGroup]="form" >
+      <ng-container *ngFor="let question of questions" class="form-row">
+          <div class="form-group row">
+              <label [attr.for]="question.id" class="col-sm-4 col-form-label athena">{{getLabelQuestion(question)}}</label>
+              <div  class="col-form-label athena" [ngSwitch]="question.typeName" class="col-sm-20">
+                <div  *ngSwitchCase="'enum'"  class="col-form-label athena">
+                  <select class="form-control athena" [disabled]="disableQuestion" [id]="question.id" [formControlName]="question.id" 
+                    *ngIf="!question.displayResponse" (change)="onSubmit($event)">
+                    <option *ngFor="let key of objectKeys(question.type.values)" [value]="key">
+                      {{question?.type?.values[key].split("--", 1)}}
+                    </option>    
+                  </select>
+                  <span class="athena col-form-label " *ngIf="question.displayResponse"  >
+                    {{  question?.displayResponse }}    
+                  </span>
+                </div>
+                <input class="form-control athena" *ngSwitchCase="'long'" [id]="question.id" [type]="'number'" [formControlName]="question.id"
+                      [value]="question.type.values ? question.type.values[0] : question.type.values" [disabled]="disableQuestion" (blur)="onValidSubmit($event, question)" >
+
+                <div  *ngSwitchCase="'string'"  class="col-form-label athena">
+                  <input class="form-control athena" [disabled]="disableQuestion" [id]="question.id" [formControlName]="question.id" 
+                      (change)="onSubmit($event)" *ngIf="!question.displayResponse" [value]="question.type.values ? question.type.values[0] : question.type.values">
+                  <span class="athena col-form-label " *ngIf="question.displayResponse"  >
+                    {{ question?.displayResponse }}  
+                  </span>
+              </div>
+                <div class="form-check checkBoxPosition pl-1" *ngSwitchCase="'boolean'">
+                  <input class="form-check-input athena" type="checkbox" [id]="question.id" [formControlName]="question.id"
+                   (ngModelChange)="onSubmit($event, true)"  
+                      [(ngModel)]="question.defaultValue" >
+                  <label class="form-check-label athena" [attr.for]="question.id">
+                  </label>
+                </div>
+              </div>
+          </div>
+
+      </ng-container>
+    </form>
+</div>

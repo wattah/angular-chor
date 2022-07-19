@@ -1,0 +1,102 @@
+<div class="underline mt-3 mb-2">Sonos</div>
+    <form [formGroup]="form">
+        <div class="form-group row select_arrows">
+            <label class="col-form-label athena col-sm-4"> Routeur intermédiaire 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+
+            <div class="col-sm-4">
+                <div class="form-check">
+                    <input [ngClass]="[isTplinkInvalid ? ' form-check-input athena error':'form-check-input athena']" 
+                    id="optionsRadios6" name="isTplink" type="radio" formControlName="isTplink" [value]="true" />
+                    <label class="form-check-label athena" for="optionsRadios6"> Oui </label>
+                </div>
+                <div class="form-check">
+                    <input [ngClass]="[isTplinkInvalid ? ' form-check-input athena error':'form-check-input athena']" 
+                    id="optionsRadios7" name="isTplink" type="radio" formControlName="isTplink"  [value]="false"/>
+                    <label class="form-check-label athena" for="optionsRadios7"> Non</label>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="showLocationWithComment">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena"> Emplacement
+                    <span *ngIf="isRequired" class="red">*</span> </label>
+                <div class="col-sm-20 col-lg-9">
+                    <select class="form-control athena ng-pristine ng-invalid ng-touched" formControlName="refTplinkLocationType" name="refTplinkLocationType"
+                    [ngClass]="[showLocationWithComment && refTplinkLocationTypeInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                    >
+                        <option [ngValue]="null" disabled>--</option>
+                        <option *ngFor="let locationType of locationTypes" [ngValue]="locationType">{{locationType.label}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" *ngIf="isVisiblePrecesionFiled">
+                <label class="col-sm-4 col-form-label athena">Précision </label>
+                <div class="col-sm-20 col-lg-9">
+                    <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="autreEmplacement" name="autreEmplacement" [(ngModel)]="interventionSonos.autreEmplacement"/>
+                </div>
+            </div>
+    
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label athena">Commentaire </label>
+                <div class="col-sm-20 col-lg-9">
+                    <textarea class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="tplinkLocationComment" name="tplinkLocationComment" [(ngModel)]="interventionSonos.tplinkLocationComment" rows="6" maxlength="255">
+                    </textarea>
+                    <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+                </div>
+            </div>
+        </ng-container>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Identifiant sonos 
+                <span *ngIf="isRequired" class="red">*</span></label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="identifiantSonos" name="identifiantSonos" [(ngModel)]="interventionSonos.identifiantSonos"
+                [ngClass]="[identifiantSonosInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                    />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena"> Mot de passe 
+                <span *ngIf="isRequired" class="red">*</span>
+            </label>
+            <div class="col-sm-20 col-lg-9">
+                <input class="athena form-control ng-pristine ng-valid ng-touched" type="text" formControlName="passwordSonos" name="passwordSonos" [(ngModel)]="interventionSonos.passwordSonos"
+                [ngClass]="[passwordSonosInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-4 col-form-label athena">Commentaire </label>
+            <div class="col-sm-20 col-lg-9">
+                <textarea class="form-control athena ng-pristine ng-valid ng-touched" rows="6" formControlName="comment" name="comment" [(ngModel)]="interventionSonos.comment" maxlength="255"></textarea>
+                <span class="form-text text-min text-muted">Limite de 255 caractères sur le champ commentaire</span>
+            </div>
+        </div>
+
+        <blockquote>
+
+            <app-sound 
+                *ngFor="let interventionSonosDetail of interventionSonosDetails; let i=index"
+                [index]="i+1"
+                [interventionSonosDetail]="interventionSonosDetail"
+                [soundTypes]="soundTypes"
+                [isVisibleSoundBlock]="isVisibleSoundBlock"
+                [tabchangedOrSave]="tabchangedOrSave"
+                [soundConnectionTypes]="soundConnectionTypes"
+                [isManadatoryFields]="isManadatoryFields"
+                [interventionSonosDetailsLength]="interventionSonosDetails.length"
+                (onRemoveSound)="onRemoveSoundEvent($event)"
+                [allowedToModifyTechnicalInformationTab]="allowedToModifyTechnicalInformationTab">
+            </app-sound>
+
+            <div>
+                <a class="athena font-weight-bold" href="#" [class.disabled]="!allowedToModifyTechnicalInformationTab" (click)="addSound($event)"> <span class="icon add d-inline-block mr-2 athena"> </span>Ajouter une Sonos </a>
+            </div>
+        </blockquote>
+    </form>

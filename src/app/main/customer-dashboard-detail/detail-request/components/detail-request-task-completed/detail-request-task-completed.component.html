@@ -1,0 +1,24 @@
+<div class="block block-shadow">
+  <h2 class="athena">Tâches Terminées
+    <ng-container *ngxPermissionsOnly="['ajouter_tache_manuelle']" >
+      <a *ngIf="isDetailRequestReady && !hasIncompletedTasks" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'request', idRequest, 'task-creation']"
+          queryParamsHandling="merge">
+          <span *ngIf="requestStatus === 'PENDING'" class="text-min normal no-transform">Nouvelle tâche manuelle</span>
+      </a>
+    </ng-container>
+  </h2>
+  <app-athena-ag-grid 
+  class="task-completed"
+  [defaultSortModel]="defaultSortModel"
+  [columnDefs]="columnDefs" 
+  [rowData]="completedTasks"
+  [suppressRowClickSelection]="true"
+  [detailCellRenderer]="detailCellRenderer"
+  [loadAgGridParams]="params"
+  (clickCell)="clickCell($event)"
+  [masterDetail]="true" 
+  [detailRowHeight]="100"
+  [frameworkComponents]="frameworkComponents"
+ >
+</app-athena-ag-grid>
+  </div>

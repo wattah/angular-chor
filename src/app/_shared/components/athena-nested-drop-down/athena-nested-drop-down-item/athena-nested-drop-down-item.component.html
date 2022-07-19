@@ -1,0 +1,23 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false" class="mat-menu" [class]="{ 'maxWidth': '900px'}">
+    <span *ngFor="let child of items">
+      <!-- Handle branch node menu items -->
+      
+      <button 
+        *ngIf="child.children && child.children.length > 0"
+        [matTooltip]="child.label"
+        [matTooltipShowDelay]="0"
+        mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu"
+        >
+        {{child.label}}
+      </button>
+      <app-athena-nested-drop-down-item #menu [items]="child.children" (selectedValue)="setSelectedValue($event)"></app-athena-nested-drop-down-item>
+      
+      <!-- Handle leaf node menu items -->
+      <button *ngIf="!child.children || child.children.length === 0"
+        [matTooltip]="child.label"
+        [matTooltipShowDelay]="0"
+        mat-menu-item (click)="setSelectedValue(child)">
+        {{child.label}}
+      </button>
+    </span>
+  </mat-menu>

@@ -1,0 +1,183 @@
+<div class="container-fluid env-yellow">
+    <div class="row">
+        <div class="col-24">
+            <h6 class="athena" style="margin-bottom: 0;"> {{!taskDetail?.name ? '-' : taskDetail?.name}}</h6>
+            <h5 class="grey text-center athena">  Tâche N° {{taskDetail?.id}} </h5>
+		</div>
+        <div class="col-md-24 col-lg-8 order-lg-2">
+			<!-- REQUEST SUMMARY  -->
+            <app-task-creation-request-summary *ngIf="notOnWfCreation" [detailRequest]="detailRequest" [customerId]="customerId" [requestAnswers]="requestAnswers"
+            [cartHasBlockedItem]="cartHasBlockedItem"></app-task-creation-request-summary>
+		</div>
+		<div class="col-md-24 col-lg-16">
+			<div class="block block-shadow">
+				<h2 class="athena">
+                    Détail 
+                    <ng-container *ngxPermissionsOnly="['modification_taches']">
+                        <a *ngIf="taskDetail?.status === 'ASSIGNED' && !fromChorniche" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'request', detailRequest?.idRequest, 'modifyTask', taskId]" [queryParams] = "{isDetail: true}" queryParamsHandling="merge">
+                            <div class="block-title-item-icon">
+                                <span class="icon pen athena"></span>
+                            </div>
+                        </a>
+                    </ng-container>
+                </h2>
+                <div class="row">
+                    <div class="col-md-8 col-lg-8">
+                        <span class="grey">Traitée par : </span> 
+                        {{assignedFullName}}
+                        <br/>
+                        <span class="grey">Suivie par : </span>
+                        {{inChargeOfFullName}}
+                         <br/>
+                        <span class="grey">Notifer clôture à : </span>
+                            {{userToNotifyFullName}}
+                        <br/>
+                    </div>
+                    <div class="col-md-8 col-lg-8">
+                        <span class="grey">Début : </span>{{ (!taskDetail?.startDate) ? '-' :  taskDetail?.startDate | dateFormatPipeFrench}}  -
+                        {{ (!taskDetail?.createdDate) ? '-' : taskDetail?.startDate | date:"HH'h'mm"}}<br/>
+                        <span class="grey">Echéance : </span>{{ (!taskDetail?.endDate) ? '-' :  taskDetail?.endDate | dateFormatPipeFrench}}  -
+                        {{ (!taskDetail?.endDate) ? '-' : taskDetail?.endDate | date:"HH'h'mm" }} <br/>
+                        <span class="grey">Statut : </span>{{getTaskStatus(taskDetail?.status)}} <br/>
+                    </div>
+                    <div class="col-md-8 col-lg-8 d-flex justify-content-end align-items-center">
+                        <div *ngIf="cartHasBlockedItem">
+                            <span class="icon cadenas-rouge"></span>
+                        </div> 
+                        <div  class="mx-3">
+                            <span *ngIf="taskDetail?.isPriority" class=" icon icon-max priority mr-2"></span>
+                        </div>    
+                        <div >
+                            <div class="box-delay ">
+                                <h6 class="red mb-0 mt-n1 athena" style="color: #ed5565 !important;">{{taskDetail?.remainingTime}}</h6> 
+                                <small class="form-text text-muted mt-0 athena">Délais(jrs)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-24">
+                        <div class="row">
+                            <span class="grey" class="grey athena">Description : </span>
+                            <div class="col-sm-16">
+                                <p class="enableNewLine athena"  > {{description}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 mb-5 justify-content-center">
+                    <div class="col-4  align-self-center pl-3">
+                    <span class="link" (click)="navigateBack()"><span class="icon icon-min arrow-left-blue"></span>Page précédente</span>
+                          
+                    </div>
+                    <ng-template [ngIf]="taskDetail?.status !== taskStatus.DONE.key">
+                        <div >
+                            <input class="btn btn-blue athena" *ngIf="hasCRI === false" value="Créer le CRI" type="button" (click)="onRedirectForCriCreation()"  [disabled]="!disableCRIBtn()" />
+                            <input class="btn btn-blue athena" *ngIf="hasCRI === true" value="Modifier le CRI" type="button" (click)="onRedirectForCriCreation()"  [disabled]="!disableCRIBtn()" />
+                        </div>
+                        <div class="col-4 " *ngIf="isComplexRequest(detailRequest?.technicalKey) && traitementButton">
+                            <input class="btn btn-green athena" value="Traitement" type="button" [disabled]="fromChorniche" (click)="onRedirect()"/>
+                        </div>
+                        <div class="col-4 " *ngIf="!cartHasBlockedItem">
+                            <input class="btn btn-green athena" value="Clôturer" type="button" (click)="onRedirectForTaskCloture()" *ngxPermissionsOnly="['cloture_taches']" [disabled]="fromChorniche"/>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="block block-shadow">
+				<h2 class="athena">Historique</h2>
+				<div class="table-responsive">
+					<table id="interactionDemandeTable" class="table table-sorted table-not-hovered athena" aria-describedby="">
+						<thead>
+							<tr>
+								<th col-id="date" style="padding-left: 30px;" class="table-th-sortable main-sort"> Date</th>
+								<th col-id="action" >Action</th>
+								<th col-id="auteur" >Auteur</th>
+								<th col-id="detail" class="pl-3 pr-3" >Détail </th>
+							</tr>
+						</thead>
+                        
+                        <!-- new version with table in row: line without modification --> 
+                        <tbody *ngFor="let th of taskHistory; let i = index">
+                            <tr>
+                                <td colspan="4">
+                                    <table class="table table-not-bordered athena" aria-describedby="">
+                                        <th id=""></th>
+                                        <tbody>
+                                            <tr>
+                                                <td col-id="date" class="pl-4">
+                                                    {{th?.createdAt | dateFormatPipeFrench}} - {{th?.createdAt | date:"HH'h'mm" }}
+                                                </td>
+                                                <td col-id="action" >
+                                                    {{getHistoryAction(th)}}
+                                                </td>
+                                                <td col-id="auteur" >
+                                                    <span >{{formatName(th?.userFirstName,th?.userLastName)}}</span>
+                                                </td>
+                                                <td col-id="detail" class="pl-3 pr-3" >
+                                                    <span *ngIf="getHistoryAction(th) === historyAction.CREATION.value">-</span>
+                                                    <span *ngIf="getHistoryAction(th) === historyAction.CLOTURE.value">{{taskDetail?.resolutionComment}}</span>
+                                                    <a id="{{i}}" *ngIf="(getHistoryAction(th) === historyAction.UPDATE.value) && !th?.isDetailOpen" (click)="openClosDetail(i, true)"
+                                                        [routerLink]="null" queryParamsHandling="merge"  >
+                                                        Voir {{checkModificationSize(th?.systemComment) > 1 ? 'les modifications' : 'la modification' }}<span id="{{i}}" class="icon icon-marged icon-min arrow-bottom-blue"></span>
+                                                    </a>
+                                                    <a  *ngIf="(getHistoryAction(th) === historyAction.UPDATE.value) && th?.isDetailOpen" (click)="openClosDetail(i, false)"
+                                                        [routerLink]="null" queryParamsHandling="merge"  >
+                                                        Masquer {{checkModificationSize(th?.systemComment) > 1 ? 'les modifications' : 'la modification' }}<span class="icon icon-marged icon-min arrow-top-blue"></span>
+                                                    </a>
+                                                    <div *ngIf="isExistTaskAnswer && getHistoryAction(th) === historyAction.CLOTURE.value">
+                                                        <a *ngIf="!isInit && !th?.isDetailOpen"  id="{{i}}" (click)="openClosTaskAnswer(i,true)" 
+                                                        [routerLink]="null" queryParamsHandling="merge"  >
+                                                        Voir les réponses de la clôture <span id="{{i}}" class="icon icon-marged icon-min arrow-bottom-blue"></span>
+                                                       </a>
+
+                                                        <a id="{{i}}" *ngIf="isInit || th?.isDetailOpen" (click)="openClosTaskAnswer(i,false)"
+                                                            [routerLink]="null" queryParamsHandling="merge"  >
+                                                            Masquer les réponses de la clôture <span id="{{i}}" class="icon icon-marged icon-min arrow-top-blue"></span>
+                                                        </a>
+                                                   </div>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="th?.isDetailOpen && getHistoryAction(th) === historyAction.UPDATE.value" >
+                                                    <td colspan="3" class="pl-5 pr-5"> 
+                                                            <h2 class="modification-title athena ">ANCIENNE VERSION </h2> 
+                                                            <div style="white-space: pre-wrap" [innerHTML]="customSystemComment(taskHistory[i-1]?.systemComment)">
+                                                                    {{customSystemComment(th?.systemComment)}}  <br/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="pr-2"> 
+                                                            <h2 class="modification-title athena ">NOUVELLE VERSION </h2>
+                                                            <div style="white-space: pre-wrap" [innerHTML]="customSystemComment(th?.systemComment)">
+                                                                {{customSystemComment(th?.systemComment)}}  <br/>
+                                                            </div>
+                                                        </td>  
+                                            </tr>
+                                              <tr *ngIf="(isInit || th?.isDetailOpen ) " >
+                                                <td colspan="4" class="pl-5 pr-5"> 
+                                                  <div *ngIf="(isInit || th?.isDetailOpen )&& getHistoryAction(th) === historyAction.CLOTURE.value">
+                                                    <strong>REPONSES AUX QUESTIONS DE CLÔTURE: </strong>
+                                                  <div class="tanswers">
+                                                        <ul *ngFor="let item of taskAnswers" >
+                                                                <li class="li"> {{ item.type == 'string'  ? item.label + ' : ' : ''}}  {{item.value}} </li>
+                                                        </ul>
+                                                   </div>
+                                                   </div>  
+                                                 </td>   
+                                              </tr>
+                                        </tbody>                
+                                    </table>  
+                                </td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="loading" class="wrapper">
+    <div class="spinner">
+    </div>
+</div>
+

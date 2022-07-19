@@ -1,0 +1,370 @@
+<div class="fiche360">
+    <div class="field-label, Modification-de-prof"> {{ 'Page.CustomerCardChangeComponent.modifierProfileDe' | translate }} </div>
+
+    <!-- form entreprise -->
+    <div class="base-entreprise" *ngIf="isEntreprise">
+        <div class="Rectangle-entreprise">
+            <div class="row">
+                    <img src="assets/images/type-entreprise.png" class="ENTREPRISE">
+                    <div class="Entreprise-name---16-0"> {{name}} </div>
+                    <div class="N-Contrat-16-08--entreprise1"> - {{nichIdentifierF}} </div>
+            </div>
+        </div>
+
+        <div class="field-label, Administratif">
+            {{ 'Page.CustomerCardChangeComponent.administratif' | translate }}
+        </div>
+        <mat-divider class="Line-2-Copy-2"></mat-divider>
+        <div class="field-label, Champ-obligatoire">
+            {{ 'Page.CustomerCardChangeComponent.champObligatoire' | translate }}
+        </div>
+        <div class="fiche360">
+            <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+                <div *ngIf="f.submitted && showSirenError " class="Le-champ-SIREN-est-o-hau">
+                    {{ 'Page.CustomerCardChangeComponent.champSirenObligatoir' | translate }}
+                </div>
+                <div *ngIf="f.submitted && showNicError " class="Le-champ-SIREN-est-o-hau">
+                    {{ 'Page.CustomerCardChangeComponent.siretmaldefini' | translate }}
+                </div>
+                <div *ngIf="f.submitted && showNicSirenError " class="Le-champ-SIREN-est-o-hau">
+                    {{ 'Page.CustomerCardChangeComponent.showNicSirenError' | translate }}
+                </div>
+
+                <div *ngIf="f.submitted && showCompagnyNameError " class="Ce-champ-est-obligat">
+                    {{ 'Page.CustomerCardChangeComponent.champRaisonSocialObligatoir' | translate }}
+                </div>
+
+                <div *ngIf="f.submitted && showBonSavoirError" class="Ce-champ-dpasse-le">
+                    {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                </div>
+
+                <label class="SIRET">{{ 'Page.CustomerCardChangeComponent.siret' | translate }}</label>
+
+                <div class="form-group, row">
+                    <div class="form-group">
+                        <label class="SIREN-">{{ 'Page.CustomerCardChangeComponent.siren' | translate }} *</label>
+                        <div class="Rectangle-siret">
+                            <input class="siret-" type="number" name="siren" [(ngModel)]="model.siren" maxlength="9"
+                                minlength="9" required pattern="^[0-9]$" (input)="onInputEntry($event)" autofocus />
+
+                        </div>
+                    </div>
+                    <div class="form-group, nic-width">
+                        <label class="NIC">{{ 'Page.CustomerCardChangeComponent.nic' | translate }}</label>
+                        <input class="nic-" type="text" name="nic" [(ngModel)]="model.nic" #nic />
+                    </div>
+                    <div *ngIf="f.submitted && showSirenError " class="Le-champ-SIREN-est-o">
+                        {{ 'Page.CustomerCardChangeComponent.cechampObligatoire' | translate }}
+                    </div>
+                    <div *ngIf="f.submitted && showNicError " class="Le-champ-SIREN-est-o">
+                        {{ 'Page.CustomerCardChangeComponent.siretmaldefini' | translate }}
+                    </div>
+                    <div *ngIf="f.submitted && showNicSirenError " class="Le-champ-SIREN-est-o">
+                        {{ 'Page.CustomerCardChangeComponent.showNicSirenError' | translate }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Raison-Social-">{{ 'Page.CustomerCardChangeComponent.raisonSociale' | translate }} *</label>
+
+                    <input class="raisonSocial-" type="text" name="companyName" [(ngModel)]="model.companyName"
+                        #companyName="ngModel" required />
+                    <div *ngIf="f.submitted && showCompagnyNameError " class="Ce-champ-est-obligat">
+                        {{ 'Page.CustomerCardChangeComponent.cechampObligatoire' | translate }}
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="Langue-prfre">{{ 'Page.CustomerCardChangeComponent.languepreferee' | translate }}</label>
+                    <br />
+                    <mat-radio-group name="language" [(ngModel)]="model.language" #civility="ngModel">
+                        <mat-radio-button class="radio-button-label, Oval" value="en" id="e2e_langue_anglais">
+                            <div class="field-label, Anglais">{{ 'Page.CustomerCardChangeComponent.en' | translate }}
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button class="radio-button-label, Oval" value="fr" id="e2e_langue_francais">
+                            <div class="field-label, Franais">{{ 'Page.CustomerCardChangeComponent.fr' | translate }}
+                            </div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+
+                </div>
+                <div class="form-group">
+                    <label class="Bon-savoir">{{ 'Page.CustomerCardChangeComponent.bonsavoir' | translate }}</label>
+                    <label class="Limite-atteinte-dans">{{ 'Page.CustomerCardChangeComponent.maxCaractereBonSavoir' |
+                        translate
+                        }}</label>
+
+                    <textarea class="caractres-max" id="goodToKnow_entrepriseId" name="goodToKnow" type="text" [(ngModel)]="model.goodToKnow"
+                        #goodToKnow="ngModel"></textarea>
+                    <div *ngIf="showBonSavoirError" class="Ce-champ-dpasse-le">
+                        {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                    </div>
+
+                </div>
+                <div class="form-group ">
+                      
+                        <button mat-button class="rouge btn" (click)="toCustomer()" type="button">
+                             {{ 'Page.CustomerCardChangeComponent.annuler' | translate }} 
+                        </button>
+                        <button mat-button class="vert btn">
+                             {{ 'Page.CustomerCardChangeComponent.enregistrer' | translate }}
+                        </button>
+                    </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- form particulier -->
+
+    <div class="base-particulier-beneficiaire" *ngIf="isParticulier">
+        <div class="Rectangle">
+            <div class="row">
+                <img src="assets/images/particulier.png" class="Particulier">
+                <label class="Name-Particulier"> {{title}} </label>
+                <label class="Name-Particulier"> {{firstNameParBenef | firstName}} </label>
+                <label class="Name-Particulier"> {{lastNameParBenef | uppercase}} </label>
+                <label class="N-Contrat-16-08-1"> - {{nichIdentifierF}} </label>
+            </div>
+        </div>
+        <div class="field-label, Administratif">
+            {{ 'Page.CustomerCardChangeComponent.administratif' | translate }}
+        </div>
+        <mat-divider class="Line-2-Copy-2"></mat-divider>
+        <div class="field-label, Champ-obligatoire">
+            {{ 'Page.CustomerCardChangeComponent.champObligatoire' | translate }}
+        </div>
+        <div class="fiche360">
+            <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+                <div class="form-group">
+                    <div *ngIf="showPrenomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-prenom1">
+                        {{ 'Page.CustomerCardChangeComponent.caractereSpeciauxPrenom' | translate }}
+                    </div>
+                    <div *ngIf="showNomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-nom1">
+                        {{ 'Page.CustomerCardChangeComponent.nomRequis' | translate }}
+                    </div>
+                    <div *ngIf="showDateerror" class="La-date-de-naissance">
+                        {{ 'Page.CustomerCardChangeComponent.datePosterieurDateActuelle' | translate }}
+                    </div>
+                    <div *ngIf="showBonSavoirError" class="Ce-champ-dpasse-le">
+                        {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Civilit">{{ 'Page.CustomerCardChangeComponent.civilite' | translate }}</label>
+                    <br />
+
+                    <mat-radio-group name="civility" [(ngModel)]="model.civility" #civility="ngModel" class="Oval-Copy">
+                        <mat-radio-button value="Mme" id="e2e_femme">
+                            <div class="field-label, Madame">{{ 'Page.CustomerCardChangeComponent.madame' | translate
+                                }} </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button value="M." id="e2e_homme">
+                            <div class="field-label, Monsieur">{{ 'Page.CustomerCardChangeComponent.monsieur' |
+                                translate }}</div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="form-group">
+
+                    <label class="Prnom">{{ 'Page.CustomerCardChangeComponent.prenom' | translate }} </label>
+                    <br />
+                    <input type="text" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" class="Rectangle-Copy-4, prenom-style" />
+                    <div *ngIf="showPrenomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-prenom2">
+                        {{ 'Page.CustomerCardChangeComponent.caractereSpeciaux' | translate }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="Nom-">{{ 'Page.CustomerCardChangeComponent.nom' | translate }}</label>
+                    <input type="text" class="Rectangle-Copy-2, nom-style" name="lastName" [(ngModel)]="model.lastName"
+                        #lastName="ngModel" required />
+                    <div *ngIf="showNomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-nom2">
+                        <div *ngIf="lastName.invalid"> {{ 'Page.CustomerCardChangeComponent.cechampObligatoire' |
+                            translate }}</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Date-de-naissance">{{ 'Page.CustomerCardChangeComponent.ne' | translate }}</label>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="dp" placeholder="DD/MM/YYYY" name="birthdate" #birthdate="ngModel"
+                            [(ngModel)]="model.birthdate.value" class="Rectangle-Copy-5, Date-de-naissance-rectangle">
+                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="showDateerror" class="La-date-de-naissance">
+                        {{ 'Page.CustomerCardChangeComponent.datePosterieurDateActuelle' | translate }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Langue-prfre">{{ 'Page.CustomerCardChangeComponent.languepreferee' | translate }}</label>
+                    <br />
+                    <mat-radio-group name="language" [(ngModel)]="model.language" #civility="ngModel">
+                        <mat-radio-button class="radio-button-label, Oval" value="en" id="e2e_langue_anglais">
+                            <div class="field-label, Anglais">{{ 'Page.CustomerCardChangeComponent.en' | translate }}
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button class="radio-button-label, Oval" value="fr" id="e2e_langue_francais">
+                            <div class="field-label, Franais">{{ 'Page.CustomerCardChangeComponent.fr' | translate }}
+                            </div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+
+                </div>
+                <div class="form-group">
+                    <label class="Bon-savoir">{{ 'Page.CustomerCardChangeComponent.bonsavoir' | translate }}</label>
+                    <label class="Limite-atteinte-dans">{{ 'Page.CustomerCardChangeComponent.maxCaractereBonSavoir' |
+                        translate }}</label>
+
+                    <textarea class="caractres-max" id="goodToKnow_particulierId" name="goodToKnow" type="text" [(ngModel)]="model.goodToKnow"
+                        #goodToKnow="ngModel"></textarea>
+                    <div *ngIf="showBonSavoirError" class="Ce-champ-dpasse-le">
+                        {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                    </div>
+
+                </div>
+                <div class="form-group ">
+                      
+                        <button mat-button class="rouge btn" (click)="toCustomer()" type="button"> 
+                             {{ 'Page.CustomerCardChangeComponent.annuler' | translate }} 
+                        </button>
+                        <button mat-button class="vert btn">
+                             {{ 'Page.CustomerCardChangeComponent.enregistrer' | translate }}
+                        </button>
+                    </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- form beneficiaire -->
+    <div class="base-particulier-beneficiaire" *ngIf="isBeneficiaire">
+        <div class="Rectangle-beneficiaire">
+            <div class="row">
+                <img src="assets/images/type-beneficiaire@3x.png" class="Particulier">
+                <label class="Name-Particulier"> {{title}} </label>
+                <label class="Name-Particulier"> {{firstNameParBenef | firstName}} </label>
+                <label class="Name-Particulier">  {{lastNameParBenef | uppercase}} </label>
+                <label class="N-Contrat-16-08-1-benef"> - {{nichIdentifierF}} </label>
+            </div>
+        </div>
+        <div class="field-label, Administratif">
+            {{ 'Page.CustomerCardChangeComponent.administratif' | translate }}
+        </div>
+        <mat-divider class="Line-2-Copy-2"></mat-divider>
+        <div class="field-label, Champ-obligatoire">
+            {{ 'Page.CustomerCardChangeComponent.champObligatoire' | translate }}
+        </div>
+        <div class="fiche360">
+            <form name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+                <div class="form-group">
+                    <div *ngIf="showPrenomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-prenom1">
+                        {{ 'Page.CustomerCardChangeComponent.caractereSpeciauxPrenom' | translate }}
+                    </div>
+                    <div *ngIf="showNomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-nom1">
+                        {{ 'Page.CustomerCardChangeComponent.nomRequis' | translate }}
+                    </div>
+                    <div *ngIf="showDateerror" class="La-date-de-naissance">
+                        {{ 'Page.CustomerCardChangeComponent.datePosterieurDateActuelle' | translate }}
+                    </div>
+                    <div *ngIf="showBonSavoirError" class="Ce-champ-dpasse-le">
+                        {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Civilit">{{ 'Page.CustomerCardChangeComponent.civilite' | translate }}</label>
+                    <br />
+
+                    <mat-radio-group name="civility" [(ngModel)]="model.civility" #civility="ngModel" class="Oval-Copy">
+                        <mat-radio-button value="Mme" id="e2e_femme">
+                            <div class="field-label, Madame">{{ 'Page.CustomerCardChangeComponent.madame' | translate
+                                }}
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button value="M." id="e2e_homme">
+                            <div class="field-label, Monsieur">{{ 'Page.CustomerCardChangeComponent.monsieur' |
+                                translate
+                                }}</div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="form-group">
+
+                    <label class="Prnom">{{ 'Page.CustomerCardChangeComponent.prenom' | translate }} </label>
+                    <br />
+                    <input type="text" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" class="Rectangle-Copy-4, prenom-style" />
+                    <div *ngIf="showPrenomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-prenom2" >
+                        {{ 'Page.CustomerCardChangeComponent.caractereSpeciaux' | translate }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="Nom-">{{ 'Page.CustomerCardChangeComponent.nom' | translate }}</label>
+                    <input type="text" class="Rectangle-Copy-2, nom-style" name="lastName" [(ngModel)]="model.lastName"
+                        #lastName="ngModel" required />
+                    <div *ngIf="showNomError " class="Ce-champ-ne-doit-pas" id="e2e_msg-error-nom2">
+                        <div *ngIf="lastName.invalid"> {{ 'Page.CustomerCardChangeComponent.cechampObligatoire' |
+                            translate
+                            }}</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="Date-de-naissance">{{ 'Page.CustomerCardChangeComponent.ne' | translate }}</label>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="dp" placeholder="DD/MM/YYYY" name="birthdate" #birthdate="ngModel"
+                            [(ngModel)]="model.birthdate.value" class="Rectangle-Copy-5, Date-de-naissance-rectangle">
+                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="showDateerror" class="La-date-de-naissance">
+                        {{ 'Page.CustomerCardChangeComponent.datePosterieurDateActuelle' | translate }}
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="Langue-prfre">{{ 'Page.CustomerCardChangeComponent.languepreferee' | translate }}</label>
+                    <br />
+                    <mat-radio-group name="language" [(ngModel)]="model.language" #civility="ngModel">
+                        <mat-radio-button class="radio-button-label, Oval" value="en" id="e2e_langue_anglais">
+                            <div class="field-label, Anglais">{{ 'Page.CustomerCardChangeComponent.en' | translate }}
+                            </div>
+                        </mat-radio-button>
+                        <br />
+                        <mat-radio-button class="radio-button-label, Oval" value="fr" id="e2e_langue_francais">
+                            <div class="field-label, Franais">{{ 'Page.CustomerCardChangeComponent.fr' | translate }}
+                            </div>
+                        </mat-radio-button>
+                    </mat-radio-group>
+
+                </div>
+                <div class="form-group">
+                    <label class="Bon-savoir">{{ 'Page.CustomerCardChangeComponent.bonsavoir' | translate }}</label>
+                    <label class="Limite-atteinte-dans">{{ 'Page.CustomerCardChangeComponent.maxCaractereBonSavoir' |
+                        translate }}</label>
+
+                    <textarea class="caractres-max" id="goodToKnow_beneficiaireId" name="goodToKnow" type="text" [(ngModel)]="model.goodToKnow"
+                        #goodToKnow="ngModel"></textarea>
+                    <div *ngIf="showBonSavoirError" class="Ce-champ-dpasse-le">
+                        {{ 'Page.CustomerCardChangeComponent.bonSavoirDepasseNombreCararctere' | translate }}
+                    </div>
+
+                </div>
+               
+                <div class="form-group ">
+                      
+                    <button mat-button class="rouge btn" (click)="toCustomer()" type="button">
+                         {{ 'Page.CustomerCardChangeComponent.annuler' | translate }} 
+                    </button>
+                    <button mat-button class="vert btn">
+                         {{ 'Page.CustomerCardChangeComponent.enregistrer' | translate }}
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+</div>

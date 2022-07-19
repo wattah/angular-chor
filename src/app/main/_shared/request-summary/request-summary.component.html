@@ -1,0 +1,64 @@
+<div class="block block-shadow">
+    <blockquote>
+        <h4 class="subtitle athena">Résumé de la demande {{  detailRequest?.idRequest }} </h4>
+        <ul class="ath-summary">
+            <li>
+            <strong><span class=" athena">Statut : </span></strong>{{ detailRequest?.statuts | statusRequestFr }}
+            </li>
+            <li>
+            <strong><span class=" athena">Créé le : </span></strong>{{ (!detailRequest?.createdAt) ? '-' :  detailRequest?.createdAt | dateFormatPipeFrench}}  à
+                    {{ (!detailRequest?.createdAt) ? '-' : detailRequest?.createdAt | date:"HH'h'mm" }} 
+            </li>   
+            <li>
+            <strong><span class="athena">Modifiée le : </span></strong>{{ (!detailRequest?.modifier) ? '-' : detailRequest?.modifier | dateFormatPipeFrench }}  à
+                    {{ (!detailRequest?.modifier) ? '-' : detailRequest?.modifier | date:"HH'h'mm" }}
+            </li>
+            <li>
+                <strong> <span class="athena">Interlocuteur : </span></strong>
+                {{ (!detailRequest?.firstNameInterlocuteur) ? '-' : detailRequest?.firstNameInterlocuteur | firstName}}  
+                    {{ (!detailRequest?.lastNameInterlocuteur) ? '' : detailRequest?.lastNameInterlocuteur |  uppercase }}
+            </li>
+            <li>
+                <strong> <span class="athena">Destinataire : </span> </strong>{{ (!detailRequest?.firstNameDestinataire) ? '-' : detailRequest?.firstNameDestinataire | firstName}}  
+                    {{ (!detailRequest?.lastNameDestinataire) ? '' : detailRequest?.lastNameDestinataire |  uppercase }}
+            </li>
+            <li>
+                <strong><span class="athena">Porteur : </span></strong>{{ (!detailRequest?.lastNamePorteur) ? '' : detailRequest?.lastNamePorteur |  uppercase }}
+                    {{ (!detailRequest?.firstNamePorteur) ? '-' : detailRequest?.firstNamePorteur | firstName}}
+            </li>
+            <li>
+                <strong><span class="athena">Responsable Commercial : </span></strong>{{ (!detailRequest?.lastNameRespCommerciale) ? '' : detailRequest?.lastNameRespCommerciale |  uppercase }}
+                    {{ (!detailRequest?.firstNameRespCommerciale) ? '-' : detailRequest?.firstNameRespCommerciale | firstName}}
+            </li>
+            <li>
+                <strong><span class="athena">Responsable d'Affaires : </span></strong>{{ (!detailRequest?.lastNameRespAffaire) ? '' : detailRequest?.lastNameRespAffaire |  uppercase }}
+                    {{ (!detailRequest?.firstNameRespAffaire) ? '-' : detailRequest?.firstNameRespAffaire | firstName}}
+            </li>
+            <li>
+                <strong> <span class="athena">Traitement : </span></strong><span style="white-space: normal" *ngFor="let answer of requestAnswers; let i=index">
+                   {{ formatAnwser(answer) }}<br /></span> <span *ngIf="!requestAnswers || requestAnswers.length===0" > - <br/></span>            
+            </li>
+            <li>
+                <strong> <span class="athena"> Description : </span> </strong>{{ (!detailRequest?.description) ? '-' : detailRequest?.description}}
+            <ng-template [ngIf]="detailRequest?.statuts !== 'PENDING'">
+                <li>
+                    <span class="grey athena " > Résolution :</span>    
+                    <strong> {{ detailRequest?.conclusionType | isNull | resolutionRequest}}</strong>
+                </li>
+                <li>
+                    <span class="grey athena " > Date de fin réelle :</span>    
+                    <strong> {{ detailRequest?.realEndDate | isNull | dateFormatPipeFrench}} {{ (detailRequest?.realEndDate) ? 'à' : ''}} {{ detailRequest?.realEndDate | date:"HH'h'mm" }} </strong>    
+                </li>
+                <li>
+                    <span class="grey athena " > Commentaire :</span>    
+                    <strong> {{ detailRequest?.closureComment |isNull}}</strong>
+                </li>
+            </ng-template>
+        </ul>
+        <a class="athena mt-2"   [routerLink]="null" queryParamsHandling="merge"  (click)="navigateRequest()">
+            <span class="text-min normal no-transform athena">
+                <span class="icon icon-min arrow-left-blue athena"></span> Demande
+            </span>
+        </a>
+    </blockquote>
+</div>    

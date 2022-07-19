@@ -1,0 +1,149 @@
+
+<div class="col-md-24 col-lg-24" >
+    <div class="block block-shadow">
+        <h2 class="athena" > créer un avoir / facture complémentaire
+			<span class="grey font-weight-bold normal no-transform" > - N° Facture {{this.referenceBillNumber}} - N° CF {{this.billAccountIdentifier}}</span>
+		</h2>
+        <div class="row" *ngIf="!isNewCreditValid || !isDetailsLinesValid">
+            <div class="col-md-9 col-lg-9">
+                <div class="block block-alert">
+                    <table class="table table-not-bordered"  aria-describedby="tableError">
+                        <tbody>
+                            <tr hidden>
+                                <th id=""></th>
+                                <th id=""></th>
+                            </tr>
+                            <tr>
+                                <td class="alert-icon align-middle" >
+                                    <span class="icon icon-max status-exclamation-white"></span>
+                                </td>
+                                <td class="alert-text">
+                                    <div *ngIf="typePieceInvalid" class="simple mr-0 mt-1 alert-padding">
+                                        - Veuillez renseigner le type de pièce
+                                    </div>
+                                    <div *ngIf="numPieceInvalid" class="simple mr-0 mt-1 alert-padding">
+                                        - Veuillez renseigner le numéro de pièce
+                                    </div>
+                                    <div *ngIf="transmitDateInvalid" class="simple mr-0 mt-1 alert-padding">
+                                        - Veuillez renseigner la date d'émission
+                                    </div>
+                                    <div *ngFor="let invalidInput of IndexesOfLineDetailsInvalid" class="simple mr-0 mt-1 alert-padding">
+                                        - Veuillez renseigner {{invalidInput.name}} pour l'avoir / facture N° {{invalidInput.index}}
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form class="pt-3" [formGroup]="addCreditForm">
+            <article class="mb-3">
+                <div class="form-group row">
+                    <label for="typeSelect" class="col-sm-3 col-form-label athena">Type de pièce*</label>
+                    <div class="col-sm-6">
+                        <select [ngClass]="[typePieceInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                        formControlName="typePiece" [(ngModel)]="billCreditComplementary.type">
+                            <option [ngValue]="null" disabled> -- </option>
+                            <option >Avoir</option>
+                            <option >Complémentaire</option>
+                        </select>
+                        <mat-error *ngIf="typePieceInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon mt-1 status-exclamation" *ngIf="typePieceInvalid"></span>
+                </div>
+
+                <div  *ngIf="checkPaymentMethod()"  class="form-group row block_onglet ">
+                    <label class="col-sm-3 col-form-label athena">A déduire du prélèvement</label>
+                    <div class="col-sm-6">
+                        <section class="example-section mt-2" >
+                            <mat-checkbox class="normal" [disableRipple]="true" formControlName="deductedFromLevy" [(ngModel)]="billCreditComplementary.deductionCredit" ></mat-checkbox>
+                        </section>
+                    </div>
+                   
+                </div>
+
+				<div class="form-group row">
+                    <label class="col-sm-3 col-form-label athena">N° de pièce*</label>
+                    <div class="col-sm-6">
+                        <input [ngClass]="[numPieceInvalid ? 'athena form-control error  ng-pristine ng-valid ng-touched' : 'athena form-control ng-pristine ng-valid ng-touched']"
+                         type="text" formControlName="numPiece"  [(ngModel)]="billCreditComplementary.billNumber">
+                         <mat-error *ngIf="numPieceInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon mt-1 status-exclamation" *ngIf="numPieceInvalid"></span>
+                </div>
+                <div>
+				<div class="form-group row mb-0">
+                    <label for="start mt-1" class="col-sm-3 col-form-label athena">Date d'émission*</label>
+					<div class="col-sm-8 col-lg-8 d-flex noborder " >
+                        <mat-form-field class="col-sm-6 ml-n1" appearance="outline" [ngClass]="[transmitDateInvalid ? 'error ng-valid ng-touched' : '']">
+                            <input matInput [matDatepicker]="pickerDate" placeholder="" readonly formControlName="transmitDate"  [(ngModel)]="billCreditComplementary.transmitDate"
+                            [ngClass]="[transmitDateInvalid ? 'athena ng-pristine ' : '']"/>
+                             <!--  -->
+                            <mat-datepicker #pickerDate></mat-datepicker>
+                        </mat-form-field>
+                        
+                        <span class="icon mt-1 status-exclamation" *ngIf="transmitDateInvalid"></span>
+                        
+                        <div class="col-2 col-sm-2 mt-2">
+                            <span class="icon icon-marged calendar-grey clickable" (click)="pickerDate.open()"></span>
+                        </div> 
+                        
+                    </div>
+                   
+                   
+				</div>
+                <div class="row"> 
+                    <div  class="col-sm-3"></div>
+                    <div class="col-sm-8 col-lg-8" >  <mat-error *ngIf="transmitDateInvalid">Ce champ est obligatoire</mat-error></div>
+                </div>
+              
+            </div>
+
+            </article>
+            <ng-container>
+                <app-other-credit
+                    *ngFor="let lineDetails of linesDetails; let i=index" 
+                    [formNumber]="i+1"
+                    [lineDetails] = "lineDetails"
+                    [linesDetailsLength] = "linesDetails.length"
+                    (onRemoveLineDetailsItem)="onRemoveLineDetailsItemEvent($event)"
+                    (onAmountHTChange)="onAmountHTChangeEvent()"
+                    [isDetailsLinesValid] = "isDetailsLinesValid"
+                    [IndexesOfLineDetailsInvalid] = "IndexesOfLineDetailsInvalid">
+                </app-other-credit>
+            </ng-container>
+            <div class="form-group row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6 ml-2"></div>
+                <div>
+                    <label class="font-weight-bold m1-n3"><b>Total (TTC)</b></label>
+                </div>
+                <div  class="col-sm-6 pl-4 totalAmounts">
+                    <div>{{totalAmounts  | number : '1.2-2'}} €</div>
+                </div> 
+            </div>
+            
+            
+			<article class="mb-5">
+				 <div class="form-group mb-2 row" >
+						<div class="col-sm-10 mb-2">
+							<span class="athena font-weight-bold link" (click)="addLineDetail($event)">
+								<span class="icon add-on mr-2 athena"> </span>Ajouter un autre avoir / facture complémentaire
+							</span>
+						</div>
+				</div>
+            </article>
+            <!-- buttons-->
+            <div class="row control-buttons pl-5">
+                <div class="col-sm-2 text-right">
+                    <a class="btn btn-link mt-1 athena" [routerLink]="null" queryParamsHandling="merge" (click)="annuler()" >Annuler</a>
+                </div>
+                <div class="col-sm-6">
+                    <input type="button"  class="btn btn-green athena"  value="Enregistrer" (click)="enregistrer()"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

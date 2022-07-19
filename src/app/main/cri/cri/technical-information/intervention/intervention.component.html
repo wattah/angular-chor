@@ -1,0 +1,243 @@
+<div class="ml-3" [formGroupName]="formGroupNameLabel">
+    <div class="form-group row mb-3 noborder">
+        <label for="start mt-1" class="col-sm-4 pr-0 col-form-label athena">Début de l'intervention<span class="red">*</span> </label>
+
+        <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+            <mat-form-field [ngClass]="[(isFirstDayInput ? dateDebutInterInvalid : dateDebut2InterInvalid) ?
+             'bg-none col-lg-6 col-22 col-sm-23 error' : 'bg-none col-lg-6 col-22 col-sm-23']" appearance="outline">
+                <input matInput [matDatepicker]="pickerRes11" placeholder="" readonly
+                 [(ngModel)]="startTime" [formControlName]="startTimeControl"
+                 [min]="rangeMinStartDate"
+                 [max]="rangeMaxStartDate"
+                 (dateChange)="onSelectStartDate($event)" />
+                <mat-datepicker #pickerRes11></mat-datepicker>
+            </mat-form-field>
+            <div class="col-2 col-sm-2 margin-top p-0">
+                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes11.open()"></span>
+            </div>
+            <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+            <div [ngClass]="[(isFirstDayInput ? dateDebutInterInvalid : dateDebut2InterInvalid) ? 
+            'col-sm-12 col-lg-6 paddtimer error' 
+            : 'col-sm-12 col-lg-6 paddtimer']" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer [defaultHour] = "hourStartDate"
+                     [defaultMinute] = "minuteStartDate"
+                     (selectTime)="onChangeTimeStart($event)" 
+                    [minHour]= "minHStart" 
+                    (minHourChange)="this.minHStart = $event"
+                     [minMinute] = "minMStart" 
+                     (minMinuteChange)="this.minMStart = $event"></app-athena-timer>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="start mt-1" class="col-sm-4 col-form-label athena">Arrivée chez le client
+        </label>
+
+        <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+            <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                <input matInput [matDatepicker]="pickerRes12" placeholder="" readonly afterBegin
+                [(ngModel)]="atCustomerStartTime" [formControlName]="atCustomerStartControl" 
+                [min]="rangeMinOfAtCustomerStartDate"
+                [max]="rangeMaxOfAtCustomerStartDate"
+                (dateChange)="onSelectAtCustomerStartDate($event)" />
+                <mat-datepicker #pickerRes12></mat-datepicker>
+            </mat-form-field>
+            <div class="col-2 col-sm-2 margin-top p-0">
+                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes12.open()"></span>
+            </div>
+            <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+            <div class="col-sm-12 col-lg-6 paddtimer" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer 
+                    [defaultHour] = "hourAtCustomerStartDate" 
+                    [defaultMinute] = "minuteAtCustomerStartDate"
+                    (selectTime)="onChangeTimeAtCustomerStart($event)"  
+                    [minHour]= "minHAtCustS" 
+                    (minHourChange)="this.minHAtCustS = $event" 
+                    [minMinute] = "minMAtCustS"
+                     (minMinuteChange)="this.minMAtCustS = $event"></app-athena-timer>   
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="start mt-1" class="col-sm-4  pr-0 col-form-label athena">Départ de chez le client
+        </label>
+
+        <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+            <mat-form-field class="bg-none col-lg-6 col-22 col-sm-23" appearance="outline">
+                <input matInput [matDatepicker]="pickerRes13" placeholder="" readonly 
+                (dateChange)="onSelectAtCustomerEndDate($event)"
+                [(ngModel)]="atCustomerEndTime" [formControlName]="atCustomerEndControl" 
+                [min]="rangeMinOfAtCustomerEndDate"
+                [max]="rangeMaxOfAtCustomerEndDate"/>
+                
+                <mat-datepicker #pickerRes13></mat-datepicker>
+            </mat-form-field>
+            <div class="col-2 col-sm-2 margin-top p-0">
+                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes13.open()"></span>
+            </div>
+            <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+            <div class="col-sm-12 col-lg-6 paddtimer" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer 
+                    [defaultHour] = "hourAtCustomerEndDate" 
+                    [defaultMinute] = "minuteAtCustomerEndDate"
+                    (selectTime)="onChangeTimeAtCustomerEnd($event)"  
+                    [minHour]= "minHAtCustEnd" 
+                    (minHourChange)="this.minHAtCustEnd = $event" 
+                    [minMinute] = "minMAtCustEnd"
+                     (minMinuteChange)="this.minMAtCustEnd = $event">
+                    </app-athena-timer>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label for="start mt-1" class="col-sm-4 col-form-label athena">Fin de l’intervention<span class="red">*</span>
+        </label>
+
+        <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+            <mat-form-field [ngClass]="[(isFirstDayInput ? dateFinIntervInvalid : dateFin2IntervInvalid) ?
+            'bg-none col-lg-6 col-22 col-sm-23 error' : 'bg-none col-lg-6 col-22 col-sm-23']" appearance="outline">
+                <input matInput [matDatepicker]="pickerRes14" placeholder="" readonly 
+                [(ngModel)]="endTime" [formControlName]="endTimeControl"
+                (dateChange)="onSelectEndDate($event)"
+                [min]="rangeMinOfEndDate"
+                [max]="rangeMaxOfEndDate"         
+                />
+                <mat-datepicker #pickerRes14></mat-datepicker>
+            </mat-form-field>
+            <div class="col-2 col-sm-2 margin-top p-0">
+                <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes14.open()"></span>
+            </div>
+            <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+            <div [ngClass]="[ (isFirstDayInput ? dateFinIntervInvalid : dateFin2IntervInvalid) ?
+            'col-sm-12 col-lg-6 paddtimer error' 
+            : 'col-sm-12 col-lg-6 paddtimer']" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer 
+                    [defaultHour] = "hourEndDate" 
+                    [defaultMinute] = "minuteEndDate"
+                    (selectTime)="onChangeTimeEnd($event)" 
+                    [minHour]= "minHEnd" 
+                    (minHourChange)="this.minHEnd = $event" 
+                    [minMinute] = "minMEnd"
+                     (minMinuteChange)="this.minMEnd = $event"
+                     ></app-athena-timer>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row mb-0">
+        <label class="col-sm-4 col-form-label athena">Férié</label>
+        <div class="col-sm-9 col-lg-9">
+            <section class="example-section mt-2">
+                <mat-checkbox class="normal" [formControlName]="publicHolidayControl" [class.disabled]="!allowedToModifyTechnicalInformationTab"
+                 (change)="onClickPublicHoliday($event)"></mat-checkbox>
+            </section>
+        </div>
+    </div>
+
+    <div class="form-group row mb-0" >
+        <label class="col-sm-4 col-form-label athena">HNO</label>
+        <div class="col-sm-20 col-lg-9">
+            <section class="example-section mt-2">
+                <mat-checkbox class="normal" (change)="onCheckHNO($event)" [class.disabled]="isHnoDisabled || (!allowedToModifyTechnicalInformationTab)"
+                 [formControlName]="hno" [disabled]="isHnoDisabled"></mat-checkbox>
+            </section>
+        </div>
+    </div>
+
+    <div class="form-group row select_arrows mb-1"  *ngIf="isFirstDayInput ? showTechBloc : showTechBloc2">
+        <label class="col-form-label athena col-sm-4"> Technicien</label>
+
+        <div class="col-sm-4">
+            <div class="form-check">
+                <input class="form-check-input athena" [id]="astreinte" 
+                [formControlName]="isOnCallDuty"  [value]="astreinte"
+                type="radio" />
+                <label class="form-check-label athena" [for]="astreinte"> Astreinte </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input athena" [id]="Autre"  type="radio" 
+                [formControlName]="isOnCallDuty" [value]="Autre"/>
+                <label class="form-check-label athena" [for]="Autre"> Autre</label>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="ml-3" *ngIf="isFirstDayInput" formGroupName="pseForm">
+        <div class="form-group row mb-2">
+            <label class="col-sm-4 col-form-label athena">Appel au PSE</label>
+            <div class="col-sm-9 col-lg-9">
+                <section class="example-section mt-2">
+                    <mat-checkbox class="normal" [disableRipple]="true"  (change)="onClickPse($event)" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab"
+                     [checked]="checkPSE" formControlName="pseckech"> Oui</mat-checkbox> </section>
+            </div>
+        </div>
+
+        <div class="form-group row mb-3"  *ngIf="isPseCheked">
+            <label for="start mt-1" class="col-sm-4 col-form-label athena pr-0">Date de début d'appel<span class="red">*</span> </label>
+
+            <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex" >
+                <mat-form-field [ngClass]="[dateDebutPseInvalid ? 'bg-none col-lg-6 col-22 col-sm-23 error' : 'bg-none col-lg-6 col-22 col-sm-23']" appearance="outline"
+                 >
+                    <input matInput [matDatepicker]="pickerRes5" placeholder="" readonly 
+                    [(ngModel)]="pseStart" formControlName="pseStartControl"
+                    [min]="rangeMinOfpseStart"
+                    [max]="rangeMaxOfpseStart"
+                    (dateChange)="onSelectPseStartDate($event)"         
+                    />
+                    <mat-datepicker #pickerRes5></mat-datepicker>
+                </mat-form-field>
+                <div class="col-2 col-sm-2 margin-top p-0">
+                    <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes5.open()"></span>
+                </div>
+                <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+                <div [ngClass]="[dateDebutPseInvalid ? 'col-sm-12 col-lg-6 paddtimer error' 
+                : 'col-sm-12 col-lg-6 paddtimer']" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer 
+                    [defaultHour] = "hourPseStart" 
+                    [defaultMinute] = "minutePseStart"
+                    (selectTime)="onChangeTimepseStart($event)" 
+                    [minHour]= "minHpseS" 
+                    (minHourChange)="this.minHpseS = $event" 
+                    [minMinute] = "minMpseS"
+                     (minMinuteChange)="this.minMpseS = $event"
+                     ></app-athena-timer>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row mb-3"  *ngIf="isPseCheked">
+            <label for="start mt-1" class="col-sm-4 col-form-label athena">Date de fin d'appel <span class="red">*</span> </label>
+
+            <div class="col-sm-12 col-lg-12 m-0 p-0 d-flex">
+                <mat-form-field [ngClass]="[dateFinPseInvalid ? 'bg-none col-lg-6 col-22 col-sm-23 error' : 'bg-none col-lg-6 col-22 col-sm-23']" appearance="outline">
+                    <input matInput [matDatepicker]="pickerRes6" placeholder="" readonly 
+                    [(ngModel)]="pseEnd" formControlName="pseEndControl"
+                    [min]="rangeMinOfpseEnd"
+                    [max]="rangeMaxOfpseEnd"   
+                    (dateChange)="onSelectPseEndDate($event)" 
+                    />
+                    <mat-datepicker #pickerRes6></mat-datepicker>
+                </mat-form-field>
+                <div class="col-2 col-sm-2 margin-top p-0">
+                    <span class="icon icon-marged calendar-grey clickable mt-n2" (click)="pickerRes6.open()"></span>
+                </div>
+                <label for="start mt-1" class="mt-2 ml-2 mr-1 athena">à</label>
+                <div [ngClass]="[dateFinPseInvalid ? 'col-sm-12 col-lg-6 paddtimer error' 
+                : 'col-sm-12 col-lg-6 paddtimer']" [class.disabled-bg]="!allowedToModifyTechnicalInformationTab">
+                    <app-athena-timer 
+                    [defaultHour] = "hourPseEnd" 
+                    [defaultMinute] = "minutePseEnd"
+                    (selectTime)="onChangeTimepseEnd($event)" 
+                    [minHour]= "minHpseEnd" 
+                    (minHourChange)="this.minHpseEnd = $event" 
+                    [minMinute] = "minMpseEnd"
+                     (minMinuteChange)="this.minMpseEnd = $event"
+                     ></app-athena-timer>
+                </div>
+            </div>
+        </div>
+    </div>
+

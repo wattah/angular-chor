@@ -1,0 +1,10 @@
+ <h2 class="not-bordered athena  my-0 mt-2"> 
+  Terminaux utilisés : informations du SI opérateur mobile
+ </h2>
+ <app-athena-paginated-ag-grid
+ [columnDefs]="columnDefs"
+ [rowData]="listCustomerParkItemTerminalMobileBySerial"
+ (clickedCell)="clickCell($event)"
+ [paginationPageSize]="paginationPageSize"
+ [defaultSortModel]="defaultSortModel">
+ </app-athena-paginated-ag-grid>

@@ -1,0 +1,101 @@
+<div class="block-bill" *ngxPermissionsOnly="['new_peniche_recherche_CF']">
+	<button mat-button [disableRipple]="true">{{ listNavSelected }}</button>
+	<button mat-icon-button   [disableRipple]="true" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+		<span class="icon icon-min arrow-bottom-black"></span>
+  	</button>
+</div>
+<mat-menu #menu xPosition="before">
+	<div *ngxPermissionsOnly="['new_peniche_recherche_CF']">
+		<button mat-menu-item (click)="searchListNav('Recherche Générale')" *ngIf="!(listNavSelected=='Recherche Générale')">Recherche Générale</button>
+		<button mat-menu-item (click)="searchListNav('N° Compte de facturation')" *ngIf="!(listNavSelected=='N° Compte de facturation')">N° Compte de facturation</button>
+		<button mat-menu-item (click)="searchListNav('Adresse email')" *ngIf="!(listNavSelected=='Adresse email')">Adresse email</button>
+		<button mat-menu-item (click)="searchListNav('IMEI / N° de série')" *ngIf="!(listNavSelected=='IMEI / N° de série')">IMEI / N° de série</button>
+
+	</div>
+</mat-menu>  
+
+<div class="navbar-search-container">
+	<form class="form-inline">
+		<ng-template #rt let-r="result" let-t="term" >
+			<div class="container">
+				<ng-container *ngIf="r?.typeItem !== 'SHOW_ALL' && listNavSelected !== 'IMEI / N° de série'">
+					<div class="row" style="cursor: pointer" (click)="toItemDetails(r?.typeItem)">
+						<div class="col col-lg-2">
+							<img class="ml-4" [src]="'assets/images/' + r?.pictoFileName" alt="file"/>
+						</div>
+						<div class="col col-lg-20">
+							<div class="row ml-5 pl-4-2 item-font-size">
+								<span class="like-a-href" [innerHTML]="r?.displayName"></span>
+								<span class="mt-0 ml-2" *ngIf="r?.typeItem === 'beneficiary'"> - </span>
+								<span class="mt-0 ml-2" *ngIf="r?.typeItem === 'beneficiary'">{{ r?.companyCrmName }}</span>								
+								<span class="mt-0 ml-2 nicheIdentifierAndStatus" *ngIf="r?.nicheIdentifier" > - </span>
+								<span class="mt-0 ml-2 nicheIdentifierAndStatus" *ngIf="r?.nicheIdentifier" [innerHTML]="r?.nicheIdentifier"></span>
+								<span class="mt-0 ml-2" *ngIf="r?.details && r?.typeItem === 'company'"> - </span>
+								<span class="mt-0 ml-2" *ngIf="r?.details && r?.typeItem === 'company'">{{ r?.details }}</span>
+								<span class="mt-0 ml-2 nicheIdentifierAndStatus" *ngIf="r?.status" > - </span>
+								<span class="mt-0 ml-2 nicheIdentifierAndStatus" *ngIf="r?.status" [innerHTML]="r?.status"></span>
+							</div>
+						</div>
+						<div class="col col-lg-2"></div>
+					</div>
+				</ng-container>
+
+				<ng-container  *ngIf="r?.typeItem !== 'SHOW_ALL' && listNavSelected=='IMEI / N° de série'">
+					<div class="row clickable rowsuggestionproduct">
+						<div class="col col-lg-2 p-0 mr-2">
+							<img class="ml-4" src="assets/svg/produit.svg" alt="file"/>
+						</div>
+						<div class="col col-lg-20">
+							<div class="row ml-5 pl-3 item-font-size labelandserial">
+								<span class="like-a-href" *ngIf="r?.label">{{r?.label}}</span>
+								<span class="mt-0 ml-2 nicheIdentifierAndStatus " *ngIf="r?.serialNumIMEI"  >- IMEI / N° série : {{r?.serialNumIMEI}}</span>
+							</div>
+						</div>
+						<div class="col col-lg-2"></div>
+					</div>
+				</ng-container>
+					
+				<ng-container *ngIf="r?.typeItem === 'SHOW_ALL'">
+					<div class="row">
+						<div class="col text-right">
+							<div>
+								<span class="like-a-href item-font-size">VOIR TOUS LES RÉSULTATS</span>
+								&nbsp;<img src="assets/images/after-blue.svg"  alt="file"/>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+			<div *ngIf="r?.typeItem !== 'SHOW_ALL'" class="line pt-2"></div>
+		</ng-template>
+		<input
+			id="typeahead-search"
+			#input
+			size="35"
+			name="model"
+			type="text"
+			class="navbar-search-input dropdown-menu-ana athena"
+			type="search"
+			placeholder="Rechercher"
+			aria-label="Rechercher"
+			[(ngModel)]="model"
+			[ngbTypeahead]="search"
+			[resultTemplate]="rt"
+			[inputFormatter]="formatter"
+			[focusFirst]="false"
+		/>
+
+		<button class="btn btn-blue navbar-btn-search" type="submit" (click)="launchSearch()" >
+			<span [ngClass]="{'spinner-border spinner-border-sm': searching , 'icon see-more-white': !searching}" >
+			</span>
+		</button>
+	</form>
+</div>
+<ng-template #content let-modal>
+	<div class="modal-header border-0 pb-0">
+		<div class="modal-body text-center  my-3">
+			<p>Erreur de connexion à la base Péniche</p>
+		  </div>
+		<span class="icon close p-0 m-0" (click)="modal.close()"></span>
+	</div>	
+</ng-template>

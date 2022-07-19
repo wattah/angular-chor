@@ -1,0 +1,35 @@
+@import '~src/styles/charte';
+
+.menu {
+    border: 1px solid $light-grey !important;
+    box-shadow: none !important;
+    width: 100%;
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    background-color: white;
+    text-align: left !important;
+    vertical-align: middle;
+}
+
+.error {
+    border: 1px solid $red !important;
+}
+
+.mat-menu-panel {
+    min-width: 112px;
+    width: -moz-fit-content;
+    max-width: 1040px  !important;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 48px);
+    border-radius: 4px;
+    outline: 0;
+    min-height: 64px;
+}
+
+.open{
+    margin: 8px -6px 0 0;
+    width: 4px;
+    float: right;
+}

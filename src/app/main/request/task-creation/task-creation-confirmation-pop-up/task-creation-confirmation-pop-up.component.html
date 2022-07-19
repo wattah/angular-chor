@@ -1,0 +1,11 @@
+<div class="modal-body text-center" id="pop-up-confirmation">
+    <p>
+        Etes-vous sur de vouloir annuler?
+        <br/>
+        Votre tache ne sera pas enregistré
+    </p>
+    
+    <input class="btn btn-green" value="J'annule ma crétion de tache" type="button" (click)="cancelCreationTask()" />
+
+    <a class="btn btn-link" [routerLink]="null" queryParamsHandling="merge" (click)="closeConfirmationPopUp()" >Je continue ma création de tache</a>       
+</div>

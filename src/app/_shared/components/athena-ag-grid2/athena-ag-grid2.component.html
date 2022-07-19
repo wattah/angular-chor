@@ -1,0 +1,80 @@
+
+<ng-template  [ngIf]="!showTopPagination" [ngIfElse]="topPagination">
+    <h2 class="not-bordered athena" > {{ title }} </h2> 
+ </ng-template>
+ 
+ <ng-template #topPagination >
+     <div class="row justify-content-end mt-2 mb-2">
+         <div class="col-md-20 col-lg-20 " >
+             <app-athena-pagination
+                 [totalPages]="totalPages" 
+                 [currentPage]="currentPage"
+                 (goToPage)="goToPage($event)" >
+             </app-athena-pagination>
+             <span class="total athena" *ngIf="showTotalRows"> {{totalItems}} RÉSULTATS  &nbsp;&nbsp;</span>
+         </div>
+     </div>
+ </ng-template>
+ 
+ <div class="block block-transparent">
+    <ag-grid-angular  
+    #agGrid
+    id="myGrid"
+    class="ag-theme-material"
+    rowHeight="30"
+    [modules]="modules"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [masterDetail]="true"
+    [detailCellRendererParams]="detailCellRendererParams"
+    [detailRowHeight]="detailRowHeight"
+    [getRowHeight]="getRowHeight"
+    [rowData]="rowData"
+    [debug]="true"
+    [rowSelection]="rowSelection"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [serverSideStoreType]="'partial'"
+    [suppressPaginationPanel]="true"
+    [suppressScrollOnNewData]="true"
+    [context]="context"
+    [frameworkComponents]="frameworkComponents"
+    [domLayout]="domLayout"
+    [animateRows]="true"
+    [rowStyle]="rowStyle"
+    [icons]="icons"
+    [headerHeight]="headerHeight"
+    [multiSortKey]="multiSortKey"
+    [accentedSort]="true"
+    [singleClickEdit]="true"
+    [overlayNoRowsTemplate]="'<span></span>'"
+    [masterDetail]="masterDetail"
+    [detailCellRenderer]="detailCellRenderer"
+    [suppressRowClickSelection]="suppressRowClickSelection"
+    [treeData]="treeData"
+    [getDataPath]="getDataPath"
+    [autoGroupColumnDef]="autoGroupColumnDef"
+    [groupDefaultExpanded]="groupDefaultExpanded"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (onCellClicked)="onCellClicked($event)"
+    (paginationChanged)="onPaginationChanged($event)"
+    (cellClicked)="onCellClicked($event)"
+    (columnResized)="onColumnResized($event)"
+    (sortChanged)="reloadGridAfterSortChanged($event)"
+    [cacheBlockSize]="paginationPageSize"
+    [blockLoadDebounceMillis]="1000"
+    [suppressScrollOnNewData]="true"
+    [rowModelType]="rowModelType"
+    [serverSideDatasource]="datasource">
+</ag-grid-angular>
+ </div>
+ <div class="row justify-content-end mt-2">
+     <div class="col-md-8 col-lg-8 " >
+         <app-athena-pagination
+             [totalPages]="totalPages"
+             [currentPage]="currentPage" 
+             (goToPage)="goToPage($event)" >
+         </app-athena-pagination>
+     </div>
+ </div>

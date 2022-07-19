@@ -1,0 +1,47 @@
+<div class="block block-shadow" [ngClass]="{'block-grey': !totalDebt }">
+	<h2 class="block-title athena">
+		Finances 
+			<!-- <a class="block-title-item-link" [routerLink]="null" queryParamsHandling="merge">
+				<span class="text-min normal no-transform d-none d-md-inline">Compte-rendu de facturation</span>
+				<span class="text-min normal no-transform d-md-noane">Fact.</span>
+			</a>
+			<span class="block-title-item-link">
+				<span class="text-giant normal light-grey no-transform">|</span>
+			</span> -->
+			
+			<a *ngIf="totalDebt" class="block-title-item-link athena" [routerLink]="['/customer-dashboard', customerId, 'financial-detail', 'accounting-state']" queryParamsHandling="merge">
+				<span class="text-min normal no-transform athena">Etat comptable</span>
+			</a>
+			<!-- <span class="block-title-item-link">
+				<span class="text-giant normal light-grey no-transform">|</span>
+			</span>
+			<a class="block-title-item-link" [routerLink]="null" queryParamsHandling="merge">
+				<span class="text-min normal no-transform d-none d-md-inline">Gérer le client Péniche</span>
+				<span class="text-min normal no-transform d-md-none">Péniche</span>
+			</a> -->
+	</h2>
+	
+	<ng-template [ngIf]="totalDebt" [ngIfElse]="disconnectedBloc">
+		<app-athena-table-loader *ngIf="inCompleteCall"></app-athena-table-loader>
+		<app-billing-info [personIdNote]="personIdNote" [infoFacturation]="infoFacturation" [dateRecouvrement]="dateRecouvrement" [isEntreprise]="isEntreprise"></app-billing-info>
+		<app-debt-table [nicheValue]="nicheValue" [totalDebt]= "totalDebt" [isEntreprise]="isEntreprise" (rowIndexOfSelectedDebt)="getRowIndexOfSelectedDebt($event)"></app-debt-table>
+		<p class="text-right mt-3 athena">
+			<a 
+				[routerLink] = "['/customer-dashboard', customerId, 'financial-detail', 'history']" 
+				[queryParams] = "{rowSelected: selectedRow , univers: 'MOBILE', nicheIdentifier: nicheValue}"
+				queryParamsHandling="merge"
+				class="athena" > 
+				Historique complet<span class="icon icon-min arrow-right-blue"></span>
+			</a>
+		</p>
+	</ng-template>
+	
+	<ng-template  #disconnectedBloc>
+		<p class="text-danger athena">
+			<span class="icon lightning athena"></span> Données manquantes. Connexion à Péniche perdue.
+			<a class="athena" href="{{jiraUrl}}" target="_blank" style="padding-left: 10px;" rel="noopener noreferrer">
+				Signaler au support <span class="icon icon-min arrow-right-blue athena"></span>
+			</a>
+		</p>
+	</ng-template>
+</div>

@@ -1,0 +1,133 @@
+<div id="body" class="container-fluid">
+        <div class="row">   
+        <div class="d-none d-md-block col-md-24 col-lg-24">
+            <app-see-all-profil 
+                [isEntreprise]="(typeCustomer === 'company')" 
+                [infoCustomer]="infoProfil" 
+                [goodToKnow]="goodToKnow"
+                [typeCustomer]="typeCustomer" 
+                [recoveryDate]="recoveryDate"
+                [totalDebt]="totalDebt"> 
+            </app-see-all-profil>
+        </div>
+        <div class="d-none d-md-block  col-24">
+            <p class="athena">
+                <a 
+                    [routerLink]="(typeCustomer === 'company') 
+                        ? ['/customer-dashboard/entreprise', customerId]
+                        : ['/customer-dashboard/particular', customerId]"
+                    [queryParams]="{typeCustomer: typeCustomer}"
+                    queryParamsHandling="merge"
+                    class="athena"
+                    >
+                    <span class="icon icon-min arrow-left-blue athena"></span>Retour à la vue 360
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <div class="block block-shadow">
+                <h2 class="block-title athena">{{ (payment?.refBill) ? 'Paiement de la facture N ° ' + payment?.refBill : 'Paiement libre' }} </h2>
+
+                <div class="row" *ngIf="f.submitted && form.invalid">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="block block-alert" >
+                            <table class="table table-not-bordered athena" aria-describedby="">
+                                <tbody>
+                                    <tr hidden>
+                                        <th id=""></th>
+                                        <th id=""></th>
+                                    </tr>
+                                    <tr>
+                                        <td class="alert-icon align-middle" >
+                                            <span class="icon icon-max status-exclamation-white"></span>
+                                        </td>
+                                        <td class="alert-text">
+                                            <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                            <div *ngIf=" form.get('transactionAmount').hasError('required')">- Le champ Montant est obligatoire</div>
+                                            <div *ngIf=" form.get('transactionAmount').hasError('pattern')">- Le champ Montant doit contenir un chiffre positif</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 mt-3">
+                    <form  (ngSubmit)="onPay(f)" #f="ngForm"  [formGroup]="form" >
+
+                        <div class="form-group row" >
+                            <label class="col-sm-5 col-form-label athena"> Montant (en €) *</label>
+                            <div class="col-sm-20 col-lg-12 d-block">
+                                <input class="athena form-control " formControlName="transactionAmount" type="number" 
+                                  [ngClass]="{'error': f.submitted  && form.get('transactionAmount').errors}"
+                                />
+                                <mat-error *ngIf="f.submitted  && form.get('transactionAmount').hasError('required')" >
+                                    Ce champ est obligatoire
+                                </mat-error>
+                                <mat-error *ngIf="f.submitted  && form.get('transactionAmount').hasError('pattern')" >
+                                    Ce champ doit contenir un chiffre positif
+                                </mat-error>
+                            </div>
+                            <span *ngIf="f.submitted  && form.get('transactionAmount').errors" class="icon col-sm-1 mt-1 status-exclamation"></span>
+                        </div>
+
+                        <div class="form-group row select_arrows">
+                            <label class="col-lg-5 col-form-label athena"> Média*</label>
+                            <div class="col-sm-20 col-lg-12">
+                                <select class="form-control athena"  formControlName="mediaRefId">
+                                    <option [ngValue]="null">Pas d'interaction</option>
+                                    <option *ngFor="let media of mediaData" [ngValue]="media.id">{{media.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <label class="col-form-label athena col-sm-5"> Carte*</label>
+
+                            <div class="col-sm-4">
+                                <div class="flex d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input athena" id="optionsRadios1" formControlName="transactionType" type="radio" [value]="'CB'" />
+                                        <label for="optionsRadios1"><span class="icon paiement-cb"></span> </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input athena" id="optionsRadios2" formControlName="transactionType" type="radio" [value]="'AMEX'" />
+                                        <label for="optionsRadios2"><span class="icon paiement-american"></span> </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input athena" id="optionsRadios3" formControlName="transactionType" type="radio" [value]="'MASTERCARD'" />
+                                        <label for="optionsRadios3"><span class="icon paiement-mastercard"></span> </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input athena" id="optionsRadios4" formControlName="transactionType" type="radio" [value]="'VISA'" />
+                                        <label for="optionsRadios4"><span class="icon paiement-visa"></span> </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label athena">Commentaire</label>
+                            <div class="col-sm-20 col-lg-12">
+                                <textarea class="form-control athena ng-pristine ng-valid ng-touched" formControlName="comment"  rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-5 mb-2 justify-content-left ml-5">
+                            <a class="btn btn-link mt-1 athena" [routerLink]="['/customer-dashboard', this.customerId, 'financial-detail', 'history']" queryParamsHandling="merge" (click)="onCancel()" >Annuler</a>
+                            <button class="btn btn-green" [disabled]="f.submitted &&  form.invalid"   type="submit" >{{ stepPayment }}</button>
+                        </div>
+                    </form>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+    <div *ngIf="loading" class="wrapper">
+        <div class="spinner">
+        </div>
+    </div>
+</div>

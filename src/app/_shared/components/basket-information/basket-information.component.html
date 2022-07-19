@@ -1,0 +1,8 @@
+<p class="athena">
+    <strong><span class="athena">Statut : </span></strong>{{cartStatusValue}}<br />
+    <strong><span class="athena">Statut de l'ordre de commande : </span> </strong>{{cartLabel}}<br />
+    <strong><span class="athena">Nombre d'article(s) :</span> </strong>{{numberOfArticle}}<br />
+    <strong><span class="athena">Marge :</span> </strong>{{(!calculateMargePourcent) ? '0,00' : calculateMargePourcent}}% <br />
+    <strong><span class="athena">N° de commande : </span></strong>{{(!orderId) ? '-' : orderId }}<br />
+    <strong><span class="athena">Total :</span> </strong>{{(!cartTotal) ? '0' : cartTotal }} €<br />
+</p>

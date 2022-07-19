@@ -1,0 +1,29 @@
+{
+    "id": 12027,
+    "nicheIdentifier": "4242421",
+    "birthdate": "01/06/1995",
+    "name": "QUIMPER Compagny ",
+    "holderBenefName": "Jean BON",
+    "customerType":"titulaire",
+    "customerCategory":"ENTREPRISE",
+    "customerHolderCategory": "PARTICULIER",
+    "language":"en",
+    "civility": "",
+    "info": [
+        {
+            "author":"Dodo",
+            "dateNote": "25 Sep 2018",
+            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sodales finibus velit, sit amet hendrerit sem gravida quis. Mauris faucibus nulla non magna aliquet, sit amet dictum ante convallis. Ut pharetra et ligula at gravida. Nunc sed nisi rhoncus, sodales erat facilisis, varius risus. Pellentesque eu neque id ex pretium ultrices a et ligula. Aliquam erat volutpat. Mauris tempor odio sit amet enim sodales, egestas mollis neque suscipit. Vestibulum vel ex consectetur, dictum libero a posuere. "
+        },
+        {
+            "author":"Didi",
+            "dateNote": "28 Sep 2018",
+            "value": "Re"
+        }
+    ],
+    "coachName":"Toto MALO",
+    "deskName": "Titi BREST",
+    "adheName": "Lulu LORIENT",
+    "siret":null, 
+    "siren":null
+}

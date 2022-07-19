@@ -1,0 +1,163 @@
+    <div class="col-24">
+        <h6 class="athena" style="margin-bottom: 0;"> {{request?.requestTypeLabel}} </h6>
+        <h5 class="athena" >  Demande N°{{request?.idRequest}} </h5>
+    </div>
+    <div class="col-md-24 col-lg-8 order-lg-2">
+        <app-request-summary [detailRequest]="request" [customerId]="customerId" [requestAnswers]="requestAnswers"></app-request-summary>
+    </div>
+    <div class="col-md-24 col-lg-16">
+        <div class="block block-shadow">
+            <h2 class="athena" > {{ (updateMode) ? 'Modification  de l’interaction': 'Ajout d’une interaction' }} </h2>
+            <div class="row" *ngIf="invalidForm">
+                <div class="col-md-12 col-lg-12">
+                    <div class="block block-alert" >
+                        <table class="table table-not-bordered athena" aria-describedby="">
+                            <th id=""></th>
+                            <tbody>
+                                <tr>
+                                    <td class="alert-icon align-middle" >
+                                        <span class="icon icon-max status-exclamation-white"></span>
+                                    </td>
+                                    <td class="alert-text">
+                                        <strong>Ce formulaire n’est pas correctement renseigné</strong> <br/>
+                                        <div *ngIf="mediaInvalid" >- Le champ media est obligatoire</div>
+                                        <div *ngIf="motifInvalid" >- Le champ motif est obligatoire </div>
+                                        <div *ngIf="precisionInvalid" >- Le champ précision est obligatoire</div> 
+                                        <div *ngIf="participantInvalid" >- Le champ participant est obligatoire</div>
+                                        <div *ngIf="interlocutorInvalid" >- Le champ Interlocuteur est obligatoire</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <form class="pt-3" [formGroup]="interactionForm" (ngSubmit)="save()">
+                <div class="form-group row">
+                    <label for="mediaSelect" class="col-sm-4 col-form-label athena">Média*</label>
+                    <div class="col-sm-9">
+                        <select formControlName="media"  [ngClass]="classError(mediaInvalid)" id="mediaSelect"  (change)="mediaChangeHandler()">
+                            <option [ngValue]="null" disabled>--</option>
+                            <option *ngFor="let media of mediaData" [ngValue]="media.id">{{media.label}}</option>
+                        </select> 
+                        <mat-error *ngIf="mediaInvalid" >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="mediaInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="motifSelect" class="col-sm-4 col-form-label athena">Motif*</label>
+                    <div class="col-sm-9">
+                        <app-athena-nested-drop-down [selectedValue]="selectedMotif" [list]="interactionReasonList" (selectionChange)="onSelectMotif($event)" [hasError]="motifInvalid"></app-athena-nested-drop-down>
+                        <mat-error *ngIf="motifInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="motifInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="interlocuteurSelect" class="col-sm-4 col-form-label athena">Interlocuteur*</label>
+                    <div class="col-sm-9">
+                        <select formControlName="interlocuteur" class="form-control" id="interlocuteurSelect">
+                            <option [ngValue]="null" disabled>--</option>
+                            <option *ngFor="let interlocutor of interlocutors" [ngValue]="interlocutor.idPerson">
+                                {{interlocutor?.firstName | firstName}} {{ interlocutor?.lastName | uppercase}}
+                                {{(interlocutor?.roleLabel) ? ' - '+interlocutor.roleLabel : ''}}
+                            </option>
+                        </select>
+                        <mat-error *ngIf="interlocutorInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="interlocutorInvalid"></span>
+                </div>
+                <div class="form-group row" *ngIf="isRdv">
+                    <label for="adresseSelect" class="col-sm-4 col-form-label athena">Adresse RDV</label>
+                    <div class="col-sm-9">
+                        <select formControlName="adresseId" class="form-control" id="adresseSelect">
+                            <option [ngValue]="null" >--</option>
+                            <option *ngFor="let rdv of adresseRdv" [ngValue]="rdv.idContactMethode">
+                                {{ getFullAddress(rdv) }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="precision" class="col-sm-4 col-form-label athena">Précision*</label>
+                    <div class="col-sm-9">
+                        <input formControlName="precision" [ngClass]="classError(precisionInvalid)" id="precision" type="text"/>
+                        <mat-error *ngIf="precisionInvalid">Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="precisionInvalid"></span>
+                </div>
+                <div class="form-group row">
+                    <label for="start mt-1" class="col-sm-4 col-form-label athena">Date*</label>  
+                    <mat-form-field class="col-sm-3" appearance="outline">
+                        <input matInput [matDatepicker]="pickerStart" placeholder="" 
+                        formControlName="dateDebut" readonly [(ngModel)]="dateDebut">
+                        <mat-datepicker #pickerStart></mat-datepicker>
+                    </mat-form-field>
+                    <span class="icon icon-marged calendar-grey clickable margin-top" (click)="pickerStart.open()" ></span>
+                    <label  class="col-form-label marged-label mt-1"> de </label>
+                    <div class="col-sm-5 ">
+                        <app-athena-timer [defaultHour] = "hourStartDate" [defaultMinute] = "minuteStartDate" 
+                        (selectTime)="onChangeTimeStart($event)"></app-athena-timer>
+                       
+                    </div>
+                    <label  class="col-form-label ml-4 mt-1 marged-label"> jusqu'à </label>
+                    <div class="col-sm-3 ml-1 ">
+                        <app-athena-timer 
+                        [minHour]= "hourStartDate" 
+                        [minMinute] = "minuteStartDate" 
+                        [defaultHour] = "hourEndDate" 
+                        [defaultMinute] = "MinuteEndDate"
+                        (selectTime)="onChangeTimeStartJusqu($event)" 
+                       ></app-athena-timer>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="participantSelect" class="col-sm-4 col-form-label athena">Participants*</label>
+                    <div class="col-sm-9">
+                        <mat-form-field class="example-chip-list " appearance="outline" id="participantSelect" >
+                            <mat-chip-list #chipList >
+                                <mat-chip
+                                errorState="true"
+                                *ngFor="let user of users"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(user)">
+                                {{user | fullNameFormatter }}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                placeholder=""
+                                #fruitInput
+                                [formControl]="fruitCtrl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                >
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" required>
+                                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                                    {{user | fullNameFormatter }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-error *ngIf="participantInvalid" >Ce champ est obligatoire</mat-error>
+                    </div>
+                    <span class="icon col-sm-1 mt-1 status-exclamation" *ngIf="participantInvalid"></span>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="descriptionTextarea" class="col-sm-4 col-form-label athena">Description</label>
+                    <div class="col-sm-9">
+                        <textarea autosize formControlName="description" class="form-control athena" id="descriptionTextarea" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="row control-buttons ">
+                    <div class="col-sm-4 text-right">
+                        <a class="btn btn-link mt-1 athena"  [routerLink]="[]" queryParamsHandling="merge" (click)="annuler()">Annuler</a>
+                    </div>
+                    <div class="col-sm-9">
+                        <input class="btn btn-green athena" [disabled]="isValidBtn" value="Enregistrer" type="submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
